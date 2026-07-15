@@ -1,7 +1,7 @@
 {
-  "name": "pokemon-dreamworld",
-  "version": "1.0.0",
-  "description": "A Pokémon Black/White-inspired Dream World with a serverless crossover feature to visit other players' dreams.",
+  "name": "pokemon-unova-dream-journey",
+  "version": "2.0.0",
+  "description": "A Pokémon Black/White-style RPG — beat the Elite Four, catch Darmanitan, master every HM — with an Entralink that opens a shareable, crossover-enabled Dream World.",
   "type": "commonjs",
   "scripts": {
     "start": "node server.js",

@@ -3,27 +3,54 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="theme-color" content="#8f7fd6" />
-  <meta name="description" content="A Pokémon Black/White-inspired Dream World you can share — cross over into a friend's dream and trade Pokémon." />
-  <title>Pokémon Dream World</title>
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8C%99%3C/text%3E%3C/svg%3E" />
-  <link rel="stylesheet" href="styles.css" />
+  <meta name="theme-color" content="#1b2440" />
+  <meta name="description" content="A Pokémon Black/White-style RPG: beat the Elite Four, catch Darmanitan, master every HM, and cross over through the Entralink into the Dream World." />
+  <title>Pokémon Unova — Dream Journey</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%94%B4%3C/text%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="game.css" />
 </head>
 <body>
-  <div id="app"></div>
+  <div id="game-root">
+    <div id="hud" style="display:none">
+      <span class="hud-loc">Unova</span>
+      <span class="hud-badges">◇◇◇◇</span>
+      <span class="hud-money">¥0</span>
+    </div>
+    <div id="stage">
+      <canvas id="game-canvas"></canvas>
+    </div>
+    <div id="touch-controls">
+      <div class="dpad">
+        <button id="btn-up" class="tc-btn tc-up" aria-label="Up">▲</button>
+        <button id="btn-left" class="tc-btn tc-left" aria-label="Left">◀</button>
+        <button id="btn-right" class="tc-btn tc-right" aria-label="Right">▶</button>
+        <button id="btn-down" class="tc-btn tc-down" aria-label="Down">▼</button>
+      </div>
+      <div class="face-btns">
+        <button id="btn-start" class="tc-btn tc-start" aria-label="Menu">☰</button>
+        <div class="ab">
+          <button id="btn-b" class="tc-btn tc-b" aria-label="B">B</button>
+          <button id="btn-a" class="tc-btn tc-a" aria-label="A">A</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="game-ui"></div>
 
-  <!-- Game modules (classic scripts, loaded in dependency order). -->
-  <script src="js/data.js"></script>
-  <script src="js/sprites.js"></script>
-  <script src="js/state.js"></script>
-  <script src="js/ui.js"></script>
-  <script src="js/audio.js"></script>
-  <script src="js/minigame.js"></script>
-  <script src="js/dreamworld.js"></script>
-  <script src="js/garden.js"></script>
-  <script src="js/house.js"></script>
-  <script src="js/box.js"></script>
-  <script src="js/crossover.js"></script>
-  <script src="js/main.js"></script>
+  <script src="game/data.js"></script>
+  <script src="game/party.js"></script>
+  <script src="game/battle.js"></script>
+  <script src="game/tiles.js"></script>
+  <script src="game/sprites.js"></script>
+  <script src="game/maps.js"></script>
+  <script src="game/audio.js"></script>
+  <script src="game/gameui.js"></script>
+  <script src="game/save.js"></script>
+  <script src="game/input.js"></script>
+  <script src="game/world.js"></script>
+  <script src="game/battlescene.js"></script>
+  <script src="game/menu.js"></script>
+  <script src="game/entralink.js"></script>
+  <script src="game/main.js"></script>
 </body>
 </html>

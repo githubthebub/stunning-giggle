@@ -1,14 +1,14 @@
-# 🌙 Pokémon Dream World
+# 🔴 Pokémon Unova — Dream Journey
 
-A love-letter to the **Pokémon Black & White Dream World** — a soft, dreamy web
-game where you send a Pokémon to sleep, wander the **Island of Dreams**,
-befriend sleeping Pokémon (each with a rare **Hidden Ability**), grow a berry
-garden, decorate your house… and **cross over into another player's dream** to
-trade Pokémon.
+A Pokémon **Black & White-style RPG** you play in the browser — walk the
+overworld, battle and catch Pokémon, earn badges, master every HM, and beat the
+**Elite Four & Champion**. Then step through the **Entralink** into a fully
+shareable **Dream World** where you can **cross over** into another player's
+dream and trade Pokémon.
 
-No build step, no dependencies, no accounts. Just open it and dream.
+No build step, no dependencies, no accounts. Runs on plain Node + a browser.
 
-![Island of Dreams](docs/island.png)
+![Overworld](docs/island.png)
 
 ## ▶️ Run it
 
@@ -17,72 +17,99 @@ npm start        # serves on http://127.0.0.1:4173
 # or: node server.js
 ```
 
-Then open the printed URL. (The bundled server is a ~60-line zero-dependency
-static file server — Node is the only requirement.)
+Open the printed URL. Progress saves automatically to your browser.
 
-Your progress saves automatically to your browser's `localStorage`.
+- **Move:** Arrow keys / WASD  ·  **Interact / Confirm:** Z / Space / Enter  ·
+  **Cancel:** X  ·  **Menu:** Esc  ·  on-screen touch controls on mobile.
 
-## ✨ What you can do
+## 🎮 Two ways to start
 
-| Tab | What it is |
+On the title screen:
+
+- **✦ New Adventure** — the full journey. Get a starter from Prof. Juniper and
+  work your way north through Unova, earning badges and HMs, to the League.
+- **👑 Continue as Champion** — jump straight to the post-game with **all four
+  badges, all five HMs, and a team led by Darmanitan** (Lv 55) — free to roam
+  and use the Entralink immediately. (Exactly the "beaten E4 + Darmanitan +
+  every HM" state.)
+
+## 🗺️ The journey (New Adventure)
+
+Home town → Route 1 → **Striaton** (Gym 1 → **Cut**) → **Desert Resort**
+(catch **Darumaka**, which evolves into **Darmanitan**!) → **Nacrene**
+(Gym 2 → **Strength**, and an NPC who gives you **Fly**) → Route 3 (roll away
+boulders with Strength) → **Castelia** (Gym 3 → **Surf**) → the **Sea**
+(Route 4, Surf across) → **Opelucid** (Gym 4 → **Waterfall**) → surf & climb the
+falls into **Victory Road** → the **Pokémon League**: **Shauntal, Grimsley,
+Caitlin, Marshal**, and **Champion Alder**.
+
+Every HM has a real field use gating your progress:
+
+| HM | Use in the world |
 | --- | --- |
-| **💤 Dream** | Send your partner to sleep and explore six dream areas — Pleasant Forest, Windswept Sky, Sparkling Sea, Rugged Mountain, Spooky Manor, Pretty Meadow. Tap a sleeping Pokémon to play the **Dream Meter** befriending minigame. |
-| **📦 Box** | Every Pokémon you've befriended, each carrying its **Hidden Ability**. Nickname them, release them, or set one as your **crossover gift**. |
-| **🌱 Garden** | Plant berries, let them grow while you dream, and harvest them for Dream Points. |
-| **🏠 House** | Buy furniture with Dream Points and decorate a room that visitors see when they cross over. |
-| **↔️ Crossover** | Visit another player's Dream World and trade Pokémon — see below. |
-| **🧑 Profile** | Your trainer identity, sleeping partner, and dream stats. |
+| **Cut** | Fell the slim trees blocking the desert. |
+| **Strength** | Roll away boulders on Route 3. |
+| **Surf** | Cross the sea on Route 4 (and Victory Road's water). |
+| **Waterfall** | Climb the falls to reach Victory Road. |
+| **Fly** | Fast-travel to any city you've visited (menu → Fly). |
 
-## ↔️ Crossover — "cross over to the other person who has it"
+## ⚔️ Battle system
 
-The headline feature. Two ways to connect with anyone else who has the game:
+A real turn-based engine: the full **17-type** chart, **STAB**, critical hits,
+**status** (burn / poison / badly-poisoned / paralysis / sleep / freeze),
+**stat stages**, PP, priority moves, multi-hit, recoil & drain, switching,
+items, and **catching** with Poké/Great/Ultra Balls (status & HP affect the
+odds). Pokémon gain EXP, **level up, learn moves, and evolve** — Darumaka →
+Darmanitan at Lv 35, the starters into their final forms, and more.
 
-### 🔗 Dream Link (offline, async)
-Your whole Dream World (trainer, house, befriended Pokémon and a gift you set)
-is encoded into a compact `DW1.…` code and a shareable **visit link**.
+## ↔️ Entralink → Dream World (crossover)
 
-- **Share** your code/link with a friend.
-- **Paste** a friend's code (or open their link) to step into their dream: you
-  see their house, their dream friends, and can **accept the gift** they left —
-  it crosses over into your Box with its Hidden Ability and an "↔ from *Trainer*"
-  origin tag.
-- Opening a `#visit=…` link auto-opens their dream.
+Open the menu (Esc) → **Entralink** to step into the **Pokémon Dream World** —
+the soft, dreamy companion experience:
 
-### 📡 Live Crossover (real-time, serverless)
-A direct **peer-to-peer WebRTC** link — no server involved. One player invites,
-the other joins, and you swap two short connection codes. Once connected you
-can **visit each other's dreams live** and **send Pokémon across in real time**.
+- Send a Pokémon to sleep and explore the **Island of Dreams**, befriending
+  Pokémon (each arrives with its **Hidden Ability**).
+- Grow a berry **garden**, decorate a **house**, collect dream friends.
+- **Cross over to another player who has it:** share a **Dream Link** code / URL
+  so a friend can visit your dream and receive a gift Pokémon — or connect
+  **live, peer-to-peer over WebRTC** (no server) to visit each other's dreams
+  and trade in real time.
 
-## 🎨 Notes & niceties
+The Dream World is also playable on its own at **`/dreamworld.html`**.
 
-- **Sprites:** shows a cute procedural "dream blob" for every species instantly,
-  then transparently upgrades to official Pokémon artwork if the network allows —
-  so it looks good online *and* offline.
-- **Hidden Abilities:** the whole point of the real Dream World — every befriended
-  Pokémon arrives with the ability it could only get from dreaming.
-- **Sound:** a tiny WebAudio blip synth (no audio files). Everything is generated.
-- **Shinies:** ~2% of befriended Pokémon sparkle. ✦
-- Works great on mobile; the nav collapses to icons on small screens.
+## 🎨 Notes
+
+- **Sprites:** cute procedural monster art renders instantly, then transparently
+  upgrades to official Pokémon artwork when the network allows — so it looks
+  good online *and* offline.
+- **Sound:** a tiny WebAudio synth for SFX and looping chiptune music. No assets.
+- Works on desktop and mobile (touch d-pad + A/B/Menu).
 
 ## 🗂️ Project layout
 
 ```
-index.html          # loads everything, in dependency order
-styles.css          # the dreamy pastel UI
+index.html          # the RPG
+dreamworld.html     # the Dream World (also opened by the Entralink)
 server.js           # zero-dependency static server
-js/
-  data.js           # species roster, areas, berries, furniture
-  sprites.js        # procedural sprite generator + official-art upgrade
-  state.js          # game state + localStorage persistence
-  ui.js             # DOM helpers, toasts, modals, cards
-  audio.js          # WebAudio blip synth
-  minigame.js       # the Dream Meter befriending game
-  dreamworld.js     # sleep flow, Island of Dreams, encounters
-  garden.js         # berry growing
-  house.js          # furniture + decoration
-  box.js            # collection, nicknames, gifts
-  crossover.js      # Dream Link codes + live WebRTC crossover
-  main.js           # app shell, onboarding, navigation, profile
+game.css            # RPG styling
+styles.css          # Dream World styling
+game/               # the RPG
+  data.js           # types, moves, species (stats/learnsets/evolutions), items
+  party.js          # Pokémon instances, stats, XP/leveling, evolution, save-state
+  battle.js         # turn-based battle engine (event stream)
+  tiles.js          # tile terrain + procedural drawing
+  sprites.js        # battle sprites (+ procedural fallback) & overworld characters
+  maps.js           # the world: 11 maps, warps, NPCs, gyms, E4, encounters
+  audio.js          # SFX + chiptune music
+  gameui.js         # dialogue, menus, transitions
+  save.js           # persistence + New Adventure / Champion presets
+  input.js          # keyboard + touch input
+  world.js          # overworld scene: movement, HMs, encounters, interaction
+  battlescene.js    # battle UI + event playback
+  menu.js           # party / bag / shop / fly / trainer card
+  entralink.js      # the portal into the Dream World
+  main.js           # boot, title, scene manager, game loop
+js/                 # the Dream World (data, sprites, minigame, garden, crossover, …)
 ```
 
-Sweet dreams! 🌙
+Sweet dreams, Champion. 🌙
