@@ -59,8 +59,8 @@
 
   function setSprite(side, mon) {
     const wrap = side === 'foe' ? foeSprite : plySprite;
-    G.gui.el; wrap.innerHTML = '';
-    const img = G.sprites.monImg(mon, side === 'foe' ? 108 : 128, { className: side });
+    wrap.innerHTML = '';
+    const img = G.sprites.monImg(mon, side === 'foe' ? 108 : 128, { className: side, back: side === 'ply' });
     wrap.appendChild(img);
     if (mon.shiny) wrap.appendChild(el('span', { class: 'b-shiny' }, '✦'));
   }

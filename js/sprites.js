@@ -112,9 +112,11 @@
     return url;
   }
 
-  // Returns an <img> that shows a procedural sprite immediately (so there is
-  // never a blank frame), then transparently upgrades to the official artwork
-  // if the network makes it available.
+  function bank() { try { return window.SPRITE_DATA || (window.parent && window.parent.SPRITE_DATA); } catch (e) { return null; } }
+
+  // Returns an <img>. Prefers embedded authentic Black/White pixel sprites;
+  // otherwise shows a procedural sprite immediately and upgrades to official
+  // artwork if the network makes it available.
   function spriteImg(species, size, opts) {
     opts = opts || {};
     const px = size || 96;
@@ -124,10 +126,12 @@
     img.alt = species.name;
     img.decoding = 'async';
     img.draggable = false;
+    const b = bank();
+    const embedded = b && b.front && b.front[species.id];
+    if (embedded) { img.src = embedded; img.classList.add('pixel'); return img; }
     // Instant, always-available fallback art.
     img.src = proceduralDataURL(species, px * 2);
-    // Attempt to upgrade to official artwork in the background.
-    if (species.id && !opts.noUpgrade) {
+    if (species.id && !opts.noUpgrade && !window.OFFLINE_SPRITES) {
       const loader = new Image();
       loader.onload = () => { img.src = CDN + species.id + '.png'; img.classList.add('official'); };
       loader.onerror = () => {}; // stay on the procedural sprite

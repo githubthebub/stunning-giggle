@@ -110,6 +110,7 @@ button { font-family: inherit; cursor: pointer; }
 .foe-sprite img { width: clamp(90px, 18vw, 150px); }
 .ply-sprite img { width: clamp(110px, 22vw, 185px); }
 .mon-sprite { image-rendering: auto; filter: drop-shadow(0 6px 6px rgba(0,0,0,.3)); }
+.mon-sprite.pixel { image-rendering: pixelated; image-rendering: crisp-edges; }
 .foe-sprite.flash, .ply-sprite.flash { animation: hitFlash .3s; }
 @keyframes hitFlash { 0%,100% { filter: none; } 30% { filter: brightness(2) saturate(.3); transform: translateX(-4px); } 60% { transform: translateX(4px); } }
 .foe-sprite.faint, .ply-sprite.faint { animation: faintDrop .6s forwards; }

@@ -37,7 +37,11 @@
     const url = c.toDataURL(); cache.set(key, url); return url;
   }
 
-  // Returns an <img> showing procedural art immediately, upgrading to official.
+  function bank() { try { return window.SPRITE_DATA || (window.parent && window.parent.SPRITE_DATA); } catch (e) { return null; } }
+
+  // Returns an <img>. Prefers embedded authentic Black/White pixel sprites
+  // (front, or back for the player's own Pokémon); otherwise draws a
+  // procedural creature and upgrades to official art if the network allows.
   function monImg(mon, size, opts) {
     opts = opts || {};
     const dex = mon.dex, types = mon.types;
@@ -46,8 +50,11 @@
     img.width = img.height = size || 128;
     img.alt = mon.species || '';
     img.draggable = false;
+    const b = bank();
+    const embedded = b && ((opts.back && b.back && b.back[dex]) || (b.front && b.front[dex]));
+    if (embedded) { img.src = embedded; img.classList.add('pixel'); return img; }
     img.src = proceduralDataURL(dex, types, (size || 128) * 1.5);
-    if (dex) {
+    if (dex && !window.OFFLINE_SPRITES) {
       const loader = new Image();
       loader.onload = () => { img.src = CDN + dex + '.png'; img.classList.add('official'); };
       loader.onerror = () => {};

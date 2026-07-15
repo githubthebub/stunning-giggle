@@ -120,6 +120,7 @@ p { margin: 0 0 .6em; line-height: 1.5; }
 
 /* Sprites */
 .sprite { image-rendering: auto; object-fit: contain; filter: drop-shadow(0 6px 8px rgba(80,60,130,.25)); }
+.sprite.pixel { image-rendering: pixelated; image-rendering: crisp-edges; }
 .floaty { animation: bob 3.4s ease-in-out infinite; }
 @keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
 
