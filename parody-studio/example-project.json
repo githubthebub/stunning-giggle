@@ -1,0 +1,38 @@
+{
+  "source": "./sample.mp4",
+  "output": "./parody-out.mp4",
+  "width": 1280,
+  "height": 720,
+  "clips": [
+    {
+      "start": 0,
+      "end": 3,
+      "caption": { "text": "MY CODE IN PRODUCTION", "position": "top" },
+      "sfx": [
+        { "name": "dramatic-sting", "at": 0.2 }
+      ]
+    },
+    {
+      "start": 4,
+      "end": 7,
+      "speed": 1.5,
+      "punchIn": 1.35,
+      "caption": { "text": "why is it doing that", "position": "bottom" },
+      "sfx": [
+        { "name": "record-scratch-ish", "at": 0.1, "gain": 1.2 },
+        { "name": "deep-impact", "at": 1.0 }
+      ]
+    },
+    {
+      "start": 8,
+      "end": 11.5,
+      "speed": 0.75,
+      "mute": true,
+      "caption": { "text": "*slow-motion regret*", "position": "bottom" },
+      "sfx": [
+        { "name": "sad-trombone-ish", "at": 0.3 },
+        { "name": "boing", "at": 3.5, "gain": 0.8 }
+      ]
+    }
+  ]
+}

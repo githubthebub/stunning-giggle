@@ -1,0 +1,45 @@
+{
+  "music": "assets/music.wav",
+  "blocks": [
+    {
+      "footage": "footage/01-title-boot.mp4",
+      "vo": "vo/01.wav",
+      "text": "I told an AI to build me an entire Pokémon-style game from scratch. Not a tech demo — the whole thing. And it runs in your browser with zero dependencies.",
+      "in": 2.5
+    },
+    {
+      "footage": "footage/02-overworld.mp4",
+      "vo": "vo/02.wav",
+      "text": "It started with literally nothing, so it wrote its own engine. Procedural monster sprites. A chiptune synthesizer for the music. An eleven-map region to explore.",
+      "in": 1.5
+    },
+    {
+      "footage": "footage/03-battle.mp4",
+      "vo": "vo/03.wav",
+      "text": "Then it built a real battle system — all seventeen types, status effects, crits, stat stages, even catching, with proper ball-shake odds.",
+      "in": 6.35,
+      "holdExtra": 2.2
+    },
+    {
+      "footage": "footage/04-hms.mp4",
+      "vo": "vo/04.wav",
+      "text": "There are four gyms, and every HM actually gates the world. Cut clears the desert. Strength moves boulders. Surf crosses the sea. Waterfall climbs into Victory Road.",
+      "in": 0.5,
+      "speed": 1.8
+    },
+    {
+      "footage": "footage/05-dreamworld.mp4",
+      "vo": "vo/05.wav",
+      "text": "And after the Elite Four, it rebuilt the one feature Nintendo abandoned a decade ago: the Dream World. Tuck a Pokémon in at the Entralink, befriend one inside a dream, and it wakes up in the Entree Forest with its hidden ability. Guaranteed catch.",
+      "in": 0,
+      "speed": 1.6
+    },
+    {
+      "footage": "footage/06-outro.mp4",
+      "vo": "vo/06.wav",
+      "text": "So yes — an AI just resurrected a dead Pokémon feature. It's free, it runs in the browser, and the code is linked below.",
+      "holdExtra": 1.2,
+      "in": 2.4
+    }
+  ]
+}

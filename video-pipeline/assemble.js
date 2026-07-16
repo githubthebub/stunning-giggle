@@ -9,6 +9,7 @@
 //     "vo": "vo/01.mp3",             // voice take (block length follows it)
 //     "text": "caption text ...",    // burned captions, auto-chunked
 //     "in": 0,                       // optional: seek into footage (s)
+//     "speed": 1,                    // optional: fast-forward factor (montage)
 //     "holdExtra": 0 }               // optional: extra seconds after VO ends
 // ]
 // Paths are resolved relative to the JSON file's directory.
@@ -84,7 +85,8 @@ blocks.forEach((b, i) => {
       `:x=(w-text_w)/2:y=h-118:enable='between(t,${t0},${t1})'`;
   });
   const seg = path.join(tmp, `seg${i}.mp4`);
-  const vf = `scale=${W}:${H}:force_original_aspect_ratio=increase,crop=${W}:${H},fps=${FPS},` +
+  const speedPre = b.speed && b.speed !== 1 ? `setpts=PTS/${b.speed},` : '';
+  const vf = `${speedPre}scale=${W}:${H}:force_original_aspect_ratio=increase,crop=${W}:${H},fps=${FPS},` +
     `tpad=stop_mode=clone:stop_duration=25,trim=duration=${dur.toFixed(3)},setpts=PTS-STARTPTS${draw}`;
   sh(['ffmpeg', '-y', '-v', 'error', '-ss', String(b.in || 0), '-i', footage,
     '-vf', vf, '-an', '-c:v', 'libx264', '-preset', 'medium', '-crf', '19', seg]);

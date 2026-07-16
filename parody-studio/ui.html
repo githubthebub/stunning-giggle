@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Parody Studio</title>
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: system-ui, sans-serif;
+    background: #14161a; color: #e8e8e8;
+    max-width: 900px; margin: 0 auto; padding: 24px 16px 80px;
+  }
+  h1 { font-size: 1.5rem; margin: 0 0 4px; }
+  .sub { color: #9aa0a8; margin: 0 0 20px; font-size: .9rem; }
+  fieldset {
+    border: 1px solid #2c3038; border-radius: 8px;
+    margin: 0 0 14px; padding: 12px;
+  }
+  legend { padding: 0 6px; color: #9aa0a8; font-size: .85rem; }
+  label { display: inline-block; font-size: .8rem; color: #9aa0a8; margin: 4px 10px 2px 0; }
+  input, select {
+    background: #1d2026; color: #e8e8e8; border: 1px solid #343943;
+    border-radius: 5px; padding: 5px 7px; font-size: .9rem;
+  }
+  input[type=number] { width: 5.5em; }
+  input.wide { width: 100%; }
+  button {
+    background: #2b3a55; color: #e8e8e8; border: 1px solid #41567e;
+    border-radius: 6px; padding: 6px 12px; font-size: .9rem; cursor: pointer;
+  }
+  button:hover { background: #354a6e; }
+  button.small { padding: 2px 8px; font-size: .8rem; }
+  button.danger { background: #4a2b2b; border-color: #6e3a3a; }
+  button.primary { background: #2d6a4f; border-color: #40916c; font-weight: 600; padding: 10px 22px; }
+  .clip { background: #191c21; }
+  .row { margin: 4px 0; }
+  .sfxrow { margin: 3px 0 3px 12px; }
+  pre#log {
+    background: #0d0f12; border: 1px solid #2c3038; border-radius: 8px;
+    padding: 10px; min-height: 3em; max-height: 40vh; overflow: auto;
+    white-space: pre-wrap; font-size: .8rem;
+  }
+  textarea#json {
+    width: 100%; height: 12em; background: #0d0f12; color: #b8e0b8;
+    border: 1px solid #2c3038; border-radius: 8px; font-family: monospace; font-size: .8rem;
+  }
+  .bar { display: flex; gap: 10px; align-items: center; margin: 16px 0; flex-wrap: wrap; }
+  .note { font-size: .78rem; color: #8a919b; }
+</style>
+</head>
+<body>
+<h1>Parody Studio</h1>
+<p class="sub">Local meme editor — your own footage in, jokes out. Nothing leaves this machine.</p>
+
+<fieldset>
+  <legend>Project</legend>
+  <div class="row"><label>Source video (absolute local path)</label>
+    <input class="wide" id="source" placeholder="/home/you/footage/mycat.mp4"></div>
+  <div class="row"><label>Output file (absolute local path)</label>
+    <input class="wide" id="output" placeholder="/home/you/out/meme.mp4"></div>
+  <div class="row">
+    <label>Width</label><input type="number" id="width" placeholder="auto">
+    <label>Height</label><input type="number" id="height" placeholder="auto">
+  </div>
+</fieldset>
+
+<div id="clips"></div>
+
+<div class="bar">
+  <button id="addClip">+ Add clip</button>
+  <button id="showJson">Show JSON</button>
+  <button id="render" class="primary">Render</button>
+  <span class="note">SFX times are seconds from the clip start (after speed changes).</span>
+</div>
+
+<textarea id="json" hidden spellcheck="false"></textarea>
+<pre id="log">Ready. Sound list loads from /sfx — run make-sfx.js first if it's empty.</pre>
+
+<script>
+'use strict';
+let SFX_NAMES = [];
+const clipsEl = document.getElementById('clips');
+const log = document.getElementById('log');
+
+function el(tag, attrs = {}, ...kids) {
+  const e = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs)) {
+    if (k === 'class') e.className = v;
+    else if (k.startsWith('on')) e.addEventListener(k.slice(2), v);
+    else if (k === 'text') e.textContent = v;
+    else e.setAttribute(k, v);
+  }
+  for (const k of kids) e.appendChild(k);
+  return e;
+}
+const lbl = (t) => el('label', { text: t });
+
+function sfxRow() {
+  const sel = el('select', { class: 'sfx-name' });
+  for (const n of SFX_NAMES) sel.appendChild(el('option', { value: n, text: n }));
+  const row = el('div', { class: 'sfxrow' },
+    lbl('sfx'), sel,
+    lbl('at (s)'), el('input', { type: 'number', class: 'sfx-at', value: '0', step: '0.1', min: '0' }),
+    lbl('gain'), el('input', { type: 'number', class: 'sfx-gain', value: '1', step: '0.1', min: '0.1' }),
+    el('button', { class: 'small danger', text: 'x', onclick: (e) => e.target.closest('.sfxrow').remove() })
+  );
+  return row;
+}
+
+function clipRow() {
+  const sfxBox = el('div', { class: 'sfxbox' });
+  const fs = el('fieldset', { class: 'clip' },
+    el('legend', { text: 'clip' }),
+    el('div', { class: 'row' },
+      lbl('start (s)'), el('input', { type: 'number', class: 'c-start', value: '0', step: '0.1', min: '0' }),
+      lbl('end (s)'), el('input', { type: 'number', class: 'c-end', value: '3', step: '0.1', min: '0' }),
+      lbl('speed'), el('input', { type: 'number', class: 'c-speed', value: '1', step: '0.05', min: '0.25', max: '4' }),
+      lbl('punch-in'), el('input', { type: 'number', class: 'c-punch', value: '1', step: '0.05', min: '1', max: '2' }),
+      lbl('mute'), el('input', { type: 'checkbox', class: 'c-mute' })
+    ),
+    el('div', { class: 'row' },
+      lbl('caption'), el('input', { class: 'c-caption', size: '40', placeholder: '(none)' }),
+      lbl('position'),
+      (() => {
+        const s = el('select', { class: 'c-pos' });
+        s.appendChild(el('option', { value: 'bottom', text: 'bottom' }));
+        s.appendChild(el('option', { value: 'top', text: 'top' }));
+        return s;
+      })()
+    ),
+    sfxBox,
+    el('div', { class: 'row' },
+      el('button', { class: 'small', text: '+ sfx', onclick: () => sfxBox.appendChild(sfxRow()) }),
+      el('button', { class: 'small danger', text: 'remove clip', onclick: (e) => e.target.closest('fieldset').remove() })
+    )
+  );
+  return fs;
+}
+
+function buildProject() {
+  const num = (v) => (v === '' ? undefined : Number(v));
+  const p = {
+    source: document.getElementById('source').value.trim(),
+    output: document.getElementById('output').value.trim(),
+    clips: [],
+  };
+  const w = num(document.getElementById('width').value);
+  const h = num(document.getElementById('height').value);
+  if (w) p.width = w;
+  if (h) p.height = h;
+  for (const c of clipsEl.querySelectorAll('fieldset.clip')) {
+    const clip = {
+      start: Number(c.querySelector('.c-start').value),
+      end: Number(c.querySelector('.c-end').value),
+    };
+    const speed = Number(c.querySelector('.c-speed').value);
+    if (speed && speed !== 1) clip.speed = speed;
+    const punch = Number(c.querySelector('.c-punch').value);
+    if (punch && punch !== 1) clip.punchIn = punch;
+    if (c.querySelector('.c-mute').checked) clip.mute = true;
+    const cap = c.querySelector('.c-caption').value.trim();
+    if (cap) clip.caption = { text: cap, position: c.querySelector('.c-pos').value };
+    const sfx = [];
+    for (const s of c.querySelectorAll('.sfxrow')) {
+      sfx.push({
+        name: s.querySelector('.sfx-name').value,
+        at: Number(s.querySelector('.sfx-at').value),
+        gain: Number(s.querySelector('.sfx-gain').value),
+      });
+    }
+    if (sfx.length) clip.sfx = sfx;
+    p.clips.push(clip);
+  }
+  return p;
+}
+
+document.getElementById('addClip').addEventListener('click', () => clipsEl.appendChild(clipRow()));
+
+document.getElementById('showJson').addEventListener('click', () => {
+  const ta = document.getElementById('json');
+  ta.hidden = !ta.hidden;
+  if (!ta.hidden) ta.value = JSON.stringify(buildProject(), null, 2);
+});
+
+document.getElementById('render').addEventListener('click', async () => {
+  const project = buildProject();
+  if (!project.source || !project.output || project.clips.length === 0) {
+    log.textContent = 'Need a source path, an output path, and at least one clip.';
+    return;
+  }
+  log.textContent = 'Starting render...\n';
+  try {
+    const resp = await fetch('/render', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(project),
+    });
+    const reader = resp.body.getReader();
+    const dec = new TextDecoder();
+    for (;;) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      log.textContent += dec.decode(value, { stream: true });
+      log.scrollTop = log.scrollHeight;
+    }
+  } catch (e) {
+    log.textContent += `\n[request failed: ${e.message}]`;
+  }
+});
+
+// Populate the SFX dropdown source list, then add a starter clip.
+fetch('/sfx').then((r) => r.json()).then((names) => {
+  SFX_NAMES = names;
+  clipsEl.appendChild(clipRow());
+}).catch(() => {
+  log.textContent = 'Could not load /sfx list — is studio-server.js running?';
+  clipsEl.appendChild(clipRow());
+});
+</script>
+</body>
+</html>

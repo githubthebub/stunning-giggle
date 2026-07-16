@@ -1,12 +1,11 @@
 {
-  "mode": "fetch",
-  "fetch": [
-    { "url": "https://d8j0ntlcm91z4.cloudfront.net/user_36KNmFd6iH5Y3yk4Gh9GpEgWGDw/hf_20260716_131757_100ab5ff-455d-4026-b7ac-ebed3e43f004.wav", "out": "video-pipeline/vo/01.wav" },
-    { "url": "https://d8j0ntlcm91z4.cloudfront.net/user_36KNmFd6iH5Y3yk4Gh9GpEgWGDw/hf_20260716_131759_a7c48bbf-4922-4d7a-9c6e-1ca5ca37c5c6.wav", "out": "video-pipeline/vo/02.wav" },
-    { "url": "https://d8j0ntlcm91z4.cloudfront.net/user_36KNmFd6iH5Y3yk4Gh9GpEgWGDw/hf_20260716_131800_390bba91-555c-4097-9cc3-0c8086791db8.wav", "out": "video-pipeline/vo/03.wav" },
-    { "url": "https://d8j0ntlcm91z4.cloudfront.net/user_36KNmFd6iH5Y3yk4Gh9GpEgWGDw/hf_20260716_131802_13c9acce-f24a-4219-8940-3ec71e12917f.wav", "out": "video-pipeline/vo/04.wav" },
-    { "url": "https://d8j0ntlcm91z4.cloudfront.net/user_36KNmFd6iH5Y3yk4Gh9GpEgWGDw/hf_20260716_132043_c4030ec3-772c-4b99-b820-3018e6136517.wav", "out": "video-pipeline/vo/05.wav" },
-    { "url": "https://d8j0ntlcm91z4.cloudfront.net/user_36KNmFd6iH5Y3yk4Gh9GpEgWGDw/hf_20260716_132340_8b5c4fc3-3074-4ce6-9503-213e58533a9c.wav", "out": "video-pipeline/vo/06.wav" }
-  ],
-  "upload": []
+  "mode": "upload",
+  "fetch": [],
+  "upload": [
+    {
+      "file": "video-pipeline/final.mp4",
+      "content_type": "video/mp4",
+      "url": "https://upload.higgsfield.ai/user_36KNmFd6iH5Y3yk4Gh9GpEgWGDw/fdac007c-119e-48ce-8c7f-08ac6a4c7d32.mp4?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAYPNTVMCG23KTMVYU%2F20260716%2Feu-north-1%2Fs3%2Faws4_request&X-Amz-Date=20260716T135930Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=content-type%3Bhost&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEH4aCmV1LW5vcnRoLTEiRjBEAiB45j17V2SFYhsXcLnhJjE5EMZN8P8jwK%2F2GaY8GlCttwIgRBmXuzczJ9U2PZHkXCDCwub%2BOfy0eOiEgstrtB1BPe8qpgUIRxAAGgw1ODI4ODE3MzA3MDEiDDPUHtcwxZVGF4HgNCqDBSuv210U8wo7YmQbJC53XIxnlIqzzTonEa5oOSIN29Uf7R9vbLHRMFdkRvnkIVYnixnIiACvqpYqX6U1Nwa4untVLTPjPwodftHXpNEijMaTzuTQPHLiKKYzUTiuhMASkE9JS1tvi4TeH3hVT%2BNC2UW1BGEYkbUJhvOiolJVuPQy85Qt9Uk7tEJJzjjIV3Fv0ED0ZVVse%2BwwRmBhk8GZzjmlJVs9Q5%2FTjy3yKfAbHnjVw%2FDRwVzzdNBV2ASnv0HX3LtR7YGFL0oihP6dJjtsg91p%2FzdV35Dv%2Bh%2FWfL8H0SECugH4sfw7EOsN15LY7wmvB%2Fxs0%2FgCarcn0C6yKD2FG5VCY%2FjGaNCrg%2BPVu8hpsKTe5yFP6FTTaWmfpuNg1zZVs%2BcpqmgIaVMDH1K6jfogXqKnE7LdHhGUctAw%2FE3WXr%2FueaWnVeNUgF7UOhtf5RSqrdxDHRUXQn2ho7FpvLCvFW0J9m55NxhYfD%2BV%2B2O9iq%2F9LQixNueK7P3U9wpMfk6sO2rvXCAzscthvgB9DfT05%2FClvbYcbkfYv2TF%2BEb2Wu62tN77q%2B76eTARjxBdRWCFAdWC6s1vtJZ0Y4cU4FVnzMzFw%2F2uXis4jdieJ8lIyIjRoHshSn5iqOIvLGBVJvwxR0lUkYIOscmStVypTLidS5LFlzhZtBzWYX9PFdD65Q8ukvcEQFUdctcls7%2F2oXy4YrZMBSBI9%2FbcOE78riPCxOHmKnmjzgvd9bBpS5Prb8Uy8WGr92Nqeg8yR5U6XLGkjbBv1HfAmySMJzi8CtkKxCjbSbiFdk%2F2sUAAxoZRl%2FpD0pWfzDSDKRKMJElq7OeKRzZCMtcXAmYv1TLIAbyuj25FVXkwgcLj0gY6kQFxzxpeEoWVkobclCo4EVK1ig%2BB%2Brr9VTKVe%2Fk8R0LuKCp39Eyd2yDi0FiCQDp10PbOno53%2By9dyqvvSDb196L0bdTodPIh0elEsgO8idaSxh2On1aOenuorKGY6Okjd83BqXtfOiuAkkhBX76n6lnV7puOPEokuKfhBKxURdhFEmvjIHAfSvriBGWAvsRsjsXG&X-Amz-Signature=58aebd1ae25144a38ed23758502b024db99d80c9174b165b92739adfa8f83ebc"
+    }
+  ]
 }
