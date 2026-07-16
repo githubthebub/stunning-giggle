@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#d5232d" />
+  <meta name="description" content="Card Dex — point your camera at a real Pokémon trading card, get its Pokédex entry, and catch it into your collection." />
+  <title>Card Dex — Pokémon Card Scanner</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='46' fill='%23fff' stroke='%23222' stroke-width='6'/%3E%3Cpath d='M4 50a46 46 0 0 1 92 0z' fill='%23e3350d'/%3E%3Crect x='4' y='46' width='92' height='8' fill='%23222'/%3E%3Ccircle cx='50' cy='50' r='13' fill='%23fff' stroke='%23222' stroke-width='6'/%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="pokedex.css" />
+</head>
+<body>
+  <div id="device">
+    <header id="device-top">
+      <div class="lens" aria-hidden="true"><div class="lens-inner"></div></div>
+      <div class="leds" aria-hidden="true">
+        <span class="led led-r"></span><span class="led led-y"></span><span class="led led-g"></span>
+      </div>
+      <h1>CARD&thinsp;DEX</h1>
+    </header>
+
+    <main id="screen">
+      <!-- ============ SCAN VIEW ============ -->
+      <section id="view-scan" class="view active">
+        <div id="camera-box">
+          <video id="camera" playsinline autoplay muted></video>
+          <canvas id="freeze" hidden></canvas>
+          <div id="guide" aria-hidden="true">
+            <span class="corner c-tl"></span><span class="corner c-tr"></span>
+            <span class="corner c-bl"></span><span class="corner c-br"></span>
+            <span id="name-zone">card name here</span>
+          </div>
+          <div id="scanline" hidden></div>
+          <div id="camera-off" hidden>
+            <p id="camera-off-msg">Camera unavailable.</p>
+            <label class="btn btn-primary" for="file-input">🖼 Scan a photo instead</label>
+          </div>
+        </div>
+
+        <p id="scan-status" role="status">Point the camera at a Pokémon card, then press the button.</p>
+        <div id="suggestions" hidden></div>
+
+        <div id="scan-controls">
+          <label class="btn btn-ghost" for="file-input" title="Scan from a photo">🖼 Photo</label>
+          <input type="file" id="file-input" accept="image/*" hidden />
+          <button id="btn-scan" aria-label="Scan card"><span></span></button>
+          <button id="btn-flip" class="btn btn-ghost" title="Switch camera">🔄 Flip</button>
+        </div>
+
+        <div id="search-row">
+          <input id="search" list="species-names" placeholder="…or type a Pokémon’s name" autocomplete="off"
+                 enterkeyhint="search" />
+          <button id="btn-search" class="btn btn-primary">Go</button>
+          <datalist id="species-names"></datalist>
+        </div>
+      </section>
+
+      <!-- ============ DEX VIEW ============ -->
+      <section id="view-dex" class="view">
+        <div id="dex-progress">
+          <div id="dex-progress-track"><div id="dex-progress-bar"></div></div>
+          <span id="dex-count">0 caught</span>
+        </div>
+        <div id="dex-grid"></div>
+        <p id="dex-empty">Nothing here yet…<br />Scan a card to catch your first Pokémon!</p>
+      </section>
+    </main>
+
+    <nav id="tabs">
+      <button class="tab active" data-view="scan">📷 Scan</button>
+      <button class="tab" data-view="dex">📕 Pokédex <span id="tab-count" hidden></span></button>
+    </nav>
+  </div>
+
+  <!-- ============ ENTRY MODAL ============ -->
+  <div id="entry-overlay" hidden>
+    <article id="entry-card" role="dialog" aria-modal="true"></article>
+  </div>
+
+  <!-- ============ CATCH ANIMATION ============ -->
+  <div id="catch-overlay" hidden>
+    <div id="pokeball" aria-hidden="true">
+      <div class="ball-top"></div>
+      <div class="ball-bottom"></div>
+      <div class="ball-band"></div>
+      <div class="ball-button"></div>
+    </div>
+    <div id="catch-stars" aria-hidden="true"><span>✦</span><span>✧</span><span>✦</span></div>
+  </div>
+
+  <div id="toast" role="status" hidden></div>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

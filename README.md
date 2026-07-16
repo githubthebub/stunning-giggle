@@ -19,6 +19,9 @@ npm start        # serves on http://127.0.0.1:4173
 
 Open the printed URL. Progress saves automatically to your browser.
 
+- **RPG:** `http://127.0.0.1:4173/`
+- **Card Dex** (scan your real trading cards): `http://127.0.0.1:4173/pokedex/`
+
 - **Move:** Arrow keys / WASD  ·  **Interact / Confirm:** Z / Space / Enter  ·
   **Cancel:** X  ·  **Menu:** Esc  ·  on-screen touch controls on mobile.
 
@@ -88,6 +91,29 @@ your game with its Hidden Ability.
 
 The Dream World is also playable on its own at **`/dreamworld.html`**.
 
+## 📇 Card Dex — scan your real Pokémon cards
+
+Open **`/pokedex/`** and hold a real Pokémon trading card up to your camera —
+the Card Dex reads the card's name right in your browser (Tesseract.js OCR,
+no server, no API key), looks the Pokémon up on [PokéAPI](https://pokeapi.co),
+and shows a full Pokédex entry: official artwork, types, dex flavor text,
+base stats, height/weight, even its cry. Hit **Catch!** and a Poké Ball
+animation registers it to your collection — saved in your browser, with catch
+dates and duplicate counts, working toward all **1025** species.
+
+- **📷 Scan** — live camera with a card-shaped guide (needs `localhost` or
+  HTTPS for camera access). The scanner reads the name strip first, then the
+  whole card, and fuzzy-matches against every species — misreads like
+  "Chorizard", glued suffixes like "Charizardex", split names like
+  "Mr. / Mime", and the "Evolves from …" trap are all handled.
+- **🖼 Photo** — no camera? Scan a photo of the card instead (on phones this
+  opens the camera app).
+- **🔎 Search** — or just type a name with autocomplete.
+- **📕 Pokédex** — your caught collection: progress bar, sprite grid,
+  ×N duplicate badges, first-caught dates, and a Release button.
+
+If a scan is ambiguous you get "did you mean?" chips instead of a wrong catch.
+
 ## 🎨 Notes
 
 - **Sprites:** cute procedural monster art renders instantly, then transparently
@@ -121,6 +147,14 @@ game/               # the RPG
   entralink.js      # the portal into the Dream World
   main.js           # boot, title, scene manager, game loop
 js/                 # the Dream World (data, sprites, minigame, garden, crossover, …)
+pokedex/            # Card Dex — point your camera at a real card, catch it
+  index.html        # the Pokédex device UI
+  pokedex.css       # red-shell Pokédex styling
+  js/scanner.js     # camera, frame capture, preprocessing, Tesseract OCR
+  js/matcher.js     # OCR noise → species name fuzzy matching
+  js/api.js         # PokéAPI client (species list, entries)
+  js/storage.js     # the caught collection (localStorage)
+  js/app.js         # scan / entry / catch / collection UI
 ```
 
 Sweet dreams, Champion. 🌙
