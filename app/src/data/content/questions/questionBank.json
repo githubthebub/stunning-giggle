@@ -1,0 +1,656 @@
+{
+  "version": 1,
+  "questions": [
+    {
+      "id": "q1",
+      "text": "What is one work decision you keep telling yourself you'll make 'later,' and what does 'later' actually protect you from right now?",
+      "topics": [
+        "career"
+      ],
+      "patternTags": [
+        "avoidance"
+      ],
+      "weight": 2
+    },
+    {
+      "id": "q2",
+      "text": "If you knew the next thing you tried at work would fail, but no one would ever find out, what would you attempt?",
+      "topics": [
+        "career"
+      ],
+      "patternTags": [
+        "fear_of_failure"
+      ],
+      "weight": 2
+    },
+    {
+      "id": "q3",
+      "text": "Whose career are you quietly measuring yours against, and what do you think their life actually costs them that you can't see?",
+      "topics": [
+        "career"
+      ],
+      "patternTags": [
+        "comparison"
+      ],
+      "weight": 2
+    },
+    {
+      "id": "q4",
+      "text": "When you imagine yourself five years into this line of work, what part of that picture makes you uneasy?",
+      "topics": [
+        "career"
+      ],
+      "patternTags": [],
+      "weight": 1
+    },
+    {
+      "id": "q5",
+      "text": "What piece of work are you holding back because it isn't 'ready,' and who is waiting on it while you keep polishing?",
+      "topics": [
+        "career"
+      ],
+      "patternTags": [
+        "perfectionism"
+      ],
+      "weight": 2
+    },
+    {
+      "id": "q6",
+      "text": "What at work would you have to trust someone else with in order to grow, and what are you afraid they'd do differently?",
+      "topics": [
+        "career"
+      ],
+      "patternTags": [
+        "need_for_control"
+      ],
+      "weight": 2
+    },
+    {
+      "id": "q7",
+      "text": "You've called this job either your dream or a dead end. What's the more honest, in-between version of it?",
+      "topics": [
+        "career"
+      ],
+      "patternTags": [
+        "black_and_white"
+      ],
+      "weight": 1
+    },
+    {
+      "id": "q8",
+      "text": "Think of a recent 'yes' you gave someone. If you're honest, what were you really afraid would happen if you'd said no?",
+      "topics": [
+        "relationships"
+      ],
+      "patternTags": [
+        "people_pleasing"
+      ],
+      "weight": 3
+    },
+    {
+      "id": "q9",
+      "text": "Which conversation have you been putting off, and what do you imagine the silence is costing the other person?",
+      "topics": [
+        "relationships"
+      ],
+      "patternTags": [
+        "avoidance"
+      ],
+      "weight": 2
+    },
+    {
+      "id": "q10",
+      "text": "Where in a relationship are you managing someone else's feelings that aren't actually yours to manage?",
+      "topics": [
+        "relationships"
+      ],
+      "patternTags": [
+        "need_for_control"
+      ],
+      "weight": 2
+    },
+    {
+      "id": "q11",
+      "text": "When was the last time someone truly saw you, and what did they notice that you rarely let people see?",
+      "topics": [
+        "relationships"
+      ],
+      "patternTags": [],
+      "weight": 1
+    },
+    {
+      "id": "q12",
+      "text": "After a hard conversation, what's the story you tell yourself about your part in it, and how much of that story is actually fair?",
+      "topics": [
+        "relationships"
+      ],
+      "patternTags": [
+        "self_criticism"
+      ],
+      "weight": 2
+    },
+    {
+      "id": "q13",
+      "text": "You've decided this person is either with you or against you. What evidence are you leaving out to keep it that clean?",
+      "topics": [
+        "relationships"
+      ],
+      "patternTags": [
+        "black_and_white"
+      ],
+      "weight": 1
+    },
+    {
+      "id": "q14",
+      "text": "What conversation do you keep replaying, and what are you hoping to find in it the hundredth time that wasn't there the first?",
+      "topics": [
+        "relationships"
+      ],
+      "patternTags": [
+        "rumination"
+      ],
+      "weight": 2
+    },
+    {
+      "id": "q15",
+      "text": "What's the small daily thing you keep avoiding, and what feeling shows up in the moment right before you turn away from it?",
+      "topics": [
+        "habits"
+      ],
+      "patternTags": [
+        "avoidance"
+      ],
+      "weight": 2
+    },
+    {
+      "id": "q16",
+      "text": "Which habit have you abandoned because you couldn't do it 'properly,' and what would 'good enough' have looked like instead?",
+      "topics": [
+        "habits"
+      ],
+      "patternTags": [
+        "perfectionism"
+      ],
+      "weight": 1
+    },
+    {
+      "id": "q17",
+      "text": "When you miss one day of something you're building, what do you tell yourself the whole streak now means?",
+      "topics": [
+        "habits"
+      ],
+      "patternTags": [
+        "black_and_white"
+      ],
+      "weight": 2
+    },
+    {
+      "id": "q18",
+      "text": "Which of your routines are you keeping out of genuine choice, and which are just momentum you never stopped to question?",
+      "topics": [
+        "habits"
+      ],
+      "patternTags": [],
+      "weight": 1
+    },
+    {
+      "id": "q19",
+      "text": "When you slip on a habit, whose voice is it that criticizes you, and would you ever speak that way to someone you love?",
+      "topics": [
+        "habits"
+      ],
+      "patternTags": [
+        "self_criticism"
+      ],
+      "weight": 3
+    },
+    {
+      "id": "q20",
+      "text": "What are you trying to hold together through your routines, and what happens inside you when one of them breaks?",
+      "topics": [
+        "habits"
+      ],
+      "patternTags": [
+        "need_for_control"
+      ],
+      "weight": 2
+    },
+    {
+      "id": "q21",
+      "text": "You've committed to changing several things at once. Which one actually matters most, and which are you adding to avoid facing that one?",
+      "topics": [
+        "habits"
+      ],
+      "patternTags": [
+        "overcommitment"
+      ],
+      "weight": 2
+    },
+    {
+      "id": "q22",
+      "text": "Look at everything you've said yes to this month. Which of these did you take on to feel needed rather than because it was yours to carry?",
+      "topics": [
+        "burnout"
+      ],
+      "patternTags": [
+        "overcommitment"
+      ],
+      "weight": 3
+    },
+    {
+      "id": "q23",
+      "text": "Whose approval are you running on empty to keep, and what would it cost you to disappoint them just once?",
+      "topics": [
+        "burnout"
+      ],
+      "patternTags": [
+        "people_pleasing"
+      ],
+      "weight": 2
+    },
+    {
+      "id": "q24",
+      "text": "What standard are you holding yourself to right now that no one else asked for, and who taught you it wasn't safe to lower it?",
+      "topics": [
+        "burnout"
+      ],
+      "patternTags": [
+        "perfectionism"
+      ],
+      "weight": 3
+    },
+    {
+      "id": "q25",
+      "text": "When did you last rest without earning it first, and what makes rest feel like something you have to deserve?",
+      "topics": [
+        "burnout"
+      ],
+      "patternTags": [],
+      "weight": 2
+    },
+    {
+      "id": "q26",
+      "text": "What would you have to let go badly for a while in order to stop running yourself into the ground?",
+      "topics": [
+        "burnout"
+      ],
+      "patternTags": [
+        "need_for_control"
+      ],
+      "weight": 2
+    },
+    {
+      "id": "q27",
+      "text": "At night, what unfinished thing keeps looping in your head, and what would it take to set it down until morning?",
+      "topics": [
+        "burnout"
+      ],
+      "patternTags": [
+        "rumination"
+      ],
+      "weight": 1
+    },
+    {
+      "id": "q28",
+      "text": "If you had to cut one commitment tomorrow, which would you protect the hardest, and what does that tell you about where your worth is tied up?",
+      "topics": [
+        "burnout"
+      ],
+      "patternTags": [
+        "overcommitment"
+      ],
+      "weight": 3
+    },
+    {
+      "id": "q29",
+      "text": "What goal have you stopped talking about because it started to feel real, and what does that quiet tell you?",
+      "topics": [
+        "motivation"
+      ],
+      "patternTags": [
+        "avoidance"
+      ],
+      "weight": 2
+    },
+    {
+      "id": "q30",
+      "text": "What would you begin this week if you fully accepted that you might be bad at it at first?",
+      "topics": [
+        "motivation"
+      ],
+      "patternTags": [
+        "fear_of_failure"
+      ],
+      "weight": 2
+    },
+    {
+      "id": "q31",
+      "text": "Whose progress makes you feel behind, and what race did you agree to run that no one actually entered you in?",
+      "topics": [
+        "motivation"
+      ],
+      "patternTags": [
+        "comparison"
+      ],
+      "weight": 2
+    },
+    {
+      "id": "q32",
+      "text": "Think back to the last time you felt genuinely driven. What was present then that's missing now?",
+      "topics": [
+        "motivation"
+      ],
+      "patternTags": [],
+      "weight": 1
+    },
+    {
+      "id": "q33",
+      "text": "What plan are you endlessly refining instead of starting, and what would a rough first attempt actually risk?",
+      "topics": [
+        "motivation"
+      ],
+      "patternTags": [
+        "perfectionism"
+      ],
+      "weight": 2
+    },
+    {
+      "id": "q34",
+      "text": "When your motivation dips, what do you conclude about yourself, and is that a fact or just a well-worn habit of thought?",
+      "topics": [
+        "motivation"
+      ],
+      "patternTags": [
+        "self_criticism"
+      ],
+      "weight": 2
+    },
+    {
+      "id": "q35",
+      "text": "You've decided you're either 'on' or 'off,' disciplined or lazy. What does the messy middle of a real week actually look like for you?",
+      "topics": [
+        "motivation"
+      ],
+      "patternTags": [
+        "black_and_white"
+      ],
+      "weight": 1
+    },
+    {
+      "id": "q36",
+      "text": "What's the harshest thing you've called yourself this week, and would you accept anyone else describing you that way?",
+      "topics": [
+        "self_worth"
+      ],
+      "patternTags": [
+        "self_criticism"
+      ],
+      "weight": 3
+    },
+    {
+      "id": "q37",
+      "text": "Whose highlight reel are you comparing your behind-the-scenes to, and what would shift if you stopped?",
+      "topics": [
+        "self_worth"
+      ],
+      "patternTags": [
+        "comparison"
+      ],
+      "weight": 2
+    },
+    {
+      "id": "q38",
+      "text": "How much of what you did today was for you, and how much was to be seen as good by someone else?",
+      "topics": [
+        "self_worth"
+      ],
+      "patternTags": [
+        "people_pleasing"
+      ],
+      "weight": 2
+    },
+    {
+      "id": "q39",
+      "text": "If your worth had nothing to do with what you produce, what would you do differently tomorrow?",
+      "topics": [
+        "self_worth"
+      ],
+      "patternTags": [],
+      "weight": 3
+    },
+    {
+      "id": "q40",
+      "text": "What would you stop apologizing for if you believed failing at it wouldn't make you any less worthy?",
+      "topics": [
+        "self_worth"
+      ],
+      "patternTags": [
+        "fear_of_failure"
+      ],
+      "weight": 2
+    },
+    {
+      "id": "q41",
+      "text": "What old moment do you keep returning to as proof of something bad about you, and who decided it meant that?",
+      "topics": [
+        "self_worth"
+      ],
+      "patternTags": [
+        "rumination"
+      ],
+      "weight": 2
+    },
+    {
+      "id": "q42",
+      "text": "At work, when you feel 'not enough,' whose standard are you failing — theirs, or one you inherited and never chose?",
+      "topics": [
+        "self_worth",
+        "career"
+      ],
+      "patternTags": [
+        "comparison"
+      ],
+      "weight": 2
+    },
+    {
+      "id": "q43",
+      "text": "What's the first tiny step of the thing you keep meaning to start, and what makes even that step feel too big to take?",
+      "topics": [
+        "motivation",
+        "habits"
+      ],
+      "patternTags": [
+        "avoidance"
+      ],
+      "weight": 2
+    },
+    {
+      "id": "q44",
+      "text": "Whose expectations shaped the path you're on, and what would you choose if their opinion genuinely didn't factor in?",
+      "topics": [
+        "career",
+        "relationships"
+      ],
+      "patternTags": [],
+      "weight": 2
+    },
+    {
+      "id": "q45",
+      "text": "Who in your life gets your best energy, and who gets whatever's left, and how did you decide that order?",
+      "topics": [
+        "burnout",
+        "relationships"
+      ],
+      "patternTags": [
+        "people_pleasing"
+      ],
+      "weight": 2
+    },
+    {
+      "id": "q46",
+      "text": "When you 'fall off,' do you rebuild slowly or wait to start over 'properly on Monday' — and where does that leave the days in between?",
+      "topics": [
+        "habits",
+        "motivation"
+      ],
+      "patternTags": [
+        "black_and_white"
+      ],
+      "weight": 1
+    },
+    {
+      "id": "q47",
+      "text": "When someone gives you a compliment, what do you actually do with it, and what would it mean to just let it land?",
+      "topics": [
+        "self_worth",
+        "relationships"
+      ],
+      "patternTags": [
+        "self_criticism"
+      ],
+      "weight": 2
+    },
+    {
+      "id": "q48",
+      "text": "What are you proving by staying the busiest person in the room, and who exactly are you proving it to?",
+      "topics": [
+        "career",
+        "burnout"
+      ],
+      "patternTags": [
+        "overcommitment"
+      ],
+      "weight": 3
+    },
+    {
+      "id": "q49",
+      "text": "Where are you keeping the peace at the cost of telling the truth, and what does that peace actually preserve?",
+      "topics": [
+        "relationships",
+        "self_worth"
+      ],
+      "patternTags": [
+        "people_pleasing"
+      ],
+      "weight": 3
+    },
+    {
+      "id": "q50",
+      "text": "What ambition have you quietly shrunk to a 'realistic' size so it couldn't hurt you if it didn't work out?",
+      "topics": [
+        "motivation",
+        "career"
+      ],
+      "patternTags": [
+        "fear_of_failure"
+      ],
+      "weight": 2
+    },
+    {
+      "id": "q51",
+      "text": "Which of your daily habits genuinely restore you, and which just help you numb until tomorrow?",
+      "topics": [
+        "habits",
+        "burnout"
+      ],
+      "patternTags": [],
+      "weight": 2
+    },
+    {
+      "id": "q52",
+      "text": "What would you attempt if you trusted that your value wouldn't rise or fall with the result?",
+      "topics": [
+        "self_worth",
+        "motivation"
+      ],
+      "patternTags": [],
+      "weight": 2
+    },
+    {
+      "id": "q53",
+      "text": "If money were handled for the next year, what work would you still want to do, and what does that answer point to?",
+      "topics": [
+        "career"
+      ],
+      "patternTags": [],
+      "weight": 1
+    },
+    {
+      "id": "q54",
+      "text": "Where do you try to run other people's routines or choices, and what fear sits underneath needing them to do it your way?",
+      "topics": [
+        "relationships",
+        "habits"
+      ],
+      "patternTags": [
+        "need_for_control"
+      ],
+      "weight": 2
+    },
+    {
+      "id": "q55",
+      "text": "When you finally have a free hour, where does your mind go — to rest, or straight back to the thing you couldn't resolve?",
+      "topics": [
+        "burnout",
+        "motivation"
+      ],
+      "patternTags": [
+        "rumination"
+      ],
+      "weight": 2
+    },
+    {
+      "id": "q56",
+      "text": "What would you have to believe about yourself to let a piece of work be 'done' rather than perfect?",
+      "topics": [
+        "self_worth"
+      ],
+      "patternTags": [
+        "perfectionism"
+      ],
+      "weight": 2
+    },
+    {
+      "id": "q57",
+      "text": "Who have you been slowly pulling away from, and what would you have to feel if you moved back toward them?",
+      "topics": [
+        "relationships"
+      ],
+      "patternTags": [
+        "avoidance"
+      ],
+      "weight": 2
+    },
+    {
+      "id": "q58",
+      "text": "When you see how someone else seems to live, what do you assume about their discipline, and what might that assumption be costing you?",
+      "topics": [
+        "habits",
+        "self_worth"
+      ],
+      "patternTags": [
+        "comparison"
+      ],
+      "weight": 1
+    },
+    {
+      "id": "q59",
+      "text": "What part of your work makes you lose track of time, and how much of your actual week contains any of it?",
+      "topics": [
+        "career",
+        "motivation"
+      ],
+      "patternTags": [],
+      "weight": 1
+    },
+    {
+      "id": "q60",
+      "text": "If your body could speak plainly right now, what do you think it's been trying to tell you that you keep overriding?",
+      "topics": [
+        "burnout"
+      ],
+      "patternTags": [],
+      "weight": 2
+    }
+  ]
+}

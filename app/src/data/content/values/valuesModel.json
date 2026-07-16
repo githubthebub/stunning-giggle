@@ -1,0 +1,634 @@
+{
+  "version": 1,
+  "valueDimensions": [
+    {
+      "id": "autonomy",
+      "label": "Autonomy",
+      "description": "Steering your own life by your own compass, and having room to make decisions that are genuinely yours."
+    },
+    {
+      "id": "connection",
+      "label": "Connection",
+      "description": "Feeling close to people who know the real you, and being present for the ones who matter."
+    },
+    {
+      "id": "growth",
+      "label": "Growth",
+      "description": "Stretching past who you were yesterday and getting better at things you care about."
+    },
+    {
+      "id": "security",
+      "label": "Security",
+      "description": "Having enough stability and predictability to feel your feet under you."
+    },
+    {
+      "id": "contribution",
+      "label": "Contribution",
+      "description": "Doing work or offering care that makes a real difference beyond yourself."
+    },
+    {
+      "id": "health",
+      "label": "Health",
+      "description": "Tending to your body and mind so you have the energy to live the rest of it."
+    },
+    {
+      "id": "creativity",
+      "label": "Creativity",
+      "description": "Making, building, or expressing something that carries your fingerprint on it."
+    },
+    {
+      "id": "integrity",
+      "label": "Integrity",
+      "description": "Acting in line with what you believe, even when it costs you something."
+    },
+    {
+      "id": "adventure",
+      "label": "Adventure",
+      "description": "Seeking novelty, challenge, and experiences that make you feel awake."
+    },
+    {
+      "id": "recognition",
+      "label": "Recognition",
+      "description": "Being seen and valued for what you bring, and having your effort acknowledged."
+    }
+  ],
+  "patternTags": [
+    {
+      "id": "avoidance",
+      "label": "Avoidance",
+      "description": "Sidestepping the hard thing in the moment, even when a part of you knows it will cost more later.",
+      "supportiveNote": "Almost everyone avoids something; noticing the pattern is the first move toward loosening its grip."
+    },
+    {
+      "id": "people_pleasing",
+      "label": "People-Pleasing",
+      "description": "Managing other people's comfort at the expense of your own needs and honest opinions.",
+      "supportiveNote": "This usually starts as kindness turned all the way up, and it can be turned back down with practice."
+    },
+    {
+      "id": "perfectionism",
+      "label": "Perfectionism",
+      "description": "Holding a standard so high that finishing, shipping, or being seen feels unsafe.",
+      "supportiveNote": "The care underneath perfectionism is real; the goal is to keep the care and drop the tax it charges you."
+    },
+    {
+      "id": "self_criticism",
+      "label": "Self-Criticism",
+      "description": "Speaking to yourself with a harshness you would never aim at someone you love.",
+      "supportiveNote": "A loud inner critic is common and learnable to answer back; you are not stuck with the volume it came at."
+    },
+    {
+      "id": "rumination",
+      "label": "Rumination",
+      "description": "Replaying the same worry or regret in loops that feel like problem-solving but rarely resolve.",
+      "supportiveNote": "The mind loops when it cares; there are workable ways to give it an exit instead of another lap."
+    },
+    {
+      "id": "overcommitment",
+      "label": "Overcommitment",
+      "description": "Saying yes to more than any one person can carry, then running on fumes.",
+      "supportiveNote": "This often comes from being capable and generous, and it responds well to a few honest boundaries."
+    },
+    {
+      "id": "comparison",
+      "label": "Comparison",
+      "description": "Measuring your insides against other people's outsides and quietly coming up short.",
+      "supportiveNote": "Comparison is a near-universal reflex, and it loosens once you notice how rigged the measurement is."
+    },
+    {
+      "id": "black_and_white",
+      "label": "All-or-Nothing Thinking",
+      "description": "Seeing things as total success or total failure, with little room for the middle where most of life happens.",
+      "supportiveNote": "This is a common mental shortcut, and the gray area gets easier to see with a little practice."
+    },
+    {
+      "id": "fear_of_failure",
+      "label": "Fear of Failure",
+      "description": "Letting the possibility of getting it wrong shrink what you are willing to attempt.",
+      "supportiveNote": "Fear of failing usually means you care about the outcome, and courage is a muscle that grows with reps."
+    },
+    {
+      "id": "need_for_control",
+      "label": "Need for Control",
+      "description": "Feeling safe only when you are holding all the variables, and tense when you cannot.",
+      "supportiveNote": "Wanting control is a reasonable response to past uncertainty, and it can soften as trust gets rebuilt."
+    }
+  ],
+  "questions": [
+    {
+      "id": "vq1",
+      "prompt": "When you picture a version of the next year that actually feels good, what is at the center of it?",
+      "helpText": "Go with your gut, not the answer that sounds most impressive.",
+      "type": "single",
+      "options": [
+        {
+          "id": "vq1a",
+          "label": "I am learning fast and becoming someone I respect more.",
+          "valueWeights": {
+            "growth": 3,
+            "autonomy": 1
+          },
+          "patternWeights": {}
+        },
+        {
+          "id": "vq1b",
+          "label": "I feel close to my people and genuinely present with them.",
+          "valueWeights": {
+            "connection": 3
+          },
+          "patternWeights": {}
+        },
+        {
+          "id": "vq1c",
+          "label": "My life feels stable and I am not bracing for the next shock.",
+          "valueWeights": {
+            "security": 3,
+            "health": 1
+          },
+          "patternWeights": {}
+        },
+        {
+          "id": "vq1d",
+          "label": "I am making or building something that carries my mark on it.",
+          "valueWeights": {
+            "creativity": 3,
+            "contribution": 1
+          },
+          "patternWeights": {}
+        },
+        {
+          "id": "vq1e",
+          "label": "I am doing something new and a little bold that makes me feel alive.",
+          "valueWeights": {
+            "adventure": 3,
+            "growth": 1
+          },
+          "patternWeights": {}
+        }
+      ]
+    },
+    {
+      "id": "vq2",
+      "prompt": "You are facing a genuinely hard decision. What do you find yourself reaching for first?",
+      "helpText": "",
+      "type": "single",
+      "options": [
+        {
+          "id": "vq2a",
+          "label": "The option that keeps me free to change course later.",
+          "valueWeights": {
+            "autonomy": 3
+          },
+          "patternWeights": {}
+        },
+        {
+          "id": "vq2b",
+          "label": "The safest option, the one least likely to blow up on me.",
+          "valueWeights": {
+            "security": 3
+          },
+          "patternWeights": {
+            "need_for_control": 1,
+            "fear_of_failure": 1
+          }
+        },
+        {
+          "id": "vq2c",
+          "label": "The option that lets me look at myself honestly afterward.",
+          "valueWeights": {
+            "integrity": 3
+          },
+          "patternWeights": {}
+        },
+        {
+          "id": "vq2d",
+          "label": "The option that keeps everyone around me happy and settled.",
+          "valueWeights": {
+            "connection": 2
+          },
+          "patternWeights": {
+            "people_pleasing": 2
+          }
+        },
+        {
+          "id": "vq2e",
+          "label": "I stall. I gather more information until the moment almost passes.",
+          "valueWeights": {},
+          "patternWeights": {
+            "avoidance": 2,
+            "need_for_control": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "vq3",
+      "prompt": "Which of these actually drain you on a normal week? Pick all that ring true.",
+      "helpText": "Be honest about the ones you would rather not admit.",
+      "type": "multi",
+      "options": [
+        {
+          "id": "vq3a",
+          "label": "Tasks I keep pushing to tomorrow that then haunt me all day.",
+          "valueWeights": {},
+          "patternWeights": {
+            "avoidance": 2
+          }
+        },
+        {
+          "id": "vq3b",
+          "label": "Commitments I said yes to and now quietly resent.",
+          "valueWeights": {},
+          "patternWeights": {
+            "overcommitment": 2,
+            "people_pleasing": 1
+          }
+        },
+        {
+          "id": "vq3c",
+          "label": "Redoing things that were already fine because they were not perfect.",
+          "valueWeights": {},
+          "patternWeights": {
+            "perfectionism": 2
+          }
+        },
+        {
+          "id": "vq3d",
+          "label": "Running myself down on sleep, food, or movement.",
+          "valueWeights": {
+            "health": 2
+          },
+          "patternWeights": {}
+        },
+        {
+          "id": "vq3e",
+          "label": "Replaying conversations and decisions long after they are over.",
+          "valueWeights": {},
+          "patternWeights": {
+            "rumination": 2
+          }
+        }
+      ]
+    },
+    {
+      "id": "vq4",
+      "prompt": "How true is this for you right now: \"When something feels hard or uncomfortable, I find a reason to deal with it later.\"",
+      "helpText": "",
+      "type": "scale",
+      "options": [
+        {
+          "id": "vq4a",
+          "label": "Strongly disagree",
+          "valueWeights": {},
+          "patternWeights": {}
+        },
+        {
+          "id": "vq4b",
+          "label": "Disagree",
+          "valueWeights": {},
+          "patternWeights": {}
+        },
+        {
+          "id": "vq4c",
+          "label": "Sometimes true",
+          "valueWeights": {},
+          "patternWeights": {
+            "avoidance": 1
+          }
+        },
+        {
+          "id": "vq4d",
+          "label": "Agree",
+          "valueWeights": {},
+          "patternWeights": {
+            "avoidance": 2,
+            "fear_of_failure": 1
+          }
+        },
+        {
+          "id": "vq4e",
+          "label": "Strongly agree",
+          "valueWeights": {},
+          "patternWeights": {
+            "avoidance": 3,
+            "fear_of_failure": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "vq5",
+      "prompt": "Someone close to you does something that genuinely bothers you. What is your usual move?",
+      "helpText": "",
+      "type": "single",
+      "options": [
+        {
+          "id": "vq5a",
+          "label": "I say something directly, even if it is awkward.",
+          "valueWeights": {
+            "integrity": 2,
+            "connection": 1
+          },
+          "patternWeights": {}
+        },
+        {
+          "id": "vq5b",
+          "label": "I let it slide and tell myself it is not worth the friction.",
+          "valueWeights": {},
+          "patternWeights": {
+            "people_pleasing": 2,
+            "avoidance": 1
+          }
+        },
+        {
+          "id": "vq5c",
+          "label": "I go quiet and stew on it for a while.",
+          "valueWeights": {},
+          "patternWeights": {
+            "rumination": 2
+          }
+        },
+        {
+          "id": "vq5d",
+          "label": "I try to manage or steer the situation so it does not happen again.",
+          "valueWeights": {},
+          "patternWeights": {
+            "need_for_control": 2
+          }
+        }
+      ]
+    },
+    {
+      "id": "vq6",
+      "prompt": "How true is this: \"Good enough rarely feels good enough. If it is not excellent, it barely counts.\"",
+      "helpText": "",
+      "type": "scale",
+      "options": [
+        {
+          "id": "vq6a",
+          "label": "Strongly disagree",
+          "valueWeights": {},
+          "patternWeights": {}
+        },
+        {
+          "id": "vq6b",
+          "label": "Disagree",
+          "valueWeights": {},
+          "patternWeights": {}
+        },
+        {
+          "id": "vq6c",
+          "label": "Sometimes true",
+          "valueWeights": {},
+          "patternWeights": {
+            "perfectionism": 1
+          }
+        },
+        {
+          "id": "vq6d",
+          "label": "Agree",
+          "valueWeights": {},
+          "patternWeights": {
+            "perfectionism": 2,
+            "black_and_white": 1
+          }
+        },
+        {
+          "id": "vq6e",
+          "label": "Strongly agree",
+          "valueWeights": {},
+          "patternWeights": {
+            "perfectionism": 3,
+            "fear_of_failure": 1,
+            "black_and_white": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "vq7",
+      "prompt": "You just fell short at something that mattered. What does the voice in your head sound like?",
+      "helpText": "",
+      "type": "single",
+      "options": [
+        {
+          "id": "vq7a",
+          "label": "\"Of course you blew it. You always do.\"",
+          "valueWeights": {},
+          "patternWeights": {
+            "self_criticism": 3
+          }
+        },
+        {
+          "id": "vq7b",
+          "label": "It runs the same loop for days, dissecting every detail.",
+          "valueWeights": {},
+          "patternWeights": {
+            "rumination": 3
+          }
+        },
+        {
+          "id": "vq7c",
+          "label": "\"Everyone else would have handled this fine.\"",
+          "valueWeights": {},
+          "patternWeights": {
+            "comparison": 2,
+            "self_criticism": 1
+          }
+        },
+        {
+          "id": "vq7d",
+          "label": "\"That stung. What is one thing I would do differently next time?\"",
+          "valueWeights": {
+            "growth": 2
+          },
+          "patternWeights": {}
+        }
+      ]
+    },
+    {
+      "id": "vq8",
+      "prompt": "Which of these would you fight to keep if life forced you to trade some away? Choose the few that are non-negotiable.",
+      "helpText": "Pick the ones you would defend, not the ones that sound good.",
+      "type": "multi",
+      "options": [
+        {
+          "id": "vq8a",
+          "label": "Freedom to run my own life on my own terms.",
+          "valueWeights": {
+            "autonomy": 2
+          },
+          "patternWeights": {}
+        },
+        {
+          "id": "vq8b",
+          "label": "Deep, honest relationships.",
+          "valueWeights": {
+            "connection": 2
+          },
+          "patternWeights": {}
+        },
+        {
+          "id": "vq8c",
+          "label": "Work that helps people beyond me.",
+          "valueWeights": {
+            "contribution": 2
+          },
+          "patternWeights": {}
+        },
+        {
+          "id": "vq8d",
+          "label": "Living in a way I can stand behind.",
+          "valueWeights": {
+            "integrity": 2
+          },
+          "patternWeights": {}
+        },
+        {
+          "id": "vq8e",
+          "label": "Being recognized for what I bring.",
+          "valueWeights": {
+            "recognition": 2
+          },
+          "patternWeights": {}
+        },
+        {
+          "id": "vq8f",
+          "label": "A body and mind I actually take care of.",
+          "valueWeights": {
+            "health": 2
+          },
+          "patternWeights": {}
+        }
+      ]
+    },
+    {
+      "id": "vq9",
+      "prompt": "You open your phone and see someone from your world crushing it publicly. What happens inside?",
+      "helpText": "",
+      "type": "single",
+      "options": [
+        {
+          "id": "vq9a",
+          "label": "A quick sink of \"why not me\" that lingers longer than I would like.",
+          "valueWeights": {},
+          "patternWeights": {
+            "comparison": 3
+          }
+        },
+        {
+          "id": "vq9b",
+          "label": "I want that visible acknowledgment for my own work too.",
+          "valueWeights": {
+            "recognition": 2
+          },
+          "patternWeights": {}
+        },
+        {
+          "id": "vq9c",
+          "label": "It lights a fire; I want to go build something.",
+          "valueWeights": {
+            "growth": 1,
+            "creativity": 1
+          },
+          "patternWeights": {}
+        },
+        {
+          "id": "vq9d",
+          "label": "Genuinely happy for them, and it barely touches me.",
+          "valueWeights": {},
+          "patternWeights": {}
+        }
+      ]
+    },
+    {
+      "id": "vq10",
+      "prompt": "How true is this: \"I say yes to more than I can realistically handle.\"",
+      "helpText": "",
+      "type": "scale",
+      "options": [
+        {
+          "id": "vq10a",
+          "label": "Strongly disagree",
+          "valueWeights": {},
+          "patternWeights": {}
+        },
+        {
+          "id": "vq10b",
+          "label": "Disagree",
+          "valueWeights": {},
+          "patternWeights": {}
+        },
+        {
+          "id": "vq10c",
+          "label": "Sometimes true",
+          "valueWeights": {},
+          "patternWeights": {
+            "overcommitment": 1
+          }
+        },
+        {
+          "id": "vq10d",
+          "label": "Agree",
+          "valueWeights": {},
+          "patternWeights": {
+            "overcommitment": 2,
+            "people_pleasing": 1
+          }
+        },
+        {
+          "id": "vq10e",
+          "label": "Strongly agree",
+          "valueWeights": {},
+          "patternWeights": {
+            "overcommitment": 3,
+            "people_pleasing": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "vq11",
+      "prompt": "Think about how you judge a day, a project, or yourself. Which is closest to how you actually operate?",
+      "helpText": "",
+      "type": "single",
+      "options": [
+        {
+          "id": "vq11a",
+          "label": "It either went well or it was a write-off. There is not much in between.",
+          "valueWeights": {},
+          "patternWeights": {
+            "black_and_white": 3
+          }
+        },
+        {
+          "id": "vq11b",
+          "label": "One slip and the whole thing feels ruined.",
+          "valueWeights": {},
+          "patternWeights": {
+            "black_and_white": 2,
+            "self_criticism": 1
+          }
+        },
+        {
+          "id": "vq11c",
+          "label": "I need to feel in control of the outcome or I cannot relax.",
+          "valueWeights": {
+            "security": 1
+          },
+          "patternWeights": {
+            "need_for_control": 2
+          }
+        },
+        {
+          "id": "vq11d",
+          "label": "I can usually hold the good and the rough parts of the same day at once.",
+          "valueWeights": {
+            "growth": 1
+          },
+          "patternWeights": {}
+        }
+      ]
+    }
+  ]
+}

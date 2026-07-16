@@ -1,0 +1,232 @@
+{
+  "version": 1,
+  "quests": [
+    {
+      "id": "quest_two_minute_start",
+      "title": "The two-minute start",
+      "description": "Pick the task you've been circling and work on it for exactly two minutes, then stop. Starting is the whole job today; finishing is not required.",
+      "cadence": "once",
+      "linkedValues": [
+        "growth"
+      ],
+      "linkedPatterns": [
+        "avoidance"
+      ],
+      "topics": [
+        "habits",
+        "motivation"
+      ],
+      "estMinutes": 2,
+      "encouragement": "You started, and starting was the hard part. That counts even if you didn't get far."
+    },
+    {
+      "id": "quest_good_enough_send",
+      "title": "Send it at 80 percent",
+      "description": "Take one message, email, or piece of work you keep polishing and send it while it's still 'good enough.' Notice what you were afraid would happen.",
+      "cadence": "once",
+      "linkedValues": [
+        "growth",
+        "autonomy"
+      ],
+      "linkedPatterns": [
+        "perfectionism",
+        "fear_of_failure"
+      ],
+      "topics": [
+        "career",
+        "habits"
+      ],
+      "estMinutes": 10,
+      "encouragement": "Done and out in the world beats perfect and hidden. You let something be enough today."
+    },
+    {
+      "id": "quest_one_honest_no",
+      "title": "One honest no",
+      "description": "Say no to one small request you'd normally accept out of habit. No long apology, no over-explaining. A simple 'I can't take that on' is a full answer.",
+      "cadence": "once",
+      "linkedValues": [
+        "autonomy",
+        "integrity"
+      ],
+      "linkedPatterns": [
+        "people_pleasing",
+        "overcommitment"
+      ],
+      "topics": [
+        "relationships",
+        "burnout"
+      ],
+      "estMinutes": 5,
+      "encouragement": "Turning something down isn't letting anyone down. You protected your yes by using your no."
+    },
+    {
+      "id": "quest_name_the_win",
+      "title": "Name one real win",
+      "description": "Write down one thing you handled today, however ordinary. Then read it back as if a friend had done it, and notice the gap in how you'd judge them.",
+      "cadence": "daily",
+      "linkedValues": [
+        "growth"
+      ],
+      "linkedPatterns": [
+        "self_criticism"
+      ],
+      "topics": [
+        "self_worth",
+        "motivation"
+      ],
+      "estMinutes": 3,
+      "encouragement": "Missed a day? No harm done. The wins were still real, whether or not you wrote them down."
+    },
+    {
+      "id": "quest_worry_window",
+      "title": "A window for the worry",
+      "description": "When a thought starts looping, jot it on a note and tell yourself you'll think it through at a set time later. Then return to what you were doing.",
+      "cadence": "daily",
+      "linkedValues": [
+        "health"
+      ],
+      "linkedPatterns": [
+        "rumination"
+      ],
+      "topics": [
+        "burnout",
+        "self_worth"
+      ],
+      "estMinutes": 5,
+      "encouragement": "Parking a thought isn't ignoring it. You gave your mind a break, and that's a skill, not avoidance."
+    },
+    {
+      "id": "quest_shrink_the_list",
+      "title": "Cut the list to three",
+      "description": "Look at today's to-do list and mark only the three things that actually matter. The rest can wait, move, or disappear. Choose on purpose.",
+      "cadence": "daily",
+      "linkedValues": [
+        "autonomy",
+        "health"
+      ],
+      "linkedPatterns": [
+        "overcommitment",
+        "need_for_control"
+      ],
+      "topics": [
+        "burnout",
+        "career"
+      ],
+      "estMinutes": 5,
+      "encouragement": "Three real things beats twelve half-things. Fewer isn't lazy; it's honest about a day's size."
+    },
+    {
+      "id": "quest_reach_out_first",
+      "title": "Reach out first",
+      "description": "Message one person you've been meaning to talk to. No agenda, no waiting for the perfect words. 'Been thinking of you, how are you?' is plenty.",
+      "cadence": "once",
+      "linkedValues": [
+        "connection"
+      ],
+      "linkedPatterns": [
+        "avoidance"
+      ],
+      "topics": [
+        "relationships"
+      ],
+      "estMinutes": 5,
+      "encouragement": "You closed a small distance today. Whatever they reply, reaching out was the part that was yours to do."
+    },
+    {
+      "id": "quest_ask_for_help",
+      "title": "Ask for one thing",
+      "description": "Ask someone for help with one task you'd usually white-knuckle alone. Notice that needing help isn't the same as being a burden.",
+      "cadence": "once",
+      "linkedValues": [
+        "connection",
+        "security"
+      ],
+      "linkedPatterns": [
+        "people_pleasing",
+        "need_for_control"
+      ],
+      "topics": [
+        "relationships",
+        "burnout"
+      ],
+      "estMinutes": 10,
+      "encouragement": "Asking took nerve. Letting someone show up for you is how connection actually works."
+    },
+    {
+      "id": "quest_five_minute_move",
+      "title": "Five minutes of moving",
+      "description": "Move your body for five minutes in any way that doesn't feel like punishment. A walk, a stretch, stairs. The point is showing up, not the burn.",
+      "cadence": "daily",
+      "linkedValues": [
+        "health"
+      ],
+      "linkedPatterns": [
+        "black_and_white"
+      ],
+      "topics": [
+        "habits",
+        "burnout"
+      ],
+      "estMinutes": 5,
+      "encouragement": "Five minutes is a real thing, not a failed workout. Something gentle beats an all-or-nothing plan you skip."
+    },
+    {
+      "id": "quest_reframe_one_thought",
+      "title": "Reframe one harsh thought",
+      "description": "Catch one thing you told yourself today that started with 'I always' or 'I never.' Write it down, then ask what a fairer, more exact version would be.",
+      "cadence": "daily",
+      "linkedValues": [
+        "growth"
+      ],
+      "linkedPatterns": [
+        "self_criticism",
+        "black_and_white"
+      ],
+      "topics": [
+        "self_worth",
+        "motivation"
+      ],
+      "estMinutes": 7,
+      "encouragement": "Questioning a harsh thought isn't lying to yourself; it's aiming for accurate. One at a time is exactly right."
+    },
+    {
+      "id": "quest_one_small_choice",
+      "title": "One choice, just for you",
+      "description": "Make one small decision today based only on what you want, not what someone else would prefer. Where to eat, what to watch, how to spend an hour.",
+      "cadence": "once",
+      "linkedValues": [
+        "autonomy",
+        "integrity"
+      ],
+      "linkedPatterns": [
+        "people_pleasing"
+      ],
+      "topics": [
+        "self_worth",
+        "relationships"
+      ],
+      "estMinutes": 3,
+      "encouragement": "You listened to your own preference today. That muscle gets stronger every time you use it, no pressure to be big."
+    },
+    {
+      "id": "quest_close_the_loop",
+      "title": "Finish one open loop",
+      "description": "Pick one lingering little task you keep half-doing and take it fully to done. Reply, cancel, book, throw out. Feel the quiet of one loop closed.",
+      "cadence": "weekly",
+      "linkedValues": [
+        "growth",
+        "security"
+      ],
+      "linkedPatterns": [
+        "avoidance",
+        "perfectionism"
+      ],
+      "topics": [
+        "habits",
+        "career"
+      ],
+      "estMinutes": 15,
+      "encouragement": "One loop closed is real relief, not a drop in a bucket. The open ones will still be there when you're ready."
+    }
+  ]
+}

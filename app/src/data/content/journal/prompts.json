@@ -1,0 +1,340 @@
+{
+  "version": 1,
+  "prompts": [
+    {
+      "id": "jp1",
+      "text": "Write down the last thing you told yourself you 'should' be doing but aren't. Now drop the word 'should' and ask honestly: do you actually want this, or did you inherit it from someone else? Get specific about whose voice it is.",
+      "topics": [
+        "motivation"
+      ],
+      "patternTags": [
+        "self_criticism"
+      ],
+      "weight": 3
+    },
+    {
+      "id": "jp2",
+      "text": "There's a work decision you keep circling but not making. Name it plainly. Then finish this sentence three times without editing: 'I haven't decided because...' The third answer is usually the honest one.",
+      "topics": [
+        "career"
+      ],
+      "patternTags": [
+        "avoidance"
+      ],
+      "weight": 3
+    },
+    {
+      "id": "jp3",
+      "text": "Think of a recent moment you said yes when your gut said no. What were you afraid would happen if you'd been honest? Write the actual feared outcome, then ask whether it has ever really happened.",
+      "topics": [
+        "relationships"
+      ],
+      "patternTags": [
+        "people_pleasing"
+      ],
+      "weight": 3
+    },
+    {
+      "id": "jp4",
+      "text": "You've broken a habit streak and been tempted to scrap the whole thing. Describe the exact moment it slipped. What's the smallest version of this habit you could not fail at tomorrow? Design for the bad day, not the good one.",
+      "topics": [
+        "habits"
+      ],
+      "patternTags": [
+        "perfectionism",
+        "black_and_white"
+      ],
+      "weight": 2
+    },
+    {
+      "id": "jp5",
+      "text": "List everything currently sitting on your plate. Circle the three things that are genuinely yours to carry. Be honest about who handed you the rest, and why you took it. What would it cost to hand one back this week?",
+      "topics": [
+        "burnout"
+      ],
+      "patternTags": [
+        "overcommitment"
+      ],
+      "weight": 3
+    },
+    {
+      "id": "jp6",
+      "text": "Whose life did you measure yourself against most recently? Write what you actually know about their day-to-day versus what you assumed. You're comparing your inside to their outside. What does that comparison cost you?",
+      "topics": [
+        "self_worth"
+      ],
+      "patternTags": [
+        "comparison"
+      ],
+      "weight": 3
+    },
+    {
+      "id": "jp7",
+      "text": "There's something you want but keep 'not being ready' for. Name it. Then write the real sentence underneath 'not ready': is it 'I might fail,' 'I might look foolish,' or 'I might actually have to try'? Say which one.",
+      "topics": [
+        "motivation"
+      ],
+      "patternTags": [
+        "avoidance",
+        "fear_of_failure"
+      ],
+      "weight": 2
+    },
+    {
+      "id": "jp8",
+      "text": "Picture a colleague or peer whose success stings a little. Underneath the sting, what are they doing that you wish you were doing? That envy is a compass. Where is it pointing, and what would it take to start walking there?",
+      "topics": [
+        "career"
+      ],
+      "patternTags": [
+        "comparison"
+      ],
+      "weight": 2
+    },
+    {
+      "id": "jp9",
+      "text": "Recall a time you jumped in to manage how something would turn out because you didn't trust it to go well on its own. What were you protecting against? What did your grip cost the other person, and you?",
+      "topics": [
+        "relationships"
+      ],
+      "patternTags": [
+        "need_for_control"
+      ],
+      "weight": 2
+    },
+    {
+      "id": "jp10",
+      "text": "You told yourself you 'always' quit or 'never' follow through. Find one counterexample from your own life, however small. Now write the more accurate sentence, the one with actual numbers instead of 'always' and 'never'.",
+      "topics": [
+        "habits"
+      ],
+      "patternTags": [
+        "black_and_white"
+      ],
+      "weight": 2
+    },
+    {
+      "id": "jp11",
+      "text": "Think about the last time you were exhausted but kept going for someone else's sake. Whose approval were you buying with that effort? Write what you were afraid they'd think if you'd stopped. Would you ask a tired friend to keep going like that?",
+      "topics": [
+        "burnout"
+      ],
+      "patternTags": [
+        "people_pleasing"
+      ],
+      "weight": 2
+    },
+    {
+      "id": "jp12",
+      "text": "Write down the harshest thing you said to yourself this week, word for word. Now read it as if a friend said it to you. Would you keep that friend? Rewrite the line as something true but not cruel.",
+      "topics": [
+        "self_worth"
+      ],
+      "patternTags": [
+        "self_criticism"
+      ],
+      "weight": 3
+    },
+    {
+      "id": "jp13",
+      "text": "You've been replaying a conversation or mistake on a loop. Write it out once, fully, then answer: what is the loop trying to solve? If there's an action, name it. If there isn't, the replaying is a habit, not a solution.",
+      "topics": [
+        "motivation"
+      ],
+      "patternTags": [
+        "rumination"
+      ],
+      "weight": 2
+    },
+    {
+      "id": "jp14",
+      "text": "Describe a career risk you've talked yourself out of. Now write the actual worst case, in concrete detail, and next to it write how you'd survive it. Fear shrinks when it has to be specific instead of just loud.",
+      "topics": [
+        "career"
+      ],
+      "patternTags": [
+        "fear_of_failure"
+      ],
+      "weight": 3
+    },
+    {
+      "id": "jp15",
+      "text": "There's a conversation you've been avoiding with someone who matters. Write the first sentence you'd actually say if you weren't managing their reaction. What are you protecting by staying quiet, and is it worth the distance it's creating?",
+      "topics": [
+        "relationships"
+      ],
+      "patternTags": [
+        "avoidance"
+      ],
+      "weight": 3
+    },
+    {
+      "id": "jp16",
+      "text": "Name a habit you keep 'starting Monday'. What does Monday-you believe today-you can't handle? Write one thing you could do in the next ten minutes that today-you actually can do. Momentum doesn't wait for a fresh week.",
+      "topics": [
+        "habits"
+      ],
+      "patternTags": [
+        "avoidance"
+      ],
+      "weight": 2
+    },
+    {
+      "id": "jp17",
+      "text": "When did you last feel resentful about something you'd agreed to? Resentment is often a boundary you skipped. Write where the line should have been, and what you'll say differently next time you're asked.",
+      "topics": [
+        "burnout"
+      ],
+      "patternTags": [
+        "overcommitment",
+        "people_pleasing"
+      ],
+      "weight": 3
+    },
+    {
+      "id": "jp18",
+      "text": "You've decided something about yourself based on one bad outcome. Write the story you've built, then the single event underneath it. Is the whole story really carried by that one moment? What would a fairer verdict sound like?",
+      "topics": [
+        "self_worth"
+      ],
+      "patternTags": [
+        "comparison",
+        "rumination"
+      ],
+      "weight": 2
+    },
+    {
+      "id": "jp19",
+      "text": "You've framed something as 'do it perfectly or don't bother'. Name it. What would 'good enough to be useful' look like here? Write the version you'd actually finish, not the version you'd only ever admire.",
+      "topics": [
+        "motivation"
+      ],
+      "patternTags": [
+        "black_and_white",
+        "perfectionism"
+      ],
+      "weight": 2
+    },
+    {
+      "id": "jp20",
+      "text": "Think of a piece of work you're holding back because it isn't ready. Who set the standard you're failing to meet, and did they ever actually state it? Write what 'finished' means to you, then ship a version toward it.",
+      "topics": [
+        "career"
+      ],
+      "patternTags": [
+        "perfectionism"
+      ],
+      "weight": 2
+    },
+    {
+      "id": "jp21",
+      "text": "Recall a time you apologized for something that wasn't yours to carry. Why did you reach for the apology? Write what you actually wanted to say instead. Practice it here where it's safe.",
+      "topics": [
+        "relationships"
+      ],
+      "patternTags": [
+        "people_pleasing",
+        "self_criticism"
+      ],
+      "weight": 2
+    },
+    {
+      "id": "jp22",
+      "text": "You slipped on something you were building and called yourself lazy or weak. Set the label aside. Describe what actually happened, hour by hour, on the day it fell apart. What was really in the way, and what would remove it?",
+      "topics": [
+        "habits"
+      ],
+      "patternTags": [
+        "self_criticism"
+      ],
+      "weight": 2
+    },
+    {
+      "id": "jp23",
+      "text": "Write about a moment you were running on empty but couldn't let go of the reins. What did you believe would fall apart if you rested? Test it: what actually happens if you let one thing be imperfect this week?",
+      "topics": [
+        "burnout"
+      ],
+      "patternTags": [
+        "need_for_control"
+      ],
+      "weight": 2
+    },
+    {
+      "id": "jp24",
+      "text": "Finish this sentence honestly: 'I would like myself more if I...' Now ask the harder question underneath it. Is that condition actually true, or is it a rule you never agreed to but keep enforcing?",
+      "topics": [
+        "self_worth"
+      ],
+      "patternTags": [],
+      "weight": 3
+    },
+    {
+      "id": "jp25",
+      "text": "Think back to the last time you felt genuinely energized, not just relieved to be done. What were you doing, who were you with, and what did it ask of you? Write one small way to bring more of that into next week.",
+      "topics": [
+        "motivation"
+      ],
+      "patternTags": [],
+      "weight": 2
+    },
+    {
+      "id": "jp26",
+      "text": "Describe a situation at work you keep trying to steer that isn't fully yours to steer. What are you afraid happens if you loosen your grip? Write the part that is genuinely yours to own, and the part you can let others carry.",
+      "topics": [
+        "career"
+      ],
+      "patternTags": [
+        "need_for_control"
+      ],
+      "weight": 2
+    },
+    {
+      "id": "jp27",
+      "text": "You've assumed someone was disappointed, annoyed, or pulling away, without checking. Write the story you told yourself, then the evidence you actually have. What would it take to ask directly instead of guessing?",
+      "topics": [
+        "relationships"
+      ],
+      "patternTags": [
+        "comparison"
+      ],
+      "weight": 2
+    },
+    {
+      "id": "jp28",
+      "text": "Look at the routines you're currently trying to hold. Are you building three at once and quietly drowning? Pick the single one that would make the others easier if it were solid. Write why that one earns the top spot.",
+      "topics": [
+        "habits"
+      ],
+      "patternTags": [
+        "overcommitment"
+      ],
+      "weight": 2
+    },
+    {
+      "id": "jp29",
+      "text": "Name someone whose respect you're working hardest to earn. Now ask: if you already had it, what would you stop doing? That list is where you're abandoning yourself. Pick one item to reclaim.",
+      "topics": [
+        "self_worth",
+        "relationships"
+      ],
+      "patternTags": [
+        "people_pleasing"
+      ],
+      "weight": 1
+    },
+    {
+      "id": "jp30",
+      "text": "Write about the gap between how hard you're working and how it's paying off. Before you blame yourself, ask whether the effort is aimed at the right target. Sometimes it isn't more push you need, but a different direction. Where might yours be off?",
+      "topics": [
+        "burnout",
+        "career",
+        "motivation"
+      ],
+      "patternTags": [
+        "self_criticism"
+      ],
+      "weight": 2
+    }
+  ]
+}

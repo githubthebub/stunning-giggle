@@ -1,0 +1,218 @@
+{
+  "id": "career-clarity",
+  "topic": "career",
+  "title": "Career clarity",
+  "description": "A branching, honest walk through why your next career move feels stuck and one small step to unstick it.",
+  "estMinutes": 8,
+  "startNodeId": "n1",
+  "nodes": [
+    {
+      "id": "n1",
+      "type": "prompt",
+      "text": "Let's cut through it. 'Career clarity' usually isn't a knowledge problem — it's a courage problem wearing a thinking cap. Most people know more than they admit; they just don't like the answer. So before we map anything, let's find out what's actually keeping you stuck. Be honest with me here. Nobody's grading this.",
+      "next": "n2"
+    },
+    {
+      "id": "n2",
+      "type": "choice",
+      "text": "Which of these is closest to the truth right now?",
+      "options": [
+        {
+          "id": "n2a",
+          "label": "I keep telling myself I'll leave, but I never actually move.",
+          "next": "n3",
+          "effects": {
+            "patternTags": [
+              "avoidance"
+            ],
+            "note": "stalling on a decision they've half-made"
+          }
+        },
+        {
+          "id": "n2b",
+          "label": "Honestly? I don't even know what I want anymore.",
+          "next": "n5",
+          "effects": {
+            "note": "reports a blank, may be not-knowing on purpose"
+          }
+        },
+        {
+          "id": "n2c",
+          "label": "I know what I'd rather be doing — I'm just scared to go for it.",
+          "next": "n7",
+          "effects": {
+            "patternTags": [
+              "fear_of_failure"
+            ],
+            "note": "has clarity, blocked at the first step"
+          }
+        }
+      ]
+    },
+    {
+      "id": "n3",
+      "type": "prompt",
+      "text": "Okay. So the exit door isn't locked — you keep walking up to it and turning around. Give yourself a little credit: part of you is genuinely weighing something real. But part of you is also just... waiting. And waiting rarely decides in your favor. It just lets the calendar decide for you.",
+      "next": "n4"
+    },
+    {
+      "id": "n4",
+      "type": "reflection",
+      "text": "Finish this sentence as honestly as you can: 'I haven't left yet because ___.' Don't give me the polished version — give me the one you'd only say out loud to a close friend.",
+      "capture": {
+        "field": "career_stall_reason",
+        "placeholder": "The real reason, not the resume reason."
+      },
+      "next": "n9"
+    },
+    {
+      "id": "n5",
+      "type": "prompt",
+      "text": "Fair. 'I don't know what I want' is where a lot of people park for years — because it feels safer than picking. But not-knowing is often not-knowing on purpose: if you never name it, you never risk it. Let's test whether it's actually as blank as it feels.",
+      "next": "n6"
+    },
+    {
+      "id": "n6",
+      "type": "reflection",
+      "text": "Think back to the last time work — any work, paid or not — made you lose track of time. What were you actually doing in that moment? Get specific: the task, not the job title.",
+      "capture": {
+        "field": "career_aliveness",
+        "placeholder": "The moment, the task, who you were with."
+      },
+      "next": "n9"
+    },
+    {
+      "id": "n7",
+      "type": "prompt",
+      "text": "Now we're getting somewhere. You know. That's the whole game — plenty of people would give a lot for the clarity you're sitting on, and you're calling it indecision. So let's stop pretending the problem is the map. The problem is the first step.",
+      "next": "n8"
+    },
+    {
+      "id": "n8",
+      "type": "reflection",
+      "text": "Name the thing you already know you want to move toward — say it plainly, no hedging. Then write down what you're most afraid happens if you actually go for it.",
+      "capture": {
+        "field": "career_fear_named",
+        "placeholder": "What you want, and what scares you about wanting it."
+      },
+      "next": "n9"
+    },
+    {
+      "id": "n9",
+      "type": "reframe",
+      "text": "Here's the reframe: clarity isn't a feeling that arrives before you act — it's something you earn by acting. You will not think your way to certainty from the couch. The people who look decisive to you mostly just moved sooner and corrected faster. So let's find what's actually in the way.",
+      "next": "n10"
+    },
+    {
+      "id": "n10",
+      "type": "choice",
+      "text": "When you imagine actually making a move, what's the first thing that tightens in your chest?",
+      "options": [
+        {
+          "id": "n10a",
+          "label": "Money and security — I can't just gamble with my life.",
+          "next": "n11",
+          "effects": {
+            "note": "frames change as financial risk"
+          }
+        },
+        {
+          "id": "n10b",
+          "label": "What people would think — family, colleagues, the story they have of me.",
+          "next": "n12",
+          "effects": {
+            "patternTags": [
+              "people_pleasing"
+            ],
+            "note": "steering by an external audience"
+          }
+        },
+        {
+          "id": "n10c",
+          "label": "That I'll try, fail, and it'll confirm I was never good enough.",
+          "next": "n13",
+          "effects": {
+            "patternTags": [
+              "fear_of_failure",
+              "self_criticism"
+            ],
+            "note": "ties outcome to self-worth"
+          }
+        }
+      ]
+    },
+    {
+      "id": "n11",
+      "type": "reframe",
+      "text": "Money is a real constraint — I'm not going to wave it away. But notice the word you used: 'gamble.' You've cast staying as the safe bet and leaving as the reckless one. Is that actually true? Staying in something that's draining you has a cost too — it's just quieter, and paid in years instead of dollars. Security isn't the same thing as certainty. Let's price out the real risk instead of the imagined one.",
+      "next": "n14"
+    },
+    {
+      "id": "n12",
+      "type": "reframe",
+      "text": "So the job might be yours, but the steering wheel is being held by an audience — some of whom aren't even watching that closely. Here's the hard part: you cannot build a life you want on the foundation of not disappointing people. Someone will always be disappointed. The only real question is whether it's them or you. Whose approval are you still auditioning for?",
+      "next": "n14"
+    },
+    {
+      "id": "n13",
+      "type": "reframe",
+      "text": "Read that back. You've already decided that one failure equals a verdict on your worth. That's not analysis — that's a story, and a brutal one you'd never hand to someone you loved. Everyone competent you admire has a trail of things that didn't work behind them; they just refused to let one outcome define the whole of them. A failed attempt is data. It is not a verdict on who you are.",
+      "next": "n14"
+    },
+    {
+      "id": "n14",
+      "type": "choice",
+      "text": "Enough naming. What's actually true about where you are right now?",
+      "options": [
+        {
+          "id": "n14a",
+          "label": "I'm ready. I don't need more insight — I need a move.",
+          "next": "n15"
+        },
+        {
+          "id": "n14b",
+          "label": "I'm close, but I genuinely don't have enough real information yet.",
+          "next": "n16"
+        },
+        {
+          "id": "n14c",
+          "label": "Honestly, I'm overwhelmed and can't see straight.",
+          "next": "n17",
+          "effects": {
+            "note": "signals overload, needs the frame shrunk"
+          }
+        }
+      ]
+    },
+    {
+      "id": "n15",
+      "type": "action",
+      "text": "Then let's not let this be another reflection you felt good about and forgot by Friday. Momentum beats mood. One real move, this week, while the honesty is still warm.",
+      "action": {
+        "title": "Reach out to one person this week.",
+        "description": "Pick one person who's already doing something close to what you want — or who's one step ahead of you. Send a short message today asking for 20 minutes to hear how they got there. Not a favor, not a job ask — just a conversation. Send it before you overthink it into next month.",
+        "suggestQuestId": null
+      }
+    },
+    {
+      "id": "n16",
+      "type": "action",
+      "text": "Good — wanting more information is legitimate, as long as 'research' doesn't quietly become the new hiding place. There's a difference between gathering data and stalling in a spreadsheet. So make it real-world, and put a deadline on it.",
+      "action": {
+        "title": "Run one reality-test this week.",
+        "description": "Choose one concrete question you can't answer from inside your own head — 'What's the day-to-day actually like?' or 'Could I make the money work?' — and get the answer from outside yourself this week. One conversation, one hour of shadowing, one honest budget on paper. Real contact with reality, not another late-night search spiral.",
+        "suggestQuestId": null
+      }
+    },
+    {
+      "id": "n17",
+      "type": "action",
+      "text": "Okay. When it all feels like too much, the answer isn't to push harder — it's to shrink the frame until it's carryable. You don't have to solve your whole career today. You have to do one small, honest thing. And if the overwhelm is heavy and sticking around, that's worth talking through with someone you trust or a mental-health professional — you were never meant to carry this solo.",
+      "action": {
+        "title": "Give it one honest hour.",
+        "description": "Block a single 60-minute window this week — put it in your calendar right now. In it, do nothing but write two lists: what you actually know about what you want, and what you're only guessing at. No decisions required. Just get it out of your head and onto paper where you can look at it. One hour. That's the whole ask.",
+        "suggestQuestId": null
+      }
+    }
+  ]
+}

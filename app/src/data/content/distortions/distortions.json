@@ -1,0 +1,136 @@
+{
+  "version": 1,
+  "frameworkNote": "These thinking patterns are drawn from public cognitive behavioral frameworks (Aaron Beck and David Burns). This is educational self-reflection to help you notice your own thoughts, not therapy or any kind of diagnosis.",
+  "distortions": [
+    {
+      "id": "all_or_nothing",
+      "name": "All-or-Nothing Thinking",
+      "description": "You see things in absolute, black-and-white terms. If it is not a total success, you count it as a total failure.",
+      "example": "I missed one week at the gym, so I have completely blown my whole fitness plan.",
+      "reframePrompts": [
+        "Where on the scale from 0 to 100 does this actually sit, if you are honest?",
+        "What would you tell a friend who described this exact situation to you?",
+        "Is 'ruined' really true, or did one part go worse than you wanted?"
+      ],
+      "reframeTemplate": "It is not all-or-nothing. The part that did not go well was ______, and the parts that still stand are ______. A more accurate line is: this was partly hard and partly fine, and I can pick it back up from here.",
+      "citation": "Burns, D. D. (1980). Feeling Good: The New Mood Therapy."
+    },
+    {
+      "id": "overgeneralization",
+      "name": "Overgeneralization",
+      "description": "You treat a single event as a never-ending pattern, often using words like 'always' or 'never'.",
+      "example": "I got turned down for that role. I never get chosen for anything.",
+      "reframePrompts": [
+        "Is this one event, or a genuine pattern with several examples?",
+        "Can you name even one time the opposite was true?",
+        "What are the specific facts here, without the words 'always' or 'never'?"
+      ],
+      "reframeTemplate": "One thing happened: ______. That is a single event, not a rule about my whole life. A time it went differently was ______, which tells me this is not 'always'.",
+      "citation": "Burns, D. D. (1980). Feeling Good: The New Mood Therapy."
+    },
+    {
+      "id": "mental_filter",
+      "name": "Mental Filter",
+      "description": "You lock onto one negative detail and let it color everything, filtering out the rest of the picture.",
+      "example": "One person gave critical feedback in the meeting, so the whole presentation was a disaster.",
+      "reframePrompts": [
+        "What are you leaving out of the frame right now?",
+        "If you listed everything that happened, how much of it was actually negative?",
+        "What would the full picture look like, not just the one detail?"
+      ],
+      "reframeTemplate": "I have been staring at ______ and letting it stand in for everything. Widening the lens, what else was true is ______. The one hard detail is real, and it is not the whole story.",
+      "citation": "Beck, A. T. (1979). Cognitive Therapy of Depression."
+    },
+    {
+      "id": "discounting_positive",
+      "name": "Discounting the Positive",
+      "description": "You dismiss good things as if they do not count, insisting they were luck, easy, or expected.",
+      "example": "They only praised my work to be polite. It was not really that good.",
+      "reframePrompts": [
+        "Why does this good thing 'not count' when a bad thing would?",
+        "If a peer had done this, would you brush it off the same way?",
+        "What are you doing to earn the good outcome that you are refusing to credit?"
+      ],
+      "reframeTemplate": "I am tempted to wave this away as ______, but the honest version is: I did ______, and that counts. Letting the good news land does not make me arrogant, it makes me accurate.",
+      "citation": "Burns, D. D. (1980). Feeling Good: The New Mood Therapy."
+    },
+    {
+      "id": "jumping_to_conclusions",
+      "name": "Jumping to Conclusions",
+      "description": "You decide you know what will happen or what someone thinks, with no real evidence, then treat the guess as fact.",
+      "example": "She has not texted back, so she must be annoyed with me.",
+      "reframePrompts": [
+        "What is the actual evidence, versus the story you are filling in?",
+        "What are two other explanations that would also fit the facts?",
+        "Are you predicting the future or reading a mind here?"
+      ],
+      "reframeTemplate": "I am treating a guess as a fact. The evidence I actually have is ______. An equally likely explanation is ______. Until I know more, I can hold this as a maybe, not a verdict.",
+      "citation": "Beck, A. T. (1979). Cognitive Therapy of Depression."
+    },
+    {
+      "id": "magnification",
+      "name": "Magnification (Catastrophizing)",
+      "description": "You blow the importance of a problem out of proportion, or shrink things down until they seem trivial.",
+      "example": "If I mess up this one email, my whole reputation is finished.",
+      "reframePrompts": [
+        "How much will this actually matter in a week? In a year?",
+        "What is the realistic worst case, and could you handle it if it happened?",
+        "Are you sizing this by the facts, or by how anxious you feel right now?"
+      ],
+      "reframeTemplate": "Right now this feels enormous: ______. Sized realistically, the likely outcome is ______, and even the worst case I could handle by ______. It is a real problem, not a catastrophe.",
+      "citation": "Burns, D. D. (1980). Feeling Good: The New Mood Therapy."
+    },
+    {
+      "id": "emotional_reasoning",
+      "name": "Emotional Reasoning",
+      "description": "You take how you feel as proof of how things are. If you feel it, you assume it must be true.",
+      "example": "I feel like a fraud, so I must actually be one.",
+      "reframePrompts": [
+        "Is this a feeling, or a fact? They are not the same thing.",
+        "What would the evidence say if you set the feeling aside for a moment?",
+        "Have you felt this way before about something that turned out fine?"
+      ],
+      "reframeTemplate": "I feel ______, and that feeling is real. But a feeling is not evidence. The facts on the ground say ______. I can feel this way and still act on what is actually true.",
+      "citation": "Burns, D. D. (1980). Feeling Good: The New Mood Therapy."
+    },
+    {
+      "id": "should_statements",
+      "name": "Should Statements",
+      "description": "You beat yourself or others with rigid rules about how things ought to be, and feel guilt, pressure, or resentment when reality does not comply.",
+      "example": "I should be further along by now. I should never need help.",
+      "reframePrompts": [
+        "Whose rule is this, and is it one you would actually choose?",
+        "What happens to how you feel when you swap 'should' for 'I would like to'?",
+        "Is this standard fair, or one you would never hold anyone else to?"
+      ],
+      "reframeTemplate": "The rule running me is: I should ______. Restated as a preference: I would like to ______, and it is okay that I am not there yet. Dropping the whip does not drop the goal.",
+      "citation": "Burns, D. D. (1980). Feeling Good: The New Mood Therapy."
+    },
+    {
+      "id": "labeling",
+      "name": "Labeling",
+      "description": "You pin a harsh, fixed label on yourself or someone else based on one action, instead of describing the specific behavior.",
+      "example": "I forgot the deadline. I am such a loser.",
+      "reframePrompts": [
+        "Are you describing what you did, or slapping a label on who you are?",
+        "Would you call a friend that word for the same mistake?",
+        "What specific behavior are you actually talking about?"
+      ],
+      "reframeTemplate": "The label I reached for was '______'. The accurate, specific version is: I did ______, once, in this situation. A mistake is something I made, not a name for who I am.",
+      "citation": "Burns, D. D. (1980). Feeling Good: The New Mood Therapy."
+    },
+    {
+      "id": "personalization",
+      "name": "Personalization",
+      "description": "You take responsibility for things that were not fully in your control, treating yourself as the cause of events that had many.",
+      "example": "The team missed the target, and it is entirely my fault.",
+      "reframePrompts": [
+        "What other factors and people shaped this outcome besides you?",
+        "What share of this was genuinely yours, honestly, as a percentage?",
+        "Are you confusing 'I was involved' with 'I caused all of it'?"
+      ],
+      "reframeTemplate": "I am carrying all of this as if it were mine alone. Realistically, my part was ______, and other factors were ______. I can own my share and put down the rest that was never mine to hold.",
+      "citation": "Beck, A. T. (1979). Cognitive Therapy of Depression."
+    }
+  ]
+}

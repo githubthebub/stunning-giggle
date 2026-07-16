@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "defaultRegion": "XX",
+  "globalNote": "If you are in immediate danger, contact your local emergency number right away.",
+  "reviewCaveat": "PLACEHOLDER resources. Replace every entry with verified, region-specific crisis lines and have them reviewed before release.",
+  "regions": [
+    {
+      "code": "XX",
+      "label": "Placeholder Region (replace me)",
+      "lines": [
+        {
+          "name": "PLACEHOLDER — replace with a real local crisis line",
+          "number": "000",
+          "hours": "24/7",
+          "sms": null,
+          "url": null,
+          "note": "Do not ship this. Swap in a verified 24/7 crisis line for this region, confirm the number and hours, then remove this note."
+        },
+        {
+          "name": "PLACEHOLDER — replace with a real text/SMS support line",
+          "number": "REPLACE-ME",
+          "hours": "Confirm real hours before release",
+          "sms": "REPLACE-ME",
+          "url": null,
+          "note": "Add a verified text or SMS support option here. Fill the sms field with the real shortcode and update the hours to match the service."
+        },
+        {
+          "name": "PLACEHOLDER — replace with a real online/chat resource",
+          "number": "REPLACE-ME",
+          "hours": "Confirm real hours before release",
+          "sms": null,
+          "url": "https://replace-me.example",
+          "note": "Add a verified chat or web resource for this region. Replace the url with the real link and confirm it is current before shipping."
+        }
+      ]
+    }
+  ]
+}
