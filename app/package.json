@@ -14,7 +14,8 @@
     "typecheck:core": "tsc -p tsconfig.jest.json",
     "sync:legal": "node scripts/syncLegal.mjs",
     "fix:vocab": "node scripts/normalizeContentVocab.mjs",
-    "lint:content": "node scripts/lintContent.mjs"
+    "lint:content": "node scripts/lintContent.mjs",
+    "build:web": "node scripts/buildWeb.mjs"
   },
   "dependencies": {
     "@react-navigation/bottom-tabs": "^6.6.1",
@@ -39,6 +40,7 @@
     "@types/jest": "^29.5.13",
     "@types/node": "^22.9.0",
     "@types/react": "~18.3.12",
+    "esbuild": "^0.28.1",
     "jest": "^29.7.0",
     "ts-jest": "^29.2.5",
     "typescript": "~5.3.3"

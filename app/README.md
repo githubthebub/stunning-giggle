@@ -30,6 +30,16 @@ npm start          # then press i (iOS), a (Android), or scan the QR in Expo Go
 
 Runs in **Expo Go** — no custom native build required for day-to-day work. (For production-grade whole-database encryption see [Encryption](#encryption--the-sqlcipher-upgrade).)
 
+### Play it in a browser (no device needed)
+
+A browser-playable build bundles the **same** engines and content (via esbuild — no logic duplication) into one self-contained HTML file:
+
+```bash
+npm run build:web      # writes web/compass.html (open it directly in any browser)
+```
+
+`web/compass.html` is fully offline and stores data in the browser's `localStorage`. It's a faithful port of the app loop (gate → onboarding → home → flows → toolkit → journal → progress → quests → settings → crisis); only the presentation (DOM vs React Native) and storage (localStorage vs encrypted SQLite) differ.
+
 ### Verify the logic (no device needed)
 
 The deterministic "no-AI" core is fully unit-tested and runs in plain Node:
