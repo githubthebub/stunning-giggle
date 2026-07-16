@@ -1,0 +1,46 @@
+name: media-bridge
+
+# Ferries media between this repo and external hosts that the development
+# sandbox cannot reach directly. fetch: download URLs listed in
+# video-pipeline/bridge.json and commit them to the branch. upload: PUT files
+# from the repo to presigned URLs listed in the same manifest.
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "fetch or upload"
+        required: true
+        default: "fetch"
+
+permissions:
+  contents: write
+
+jobs:
+  bridge:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: bridge
+        run: |
+          set -euo pipefail
+          MODE="${{ github.event.inputs.mode }}"
+          if [ "$MODE" = "fetch" ]; then
+            jq -c '.fetch[]' video-pipeline/bridge.json | while read -r item; do
+              url=$(jq -r .url <<<"$item"); out=$(jq -r .out <<<"$item")
+              mkdir -p "$(dirname "$out")"
+              curl -sSL --retry 3 --retry-delay 2 -o "$out" "$url"
+              ls -la "$out"
+            done
+            git config user.name "media-bridge"
+            git config user.email "actions@users.noreply.github.com"
+            git add -A video-pipeline/vo
+            git commit -m "media-bridge: fetch generated media" || echo "nothing new"
+            git push
+          else
+            jq -c '.upload[]' video-pipeline/bridge.json | while read -r item; do
+              url=$(jq -r .url <<<"$item"); file=$(jq -r .file <<<"$item"); ct=$(jq -r .content_type <<<"$item")
+              code=$(curl -sS -o /dev/null -w '%{http_code}' -X PUT -H "Content-Type: $ct" --data-binary @"$file" "$url")
+              echo "$file -> HTTP $code"
+              [ "$code" = "200" ] || exit 1
+            done
+          fi

@@ -1,0 +1,11 @@
+{
+  "fetch": [
+    { "url": "https://d8j0ntlcm91z4.cloudfront.net/user_36KNmFd6iH5Y3yk4Gh9GpEgWGDw/hf_20260716_131757_100ab5ff-455d-4026-b7ac-ebed3e43f004.wav", "out": "video-pipeline/vo/01.wav" },
+    { "url": "https://d8j0ntlcm91z4.cloudfront.net/user_36KNmFd6iH5Y3yk4Gh9GpEgWGDw/hf_20260716_131759_a7c48bbf-4922-4d7a-9c6e-1ca5ca37c5c6.wav", "out": "video-pipeline/vo/02.wav" },
+    { "url": "https://d8j0ntlcm91z4.cloudfront.net/user_36KNmFd6iH5Y3yk4Gh9GpEgWGDw/hf_20260716_131800_390bba91-555c-4097-9cc3-0c8086791db8.wav", "out": "video-pipeline/vo/03.wav" },
+    { "url": "https://d8j0ntlcm91z4.cloudfront.net/user_36KNmFd6iH5Y3yk4Gh9GpEgWGDw/hf_20260716_131802_13c9acce-f24a-4219-8940-3ec71e12917f.wav", "out": "video-pipeline/vo/04.wav" },
+    { "url": "https://d8j0ntlcm91z4.cloudfront.net/user_36KNmFd6iH5Y3yk4Gh9GpEgWGDw/hf_20260716_132043_c4030ec3-772c-4b99-b820-3018e6136517.wav", "out": "video-pipeline/vo/05.wav" },
+    { "url": "https://d8j0ntlcm91z4.cloudfront.net/user_36KNmFd6iH5Y3yk4Gh9GpEgWGDw/hf_20260716_132340_8b5c4fc3-3074-4ce6-9503-213e58533a9c.wav", "out": "video-pipeline/vo/06.wav" }
+  ],
+  "upload": []
+}
