@@ -1,0 +1,414 @@
+{
+ "scene_n": 11,
+ "shots": [
+  {
+   "seconds": 3,
+   "template": "black",
+   "description": "Sound before body. Pure black held over from the dawn scene. Dozens of tiny bells, arrhythmic, far below the cliff, rising \u2014 a crosser is a lit lamp made of noise in a world where the dark listens. No image yet; the audio spike IS the shot.",
+   "camera": "hold",
+   "transition": "fade_in",
+   "music": "silence",
+   "sfx": [
+    "bell_small",
+    "wind_soft"
+   ],
+   "subs": [
+    {
+     "text": "[dozens of small bells, far below, rising]",
+     "speaker": "NARRATION",
+     "at": 0.8
+    }
+   ]
+  },
+  {
+   "seconds": 4.5,
+   "template": "dry_sea_vista",
+   "description": "Shell-pink flats at first light, long blue shadows thrown off every stone rib of the dead sea. Nothing visibly moves, but the bell-sound climbs the cliff face toward camera. Palette: pink flats, ink-blue shadow lanes, one brass glint far out where the sound is coming from.",
+   "camera": "drift",
+   "transition": "crossfade",
+   "music": "silence",
+   "sfx": [
+    "bell_small",
+    "wind_soft"
+   ]
+  },
+  {
+   "seconds": 4.5,
+   "template": "cliff_village",
+   "description": "The village street wakes to the sound: shutters clap open one after another down the lane, villagers in nightclothes lean out as backlit silhouettes, laundry lines rimmed pink. Long blue shadows rake the cobbles. The bells keep rising, closer.",
+   "camera": "pan_right",
+   "transition": "cut",
+   "music": "silence",
+   "sfx": [
+    "creak",
+    "door",
+    "bell_small"
+   ]
+  },
+  {
+   "seconds": 6,
+   "template": "two_shot_silhouette",
+   "description": "Hulda's stall under its rust awning, dawn-side. Espen already up, oil can in hand, a small dark shape against the pink; Hulda a broad silhouette behind her brass scale, bell-brass glints on the counterweights. He plants himself in front of her before she's finished opening.",
+   "camera": "hold",
+   "transition": "cut",
+   "music": "silence",
+   "sfx": [
+    "bell_small",
+    "wind_soft"
+   ],
+   "subs": [
+    {
+     "at": 0.5,
+     "speaker": "ESPEN",
+     "text": "Hulda."
+    },
+    {
+     "at": 2.5,
+     "speaker": "HULDA",
+     "text": "It's dawn, boy. Dawn is for bakers and regrets."
+    }
+   ]
+  },
+  {
+   "seconds": 5.5,
+   "template": "close_hands",
+   "description": "Insert: the skimmed coin pressed into Hulda's open palm \u2014 framed EXACTLY like the skim in scene 4, reversed. His small hand gives; her cracked hand receives. Coin catches one pink glint. Hold the hands past the line; do not cut to faces.",
+   "camera": "push_in",
+   "transition": "cut",
+   "music": "silence",
+   "sfx": [
+    "glass_chime",
+    "bell_small"
+   ],
+   "subs": [
+    {
+     "at": 1.8,
+     "speaker": "HULDA",
+     "text": "What's this?"
+    },
+    {
+     "at": 3.8,
+     "speaker": "ESPEN",
+     "text": "Change. From yesterday. Your scale was off."
+    }
+   ]
+  },
+  {
+   "seconds": 5,
+   "template": "two_shot_silhouette",
+   "description": "Hulda looks at the coin, then at the boy, and says nothing about it \u2014 the silence is the forgiveness. Her silhouette shifts its weight; his doesn't flinch. Distant bells still climbing under everything.",
+   "camera": "hold",
+   "transition": "cut",
+   "music": "silence",
+   "sfx": [
+    "wind_soft",
+    "bell_small"
+   ],
+   "subs": [
+    {
+     "at": 0.5,
+     "speaker": "HULDA",
+     "text": "My scale is never off."
+    },
+    {
+     "at": 3,
+     "speaker": "ESPEN",
+     "text": "Then I was."
+    }
+   ]
+  },
+  {
+   "seconds": 6,
+   "template": "close_object",
+   "description": "The brass scale itself: pans, chain, counterweights lined like soldiers, oil can waiting beside it. Business shot \u2014 the negotiation played entirely on the instrument that used to cheat him. She has always known about the wheel; the line lands on the still scale.",
+   "camera": "hold",
+   "transition": "cut",
+   "music": "silence",
+   "sfx": [
+    "glass_chime",
+    "bell_small"
+   ],
+   "subs": [
+    {
+     "at": 0.5,
+     "speaker": "ESPEN",
+     "text": "What does a month of oil cost? Full weight."
+    },
+    {
+     "at": 3.5,
+     "speaker": "HULDA",
+     "text": "More than a bicycle wheel."
+    }
+   ]
+  },
+  {
+   "seconds": 7,
+   "template": "close_hands",
+   "description": "Her hands tip a FULL extra measure of oil back into his can, unasked \u2014 thumb conspicuously nowhere near the scale beam. Restitution and recalibration done entirely in objects. Warm brass and oil-amber against the pink; his hands hold the can steady.",
+   "camera": "tilt_down",
+   "transition": "cut",
+   "music": "silence",
+   "sfx": [
+    "bell_small",
+    "wind_soft"
+   ],
+   "subs": [
+    {
+     "at": 0.5,
+     "speaker": "ESPEN",
+     "text": "Two months, then."
+    },
+    {
+     "at": 2.8,
+     "speaker": "HULDA",
+     "text": "Storm keep you up?"
+    },
+    {
+     "at": 5.2,
+     "speaker": "ESPEN",
+     "text": "Something did."
+    }
+   ]
+  },
+  {
+   "seconds": 6,
+   "template": "char_silhouette",
+   "description": "The bells arrive: the Bellfarer crests the cliff stair against the shell-pink sky \u2014 wide flat hat, long coat sewn all over with small bells, a walking chime of a man. He takes the last step, stops, and every bell shivers SILENT at once. The street goes still with them.",
+   "camera": "tilt_up",
+   "transition": "cut",
+   "music": "silence",
+   "sfx": [
+    "bell_small",
+    "footsteps_stone",
+    "silence_drop"
+   ]
+  },
+  {
+   "seconds": 4.5,
+   "template": "light_beam",
+   "description": "Ground level: Saltwick Light's pale beam lies across the dirt in the dawn, a soft-edged border of light. His salt-white boots stop precisely one inch OUTSIDE it \u2014 a man honoring a frontier. Long blue shadow of the hat falls across frame but never crosses the beam.",
+   "camera": "hold",
+   "transition": "cut",
+   "music": "silence",
+   "sfx": [
+    "salt_crunch",
+    "wind_soft"
+   ]
+  },
+  {
+   "seconds": 7.5,
+   "template": "char_silhouette",
+   "description": "Low angle up at the Bellfarer, backlit pink under the flat brim, face mostly shadow, bells hanging dead still down the coat. He speaks without hurry \u2014 a man who has walked three weeks and won't waste steps now. The tower's lit lamp burns soft in the top corner of frame.",
+   "camera": "push_in",
+   "transition": "cut",
+   "music": "silence",
+   "sfx": [
+    "wind_soft",
+    "bell_small"
+   ],
+   "subs": [
+    {
+     "at": 0.8,
+     "speaker": "BELLFARER",
+     "text": "Saltwick Light. Still burning past dawn. Good habit."
+    },
+    {
+     "at": 3.4,
+     "speaker": "BELLFARER",
+     "text": "Three weeks on the flats, out of Farholm. My bells are tired."
+    }
+   ]
+  },
+  {
+   "seconds": 6.0,
+   "template": "close_eye",
+   "description": "Espen's eye, big in frame, morning pink on the iris \u2014 curiosity outrunning wariness. The boy who counted six minutes in the dark asking the only question that matters.",
+   "camera": "hold",
+   "transition": "cut",
+   "music": "silence",
+   "sfx": [
+    "breath"
+   ],
+   "subs": [
+    {
+     "at": 0.5,
+     "speaker": "ESPEN",
+     "text": "Why bells?"
+    }
+   ]
+  },
+  {
+   "seconds": 4,
+   "template": "close_eye",
+   "description": "Reverse: the Bellfarer's eye in hat-shadow, salt-burned crow's feet, calm as a well. The answer is doctrine, not poetry \u2014 he means it literally.",
+   "camera": "hold",
+   "transition": "cut",
+   "music": "silence",
+   "sfx": [
+    "wind_soft"
+   ],
+   "subs": [
+    {
+     "at": 0.6,
+     "speaker": "BELLFARER",
+     "text": "So the dark can hear I'm not part of it."
+    }
+   ]
+  },
+  {
+   "seconds": 6.5,
+   "template": "close_object",
+   "description": "The news held up as an object first: a small bell on a cut cord, cracked clean through, fogged salt-white like a drowned thing. He tips it once \u2014 a dead CLACK where a ring should be. Hold on the crack; let the wrong sound sit.",
+   "camera": "push_in",
+   "transition": "cut",
+   "music": "sting_dread",
+   "sfx": [
+    "bell_small",
+    "silence_drop"
+   ],
+   "subs": [
+    {
+     "at": 1,
+     "speaker": "BELLFARER",
+     "text": "Cut this from Farholm's keeper-door. Cold as a drowned man's pocket."
+    },
+    {
+     "text": "Last night the tide rose past my hat brim.",
+     "speaker": "BELLFARER",
+     "at": 4.2
+    }
+   ]
+  },
+  {
+   "seconds": 7.5,
+   "template": "dry_sea_vista",
+   "description": "Wide across the strait toward Farholm: the flats running out to a far cliff line smothered in haze that suddenly reads as something else. A low sustained note enters under the stanza \u2014 the first music of the scene. Shell-pink above, and under the far haze a shade too deep, like depth.",
+   "camera": "push_in",
+   "transition": "cut",
+   "music": "theme_undertow",
+   "sfx": [
+    "wind_soft",
+    "undertow_call"
+   ],
+   "subs": [
+    {
+     "at": 1,
+     "speaker": "BELLFARER",
+     "text": "Where a light forgets its keep,"
+    },
+    {
+     "at": 4.2,
+     "speaker": "BELLFARER",
+     "text": "the old sea rises from its sleep."
+    }
+   ]
+  },
+  {
+   "seconds": 5.5,
+   "template": "two_shot_silhouette",
+   "description": "Hulda and the Bellfarer in profile against the pink street \u2014 her broad certainty cracking like the bell. She glances toward the strait she squinted at in scene 4; the word 'haze' dies in her mouth as he flatly buries it.",
+   "camera": "hold",
+   "transition": "cut",
+   "music": "theme_undertow",
+   "sfx": [
+    "wind_soft"
+   ],
+   "subs": [
+    {
+     "at": 0.5,
+     "speaker": "HULDA",
+     "text": "Farholm's dark? I thought it was haze."
+    },
+    {
+     "at": 3.2,
+     "speaker": "BELLFARER",
+     "text": "It was never haze."
+    }
+   ]
+  },
+  {
+   "seconds": 5.5,
+   "template": "sky_vista",
+   "description": "Across the strait at dawn height: empty pink sky over the far cliff, where an answering light should be and is not. Three weeks of nothing rendered as negative space. The sustained note holds under it, unresolved.",
+   "camera": "hold",
+   "transition": "cut",
+   "music": "theme_undertow",
+   "sfx": [
+    "wind_soft"
+   ],
+   "subs": [
+    {
+     "at": 0.8,
+     "speaker": "BELLFARER",
+     "text": "Three weeks. Nothing has come down off that cliff. Nothing I heard."
+    }
+   ]
+  },
+  {
+   "seconds": 5.5,
+   "template": "cliff_village",
+   "description": "Slow pan riding the Bellfarer's gaze: past Hulda's stall, past Orla's window where a grey figure watches motionless behind the glass \u2014 and lands on the boy standing in the street in front of the still-burning lamp. The question is aimed past every adult in town.",
+   "camera": "pan_right",
+   "transition": "cut",
+   "music": "theme_undertow",
+   "sfx": [
+    "wind_soft",
+    "creak"
+   ],
+   "subs": [
+    {
+     "at": 3.2,
+     "speaker": "BELLFARER",
+     "text": "Who keeps this one?"
+    }
+   ]
+  },
+  {
+   "seconds": 2.5,
+   "template": "close_eye",
+   "description": "Espen, tight: one breath in. A faint blue pulse from the jar in his pocket touches his jawline like a heartbeat made of light. He does not look away from the stranger.",
+   "camera": "hold",
+   "transition": "cut",
+   "music": "theme_undertow",
+   "sfx": [
+    "heartbeat",
+    "breath"
+   ],
+   "subs": []
+  },
+  {
+   "seconds": 7.5,
+   "template": "lighthouse_ext",
+   "description": "The answer framed in the wide: small boy front and center, huge tower rising behind him, the lamp STILL BURNING against the risen sun \u2014 the private handoff becoming a public vow. Long blue shadows converge on him; bell-brass glints along the Bellfarer's coat at frame edge. Hold the composition after the line.",
+   "camera": "pull_back",
+   "transition": "cut",
+   "music": "theme_duty",
+   "sfx": [
+    "fire_lamp",
+    "wind_soft",
+    "bell_small"
+   ],
+   "subs": [
+    {
+     "at": 2,
+     "speaker": "ESPEN",
+     "text": "I do."
+    }
+   ]
+  },
+  {
+   "seconds": 6.0,
+   "template": "close_object",
+   "description": "Final insert: the saltglass jar at Espen's pocket giving one steady blue pulse aimed toward the strait \u2014 a compass needle pointing at the season. Pink dawn on glass, blue light from inside. Fade down on the glow.",
+   "camera": "push_in",
+   "transition": "fade_out",
+   "music": "theme_legend",
+   "sfx": [
+    "glass_chime",
+    "heartbeat",
+    "undertow_call"
+   ],
+   "subs": []
+  }
+ ]
+}

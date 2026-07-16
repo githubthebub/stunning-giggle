@@ -1,0 +1,194 @@
+{
+ "scene_n": 1,
+ "shots": [
+  {
+   "seconds": 5.5,
+   "template": "undertow",
+   "description": "Moonlit open ocean at night, already mid-Withdrawal: the whole water surface slides backward in one continuous silver sheet, exposing black glass sand at the bottom of frame. The moon-path stretches like pulled taffy, thins, and snaps. Indigo sky, ink horizon; the only brightness is the retreating silver. The slow pull-back makes the frame itself feel like it is abandoning the world.",
+   "camera": "pull_back",
+   "transition": "fade_in",
+   "music": "theme_undertow",
+   "sfx": [
+    "waves_memory",
+    "wind_soft"
+   ],
+   "fx": [
+    "moonpath_shimmer",
+    "grain"
+   ]
+  },
+  {
+   "seconds": 4,
+   "template": "dry_sea_vista",
+   "description": "Harbor wide by the fifteen-second mark: fishing ships keel over one by one into gleaming wet sand, masts tilting into steep silhouettes against indigo. Rigging droops; the water's edge is a bright line already far behind them. Moonlight rims every wet surface salt-white.",
+   "camera": "pan_right",
+   "transition": "cut",
+   "music": "theme_undertow",
+   "sfx": [
+    "creak",
+    "waves_memory",
+    "wind_soft"
+   ],
+   "fx": [
+    "wet_glint"
+   ]
+  },
+  {
+   "seconds": 3,
+   "template": "close_object",
+   "description": "Close-up insert: an anchor chain, taut for one heartbeat, then slack \u2014 its links dropping into wet sand, a chain left pointing at nothing. Moonlight beads on wet iron; in soft focus behind, the silver sheet of the sea keeps walking away. Held, no drama in the cutting, all the drama in the slackening.",
+   "camera": "hold",
+   "transition": "cut",
+   "music": "theme_undertow",
+   "sfx": [
+    "creak",
+    "waves_memory"
+   ],
+   "fx": [
+    "shallow_focus"
+   ]
+  },
+  {
+   "seconds": 4,
+   "template": "dry_sea_vista",
+   "description": "FRAME ONE (to be reprised wider and heavier in scene 8): high wide from the cliff's edge \u2014 the sea's retreating edge is a single bright line abandoning the land, dragging the moon's reflection toward the ink horizon. Foreground cliff grass utterly still. Composition: the bright line low in frame, enormous darkness above it.",
+   "camera": "hold",
+   "transition": "cut",
+   "music": "theme_undertow",
+   "sfx": [
+    "wind_soft",
+    "waves_memory"
+   ],
+   "fx": [
+    "grain"
+   ]
+  },
+  {
+   "seconds": 4.5,
+   "template": "text_card",
+   "description": "Black. Card 1 burns in slowly, salt-white lettering on ink, as if etched by drying brine. The vast receding hiss persists faintly under the black, then drops away with the score.",
+   "camera": "hold",
+   "transition": "dip_black",
+   "music": "silence",
+   "sfx": [
+    "waves_memory",
+    "silence_drop"
+   ],
+   "fx": [
+    "burn_in_text"
+   ],
+   "subs": [
+    {
+     "at": 0.6,
+     "speaker": "NARRATION",
+     "text": "A hundred years ago, in one night, the sea left."
+    }
+   ]
+  },
+  {
+   "seconds": 5,
+   "template": "montage_detail",
+   "description": "A century pours through crossfading macro details: salt crystals climb a dead hull like frost in fast-motion; kelp forests stiffen and petrify into verdigris stone; whale bones breach the whitening flats like the ribs of the world. Palette drifts from moonlit indigo toward bleached salt-white as the decades pass.",
+   "camera": "drift",
+   "transition": "crossfade",
+   "music": "theme_undertow",
+   "sfx": [
+    "glass_chime",
+    "wind_soft"
+   ],
+   "fx": [
+    "timelapse_dissolves",
+    "salt_bloom"
+   ]
+  },
+  {
+   "seconds": 4.5,
+   "template": "cliff_village",
+   "description": "Locked-off wide of the cliff dissolving through decades: the harbor town retreats up the rock one rooftop at a time \u2014 lower houses hollow and go dark, new roofs appear higher on the cliff face. The dry seabed below whitens to bone; time-lapse cloud shadows sweep the flats. The tilt-up follows the town's climb.",
+   "camera": "tilt_up",
+   "transition": "crossfade",
+   "music": "theme_undertow",
+   "sfx": [
+    "wind_soft"
+   ],
+   "fx": [
+    "timelapse_dissolves"
+   ]
+  },
+  {
+   "seconds": 5.5,
+   "template": "lighthouse_ext",
+   "description": "FRAME TWO (to be reprised): night, the legend's present tense \u2014 a lone lamp burning at the cliff edge, one warm ember in an indigo world. Below it the darkness reads a shade too deep, deep like depth, and it visibly LEANS toward the light: the black edge bows upslope by a single wrong degree. Slow push-in until the lamp is small and surrounded.",
+   "camera": "push_in",
+   "transition": "crossfade",
+   "music": "sting_dread",
+   "sfx": [
+    "fire_lamp",
+    "wind_soft",
+    "undertow_call"
+   ],
+   "fx": [
+    "leaning_black_gradient",
+    "ember_glow"
+   ]
+  },
+  {
+   "seconds": 3.5,
+   "template": "text_card",
+   "description": "Black. Card 2 burns in, same salt-white etching. Under the black, one distant lamp mechanism keeps ticking \u2014 the law audible before it is explained.",
+   "camera": "hold",
+   "transition": "dip_black",
+   "music": "silence",
+   "sfx": [
+    "fire_lamp"
+   ],
+   "fx": [
+    "burn_in_text"
+   ],
+   "subs": [
+    {
+     "at": 0.5,
+     "speaker": "NARRATION",
+     "text": "The law says every light burns till dawn."
+    }
+   ]
+  },
+  {
+   "seconds": 7,
+   "template": "light_beam",
+   "description": "FRAME THREE (to be reprised): present-day Saltwick Light. The beam sweeps slow across a sea of air \u2014 a solid volumetric blade over the dry flats. Everywhere the beam is not, the black underneath reads as black that still moves like the sea being water: a faint swell, a grain of current in the dark. Card 3 burns in over the deepest black in the lower third, timed to the beam passing away from camera.",
+   "camera": "pan_left",
+   "transition": "cut",
+   "music": "silence",
+   "sfx": [
+    "fire_lamp",
+    "wind_soft",
+    "undertow_call"
+   ],
+   "fx": [
+    "volumetric_beam",
+    "breathing_black"
+   ],
+   "subs": [
+    {
+     "at": 2,
+     "speaker": "NARRATION",
+     "text": "Nobody remembers why."
+    }
+   ]
+  },
+  {
+   "seconds": 2.5,
+   "template": "black",
+   "description": "Hold on black. The wind thins away; one low call from far beneath the cliff, then nothing \u2014 a held breath before the beam whites out into the title card of scene 2.",
+   "camera": "hold",
+   "transition": "fade_out",
+   "music": "silence",
+   "sfx": [
+    "undertow_call",
+    "silence_drop"
+   ],
+   "fx": []
+  }
+ ]
+}

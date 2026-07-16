@@ -1,0 +1,58 @@
+{
+ "scene_n": 2,
+ "shots": [
+  {
+   "seconds": 4.0,
+   "template": "light_beam",
+   "description": "Continuity from the cold open: Saltwick Light's beam sweeps the dry night sea, then wheels around and swings DIRECTLY into the lens. The frame floods to total whiteout in the last half-second \u2014 no bloom filter softness, a hard salt-white burn. Ink-indigo night at the edges collapses inward as the light takes everything.",
+   "camera": "push_in",
+   "transition": "cut",
+   "music": "silence",
+   "sfx": [
+    "wind_soft",
+    "rumble"
+   ],
+   "subs": []
+  },
+  {
+   "seconds": 9.0,
+   "template": "title_card",
+   "description": "Out of the whiteout, BLACK returns first \u2014 bleeding back in from the corners like a tide going out. Then letters grow across the black the way salt takes a hull: branching crystal, fractal and slow, faintly blue at the outermost edges. They resolve into SALTGLASS, and beneath it, smaller and quieter, KEEP THE LIGHT. The final crystal facet locks in place on a single struck-glass tone. Palette: salt-white crystal on pure black, whisper of saltglass blue.",
+   "camera": "hold",
+   "transition": "cut",
+   "music": "silence",
+   "sfx": [
+    "salt_crunch",
+    "glass_chime",
+    "wind_soft"
+   ],
+   "subs": []
+  },
+  {
+   "seconds": 6.0,
+   "template": "title_card",
+   "description": "Hold on the finished title in dead silence except wind. Nothing moves. The crystal letters catch no light source \u2014 they simply exist, white on black, blue at the edges like frost remembering the sea. The stillness should feel held one beat too long, the way the lighthouse holds its watch.",
+   "camera": "hold",
+   "transition": "cut",
+   "music": "silence",
+   "sfx": [
+    "silence_drop",
+    "wind_soft"
+   ],
+   "subs": []
+  },
+  {
+   "seconds": 4.5,
+   "template": "title_card",
+   "description": "Same locked frame. From somewhere impossibly far out on the flats, one small bell rings once \u2014 thin, distant, swallowed by wind. On the bell's decay the letters give a single faint pulse of saltglass blue, like something under the black answering, then dim back to white. Hard cut out on the pulse's fade.",
+   "camera": "hold",
+   "transition": "cut",
+   "music": "silence",
+   "sfx": [
+    "bell_small",
+    "wind_soft"
+   ],
+   "subs": []
+  }
+ ]
+}

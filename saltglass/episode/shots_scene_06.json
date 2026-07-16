@@ -1,0 +1,351 @@
+{
+ "scene_n": 6,
+ "shots": [
+  {
+   "seconds": 5.5,
+   "template": "lighthouse_ext",
+   "description": "Late dusk establishing. Saltwick Light stands against a storm-green horizon; behind it the charcoal cloudwall assembles over the strait, layer on layer, like a black wall being bricked up in real time. One kitchen window burns lantern amber low in the tower \u2014 a coal of warmth held against the mass. The beam above turns slow and untroubled.",
+   "camera": "drift",
+   "transition": "fade_in",
+   "music": "theme_village",
+   "sfx": [
+    "wind_soft",
+    "rumble"
+   ],
+   "fx": [
+    "warm_bloom"
+   ],
+   "subs": []
+  },
+  {
+   "seconds": 8.5,
+   "template": "cottage_int",
+   "description": "The keeper's kitchen, lantern amber. Espen stands at the head of the table \u2014 deliberately standing, shoulders squared, braced for a fight. Orla keeps ladling supper, unbothered. The window behind him holds the storm-green wall. Dead-static frame: his defiance plays against a room that refuses to flinch.",
+   "camera": "hold",
+   "transition": "cut",
+   "music": "theme_village",
+   "sfx": [
+    "fire_lamp",
+    "wind_soft"
+   ],
+   "fx": [],
+   "subs": [
+    {
+     "at": 1.2,
+     "speaker": "ESPEN",
+     "text": "I told Hulda yes. The spring caravan."
+    },
+    {
+     "at": 5.5,
+     "speaker": "ESPEN",
+     "text": "...You're supposed to yell now."
+    }
+   ]
+  },
+  {
+   "seconds": 5.5,
+   "template": "cottage_int",
+   "description": "Reverse: Orla medium close, lit amber from the stove, not even looking up. One eyebrow does all the work. Steam rises between her and camera; her stiff hands keep moving \u2014 spoon, bowl, spoon. The fight he braced for simply is not coming.",
+   "camera": "hold",
+   "transition": "cut",
+   "music": "theme_village",
+   "sfx": [
+    "glass_chime",
+    "fire_lamp"
+   ],
+   "fx": [],
+   "subs": [
+    {
+     "at": 0.8,
+     "speaker": "ORLA",
+     "text": "Am I? Whose lungs are you volunteering?"
+    }
+   ]
+  },
+  {
+   "seconds": 6.5,
+   "template": "close_hands",
+   "description": "Tabletop insert. Orla's salt-cracked hand slides the keeper's ledger across the wood grain into frame \u2014 a thick, wax-dark book, corners worn round by a century of hands. Camera pans with the slide until the book stops in front of Espen's untouched bowl. Lamplight rakes the embossed cover.",
+   "camera": "pan_right",
+   "transition": "cut",
+   "music": "theme_village",
+   "sfx": [
+    "creak",
+    "wind_soft"
+   ],
+   "fx": [],
+   "subs": [
+    {
+     "at": 1.2,
+     "speaker": "ORLA",
+     "text": "Then sign out properly when you go. Keepers sign."
+    }
+   ]
+  },
+  {
+   "seconds": 7.5,
+   "template": "two_shot_silhouette",
+   "description": "The two of them in profile across the table, half-silhouetted against the storm-lit window \u2014 boy on the left refusing, old woman on the right immovable. The ledger sits between them like a border. Storm-green outside, amber rims on their faces. Held, symmetrical, quiet.",
+   "camera": "hold",
+   "transition": "cut",
+   "music": "theme_village",
+   "sfx": [
+    "wind_soft",
+    "rumble"
+   ],
+   "fx": [],
+   "subs": [
+    {
+     "at": 0.8,
+     "speaker": "ESPEN",
+     "text": "I'm not a keeper."
+    },
+    {
+     "at": 3.8,
+     "speaker": "ORLA",
+     "text": "Everyone in that book said that once."
+    }
+   ]
+  },
+  {
+   "seconds": 6.0,
+   "template": "montage_detail",
+   "description": "The ledger opened: pages turn dry as leaves. A century of nightly entries drifts past \u2014 the handwriting changing every few pages, copperplate to blunt pencil to careful schoolhand, one dead relative passing the pen to the next. The last pages are Orla's; the last lines of hers are visibly shakier than her first. Ink, wax stains, a pressed sprig of kelp.",
+   "camera": "drift",
+   "transition": "cut",
+   "music": "theme_village",
+   "sfx": [
+    "salt_crunch",
+    "breath"
+   ],
+   "fx": [
+    "grain"
+   ],
+   "subs": []
+  },
+  {
+   "seconds": 9.0,
+   "template": "close_hands",
+   "description": "Espen's finger tracks down a page and stops on a misspelled entry \u2014 'LIHGT KEPT, ALL WELL' in a big clumsy hand. Slow push-in on the boy's fingertip resting on his great-great-uncle's mistake. Off the top of frame, the smallest genuine smile passes between them; we read it only in how gently the finger stays.",
+   "camera": "push_in",
+   "transition": "cut",
+   "music": "theme_village",
+   "sfx": [
+    "salt_crunch",
+    "fire_lamp"
+   ],
+   "fx": [],
+   "subs": [
+    {
+     "at": 1.0,
+     "speaker": "ESPEN",
+     "text": "This name's spelled wrong."
+    },
+    {
+     "at": 4.0,
+     "speaker": "ORLA",
+     "text": "Your great-great-uncle. Spelled everything wrong."
+    },
+    {
+     "at": 6.4,
+     "speaker": "ORLA",
+     "text": "Kept forty years anyway."
+    }
+   ]
+  },
+  {
+   "seconds": 6.5,
+   "template": "close_eye",
+   "description": "Espen's eye, huge in lantern amber, the ledger's pages reflected as a pale rectangle on the iris. The defiance in it has gone complicated. Orla's line lands from off-screen and something in the eye stills \u2014 the first crack in 'anywhere but here'. Cello enters under the household theme, first time in the episode.",
+   "camera": "hold",
+   "transition": "cut",
+   "music": "theme_village",
+   "sfx": [
+    "fire_lamp",
+    "breath"
+   ],
+   "fx": [],
+   "subs": [
+    {
+     "at": 0.6,
+     "speaker": "ESPEN",
+     "text": "Forty years of this?"
+    },
+    {
+     "at": 3.0,
+     "speaker": "ORLA",
+     "text": "Forty years of dawns. You only ever count the nights."
+    }
+   ]
+  },
+  {
+   "seconds": 7.5,
+   "template": "storm",
+   "description": "Through the kitchen window, pushing in past the window glass, full frame \u2014 a charcoal cloudwall bricking itself up course by course, lit storm-green from within, beautiful and enormous. No lightning yet; pure pressure. Espen's small reflection ghosts on the glass.",
+   "camera": "push_in",
+   "transition": "cut",
+   "music": "theme_village",
+   "sfx": [
+    "rumble",
+    "wind_soft"
+   ],
+   "fx": [
+    "window_reflection"
+   ],
+   "subs": [
+    {
+     "at": 1.0,
+     "speaker": "ESPEN",
+     "text": "The storm looks like a wall."
+    },
+    {
+     "at": 4.2,
+     "speaker": "ORLA",
+     "text": "It is a wall. Ours just burns brighter."
+    }
+   ]
+  },
+  {
+   "seconds": 6.5,
+   "template": "char_silhouette",
+   "description": "Espen small and dark against the storm-green window, hands in pockets, the amber room behind camera warming one edge of him. Above, faint through the ceiling, the lamp's glow pulses on its slow turn. He argues with the view; the view does not answer, but Orla does.",
+   "camera": "hold",
+   "transition": "cut",
+   "music": "theme_village",
+   "sfx": [
+    "rumble",
+    "fire_lamp"
+   ],
+   "fx": [],
+   "subs": [
+    {
+     "at": 0.6,
+     "speaker": "ESPEN",
+     "text": "That doesn't mean anything."
+    },
+    {
+     "at": 3.2,
+     "speaker": "ORLA",
+     "text": "Most true things don't. Till they do."
+    }
+   ]
+  },
+  {
+   "seconds": 9.5,
+   "template": "cottage_int",
+   "description": "Supper. Two bowls steaming, the storm walling up the window behind them. Orla lands her joke flat as a plate \u2014 and Espen laughs, a real one, caught in profile against the storm-lit glass: amber face, storm-green rim light, mouth open, twelve years old. The episode's warmest single frame. Slow push-in and HOLD on the laugh; let the cello carry it long past comfortable.",
+   "camera": "push_in",
+   "transition": "cut",
+   "music": "theme_village",
+   "sfx": [
+    "glass_chime",
+    "breath",
+    "fire_lamp"
+   ],
+   "fx": [
+    "warm_bloom"
+   ],
+   "subs": [
+    {
+     "at": 1.0,
+     "speaker": "ORLA",
+     "text": "Eat. If the wind takes you, I want it to strain."
+    }
+   ]
+  },
+  {
+   "seconds": 9.5,
+   "template": "close_object",
+   "description": "Insert, locked off, while his back is turned for bowls: the paper square unfolds over her tea \u2014 empty except for a last dust of white. Her cracked thumb taps it, taps it, taps it out to nothing. Then she folds the empty paper along its three creases and puts it away as carefully as if it were still full. Room ambience thins under the insert; the household theme keeps playing, warm, and that is what makes it hurt.",
+   "camera": "hold",
+   "transition": "crossfade",
+   "music": "theme_village",
+   "sfx": [
+    "silence_drop",
+    "salt_crunch",
+    "glass_chime"
+   ],
+   "fx": [
+    "shallow_focus"
+   ],
+   "subs": []
+  },
+  {
+   "seconds": 8.5,
+   "template": "two_shot_silhouette",
+   "description": "At the stair door: the two of them silhouetted in the doorway's amber slot, storm-dark kitchen around them. She tugs his collar straight once \u2014 keeper's inspection. The exchange is ritual, worn smooth as the ledger's corners; neither of them knows it is the last time it will be true.",
+   "camera": "hold",
+   "transition": "cut",
+   "music": "theme_village",
+   "sfx": [
+    "wind_soft",
+    "creak"
+   ],
+   "fx": [],
+   "subs": [
+    {
+     "at": 1.0,
+     "speaker": "ORLA",
+     "text": "Bed. If the bell rings, it rings for you."
+    },
+    {
+     "at": 5.0,
+     "speaker": "ESPEN",
+     "text": "It never rings at night."
+    }
+   ]
+  },
+  {
+   "seconds": 5.0,
+   "template": "close_eye",
+   "description": "Orla's eyes, close, amber-lit, crow's-feet deep as tide lines. A tiny push-in as she answers \u2014 the line is a lullaby on top and a locked door underneath. Somewhere far off the storm shifts a register lower. She knows exactly what nights are for.",
+   "camera": "push_in",
+   "transition": "cut",
+   "music": "theme_village",
+   "sfx": [
+    "breath",
+    "rumble"
+   ],
+   "fx": [],
+   "subs": [
+    {
+     "at": 1.0,
+     "speaker": "ORLA",
+     "text": "No. It never does."
+    }
+   ]
+  },
+  {
+   "seconds": 10.5,
+   "template": "stairs",
+   "description": "The old world's last image. From inside Espen's dark bedroom doorway \u2014 black frame within the frame \u2014 the spiral stair climbs away toward the lamp room's living gold. Orla's small silhouette ascends toward the burning lamp, one hand on the rail. Halfway, she rests: one beat, hand flat on the rail, head bowed. Then on, up, into the light. Camera tilts up with her the whole way; household theme reaches its fullest, warmest statement, cello underneath, held deliberately long.",
+   "camera": "tilt_up",
+   "transition": "cut",
+   "music": "theme_village",
+   "sfx": [
+    "footsteps_stone",
+    "creak",
+    "wind_soft"
+   ],
+   "fx": [
+    "warm_bloom",
+    "grain"
+   ],
+   "subs": []
+  },
+  {
+   "seconds": 2.5,
+   "template": "black",
+   "description": "Black. The theme finally lets go mid-phrase \u2014 cut to nothing. Only the storm's far pressure remains, rolling once beneath the floor of the mix. The warmth is over; scene 7 will wake in this dark.",
+   "camera": "hold",
+   "transition": "fade_out",
+   "music": "silence",
+   "sfx": [
+    "rumble",
+    "wind_soft"
+   ],
+   "fx": [],
+   "subs": []
+  }
+ ]
+}

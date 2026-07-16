@@ -1,0 +1,121 @@
+{
+ "scene_n": 12,
+ "shots": [
+  {
+   "seconds": 6,
+   "template": "dry_sea_vista",
+   "description": "Full pitiless noon: the dead strait as a blinding salt plain under a white sky, horizon nearly erased \u2014 white on white, values crushed high, heat-shimmer, no birds, no clouds. Far off, one vertical needle breaks the emptiness: Farholm's tower. The frame is overexposed calm, too clean, like a lie the daylight is telling.",
+   "camera": "drift",
+   "transition": "fade_in",
+   "music": "silence",
+   "sfx": [
+    "wind_soft"
+   ]
+  },
+  {
+   "seconds": 7,
+   "template": "lighthouse_ext",
+   "description": "Farholm's tower dead center, white against white, slowly growing. As the push resolves detail, the wrongness lands: the lamp-room glass at the crown is broken OUTWARD \u2014 a dark empty socket where a lens should burn. Nothing moves anywhere on the tower. The only true black in the whole bleached frame is that dead lamp room.",
+   "camera": "push_in",
+   "transition": "cut",
+   "music": "silence",
+   "sfx": [
+    "wind_soft",
+    "glass_chime"
+   ]
+  },
+  {
+   "seconds": 4.5,
+   "template": "montage_detail",
+   "description": "Detail: shards of lamp-room glass embedded down the tower's white flank, glittering in hard noon light like spray frozen mid-burst \u2014 an explosion weeks old, preserved in salt. Tilt down the masonry, following the glitter trail toward the ground.",
+   "camera": "tilt_down",
+   "transition": "cut",
+   "music": "silence",
+   "sfx": [
+    "glass_chime",
+    "wind_soft"
+   ]
+  },
+  {
+   "seconds": 8,
+   "template": "undertow",
+   "description": "The tilt lands at the tower's base: its long noon shadow pooled across the salt \u2014 the one wrong pool of ink in a white world. Locked-off wide, pitiless. Inside the shadow, something is still swimming: a bulge of deeper dark cruises its length and turns. Hold long enough for the audience to find it themselves.",
+   "camera": "hold",
+   "transition": "cut",
+   "music": "silence",
+   "sfx": [
+    "waves_memory",
+    "wind_soft"
+   ]
+  },
+  {
+   "seconds": 7,
+   "template": "close_object",
+   "description": "Extreme close-up on the shadow's edge against white salt: the ink border laps forward and recoils, laps and recoils \u2014 exactly the rhythm the darkness pressed against the lamp-room glass in the six dark minutes. Shadow is water. Slow creeping push, no cut for mercy; a wet lapping sound where no water is.",
+   "camera": "push_in",
+   "transition": "cut",
+   "music": "silence",
+   "sfx": [
+    "waves_memory",
+    "undertow_call"
+   ]
+  },
+  {
+   "seconds": 5,
+   "template": "cottage_int",
+   "description": "Hard cut back across the strait: Espen's windowsill, noon light flat and honest on old wood. On the sill sits the saltglass jar \u2014 glowing steady now, not pulsing. The open window frames the hazed strait beyond; the glow leans toward it like a needle finding north.",
+   "camera": "hold",
+   "transition": "cut",
+   "music": "silence",
+   "sfx": [
+    "wind_soft"
+   ]
+  },
+  {
+   "seconds": 10,
+   "template": "close_object",
+   "description": "Close on the jar: steady blue held in glass, a compass needle pointed at Farholm. The wind drops out of the mix and the episode's single closing narration card sets over the jar in white text. The glow does not flicker once. Nothing else in the frame moves.",
+   "camera": "push_in",
+   "transition": "cut",
+   "music": "silence",
+   "sfx": [
+    "silence_drop",
+    "glass_chime"
+   ],
+   "subs": [
+    {
+     "at": 1.0,
+     "speaker": "NARRATION",
+     "text": "The law says every light burns till dawn."
+    },
+    {
+     "at": 6.0,
+     "speaker": "NARRATION",
+     "text": "Now you know why."
+    }
+   ]
+  },
+  {
+   "seconds": 8,
+   "template": "title_card",
+   "description": "True black. Salt crystals grow letter by letter \u2014 NEXT TIME: THE FAR SHORE \u2014 the same crystallization grammar as the episode title, white salt on black, bookending scene 2. As the last crystal sets, one far bell rings once and is left to decay untouched.",
+   "camera": "hold",
+   "transition": "dip_black",
+   "music": "silence",
+   "sfx": [
+    "bell_small"
+   ]
+  },
+  {
+   "seconds": 3,
+   "template": "black",
+   "description": "The salt title dissolves back into black. The bell's tail dies into full silence. Nothing moves. End of episode.",
+   "camera": "hold",
+   "transition": "fade_out",
+   "music": "silence",
+   "sfx": [
+    "silence_drop"
+   ]
+  }
+ ]
+}

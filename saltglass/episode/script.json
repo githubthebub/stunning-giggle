@@ -1,0 +1,846 @@
+{
+ "scenes": [
+  {
+   "n": 1,
+   "title": "COLD OPEN \u2014 The Night the Water Left",
+   "minutes": 0.8,
+   "setting": "The old ocean, mid-Withdrawal; then a century of the same coastline in dissolves; ending on present-day Saltwick Light.",
+   "time_of_day": "moonlit night into time-lapse century",
+   "palette": "moonlit indigo / salt-white ebb, ink horizon",
+   "music": "a single held low string under wind; no melody yet; the score itself seems to withdraw with the water",
+   "sfx": [
+    "vast receding hiss of water leaving",
+    "hulls groaning onto wet sand",
+    "wind over salt",
+    "one distant lamp mechanism ticking"
+   ],
+   "action": "Open already inside the catastrophe: a moonlit ocean is walking out of the world, the water sliding backward in one continuous silver sheet, moon-path stretching and snapping like pulled taffy. By fifteen seconds, fishing ships keel over into gleaming wet sand, masts tilting in silhouette, anchor chains left pointing at nothing. FRAME ONE (to be reprised): the sea's retreating edge seen from the cliff, a bright line abandoning the land. Three narration cards burn in over black between images. Then a century pours through dissolves on a locked-off wide: the harbor dries and whitens, salt crystals climb the dead hulls like frost in fast-motion, kelp forests petrify into verdigris stone, whale bones surface from the flats like the ribs of the world, and a town retreats up its cliff one rooftop at a time. FRAME TWO: a lone lamp burning on the cliff edge at night while the darkness below seems to LEAN toward it, a shade too deep, deep like depth. End present day \u2014 FRAME THREE: Saltwick Light's beam sweeps slow across a sea of air, and everywhere the beam is not, the black underneath reads as black that still moves like the sea being water.",
+   "dialogue": [
+    {
+     "speaker": "NARRATION",
+     "line": "A hundred years ago, in one night, the sea left.",
+     "note": "card 1, over the water walking out"
+    },
+    {
+     "speaker": "NARRATION",
+     "line": "The law says every light burns till dawn.",
+     "note": "card 2, over the lone lamp and the leaning dark"
+    },
+    {
+     "speaker": "NARRATION",
+     "line": "Nobody remembers why.",
+     "note": "card 3, over the beam sweeping emptiness"
+    }
+   ]
+  },
+  {
+   "n": 2,
+   "title": "TITLE CARD",
+   "minutes": 0.4,
+   "setting": "Inside the beam; then black.",
+   "time_of_day": "night",
+   "palette": "whiteout / salt crystal on black",
+   "music": "silence except wind; one struck-glass tone as the letters finish growing",
+   "sfx": [
+    "beam sweep whoosh into whiteout",
+    "crystalline crackle of salt growing",
+    "one small bell, very far away, rung once"
+   ],
+   "action": "The lighthouse beam swings directly into camera \u2014 whiteout. Out of the white, black returns first, and then letters grow across it the way salt takes a hull: branching crystal, faintly blue at the edges, resolving into SALTGLASS and beneath it, smaller, KEEP THE LIGHT. Hold on the finished title in silence. Then, from somewhere impossibly far out on the flats, one small bell rings once \u2014 and the letters give a single faint pulse of blue before we cut.",
+   "dialogue": []
+  },
+  {
+   "n": 3,
+   "title": "Low Tide of a Hundred Years",
+   "minutes": 2.0,
+   "setting": "The Dry Sea beneath Saltwick Light: stone kelp under a whale ribcage; then the lamp room at breakfast.",
+   "time_of_day": "golden dawn",
+   "palette": "gold dawn / bone-white flats, kelp verdigris",
+   "music": "warm sparse guitar-and-glass motif \u2014 the household theme, played light",
+   "sfx": [
+    "chisel taps on stone kelp",
+    "brass signal bell: two clean rings",
+    "kettle rattle and catch",
+    "gulls that are not gulls \u2014 dry-flats birds"
+   ],
+   "action": "Golden light rakes the seabed and every whale rib throws a shadow a hundred meters long. Under the ribcage, small and utterly unafraid, Espen chisels a nub of blue saltglass out of a stone kelp stalk, breath fogging, tongue between his teeth. Close-up: the crystal drops into a jar half full of blue fragments \u2014 they clink like ice. Far above, tiny on the cliff, Saltwick Light's brass signal bell swings twice: their private language. Espen rolls his eyes, pockets the jar, and takes the cliff stair two at a time in silhouette. LAMP ROOM: breakfast laid out under the great lens, the dead lamp huge and museum-still behind them. Orla's salt-stiff hand loses the kettle mid-pour \u2014 both her hands snap together and catch it, an old practiced save; Espen sees the save, not the slip. Then, framed clean and center for camera while Espen digs through his jar with his back half turned: Orla unfolds a small paper square and taps white powder into her tea, folds the paper away with two fingers, drinks. The scene ends on Espen pocketing the jar in silent protest, and her watching him not watch her.",
+   "dialogue": [
+    {
+     "speaker": "ORLA",
+     "line": "You climb like the stairs owe you money."
+    },
+    {
+     "speaker": "ESPEN",
+     "line": "You ring like the bell owes you dinner."
+    },
+    {
+     "speaker": "ORLA",
+     "line": "Two rings means food. You came up on one and a half."
+    },
+    {
+     "speaker": "ESPEN",
+     "line": "Found a whole vein of blue under the third rib. Look at it."
+    },
+    {
+     "speaker": "ORLA",
+     "line": "Mm. The sea's old teeth."
+    },
+    {
+     "speaker": "ESPEN",
+     "line": "It's salt with a mood, Gran."
+    },
+    {
+     "speaker": "ORLA",
+     "line": "Everything down there is something with a mood."
+    },
+    {
+     "speaker": "ESPEN",
+     "line": "I had it.",
+     "note": "after the kettle save"
+    },
+    {
+     "speaker": "ORLA",
+     "line": "You had the floor. The floor had the kettle."
+    },
+    {
+     "speaker": "ESPEN",
+     "line": "Your hands okay?"
+    },
+    {
+     "speaker": "ORLA",
+     "line": "My hands are seventy. Ask them nothing before noon.",
+     "note": "deflection; she pours anyway"
+    },
+    {
+     "speaker": "ESPEN",
+     "line": "Hulda's caravan goes out after storm season."
+    },
+    {
+     "speaker": "ORLA",
+     "line": "So does every fool with two legs and no roof to mind."
+    },
+    {
+     "speaker": "ESPEN",
+     "line": "If I sell the whole jar, I can get the wheel. The good one. With spokes."
+    },
+    {
+     "speaker": "ORLA",
+     "line": "Oil first."
+    },
+    {
+     "speaker": "ESPEN",
+     "line": "It's always oil first. We eat oil. We dream oil."
+    },
+    {
+     "speaker": "ORLA",
+     "line": "When you keep a lamp, you'll count different."
+    },
+    {
+     "speaker": "ESPEN",
+     "line": "I don't keep a lamp. I carry stairs for one."
+    },
+    {
+     "speaker": "ORLA",
+     "line": "Then carry the can to Hulda's. Full weight, and watch her thumb."
+    },
+    {
+     "speaker": "ESPEN",
+     "line": "Her thumb weighs a fish."
+    },
+    {
+     "speaker": "ORLA",
+     "line": "So does your excuse."
+    }
+   ]
+  },
+  {
+   "n": 4,
+   "title": "Hulda's Scales",
+   "minutes": 1.9,
+   "setting": "Cliff-town market street; Hulda's oil stall under a rust-red awning; the cliff rail overlooking the strait.",
+   "time_of_day": "chalk-white noon",
+   "palette": "chalk noon / laundry white, rust awnings, hazed strait",
+   "music": "the household theme gone dry and plucked \u2014 bored, sun-bleached; drops out entirely at the jar pulse",
+   "sfx": [
+    "laundry snapping in wind",
+    "brass scale pans clinking",
+    "one coin sliding on skin",
+    "a single soft glass hum \u2014 the jar pulse"
+   ],
+   "action": "Noon flattens the town to chalk and shadow: laundry lines cross the street like signal flags, a cat sleeps in a dry boat planter. At her stall Hulda \u2014 big, sun-cured, thumb permanently at home on the scale \u2014 pokes through Espen's tray of trinkets while the oil can waits on the counter between them. Close-up: brass scale pans, trinkets on one side, coins on the other, her thumb resting just so. When she counts out the oil money, Espen's hand palms one coin off the top mid-pass \u2014 a card-trick move, shot tight and unmistakable, the coin vanishing into the same pocket as the jar. They walk together to the cliff rail; Hulda squints across the strait where a smudge of haze sits on the horizon exactly where a tower should be. Espen leans on the rail, bored. In his pocket, framed in a tight insert: the jar gives one slow blue pulse, lighting the coin beside it. He pulls it out, taps it against the rail like a dead watch, shrugs, and walks on \u2014 and behind him, unwatched, it pulses once more toward the strait.",
+   "dialogue": [
+    {
+     "speaker": "HULDA",
+     "line": "Kelp glass, bone buttons... and what is this, a saint's toe?"
+    },
+    {
+     "speaker": "ESPEN",
+     "line": "Whale ear-stone. Worth your whole awning, probably."
+    },
+    {
+     "speaker": "HULDA",
+     "line": "Probably. The word I pay least for."
+    },
+    {
+     "speaker": "HULDA",
+     "line": "Oil's up again. Storm season. Everything true costs more in storm season."
+    },
+    {
+     "speaker": "ESPEN",
+     "line": "Gran says full weight."
+    },
+    {
+     "speaker": "HULDA",
+     "line": "Your gran says a lot of hundred-year-old things."
+    },
+    {
+     "speaker": "HULDA",
+     "line": "A century, boy. Not one ship. Not a rowboat. Not a duck."
+    },
+    {
+     "speaker": "HULDA",
+     "line": "And she burns coin every night to warn them."
+    },
+    {
+     "speaker": "ESPEN",
+     "line": "Yeah."
+    },
+    {
+     "speaker": "HULDA",
+     "line": "Yeah?",
+     "note": "she actually looks up"
+    },
+    {
+     "speaker": "ESPEN",
+     "line": "It's a museum. She's the exhibit.",
+     "note": "grinning; first time out loud"
+    },
+    {
+     "speaker": "HULDA",
+     "line": "Ha! Ten years I've said it. First time a keeper's blood agreed with me."
+    },
+    {
+     "speaker": "ESPEN",
+     "line": "Apprentice. It's different."
+    },
+    {
+     "speaker": "HULDA",
+     "line": "Not in the ledger it isn't."
+    },
+    {
+     "speaker": "HULDA",
+     "line": "Spring caravan. There's still a place, if your legs are serious.",
+     "note": "as the coin disappears"
+    },
+    {
+     "speaker": "ESPEN",
+     "line": "I asked, didn't I?"
+    },
+    {
+     "speaker": "HULDA",
+     "line": "You asked like a boy buying something behind his gran's back."
+    },
+    {
+     "speaker": "ESPEN",
+     "line": "It's my back."
+    },
+    {
+     "speaker": "HULDA",
+     "line": "Funny. Can't see Farholm's tower lately.",
+     "note": "squinting across the strait"
+    },
+    {
+     "speaker": "ESPEN",
+     "line": "It's noon."
+    },
+    {
+     "speaker": "HULDA",
+     "line": "At noon you see the tower. Haze, probably."
+    },
+    {
+     "speaker": "ESPEN",
+     "line": "Cheap junk.",
+     "note": "to himself, tapping the jar like a dead watch"
+    }
+   ]
+  },
+  {
+   "n": 5,
+   "title": "The Lesson \u2014 Six Minutes",
+   "minutes": 2.0,
+   "setting": "The lamp room at dusk: the great lens, the match tin, the stove ledge, the cracked pane.",
+   "time_of_day": "ember dusk",
+   "palette": "ember dusk / brass, oil-flame amber, one cracked pane of storm-green",
+   "music": "a slow six-note figure enters under the litany \u2014 one note per minute-rule; it will become the setpiece clock",
+   "sfx": [
+    "wick scissors snip",
+    "oil filling to a ring",
+    "match tin rattle \u2014 eight loose matches",
+    "wind whistling thin through the cracked pane"
+   ],
+   "action": "Dusk turns the lamp room to embers and brass. The whole ritual is taught in close-ups of hands: Orla's \u2014 salt-cracked, knuckles like rope knots \u2014 trimming the wick, wiping the ring, laying the tin open; Espen's beside them, young and quick and half-hearted, mimicking each motion a beat late, fingers busy spinning the saltglass jar between steps. One pane in the storm-side glass carries a hairline crack that whistles; the wind through it flutters a rag she has stuffed in the gap. She points at it; he shrugs; the shrug is shot as clearly as the crack. Insert: the tin \u2014 eight matches, counted with her thumb. Insert: the stove ledge, its wood worn pale in exactly a tin-sized rectangle from a century of matches drying there overnight; Espen pockets the tin instead, still damp from the seabed morning, and the empty pale rectangle holds the frame for one long beat. Then the scene breaks pattern: her hand closes on his wrist, hard, older-strong, and she guides his fingers behind the great lens to a small brass clip where one match rests alone. The last shot is her face lit half by dusk, stopping herself at the edge of a sentence.",
+   "dialogue": [
+    {
+     "speaker": "ORLA",
+     "line": "Hands."
+    },
+    {
+     "speaker": "ORLA",
+     "line": "Softer than mine were at eight. Never mind. Watch."
+    },
+    {
+     "speaker": "ORLA",
+     "line": "Minute one: shut the pane. Wind is a thief with patient fingers."
+    },
+    {
+     "speaker": "ESPEN",
+     "line": "The pane's fine."
+    },
+    {
+     "speaker": "ORLA",
+     "line": "The pane is cracked and you've been told twice."
+    },
+    {
+     "speaker": "ESPEN",
+     "line": "It whistles. I like the whistle."
+    },
+    {
+     "speaker": "ORLA",
+     "line": "Minute two: trim the wick. Black beard, no flame."
+    },
+    {
+     "speaker": "ORLA",
+     "line": "Minute three: oil to the ring. Not past it, not shy of it."
+    },
+    {
+     "speaker": "ORLA",
+     "line": "Minute four: dry hands, dry matches. Say it."
+    },
+    {
+     "speaker": "ESPEN",
+     "line": "Dry hands, dry matches.",
+     "note": "flat, humoring her"
+    },
+    {
+     "speaker": "ORLA",
+     "line": "Say it like it's yours."
+    },
+    {
+     "speaker": "ESPEN",
+     "line": "Dry hands. Dry matches."
+    },
+    {
+     "speaker": "ORLA",
+     "line": "Minute five: strike away from your body."
+    },
+    {
+     "speaker": "ORLA",
+     "line": "Minute six: burn."
+    },
+    {
+     "speaker": "ESPEN",
+     "line": "And if it doesn't?"
+    },
+    {
+     "speaker": "ESPEN",
+     "line": "Gran. What happens at minute seven?",
+     "note": "into her silence"
+    },
+    {
+     "speaker": "ORLA",
+     "line": "The tin holds eight. Buy more tomorrow.",
+     "note": "not an answer, and both know it"
+    },
+    {
+     "speaker": "ORLA",
+     "line": "Matches sleep on the stove ledge. Every night. Even when I don't."
+    },
+    {
+     "speaker": "ESPEN",
+     "line": "Six minutes. It's a lamp, not a heart.",
+     "note": "pocketing the damp tin"
+    },
+    {
+     "speaker": "ORLA",
+     "line": "Behind the great lens. One spare. Dry.",
+     "note": "gripping his wrist, out of character"
+    },
+    {
+     "speaker": "ESPEN",
+     "line": "Ow\u2014 fine. One spare. For what?"
+    },
+    {
+     "speaker": "ORLA",
+     "line": "For the night the tin lies to you."
+    }
+   ]
+  },
+  {
+   "n": 6,
+   "title": "The Ledger and the Storm Supper",
+   "minutes": 1.8,
+   "setting": "The keeper's kitchen below the lamp room; window on the strait where the storm builds.",
+   "time_of_day": "late dusk into first dark",
+   "palette": "storm-green horizon / lantern amber interior, charcoal cloudwall",
+   "music": "household theme, fullest and warmest statement \u2014 deliberately held long, cello under it for the first time",
+   "sfx": [
+    "pages of the ledger turning, dry as leaves",
+    "storm building far off \u2014 pressure, not thunder yet",
+    "spoon on bowl",
+    "paper square folding: three small creases"
+   ],
+   "action": "Lantern amber inside; through the window, the storm assembles over the strait like a black wall being bricked up in real time, beautiful and enormous. Espen makes his announcement standing, braced for a fight that never comes. Instead Orla slides the keeper's ledger across the table: a century of nightly entries, the handwriting changing every few pages as one dead relative hands the pen to the next \u2014 the last pages hers, and the last lines of hers visibly shakier than the first. Close-up: Espen's finger stops on a misspelled entry; the smallest genuine smile passes between them. Supper: she lands her joke; he laughs \u2014 a real one, caught in profile against the storm-lit window, the episode's warmest single frame. Then, while his back is turned to fetch bowls: insert of the paper square unfolding over her tea \u2014 empty except for a last dust of white she taps out to nothing. She folds the empty paper and puts it away as carefully as if it were still full. The scene ends on the old world's last image: from Espen's dark bedroom doorway, Orla's small silhouette climbing toward the burning lamp, one hand on the rail, resting once.",
+   "dialogue": [
+    {
+     "speaker": "ESPEN",
+     "line": "I told Hulda yes. The spring caravan."
+    },
+    {
+     "speaker": "ESPEN",
+     "line": "...You're supposed to yell now."
+    },
+    {
+     "speaker": "ORLA",
+     "line": "Am I. Whose lungs are you volunteering?"
+    },
+    {
+     "speaker": "ORLA",
+     "line": "Then sign out properly when you go. Keepers sign.",
+     "note": "sliding the ledger across"
+    },
+    {
+     "speaker": "ESPEN",
+     "line": "I'm not a keeper."
+    },
+    {
+     "speaker": "ORLA",
+     "line": "Everyone in that book said that once."
+    },
+    {
+     "speaker": "ESPEN",
+     "line": "This name's spelled wrong."
+    },
+    {
+     "speaker": "ORLA",
+     "line": "Your great-great-uncle. Spelled everything wrong. Kept forty years anyway."
+    },
+    {
+     "speaker": "ESPEN",
+     "line": "Forty years of this?"
+    },
+    {
+     "speaker": "ORLA",
+     "line": "Forty years of dawns. You only ever count the nights."
+    },
+    {
+     "speaker": "ESPEN",
+     "line": "The storm looks like a wall.",
+     "note": "at the window"
+    },
+    {
+     "speaker": "ORLA",
+     "line": "It is a wall. Ours just burns brighter."
+    },
+    {
+     "speaker": "ESPEN",
+     "line": "That doesn't mean anything."
+    },
+    {
+     "speaker": "ORLA",
+     "line": "Most true things don't. Till they do."
+    },
+    {
+     "speaker": "ORLA",
+     "line": "Eat. If the wind takes you, I want it to strain.",
+     "note": "he actually laughs"
+    },
+    {
+     "speaker": "ORLA",
+     "line": "Bed. If the bell rings, it rings for you."
+    },
+    {
+     "speaker": "ESPEN",
+     "line": "It never rings at night."
+    },
+    {
+     "speaker": "ORLA",
+     "line": "No. It never does."
+    }
+   ]
+  },
+  {
+   "n": 7,
+   "title": "The Bell Rings Wrong",
+   "minutes": 1.4,
+   "setting": "Espen's black bedroom; the spiral stair in storm; the landing below the lamp room.",
+   "time_of_day": "deep night, storm",
+   "palette": "wet slate / lightning white, black spiral stair",
+   "music": "none \u2014 the broken bell IS the music cue; score stays out until scene 8's litany begins",
+   "sfx": [
+    "signal bell ringing wrong: dragged, irregular, stopping mid-swing",
+    "stair door banging",
+    "rain climbing the spiral like something crawling",
+    "her breath, shallow and timed wrong"
+   ],
+   "action": "Black frame. The signal bell \u2014 but wrong: dragged, arrhythmic, a hand losing its grip on their language mid-word. Espen's eye opens in the dark before the rest of him. He takes the spiral stair barefoot into weather: the stair door has blown open and rain is climbing the steps in gusts, each lightning flash printing the spiral in white then taking it away. On the landing: Orla, down, one hand still tangled in the bell rope above her like a climber who almost held. He gets under her arm; she is impossibly heavy the way only fallen people are; his feet slide on wet stone. Then the single tilt-up that breaks the night open: past her shoulder, up the last turn of stairs, the lamp room stands DARK \u2014 and in a lightning flash the cracked pane shows its rag blown inward, the crack whistling triumphantly. Her face is half in shadow; her subtitled words come in fragments between the wrong breaths. On her last word, thunder lands directly overhead, and Espen looks up the dark spiral alone.",
+   "dialogue": [
+    {
+     "speaker": "ESPEN",
+     "line": "Gran? Gran\u2014"
+    },
+    {
+     "speaker": "ESPEN",
+     "line": "Okay. Up. Come on, up\u2014 why are you heavy, you weigh nothing\u2014"
+    },
+    {
+     "speaker": "ORLA",
+     "line": "Pane.",
+     "note": "she doesn't ask how the flame died; she knows"
+    },
+    {
+     "speaker": "ESPEN",
+     "line": "I know. I know, I'm sorry, I'll fix it, just stand\u2014"
+    },
+    {
+     "speaker": "ORLA",
+     "line": "Light first."
+    },
+    {
+     "speaker": "ESPEN",
+     "line": "You're on the floor!"
+    },
+    {
+     "speaker": "ORLA",
+     "line": "Then me."
+    },
+    {
+     "speaker": "ESPEN",
+     "line": "Gran\u2014"
+    },
+    {
+     "speaker": "ORLA",
+     "line": "Count."
+    },
+    {
+     "speaker": "ORLA",
+     "line": "Count.",
+     "note": "quieter; it is the last thing she has strength for"
+    }
+   ]
+  },
+  {
+   "n": 8,
+   "title": "SETPIECE \u2014 Six Minutes of the Wrong Sea",
+   "minutes": 3.8,
+   "setting": "The dark lamp room; the gallery glass; the Dry Sea filling with darkness below. Intercuts: the landing, the village windows.",
+   "time_of_day": "the six dark minutes",
+   "palette": "abyssal black / saltglass blue, match-flare orange, cold fin-light rows",
+   "music": "the six-note litany figure, one note per minute, degrading as matches die; FULL SCORE DROPOUT when the eye arrives; returns as a single sustained tone with the spare match",
+   "sfx": [
+    "match heads crumbling wet \u2014 a sound like sand",
+    "the eighth match snapping",
+    "rain going SIDEWAYS against glass \u2014 current, not weather",
+    "hull-creaks through stone, fathoms down",
+    "frost blooming: a fine crystalline hiss",
+    "one whale-deep note sinking as the light returns"
+   ],
+   "action": "Near-real-time. Espen works the litany aloud \u2014 the only clock we get. MINUTE ONE: he jams the rag and his own balled jacket into the cracked pane; wind fights him for it. MINUTE TWO, THREE: wick, oil, hands doing her motions \u2014 and in tight inserts his shaking fingers become an exact match of hers from scene 5, knuckle for knuckle. MINUTE FOUR: the tin. The first match head crumbles wet against the striker like sand. The second. The third. He shelters the tin in his shirt; four, five, six, seven die \u2014 seven small deaths in close-up, each dud laid on the sill in a lengthening row. MINUTE FIVE: the eighth snaps unstruck between his fingers. And the world changes: the jar on the floor wakes, brightening from ember-blue to drowned-noon-blue; the rain outside stops falling DOWN and streams SIDEWAYS across the gallery glass like current; a long hull-creak rolls up through the tower from ten fathoms of stone below. The score drops out entirely. Outside, rows of faint cold fin-lights rise past the glass, huge and slow, and one eye the size of the supper table comes level with the boy \u2014 never centered in frame, never lit, its breath rendered as frost blooming across the pane toward his hand, which recoils. The cold open's three frames return, wider, heavier: the sea coming back wrong; the dark leaning at a lone dead lamp; emptiness where a beam should be. Intercut pressure valves: Orla's hand slack in the bell rope two floors down; the village's lit windows floating in the risen dark like buoys, and going out one by one as people sleep. Then he stops looking at the eye and looks at the lens \u2014 remembers her HANDS, not her words \u2014 and reaches behind the great lens to the brass clip: one match, dry as a kept promise. He shields it inside her hanging coat, strikes it away from his body on the lens frame, and at the count of six the wick catches. The beam slams outward and the darkness recoils from it like surf off rock \u2014 dry land, restored. One whale-deep note sinks below the cliff and does not come back. RENDER RULE: every frame carries an internal light source \u2014 jar glow, match flare, lightning rim, fin-light, beam; blacks never crush.",
+   "dialogue": [
+    {
+     "speaker": "ESPEN",
+     "line": "Minute one. Shut the pane."
+    },
+    {
+     "speaker": "ESPEN",
+     "line": "Minute two. Trim the wick."
+    },
+    {
+     "speaker": "ESPEN",
+     "line": "Minute three. Oil to the ring."
+    },
+    {
+     "speaker": "ESPEN",
+     "line": "Minute four. Dry hands. Dry\u2014",
+     "note": "the first match head crumbles"
+    },
+    {
+     "speaker": "ESPEN",
+     "line": "No. No no no. Not now\u2014"
+    },
+    {
+     "speaker": "ESPEN",
+     "line": "Minute five. Strike away from your body.",
+     "note": "voice steadying itself with her words"
+    },
+    {
+     "speaker": "ESPEN",
+     "line": "That was still five. It's still five!",
+     "note": "the eighth snaps; he is bargaining with a clock"
+    },
+    {
+     "speaker": "ESPEN",
+     "line": "You're not real. The sea left.",
+     "note": "whispered at the eye; frost creeps toward his hand"
+    },
+    {
+     "speaker": "ESPEN",
+     "line": "...minute six."
+    },
+    {
+     "speaker": "ESPEN",
+     "line": "Behind the lens. One spare. Dry.",
+     "note": "her words in his mouth, finally his"
+    },
+    {
+     "speaker": "ESPEN",
+     "line": "For the night the tin lies."
+    },
+    {
+     "speaker": "ESPEN",
+     "line": "Burn.",
+     "note": "the wick catches on the word"
+    }
+   ]
+  },
+  {
+   "n": 9,
+   "title": "Holding the Line",
+   "minutes": 1.5,
+   "setting": "The lit lamp room; the six steps of stair between it and the daybed where he settles Orla.",
+   "time_of_day": "deep night after the storm's worst",
+   "palette": "deep night / single flame gold, blue jar-glow on grey blankets",
+   "music": "the six-note litany figure returns intact, gentle now \u2014 it has become a lullaby without changing a note",
+   "sfx": [
+    "wick feeding: soft oil sputter",
+    "heels dragging on stone, inches at a time",
+    "the lamp mechanism wound and ticking",
+    "rain thinning to drips"
+   ],
+   "action": "The rest of the night compressed into dissolves paced on the count: Espen feeds the wick \u2014 six steps down \u2014 drags Orla toward the daybed by inches, her arm over his shoulders, both of them small in the stairwell \u2014 six steps up \u2014 back before the mechanism runs down. Again. Again. The rhythm the litany was built to teach is now simply how he moves. He gets her onto the daybed, tucks the grey blanket wrong and then fixes it, and sets the saltglass jar \u2014 dim now, exhausted-blue \u2014 on her windowsill like a night-light, angling it the way you angle a candle for a sick child. She surfaces once, from somewhere far under, and her stiff fingers find the jar's glass. What she says, she says with her eyes closed. When he starts his question the camera is already drifting off her face; asleep, or pretending, and the difference is hers to keep. He climbs back up into the gold. Last shot: the boy sitting where she always sat, lips moving, counting.",
+   "dialogue": [
+    {
+     "speaker": "ESPEN",
+     "line": "Six down. Six up. That's the whole song, isn't it."
+    },
+    {
+     "speaker": "ORLA",
+     "line": "Kettle... had further to fall.",
+     "note": "a joke, from the floor of herself"
+    },
+    {
+     "speaker": "ESPEN",
+     "line": "Don't joke. You're not allowed to joke on a floor."
+    },
+    {
+     "speaker": "ORLA",
+     "line": "Your grandfather kept weather in jars too.",
+     "note": "fingers on the saltglass"
+    },
+    {
+     "speaker": "ORLA",
+     "line": "He never believed it either. Then he did."
+    },
+    {
+     "speaker": "ESPEN",
+     "line": "Gran. The thing at the glass. Its eye was\u2014"
+    },
+    {
+     "speaker": "ESPEN",
+     "line": "Gran?"
+    },
+    {
+     "speaker": "ESPEN",
+     "line": "Fine. Sleep. I've got the count."
+    }
+   ]
+  },
+  {
+   "n": 10,
+   "title": "Dawn \u2014 Seven Dead Soldiers",
+   "minutes": 1.2,
+   "setting": "The lamp room sill and daybed corner, morning after.",
+   "time_of_day": "steam-gold dawn",
+   "palette": "steam-gold dawn / grey blanket, black matchsticks on white sill",
+   "music": "household theme returns, but re-voiced on the litany's instruments \u2014 the two themes are one theme now",
+   "sfx": [
+    "seabed steaming: a soft white-noise shimmer",
+    "teacup on saucer, trembling then steadied",
+    "the lamp, still burning, ticking down"
+   ],
+   "action": "The storm is gone and the seabed steams gold from horizon to horizon \u2014 for one cruel held beat, through the gallery glass, the vapor moves like swell and it is almost, almost water. Then a bird walks on it and the illusion dies. The night is recapped without a word of narration, in objects: seven burnt matchsticks lined on the white sill like little black soldiers; the snapped eighth laid crosswise beside the empty tin; the lamp above them still burning into daylight. Orla, propped on the daybed, reads the sill the way other people read a letter. Then her stiff hand goes behind the great lens \u2014 the clip is empty \u2014 and closes slowly on nothing, and that closing hand is the whole conversation. Espen pours her tea; his hand shakes with the specific tremor of a boy who has been awake all night being brave; her salt-stiff hand comes up under the cup and steadies it, the same save as the kettle, offered instead of hidden. Two lines each, and the apprenticeship is signed.",
+   "dialogue": [
+    {
+     "speaker": "ORLA",
+     "line": "Seven.",
+     "note": "reading the sill"
+    },
+    {
+     "speaker": "ESPEN",
+     "line": "Eight. One snapped."
+    },
+    {
+     "speaker": "ORLA",
+     "line": "Snapped counts.",
+     "note": "the closest she will come to saying you nearly died"
+    },
+    {
+     "speaker": "ESPEN",
+     "line": "I'll buy more matches."
+    },
+    {
+     "speaker": "ORLA",
+     "line": "Buy two tins."
+    },
+    {
+     "speaker": "ESPEN",
+     "line": "And putty. For the pane."
+    },
+    {
+     "speaker": "ORLA",
+     "line": "I know.",
+     "note": "meaning: I know everything, and it's forgiven"
+    }
+   ]
+  },
+  {
+   "n": 11,
+   "title": "Bells Before Body \u2014 The Bellfarer",
+   "minutes": 1.7,
+   "setting": "The village street at first light; Hulda's stall; the cliff stair where the Dry Sea meets the town; Saltwick Light's beam across the ground.",
+   "time_of_day": "shell-pink dawn",
+   "palette": "shell-pink flats / long blue shadows, bell-brass glints",
+   "music": "none under the bells \u2014 the bells are the cue; a low sustained note enters under the stanza",
+   "sfx": [
+    "dozens of small bells rising from the seabed, arrhythmic, getting closer",
+    "shutters opening along the street",
+    "one coin pressed into a palm",
+    "oil poured back: a full measure",
+    "the cracked bell: a dead clack where a ring should be"
+   ],
+   "action": "Sound arrives before anything else: small bells, many of them, arrhythmic, rising from below the cliff \u2014 in a world where the dark listens, a crosser is a lit lamp made of noise. Shutters open down the street; the village leans out in nightclothes. Espen, already up and carrying the oil can, stops at Hulda's stall and presses the skimmed coin into her palm \u2014 shot exactly like the skim in scene 4, reversed. She looks at it, then at him, says nothing about it, and while he asks his prices she tips a full extra measure of oil back into his can, thumb nowhere near the scale. Then the Bellfarer crests the cliff stair: wide flat hat, long coat sewn all over with small bells that shiver silent as he stops \u2014 and he stops precisely where Saltwick Light's beam meets the ground, boots an inch outside it, like a man honoring a border. He holds his news up as an object first: a small bell, cracked through, salt-fogged white, hung on a cut cord. When he finally looks up, he looks past Hulda, past Orla's window where a grey figure watches, to the boy standing in front of the still-burning lamp. Espen's answer is framed in the wide: small boy, huge tower, lit lamp, rising sun \u2014 and the jar in his pocket giving one steady pulse toward the strait.",
+   "dialogue": [
+    {
+     "speaker": "ESPEN",
+     "line": "Hulda."
+    },
+    {
+     "speaker": "HULDA",
+     "line": "It's dawn, boy. Dawn is for bakers and regrets."
+    },
+    {
+     "speaker": "HULDA",
+     "line": "What's this?",
+     "note": "the coin in her palm"
+    },
+    {
+     "speaker": "ESPEN",
+     "line": "Change. From yesterday. Your scale was off."
+    },
+    {
+     "speaker": "HULDA",
+     "line": "My scale is never off."
+    },
+    {
+     "speaker": "ESPEN",
+     "line": "Then I was."
+    },
+    {
+     "speaker": "ESPEN",
+     "line": "What does a month of oil cost? Full weight."
+    },
+    {
+     "speaker": "HULDA",
+     "line": "More than a bicycle wheel.",
+     "note": "she has always known about the wheel"
+    },
+    {
+     "speaker": "ESPEN",
+     "line": "Two months, then."
+    },
+    {
+     "speaker": "HULDA",
+     "line": "Storm keep you up?",
+     "note": "tipping the full measure back, unasked"
+    },
+    {
+     "speaker": "ESPEN",
+     "line": "Something did."
+    },
+    {
+     "speaker": "BELLFARER",
+     "line": "Saltwick Light. Still burning past dawn. Good habit."
+    },
+    {
+     "speaker": "BELLFARER",
+     "line": "Three weeks on the flats, out of Farholm. My bells are tired."
+    },
+    {
+     "speaker": "ESPEN",
+     "line": "Why bells?"
+    },
+    {
+     "speaker": "BELLFARER",
+     "line": "So the dark can hear I'm not part of it."
+    },
+    {
+     "speaker": "BELLFARER",
+     "line": "Cut this from Farholm's keeper-door. Cold as a drowned man's pocket.",
+     "note": "holding up the cracked bell"
+    },
+    {
+     "speaker": "BELLFARER",
+     "line": "Where a light forgets its keep,"
+    },
+    {
+     "speaker": "BELLFARER",
+     "line": "the old sea rises from its sleep."
+    },
+    {
+     "speaker": "HULDA",
+     "line": "Farholm's dark? I thought it was haze."
+    },
+    {
+     "speaker": "BELLFARER",
+     "line": "It was never haze."
+    },
+    {
+     "speaker": "BELLFARER",
+     "line": "Three weeks. Nothing has come down off that cliff. Nothing I heard."
+    },
+    {
+     "speaker": "BELLFARER",
+     "line": "Who keeps this one?",
+     "note": "looking past everyone, to the boy"
+    },
+    {
+     "speaker": "ESPEN",
+     "line": "I do.",
+     "note": "first time in his life; framed against the burning lamp"
+    }
+   ]
+  },
+  {
+   "n": 12,
+   "title": "END CARD \u2014 Next Time: The Far Shore",
+   "minutes": 1.0,
+   "setting": "Farholm's tower across the strait at full noon; Espen's windowsill; salt-crystal title on black.",
+   "time_of_day": "hard noon; then black",
+   "palette": "hard noon white / one wrong pool of ink, salt-crystal black",
+   "music": "silence, then one far bell; nothing else",
+   "sfx": [
+    "noon wind, thin and clean",
+    "a wet lapping sound where no water is",
+    "one far bell",
+    "silence"
+   ],
+   "action": "Full pitiless noon, across the strait: Farholm's tower stands white against white sky \u2014 and its lamp-room glass is broken OUTWARD, shards glittering down the tower's flank like spray frozen mid-burst. At the tower's base, its own long noon shadow pools on the salt \u2014 and inside that shadow, something is still swimming: the pool's dark edge laps and recoils, laps and recoils, in exactly the rhythm the darkness moved against the lamp-room glass in the six dark minutes. Shadow is water. Safety was never daytime; it was light, and light can be lost. Cut back across the strait: Espen's saltglass jar on the sill, glowing steady now, not pulsing \u2014 a compass needle, pointed at Farholm. One narration card, the episode's only closing line, over the jar. Then the title re-crystallizes in salt on black; one far bell rings once; black.",
+   "dialogue": [
+    {
+     "speaker": "NARRATION",
+     "line": "The law says every light burns till dawn. Now you know why.",
+     "note": "single closing card, bookending the cold open"
+    }
+   ]
+  }
+ ]
+}

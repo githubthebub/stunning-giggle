@@ -1,0 +1,619 @@
+1
+00:00:17,100 --> 00:00:20,640
+<i>A hundred years ago, in one night, the sea left.</i>
+
+2
+00:00:36,250 --> 00:00:39,400
+<i>The law says every light burns till dawn.</i>
+
+3
+00:00:41,500 --> 00:00:43,560
+<i>Nobody remembers why.</i>
+
+4
+00:01:46,500 --> 00:01:49,600
+[Orla] You climb like the stairs owe you money.
+
+5
+00:01:50,000 --> 00:01:53,040
+[Espen] You ring like the bell owes you dinner.
+
+6
+00:01:53,220 --> 00:01:56,980
+[Orla] Two rings means food. You came up on one and a half.
+
+7
+00:01:57,585 --> 00:02:01,735
+[Espen] Found a whole vein of blue under the third rib. Look at it.
+
+8
+00:02:01,915 --> 00:02:04,135
+[Orla] Mm. The sea's old teeth.
+
+9
+00:02:04,730 --> 00:02:07,170
+[Espen] It's salt with a mood, Gran.
+
+10
+00:02:07,350 --> 00:02:10,830
+[Orla] Everything down there is something with a mood.
+
+11
+00:02:16,435 --> 00:02:18,035
+[Espen] I had it.
+
+12
+00:02:18,435 --> 00:02:21,755
+[Orla] You had the floor. The floor had the kettle.
+
+13
+00:02:21,935 --> 00:02:23,715
+[Espen] Your hands okay?
+
+14
+00:02:24,315 --> 00:02:28,025
+[Orla] My hands are seventy. Ask them nothing before noon.
+
+15
+00:02:37,815 --> 00:02:41,135
+[Espen] Hulda's caravan goes out after storm season.
+
+16
+00:02:41,315 --> 00:02:45,125
+[Orla] So does every fool with two legs and no roof to mind.
+
+17
+00:02:45,730 --> 00:02:49,880
+[Espen] If I sell the whole jar, I can get the wheel. The good one.
+
+18
+00:02:50,060 --> 00:02:51,660
+[Espen] With spokes.
+
+19
+00:02:51,840 --> 00:02:53,440
+[Orla] Oil first.
+
+20
+00:02:54,035 --> 00:02:57,575
+[Espen] It's always oil first. We eat oil. We dream oil.
+
+21
+00:02:57,755 --> 00:03:01,135
+[Orla] When you keep a lamp, you'll count different.
+
+22
+00:03:01,730 --> 00:03:05,050
+[Espen] I don't keep a lamp. I carry stairs for one.
+
+23
+00:03:05,230 --> 00:03:09,650
+[Orla] Then carry the can to Hulda's. Full weight, and watch her thumb.
+
+24
+00:03:10,250 --> 00:03:12,470
+[Espen] Her thumb weighs a fish.
+
+25
+00:03:12,750 --> 00:03:14,750
+[Orla] So does your excuse.
+
+26
+00:03:36,250 --> 00:03:40,450
+[Hulda] Kelp glass, bone buttons... and what is this, a saint's toe?
+
+27
+00:03:40,630 --> 00:03:44,340
+[Espen] Whale ear-stone. Worth your whole awning, probably.
+
+28
+00:03:44,520 --> 00:03:47,350
+[Hulda] Probably. The word I pay least for.
+
+29
+00:03:48,440 --> 00:03:50,940
+[Hulda] Oil's up again. Storm season.
+
+30
+00:03:51,120 --> 00:03:54,390
+[Hulda] Everything true costs more in storm season.
+
+31
+00:03:55,940 --> 00:03:58,050
+[Espen] Gran says full weight.
+
+32
+00:03:58,230 --> 00:04:01,770
+[Hulda] Your gran says a lot of hundred-year-old things.
+
+33
+00:04:02,370 --> 00:04:06,350
+[Hulda] A century, boy. Not one ship. Not a rowboat. Not a duck.
+
+34
+00:04:06,530 --> 00:04:09,850
+[Hulda] And she burns coin every night to warn them.
+
+35
+00:04:10,750 --> 00:04:12,350
+[Espen] Yeah.
+
+36
+00:04:13,750 --> 00:04:15,350
+[Hulda] Yeah?
+
+37
+00:04:16,550 --> 00:04:19,260
+[Espen] It's a museum. She's the exhibit.
+
+38
+00:04:21,450 --> 00:04:26,250
+[Hulda] Ha! Ten years I've said it. First time a keeper's blood agreed with me.
+
+39
+00:04:27,450 --> 00:04:29,840
+[Espen] Apprentice. It's different.
+
+40
+00:04:30,020 --> 00:04:32,410
+[Hulda] Not in the ledger it isn't.
+
+41
+00:04:34,950 --> 00:04:39,370
+[Hulda] Spring caravan. There's still a place, if your legs are serious.
+
+42
+00:04:42,450 --> 00:04:44,340
+[Espen] I asked, didn't I?
+
+43
+00:04:44,520 --> 00:04:48,770
+[Hulda] You asked like a boy buying something behind his gran's back.
+
+44
+00:04:48,950 --> 00:04:50,560
+[Espen] It's my back.
+
+45
+00:04:53,450 --> 00:04:56,550
+[Hulda] Funny. Can't see Farholm's tower lately.
+
+46
+00:04:59,550 --> 00:05:01,150
+[Espen] It's noon.
+
+47
+00:05:01,950 --> 00:05:05,160
+[Hulda] At noon you see the tower. Haze, probably.
+
+48
+00:05:13,450 --> 00:05:15,050
+[Espen] Cheap junk.
+
+49
+00:05:35,450 --> 00:05:37,050
+[Orla] Hands.
+
+50
+00:05:39,150 --> 00:05:42,800
+[Orla] Softer than mine were at eight. Never mind. Watch.
+
+51
+00:05:46,750 --> 00:05:51,170
+[Orla] Minute one: shut the pane. Wind is a thief with patient fingers.
+
+52
+00:05:53,450 --> 00:05:55,230
+[Espen] The pane's fine.
+
+53
+00:05:55,950 --> 00:05:59,430
+[Orla] The pane is cracked and you've been told twice.
+
+54
+00:05:59,610 --> 00:06:02,270
+[Espen] It whistles. I like the whistle.
+
+55
+00:06:03,175 --> 00:06:06,765
+[Orla] Minute two: trim the wick. Black beard, no flame.
+
+56
+00:06:10,175 --> 00:06:14,265
+[Orla] Minute three: oil to the ring. Not past it, not shy of it.
+
+57
+00:06:16,975 --> 00:06:20,295
+[Orla] Minute four: dry hands, dry matches. Say it.
+
+58
+00:06:21,175 --> 00:06:23,345
+[Espen] Dry hands, dry matches.
+
+59
+00:06:24,975 --> 00:06:27,145
+[Orla] Say it like it's yours.
+
+60
+00:06:27,975 --> 00:06:30,145
+[Espen] Dry hands. Dry matches.
+
+61
+00:06:31,475 --> 00:06:34,575
+[Orla] Minute five: strike away from your body.
+
+62
+00:06:36,575 --> 00:06:38,405
+[Orla] Minute six: burn.
+
+63
+00:06:41,675 --> 00:06:43,565
+[Espen] And if it doesn't?
+
+64
+00:06:45,455 --> 00:06:48,285
+[Espen] Gran. What happens at minute seven?
+
+65
+00:06:49,975 --> 00:06:53,015
+[Orla] The tin holds eight. Buy more tomorrow.
+
+66
+00:06:54,975 --> 00:06:59,455
+[Orla] Matches sleep on the stove ledge. Every night. Even when I don't.
+
+67
+00:07:02,975 --> 00:07:05,965
+[Espen] Six minutes. It's a lamp, not a heart.
+
+68
+00:07:17,875 --> 00:07:20,865
+[Orla] Behind the great lens. One spare. Dry.
+
+69
+00:07:22,075 --> 00:07:24,625
+[Espen] Ow— fine. One spare. For what?
+
+70
+00:07:26,575 --> 00:07:29,345
+[Orla] For the night the tin lies to you.
+
+71
+00:07:40,075 --> 00:07:43,015
+[Espen] I told Hulda yes. The spring caravan.
+
+72
+00:07:44,375 --> 00:07:46,975
+[Espen] ...You're supposed to yell now.
+
+73
+00:07:48,175 --> 00:07:51,215
+[Orla] Am I? Whose lungs are you volunteering?
+
+74
+00:07:54,075 --> 00:07:57,665
+[Orla] Then sign out properly when you go. Keepers sign.
+
+75
+00:08:00,175 --> 00:08:02,005
+[Espen] I'm not a keeper.
+
+76
+00:08:03,175 --> 00:08:06,115
+[Orla] Everyone in that book said that once.
+
+77
+00:08:13,875 --> 00:08:16,205
+[Espen] This name's spelled wrong.
+
+78
+00:08:16,875 --> 00:08:20,465
+[Orla] Your great-great-uncle. Spelled everything wrong.
+
+79
+00:08:20,645 --> 00:08:22,865
+[Orla] Kept forty years anyway.
+
+80
+00:08:23,570 --> 00:08:25,570
+[Espen] Forty years of this?
+
+81
+00:08:25,750 --> 00:08:29,560
+[Orla] Forty years of dawns. You only ever count the nights.
+
+82
+00:08:30,665 --> 00:08:33,105
+[Espen] The storm looks like a wall.
+
+83
+00:08:33,865 --> 00:08:36,905
+[Orla] It is a wall. Ours just burns brighter.
+
+84
+00:08:37,765 --> 00:08:40,155
+[Espen] That doesn't mean anything.
+
+85
+00:08:40,365 --> 00:08:43,305
+[Orla] Most true things don't. Till they do.
+
+86
+00:08:44,665 --> 00:08:48,205
+[Orla] Eat. If the wind takes you, I want it to strain.
+
+87
+00:09:03,665 --> 00:09:06,815
+[Orla] Bed. If the bell rings, it rings for you.
+
+88
+00:09:07,665 --> 00:09:09,885
+[Espen] It never rings at night.
+
+89
+00:09:12,165 --> 00:09:14,055
+[Orla] No. It never does.
+
+90
+00:09:30,665 --> 00:09:33,215
+<i>[signal bell — dragged, wrong]</i>
+
+91
+00:09:46,165 --> 00:09:47,765
+[Espen] Gran? Gran—
+
+92
+00:10:02,465 --> 00:10:04,575
+[Espen] Okay. Up. Come on, up—
+
+93
+00:10:05,665 --> 00:10:08,655
+[Espen] —why are you heavy, you weigh nothing—
+
+94
+00:10:21,465 --> 00:10:23,065
+[Orla] Pane.
+
+95
+00:10:24,165 --> 00:10:27,875
+[Espen] I know. I know, I'm sorry, I'll fix it, just stand—
+
+96
+00:10:28,165 --> 00:10:29,765
+[Orla] Light first.
+
+97
+00:10:30,565 --> 00:10:32,565
+[Espen] You're on the floor!
+
+98
+00:10:34,365 --> 00:10:35,965
+[Orla] Then me.
+
+99
+00:10:37,765 --> 00:10:39,365
+[Espen] Gran—
+
+100
+00:10:39,765 --> 00:10:41,365
+[Orla] Count.
+
+101
+00:10:43,665 --> 00:10:45,265
+[Orla] Count.
+
+102
+00:11:06,665 --> 00:11:08,995
+[Espen] Minute one. Shut the pane.
+
+103
+00:11:24,665 --> 00:11:26,995
+[Espen] Minute two. Trim the wick.
+
+104
+00:11:33,665 --> 00:11:36,215
+[Espen] Minute three. Oil to the ring.
+
+105
+00:11:41,165 --> 00:11:43,605
+[Espen] Minute four. Dry hands. Dry—
+
+106
+00:11:49,665 --> 00:11:51,775
+[Espen] No. No no no. Not now—
+
+107
+00:12:09,965 --> 00:12:13,065
+[Espen] Minute five. Strike away from your body.
+
+108
+00:12:16,165 --> 00:12:19,105
+[Espen] That was still five. It's still five!
+
+109
+00:13:00,165 --> 00:13:02,715
+[Espen] You're not real. The sea left.
+
+110
+00:13:42,665 --> 00:13:44,335
+[Espen] ...minute six.
+
+111
+00:13:47,665 --> 00:13:50,325
+[Espen] Behind the lens. One spare. Dry.
+
+112
+00:14:02,165 --> 00:14:04,555
+[Espen] For the night the tin lies.
+
+113
+00:14:14,165 --> 00:14:15,765
+[Espen] Burn.
+
+114
+00:14:52,665 --> 00:14:56,315
+[Espen] Six down. Six up. That's the whole song, isn't it.
+
+115
+00:15:00,165 --> 00:15:02,715
+[Orla] Kettle... had further to fall.
+
+116
+00:15:04,165 --> 00:15:07,815
+[Espen] Don't joke. You're not allowed to joke on a floor.
+
+117
+00:15:33,165 --> 00:15:36,375
+[Orla] Your grandfather kept weather in jars too.
+
+118
+00:15:38,165 --> 00:15:41,315
+[Orla] He never believed it either. Then he did.
+
+119
+00:15:42,665 --> 00:15:45,875
+[Espen] Gran. The thing at the glass. Its eye was—
+
+120
+00:15:47,665 --> 00:15:49,265
+[Espen] Gran?
+
+121
+00:15:52,665 --> 00:15:55,325
+[Espen] Fine. Sleep. I've got the count.
+
+122
+00:16:52,865 --> 00:16:54,465
+[Orla] Seven.
+
+123
+00:16:56,465 --> 00:16:58,405
+[Espen] Eight. One snapped.
+
+124
+00:17:00,865 --> 00:17:02,595
+[Orla] Snapped counts.
+
+125
+00:17:08,865 --> 00:17:10,975
+[Espen] I'll buy more matches.
+
+126
+00:17:12,865 --> 00:17:14,475
+[Orla] Buy two tins.
+
+127
+00:17:16,465 --> 00:17:18,685
+[Espen] And putty. For the pane.
+
+128
+00:17:19,265 --> 00:17:20,865
+[Orla] I know.
+
+129
+00:17:27,815 --> 00:17:31,025
+<i>[dozens of small bells, far below, rising]</i>
+
+130
+00:17:40,215 --> 00:17:41,815
+[Espen] Hulda.
+
+131
+00:17:42,135 --> 00:17:45,615
+[Hulda] It's dawn, boy. Dawn is for bakers and regrets.
+
+132
+00:17:47,515 --> 00:17:49,115
+[Hulda] What's this?
+
+133
+00:17:49,295 --> 00:17:52,565
+[Espen] Change. From yesterday. Your scale was off.
+
+134
+00:17:53,160 --> 00:17:55,270
+[Hulda] My scale is never off.
+
+135
+00:17:55,660 --> 00:17:57,260
+[Espen] Then I was.
+
+136
+00:17:58,160 --> 00:18:01,430
+[Espen] What does a month of oil cost? Full weight.
+
+137
+00:18:01,610 --> 00:18:03,940
+[Hulda] More than a bicycle wheel.
+
+138
+00:18:04,535 --> 00:18:06,365
+[Espen] Two months, then.
+
+139
+00:18:06,835 --> 00:18:08,725
+[Hulda] Storm keep you up?
+
+140
+00:18:09,235 --> 00:18:10,905
+[Espen] Something did.
+
+141
+00:18:22,335 --> 00:18:26,095
+[Bellfarer] Saltwick Light. Still burning past dawn. Good habit.
+
+142
+00:18:26,275 --> 00:18:30,525
+[Bellfarer] Three weeks on the flats, out of Farholm. My bells are tired.
+
+143
+00:18:31,130 --> 00:18:32,730
+[Espen] Why bells?
+
+144
+00:18:37,230 --> 00:18:40,330
+[Bellfarer] So the dark can hear I'm not part of it.
+
+145
+00:18:41,630 --> 00:18:46,270
+[Bellfarer] Cut this from Farholm's keeper-door. Cold as a drowned man's pocket.
+
+146
+00:18:46,450 --> 00:18:49,660
+[Bellfarer] Last night the tide rose past my hat brim.
+
+147
+00:18:50,760 --> 00:18:53,360
+[Bellfarer] Where a light forgets its keep,
+
+148
+00:18:53,960 --> 00:18:56,670
+[Bellfarer] the old sea rises from its sleep.
+
+149
+00:18:57,760 --> 00:19:00,750
+[Hulda] Farholm's dark? I thought it was haze.
+
+150
+00:19:00,930 --> 00:19:02,820
+[Bellfarer] It was never haze.
+
+151
+00:19:03,720 --> 00:19:08,300
+[Bellfarer] Three weeks. Nothing has come down off that cliff. Nothing I heard.
+
+152
+00:19:11,620 --> 00:19:13,560
+[Bellfarer] Who keeps this one?
+
+153
+00:19:18,420 --> 00:19:20,020
+[Espen] I do.
+
+154
+00:20:08,420 --> 00:20:11,570
+<i>The law says every light burns till dawn.</i>
+
+155
+00:20:13,420 --> 00:20:15,250
+<i>Now you know why.</i>

@@ -1,0 +1,138 @@
+{
+ "episode_title": "SALTGLASS \u2014 Episode 1: \"Six Minutes\"",
+ "logline": "Forced to hold a 'useless' lighthouse alone through a storm night his own disbelief sabotaged, a twelve-year-old apprentice watches the dark come back as an ocean \u2014 and by dawn claims the lamp out loud, just as a bell-coated stranger arrives with news that the light across the strait went out three weeks ago.",
+ "synthesis_notes": {
+  "base": "DREAD treatment (winner, 2 of 3 judges) \u2014 tide-chart time signature, bells-before-body ending, shadow-at-noon tease.",
+  "grafts": [
+   "CHARACTER: self-inflicted failure (undried match tin, unputtied pane) replaces weather bad-luck \u2014 the six dark minutes are now consequence, not accident.",
+   "CHARACTER: ledger scene ('Keepers sign.'), skimmed-coin arc with object-only restitution, hand-doubling motif, grandfather-jar line.",
+   "LEGEND: spare match behind the lens ('for the night the tin lies to you'), Bellfarer stopping at the beam-border, final unheard stanza (verse held to two polished lines, <=84 chars each), cold-open compositions returning wider/slower/heavier in the setpiece.",
+   "ALL: creature ceiling = fin-lights + one eye, never centered, never lit."
+  ],
+  "fixes_resolved": [
+   "Wrongness lands inside the first 15 seconds of the cold open (tide already leaving, never stopping).",
+   "One counting system: Orla's spoken six-minute litany is the only clock; tin of eight damp matches fails legibly (7 burnt + 1 snapped = tin empty at minute five; the dry spare behind the lens catches at six).",
+   "Illness made first-watch legible via the powder paper shown twice as an object beat (poured, then empty), not facial acting.",
+   "Merchant unified as HULDA; her dawn recalibration restaged on objects (coin accepted, a measure of oil added back unasked).",
+   "Cross-strait loop opens before the midpoint: Hulda's 'Can't see Farholm's light lately. Haze, probably.'",
+   "Unease pulse ~min 5: the jar's first faint flicker, tapped like a dead watch and dismissed.",
+   "All facial-acting beats restaged as objects/FX: breath = frost blooming across the pane + recoiling hand; dawn arithmetic = Orla's hand finding the empty clip behind the lens.",
+   "Setpiece render safety: mandated light-source ladder per shot (jar glow \u2192 match flares \u2192 lightning rims \u2192 fin-lights \u2192 beam); no frame without an internal source.",
+   "Solo-stretch pressure valve: setpiece intercuts Orla's hand in the bell rope and village windows floating like buoys.",
+   "Ending de-quieted: bells as an audio spike rising from the seabed, physical token (a cracked, salt-fogged bell from Farholm), coin restitution folded into the arrival for movement, 'I do' framed against the burning lamp; on-the-nose 'what are you going to do about it' cut.",
+   "Tease staged so shadow = water (the pool's edge moves exactly like the dark did at the glass) \u2014 the rule extends, it doesn't break.",
+   "Subtitle budget: dialogue concentrated in scenes 3-6; scenes 8-10 nearly mute; target ~170 events."
+  ]
+ },
+ "scenes": [
+  {
+   "n": 1,
+   "title": "COLD OPEN \u2014 The Night the Water Left",
+   "minutes": 0.8,
+   "goal": "Teach the premise in 50 seconds and seed the wrongness; plant the three compositions the setpiece will reprise.",
+   "summary": "No lullaby: we open mid-Withdrawal \u2014 a moonlit sea already walking out, ships keeling into wet sand by 0:15. Three narration cards (the episode's only narration): 'A hundred years ago, in one night, the sea left.' / 'The law says every light burns till dawn.' / 'Nobody remembers why.' Century-in-dissolves: a harbor dries, salt takes the hulls, a town climbs its cliff. End present-day on Saltwick Light's beam sweeping a sea of air \u2014 and where the beam is NOT, the dark below reads a shade too deep, like depth. These three frames (sea leaving / dark leaning at a lone lamp / beam over emptiness) return wider, slower, heavier in scene 8.",
+   "turn": "The world's one law is stated before we know why it exists \u2014 and the dark is already misbehaving.",
+   "palette": "moonlit indigo / salt-white ebb, ink horizon"
+  },
+  {
+   "n": 2,
+   "title": "TITLE CARD",
+   "minutes": 0.4,
+   "goal": "Brand the light-vs-dark grammar; first plant of the bell motif.",
+   "summary": "The beam swings into camera \u2014 whiteout \u2014 and 'SALTGLASS: Six Minutes' resolves as letters grown in salt crystal on black. Audio: wind, and one small bell, very far away, rung once.",
+   "turn": "A bell means someone, somewhere, is crossing \u2014 we just don't know it yet.",
+   "palette": "whiteout / salt crystal on black"
+  },
+  {
+   "n": 3,
+   "title": "Low Tide of a Hundred Years",
+   "minutes": 2.0,
+   "goal": "Bond us to the household; plant the jar, the signal-bell language, and one unmistakable illness beat.",
+   "summary": "Golden dawn on the seabed: Espen pries blue saltglass from stone kelp beneath a whale ribcage, utterly at home in the dead sea. Orla rings the lighthouse's brass signal bell \u2014 their private language \u2014 and he climbs. Breakfast in the lamp room: dry jokes; her salt-stiff hand loses the kettle and both hands catch it; then, framed clean for camera though not for Espen, she unfolds a paper of white powder into her tea (first of two showings \u2014 the legible illness plant). Turn: he wants to sell his jar of 'pretty junk' for a bicycle wheel; she rules lamp oil comes first, again; he pockets the jar in silent protest.",
+   "turn": "The house is warm, broke, and quietly dying \u2014 and only the audience has been told.",
+   "palette": "gold dawn / bone-white flats, kelp verdigris"
+  },
+  {
+   "n": 4,
+   "title": "Hulda's Scales",
+   "minutes": 1.9,
+   "goal": "Establish the town's disbelief, Espen's small betrayal, and open the season loop before the midpoint.",
+   "summary": "Cliff-town of drying laundry and boredom. Hulda the oil merchant weighs Espen's trinkets against the oil money and needles him: a hundred years, not one ship, your gran burns coin for ghosts \u2014 and Espen, first time out loud, agrees, grinning, and skims a coin off the payment for himself. On the walk home she squints across the strait: 'Funny. Can't see Farholm's light lately. Haze, probably.' At the cliff rail the jar in Espen's pocket gives one faint blue pulse \u2014 he taps it like a dead watch and keeps walking.",
+   "turn": "Espen steals from the lamp he doesn't believe in \u2014 while the thing the lamp holds back announces itself and is dismissed.",
+   "palette": "chalk noon / laundry white, rust awnings, hazed strait"
+  },
+  {
+   "n": 5,
+   "title": "The Lesson \u2014 Six Minutes",
+   "minutes": 2.0,
+   "goal": "Load every gun of the setpiece in one drill; make Espen's negligence visible and specific.",
+   "summary": "Dusk ritual taught in close-ups of hands \u2014 hers salt-cracked, his mimicking half-heartedly beside them (the doubling that pays off in scene 8). The rule, stated once and precisely: the lamp may stand dark six minutes, no more; her litany is the count. The match tin holds eight \u2014 'buy more tomorrow' \u2014 and the drill says matches dry on the stove ledge overnight; Espen, spinning his jar, pockets the tin undried. She points at the cracked pane he's been told twice to putty; he shrugs. Then, out of character, she grips his wrist: behind the great lens she keeps one spare match, dry, 'for the night the tin lies to you' \u2014 and stops herself before saying what happens at minute seven.",
+   "turn": "The eccentric ritual is revealed as fear with a procedure \u2014 and Espen has just quietly sabotaged two steps of it.",
+   "palette": "ember dusk / brass, oil-flame amber, one cracked pane of storm-green"
+  },
+  {
+   "n": 6,
+   "title": "The Ledger and the Storm Supper",
+   "minutes": 1.8,
+   "goal": "Orla releases him; peak warmth held deliberately before the cut.",
+   "summary": "Espen announces he's asked Hulda for a place on her next caravan \u2014 real work, anywhere but here. Orla doesn't argue. She slides the keeper's ledger across the table: a century of entries in dead relatives' handwriting, hers the last and shakiest. 'Sign out properly when you go. Keepers sign.' Supper while the storm walls up over the strait like something beautiful; she lands a joke and he actually laughs. With his back turned she tips the LAST of the powder from the paper and folds the empty square away (second showing \u2014 it's running out). She sends him to bed; the old world's final image is her silhouette, small, against the burning lamp.",
+   "turn": "She gives him the one thing he didn't want \u2014 freedom \u2014 and the audience learns her medicine is gone.",
+   "palette": "storm-green horizon / lantern amber interior, charcoal cloudwall"
+  },
+  {
+   "n": 7,
+   "title": "The Bell Rings Wrong",
+   "minutes": 1.4,
+   "goal": "Break the private language; hand a dying woman's lamp to a boy who sabotaged it.",
+   "summary": "Espen wakes in black to the signal bell ringing irregular, dragged \u2014 their language, broken. Stair door blown open, rain climbing the spiral, Orla collapsed on the landing with one hand still tangled in the bell rope. A single tilt-up delivers the horror: the lamp room is dark \u2014 the gust came through HIS unputtied pane and took the flame. She can't stand; he can't lift her; her subtitled fragments send a twelve-year-old past his grandmother: 'Light first.' 'Then me.' 'Count.'",
+   "turn": "For the first time she needs him \u2014 and spends that need on the lamp instead of herself.",
+   "palette": "wet slate / lightning white, black spiral stair"
+  },
+  {
+   "n": 8,
+   "title": "SETPIECE \u2014 Six Minutes of the Wrong Sea",
+   "minutes": 3.8,
+   "goal": "Play the six dark minutes near-real-time as the consequence of Espen's disbelief; convert him with composition and sound, not spectacle.",
+   "summary": "Near-real-time, nearly wordless; Espen counts aloud in her litany \u2014 the episode's only clock. The tin lies because HE made it lie: undried matches drown in the draft from the unfixed pane, heads crumbling damp \u2014 seven dead by minute four, the eighth snapping unstruck at minute five. His shaking hands become an exact echo of hers from scene 5. The jar wakes, brightening; storm physics flip \u2014 rain stops falling and streams SIDEWAYS like current; hull-creaks run the tower ten fathoms down; score drops out. Fin-lights rise past the gallery glass and one eye the size of the supper table pauses level with the boy \u2014 never centered, never lit; its breath is frost blooming across the pane and his hand recoiling. Cold-open compositions return, wider and heavier. Pressure-valve intercuts: Orla's hand slack in the bell rope two floors below; the village's lit windows floating like buoys as the dark tide rises toward them. He remembers her hands, not her words \u2014 the spare behind the lens, dry as a kept promise \u2014 shields it inside her hanging coat, strikes it on the lens frame, and the wick catches at the count of six. Light hits the dark like dry land slamming back; one whale-deep note sinks below the cliff. RENDER RULE: every frame carries an internal source \u2014 jar glow, match flare, lightning rim, fin-light, then beam; blacks never crush.",
+   "turn": "The museum piece is a seawall; the boy who skimmed its oil is standing on it, believing.",
+   "palette": "abyssal black / saltglass blue, match-flare orange, cold fin-light rows"
+  },
+  {
+   "n": 9,
+   "title": "Holding the Line",
+   "minutes": 1.5,
+   "goal": "Compress the rest of the night as hard as the dark was stretched; complete the handoff without naming it.",
+   "summary": "Dissolves on the count: Espen feeding the wick, then down six steps to drag Orla to the daybed by inches, then back up before the mechanism runs out \u2014 pacing the exact rhythm the litany was built to teach. He sets the now-dim jar on her sill like a night-light. She surfaces once, touches it: 'Your grandfather kept weather in jars too. He never believed it either. Then he did.' He starts to ask what's out there; she's already asleep, or pretending. He goes back up and counts.",
+   "turn": "He stops keeping the light for her and starts keeping it because of what he saw.",
+   "palette": "deep night / single flame gold, blue jar-glow on grey blankets"
+  },
+  {
+   "n": 10,
+   "title": "Dawn \u2014 Seven Dead Soldiers",
+   "minutes": 1.2,
+   "goal": "Recap the whole night in wordless arithmetic; seal the apprenticeship in one exchange.",
+   "summary": "Storm gone; the seabed steams gold and for one cruel beat looks almost like water. Orla wakes and no one narrates the night: seven burnt stubs lined on the sill, the snapped eighth beside the empty tin \u2014 and her stiff hand feels behind the great lens, finds the clip empty, and closes on nothing (the arithmetic done in objects, not faces). His hand shakes pouring her tea; her stiff hand steadies it. 'I'll buy more matches.' 'Buy two tins.'",
+   "turn": "The apprenticeship is real now \u2014 and so, in the doubled order, is how little time she has.",
+   "palette": "steam-gold dawn / grey blanket, black matchsticks on white sill"
+  },
+  {
+   "n": 11,
+   "title": "Bells Before Body \u2014 The Bellfarer",
+   "minutes": 1.7,
+   "goal": "Pay off the bell motif as an audio spike; land the hook on an object and a vow, framed against the burning lamp.",
+   "summary": "Sound first: dozens of small bells rising from the seabed, arrhythmic \u2014 in a world where the dark listens, a crosser is a lit lamp made of noise. The village wakes to it; passing Hulda, Espen presses the skimmed coin into her palm and asks the price of a month of oil, then two \u2014 she says nothing, but tips a full measure back into his can unasked. The Bellfarer crests the cliff stair \u2014 wide hat, coat sewn with bells \u2014 and stops exactly where the beam of Saltwick Light meets the ground, respectful as a man at a border. He holds up his news as an object: a cracked bell, salt-fogged and cold, cut from Farholm's keeper-door. Then a stanza Espen has never heard: 'Where a light forgets its keep, / the old sea rises from its sleep.' Farholm Light went dark three weeks ago; no one has come off that cliff since. He looks past Orla's window to the boy standing in front of the still-burning lamp: 'Who keeps this one?' Espen, first time in his life: 'I do.'",
+   "turn": "The private handoff becomes a public vow \u2014 and the episode's rule becomes the season's map.",
+   "palette": "shell-pink flats / long blue shadows, bell-brass glints"
+  },
+  {
+   "n": 12,
+   "title": "END CARD \u2014 Next Time: The Far Shore",
+   "minutes": 1.0,
+   "goal": "Weaponize the taught rule without cheating it; close on silence and one bell.",
+   "summary": "Full noon across the strait: Farholm's tower, lamp-room glass broken OUTWARD, and in the long shadow pooled at its base something is still swimming \u2014 the pool's edge laps and recoils exactly the way the dark moved against the lamp-room glass in scene 8. Shadow is water. Safety was never daytime; it was light \u2014 and light can be lost. Cut back: Espen's jar on the sill glows toward the strait, steady as a compass needle. The title re-crystallizes in salt; one far bell; black.",
+   "turn": "The rule extends instead of breaking: darkness doesn't wait for night.",
+   "palette": "hard noon white / one wrong pool of ink, salt-crystal black"
+  }
+ ],
+ "total_minutes": 19.5
+}

@@ -1,0 +1,264 @@
+{
+ "scene_n": 9,
+ "shots": [
+  {
+   "seconds": 6,
+   "template": "lamp_room_int",
+   "description": "The lamp room, alive again. The great lens burns steady, single flame gold soaking brass and oil-dark wood; beyond the black glass, rain has thinned to threads and drips. The composition is calm for the first time all night \u2014 warmth reclaimed, not triumphant. Espen's shape moves at frame edge, tending.",
+   "camera": "drift",
+   "transition": "fade_in",
+   "music": "theme_duty",
+   "sfx": [
+    "fire_lamp",
+    "rain"
+   ],
+   "fx": [
+    "lamp_gold_flicker"
+   ],
+   "subs": []
+  },
+  {
+   "seconds": 5,
+   "template": "close_hands",
+   "description": "Insert: Espen's small hands feeding the wick \u2014 soft oil sputter \u2014 then finding the brass winding key and turning it until the mechanism picks up its tick. His hands are steadier than they were at dusk; the frame quotes Orla's hand-drill from scene 5, but now the mimicry is exact.",
+   "camera": "push_in",
+   "transition": "crossfade",
+   "music": "theme_duty",
+   "sfx": [
+    "fire_lamp",
+    "creak"
+   ],
+   "fx": [
+    "shallow_focus_brass_glints"
+   ],
+   "subs": []
+  },
+  {
+   "seconds": 8,
+   "template": "stairs",
+   "description": "High angle down the six stone steps between gold above and blue-black below. Two small silhouettes \u2014 her arm over his shoulders, heels dragging inches at a time. The night compresses in stacked dissolves paced on the count: each dissolve advances them one step. Both of them tiny in the stairwell.",
+   "camera": "tilt_down",
+   "transition": "crossfade",
+   "music": "theme_duty",
+   "sfx": [
+    "footsteps_stone",
+    "breath"
+   ],
+   "fx": [
+    "slow_dissolve_stack"
+   ],
+   "subs": [
+    {
+     "at": 1.5,
+     "speaker": "ESPEN",
+     "text": "Six down. Six up. That's the whole song, isn't it."
+    }
+   ]
+  },
+  {
+   "seconds": 9,
+   "template": "two_shot_silhouette",
+   "description": "Profile two-shot on the landing: boy and grandmother in silhouette against a thin slit of night window, her weight on him, her head tipped toward his. The drag pauses so she can breathe. The joke comes from the floor of herself; his answer is scared and stern at once \u2014 a keeper's voice, borrowed.",
+   "camera": "hold",
+   "transition": "crossfade",
+   "music": "theme_duty",
+   "sfx": [
+    "breath",
+    "footsteps_stone"
+   ],
+   "fx": [],
+   "subs": [
+    {
+     "at": 1.0,
+     "speaker": "ORLA",
+     "text": "Kettle... had further to fall."
+    },
+    {
+     "at": 5.0,
+     "speaker": "ESPEN",
+     "text": "Don't joke. You're not allowed to joke on a floor."
+    }
+   ]
+  },
+  {
+   "seconds": 6,
+   "template": "stairs",
+   "description": "The same six steps, up now, in overlapping dissolves \u2014 up, down, up again \u2014 the whole rest of the night folded into the rhythm the litany was built to teach. The gold doorway above hangs like a held note; his silhouette shuttles between flame and blanket. Repetition rendered as ritual, not labor.",
+   "camera": "tilt_up",
+   "transition": "crossfade",
+   "music": "theme_duty",
+   "sfx": [
+    "footsteps_stone",
+    "wind_soft"
+   ],
+   "fx": [
+    "slow_dissolve_stack"
+   ],
+   "subs": []
+  },
+  {
+   "seconds": 4,
+   "template": "close_hands",
+   "description": "Insert, tighter than before: the winding key caught just as the mechanism runs down \u2014 a beat of dead silence in the tick, then his hands bring it back. Back before the count runs out. The rhythm is simply how he moves now.",
+   "camera": "hold",
+   "transition": "crossfade",
+   "music": "theme_duty",
+   "sfx": [
+    "creak",
+    "fire_lamp"
+   ],
+   "fx": [],
+   "subs": []
+  },
+  {
+   "seconds": 8,
+   "template": "cottage_int",
+   "description": "The daybed at last. Deep night interior, jar-blue and shadow on grey blankets. Espen hauls Orla onto the daybed, tucks the grey blanket wrong \u2014 corner trapped under her arm \u2014 stops, and re-does it properly, the way she would. Small domestic competence learned in real time. Rain down to drips outside.",
+   "camera": "push_in",
+   "transition": "crossfade",
+   "music": "theme_duty",
+   "sfx": [
+    "breath",
+    "rain"
+   ],
+   "fx": [
+    "jar_glow_blue"
+   ],
+   "subs": []
+  },
+  {
+   "seconds": 6,
+   "template": "close_object",
+   "description": "The saltglass jar, dim now \u2014 an exhausted blue, spent from the six minutes \u2014 set on her windowsill and carefully angled, the way you angle a candle for a sick child. Its faint glow lays a blue path across the grey blanket to her face. A night-light made of the thing that saved them.",
+   "camera": "push_in",
+   "transition": "crossfade",
+   "music": "theme_duty",
+   "sfx": [
+    "glass_chime",
+    "rain"
+   ],
+   "fx": [
+    "jar_glow_blue"
+   ],
+   "subs": []
+  },
+  {
+   "seconds": 10,
+   "template": "close_hands",
+   "description": "Her salt-stiff fingers cross the frame from under the blanket and find the jar's curved glass \u2014 surfacing once, from somewhere far under. His hand hovers nearby but does not help; this touch is hers. She speaks with her eyes closed, the words coming up slow like bubbles. Faint memory of sea under her voice.",
+   "camera": "hold",
+   "transition": "crossfade",
+   "music": "theme_duty",
+   "sfx": [
+    "breath",
+    "waves_memory"
+   ],
+   "fx": [
+    "jar_glow_blue"
+   ],
+   "subs": [
+    {
+     "at": 1.0,
+     "speaker": "ORLA",
+     "text": "Your grandfather kept weather in jars too."
+    },
+    {
+     "at": 6.0,
+     "speaker": "ORLA",
+     "text": "He never believed it either. Then he did."
+    }
+   ]
+  },
+  {
+   "seconds": 9,
+   "template": "close_eye",
+   "description": "Her closed eye, lashes rimmed in sill-blue, utterly still. As Espen starts his question the camera is already drifting off her face \u2014 the answer is not coming. Asleep, or pretending, and the difference is hers to keep. The score drops out and leaves only the drips.",
+   "camera": "drift",
+   "transition": "cut",
+   "music": "silence",
+   "sfx": [
+    "silence_drop",
+    "rain"
+   ],
+   "fx": [
+    "jar_glow_blue"
+   ],
+   "subs": [
+    {
+     "at": 0.5,
+     "speaker": "ESPEN",
+     "text": "Gran. The thing at the glass. Its eye was\u2014"
+    },
+    {
+     "at": 5.5,
+     "speaker": "ESPEN",
+     "text": "Gran?"
+    }
+   ]
+  },
+  {
+   "seconds": 7,
+   "template": "cottage_int",
+   "description": "Wide and quiet: the boy standing small in the blue, her still shape under the fixed blanket, the dim jar keeping watch on the sill. He waits one beat longer than a child would, then gives the room its orders \u2014 gently. Nobody names the handoff; it has already happened.",
+   "camera": "hold",
+   "transition": "cut",
+   "music": "silence",
+   "sfx": [
+    "rain",
+    "breath"
+   ],
+   "fx": [
+    "jar_glow_blue"
+   ],
+   "subs": [
+    {
+     "at": 1.5,
+     "speaker": "ESPEN",
+     "text": "Fine. Sleep. I've got the count."
+    }
+   ]
+  },
+  {
+   "seconds": 5,
+   "template": "stairs",
+   "description": "He climbs back up into the gold \u2014 silhouette rising the six steps, blue behind him, flame-light spilling down to meet him. The litany figure returns on the score, unchanged and gentle: the same six notes, a lullaby now.",
+   "camera": "tilt_up",
+   "transition": "crossfade",
+   "music": "theme_duty",
+   "sfx": [
+    "footsteps_stone",
+    "fire_lamp"
+   ],
+   "fx": [],
+   "subs": []
+  },
+  {
+   "seconds": 9,
+   "template": "lamp_room_int",
+   "description": "Last shot: the boy sitting where she always sat \u2014 her chair beside the great lens, too big for him \u2014 small in the gold, lips moving with the count. Rain gone to single drips; the mechanism ticks. A slow pull-back turns him into the scene-6 silhouette: keeper against the burning lamp, the image inherited whole.",
+   "camera": "pull_back",
+   "transition": "crossfade",
+   "music": "theme_duty",
+   "sfx": [
+    "fire_lamp",
+    "creak",
+    "rain"
+   ],
+   "fx": [
+    "lamp_gold_flicker"
+   ],
+   "subs": []
+  },
+  {
+   "seconds": 2.5,
+   "template": "black",
+   "description": "Hold on black as the litany's last note hangs and the lamp's tick fades under it \u2014 the night held, the line held.",
+   "camera": "hold",
+   "transition": "fade_out",
+   "music": "theme_duty",
+   "sfx": [],
+   "fx": [],
+   "subs": []
+  }
+ ]
+}

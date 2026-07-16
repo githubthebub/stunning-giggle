@@ -1,0 +1,387 @@
+{
+ "scene_n": 3,
+ "shots": [
+  {
+   "seconds": 7,
+   "template": "dry_sea_vista",
+   "description": "Golden dawn rakes the bone-white seabed flat as a table; the whale ribcage stands mid-frame and every rib throws a shadow a hundred meters long, sundial spokes across salt pans veined with kelp verdigris. One tiny figure crouched beneath the third rib gives the scale. Warm gold grades to pale bone at the horizon; air absolutely still.",
+   "camera": "pan_right",
+   "transition": "fade_in",
+   "music": "theme_village",
+   "sfx": [
+    "wind_soft"
+   ],
+   "subs": []
+  },
+  {
+   "seconds": 5,
+   "template": "montage_detail",
+   "description": "Under the rib arch: Espen, small and utterly unafraid, kneels at a stalk of stone kelp taller than he is. Chisel set against a glinting nub. His breath fogs gold in the dawn cold. The rib overhead frames him like a cathedral vault; verdigris kelp against bone-white ground.",
+   "camera": "push_in",
+   "transition": "cut",
+   "music": "theme_village",
+   "sfx": [
+    "salt_crunch",
+    "breath",
+    "wind_soft"
+   ],
+   "subs": []
+  },
+  {
+   "seconds": 4,
+   "template": "close_hands",
+   "description": "Boy hands, close and steady: the chisel tip worries a nub of blue saltglass out of the grey stone kelp \u2014 two taps, a quarter-turn, and it pops free into his palm. Framing tight enough that we feel the tongue-between-teeth concentration without seeing his face. Blue chip catches the dawn like a drop of deep water.",
+   "camera": "hold",
+   "transition": "cut",
+   "music": "theme_village",
+   "sfx": [
+    "salt_crunch",
+    "breath"
+   ],
+   "subs": []
+  },
+  {
+   "seconds": 4,
+   "template": "close_object",
+   "description": "THE JAR PLANT: the crystal drops into a jar half full of blue fragments \u2014 they clink like ice. Held macro on the glass as the new chip settles; the jar gathers the low sun and glows faint aquarium-blue from inside, a shade too alive for junk. Bone-white ground bokeh behind.",
+   "camera": "push_in",
+   "transition": "cut",
+   "music": "theme_village",
+   "sfx": [
+    "glass_chime"
+   ],
+   "subs": []
+  },
+  {
+   "seconds": 4.5,
+   "template": "lighthouse_ext",
+   "description": "From the seabed floor, tilt up the whole cliff face \u2014 laundry-flecked village ledges, then Saltwick Light tiny at the top against the gold sky. Its brass signal bell swings twice; two clean rings fall a hundred meters through still air. The dead lamp room glints, unlit.",
+   "camera": "tilt_up",
+   "transition": "cut",
+   "music": "theme_village",
+   "sfx": [
+    "bell_small",
+    "wind_soft"
+   ],
+   "subs": []
+  },
+  {
+   "seconds": 3.5,
+   "template": "char_silhouette",
+   "description": "Espen in silhouette under the rib arch, head tipped back toward the bell \u2014 the whole-body eye-roll of a boy summoned mid-treasure. He pockets the jar with a proprietary pat and turns for the cliff. Rim of gold on his shoulders; long rib shadows striping the ground he crosses.",
+   "camera": "hold",
+   "transition": "cut",
+   "music": "theme_village",
+   "sfx": [
+    "glass_chime",
+    "salt_crunch"
+   ],
+   "subs": []
+  },
+  {
+   "seconds": 4.5,
+   "template": "stairs",
+   "description": "The cliff stair in profile silhouette: Espen takes it two at a time, quick as a goat, dawn gold edging one side of him, the dry sea falling away vast and bright below. Cutting energy \u2014 this is his commute and he owns it.",
+   "camera": "tilt_up",
+   "transition": "cut",
+   "music": "theme_village",
+   "sfx": [
+    "footsteps_stone",
+    "wind_soft"
+   ],
+   "subs": []
+  },
+  {
+   "seconds": 9.0,
+   "template": "lamp_room_int",
+   "description": "Breakfast laid out under the great lens: two plates, a kettle, steam. The dead lamp looms huge and museum-still behind the table, prisms drinking the dawn. Orla already seated, pouring; Espen bangs in from the stair door still catching his breath. Warm amber interior against gold windows; domestic and enormous at once.",
+   "camera": "pull_back",
+   "transition": "crossfade",
+   "music": "theme_village",
+   "sfx": [
+    "door",
+    "footsteps_wood"
+   ],
+   "subs": [
+    {
+     "at": 1.5,
+     "speaker": "ORLA",
+     "text": "You climb like the stairs owe you money."
+    },
+    {
+     "at": 5.0,
+     "speaker": "ESPEN",
+     "text": "You ring like the bell owes you dinner."
+    },
+    {
+     "at": 7.5,
+     "speaker": "ORLA",
+     "text": "Two rings means food. You came up on one and a half."
+    }
+   ]
+  },
+  {
+   "seconds": 7,
+   "template": "close_object",
+   "description": "The jar thumped down on the table between the plates, lid off \u2014 blue fragments luminous against bone-white cloth, tiny cold fires. Espen's fingers tilt it toward her; her reflection bends in the glass, unimpressed. Push in until the blue fills a third of frame.",
+   "camera": "push_in",
+   "transition": "cut",
+   "music": "theme_village",
+   "sfx": [
+    "glass_chime"
+   ],
+   "subs": [
+    {
+     "at": 0.5,
+     "speaker": "ESPEN",
+     "text": "Found a whole vein of blue under the third rib. Look at it."
+    },
+    {
+     "at": 4.5,
+     "speaker": "ORLA",
+     "text": "Mm. The sea's old teeth."
+    }
+   ]
+  },
+  {
+   "seconds": 6.5,
+   "template": "two_shot_silhouette",
+   "description": "The two of them profiled against the lamp-room glass, gold flats stretching to the horizon behind their heads. Cup steam rises between them like a curtain. Comfortable sparring distance \u2014 a household with worn grooves. Their silhouettes rhyme: same stubborn jaw at two ages.",
+   "camera": "hold",
+   "transition": "cut",
+   "music": "theme_village",
+   "sfx": [
+    "wind_soft"
+   ],
+   "subs": [
+    {
+     "at": 0.5,
+     "speaker": "ESPEN",
+     "text": "It's salt with a mood, Gran."
+    },
+    {
+     "at": 3.5,
+     "speaker": "ORLA",
+     "text": "Everything down there is something with a mood."
+    }
+   ]
+  },
+  {
+   "seconds": 5,
+   "template": "close_hands",
+   "description": "HER hands, tight and held: the salt-stiff right hand loses the kettle mid-pour \u2014 a half-beat of falling \u2014 and both hands snap together and catch it, an old practiced save, smooth as a card trick. Hot water rocks in the spout; nothing spills. Knuckles like weathered rope. The camera does not flinch, and neither does she.",
+   "camera": "hold",
+   "transition": "cut",
+   "music": "theme_village",
+   "sfx": [
+    "creak",
+    "breath"
+   ],
+   "subs": []
+  },
+  {
+   "seconds": 7.5,
+   "template": "lamp_room_int",
+   "description": "Medium two-shot at the table, loose and level: Espen half-risen from his chair, hand still out from a catch he never made. He saw the save, not the slip \u2014 his grin says applause, not worry. Orla sets the kettle down with exaggerated dignity. Gentle drift keeps it breathing.",
+   "camera": "drift",
+   "transition": "cut",
+   "music": "theme_village",
+   "sfx": [
+    "breath"
+   ],
+   "subs": [
+    {
+     "at": 0.5,
+     "speaker": "ESPEN",
+     "text": "I had it."
+    },
+    {
+     "at": 2.5,
+     "speaker": "ORLA",
+     "text": "You had the floor. The floor had the kettle."
+    },
+    {
+     "at": 5.5,
+     "speaker": "ESPEN",
+     "text": "Your hands okay?"
+    }
+   ]
+  },
+  {
+   "seconds": 5,
+   "template": "close_hands",
+   "description": "She pours anyway \u2014 deliberate, steady by pure stubbornness, the stiff hand bracing the wrist of the pouring one. Tea threads into the cup without a tremor she permits us to see. The deflection played entirely in fingers.",
+   "camera": "hold",
+   "transition": "cut",
+   "music": "theme_village",
+   "sfx": [
+    "breath"
+   ],
+   "subs": [
+    {
+     "at": 0.5,
+     "speaker": "ORLA",
+     "text": "My hands are seventy. Ask them nothing before noon."
+    }
+   ]
+  },
+  {
+   "seconds": 8.5,
+   "template": "close_object",
+   "description": "THE ILLNESS PLANT \u2014 framed clean and dead center for camera, invisible to the boy: in soft-focus background Espen's back is half-turned, digging through his jar. Foreground, sharp: a small paper square unfolds between two fingers; white powder tapped into the tea; the paper folded away in one practiced move; she drinks. No face, no underline. All ambient sound falls away \u2014 the room holds its breath with us. Gold light, terrible calm.",
+   "camera": "push_in",
+   "transition": "cut",
+   "music": "silence",
+   "sfx": [
+    "silence_drop",
+    "glass_chime",
+    "breath"
+   ],
+   "subs": []
+  },
+  {
+   "seconds": 6.5,
+   "template": "two_shot_silhouette",
+   "description": "Sound and music resume as if nothing happened. The two silhouettes at the table again, but Espen leans forward now \u2014 the pitch posture, elbows on wood. Beyond the glass a caravan-colored haze sits on the far strait. She doesn't turn her head.",
+   "camera": "hold",
+   "transition": "cut",
+   "music": "theme_village",
+   "sfx": [
+    "wind_soft"
+   ],
+   "subs": [
+    {
+     "at": 0.5,
+     "speaker": "ESPEN",
+     "text": "Hulda's caravan goes out after storm season."
+    },
+    {
+     "at": 3.5,
+     "speaker": "ORLA",
+     "text": "So does every fool with two legs and no roof to mind."
+    }
+   ]
+  },
+  {
+   "seconds": 7,
+   "template": "close_object",
+   "description": "The jar cradled in Espen's two hands, tilted so the blue chips avalanche and clink \u2014 his whole want made visible in how carefully he holds cheap treasure. Dawn refracts through the glass onto his chin. Her verdict lands from off-frame like a door closing.",
+   "camera": "push_in",
+   "transition": "cut",
+   "music": "theme_village",
+   "sfx": [
+    "glass_chime"
+   ],
+   "subs": [
+    {
+     "at": 0.5,
+     "speaker": "ESPEN",
+     "text": "If I sell the whole jar, I can get the wheel. The good one."
+    },
+    {
+     "at": 2.9,
+     "speaker": "ESPEN",
+     "text": "With spokes."
+    },
+    {
+     "at": 5.0,
+     "speaker": "ORLA",
+     "text": "Oil first."
+    }
+   ]
+  },
+  {
+   "seconds": 7.5,
+   "template": "lamp_room_int",
+   "description": "Wider table shot, the dead lamp filling the top half of frame above their argument \u2014 the thing they are actually arguing about, silent witness. Espen flops back in his chair, arms thrown wide at the injustice of economics. Orla stirs her tea once, unmoved as the lens.",
+   "camera": "drift",
+   "transition": "cut",
+   "music": "theme_village",
+   "sfx": [
+    "wind_soft"
+   ],
+   "subs": [
+    {
+     "at": 0.5,
+     "speaker": "ESPEN",
+     "text": "It's always oil first. We eat oil. We dream oil."
+    },
+    {
+     "at": 4.5,
+     "speaker": "ORLA",
+     "text": "When you keep a lamp, you'll count different."
+    }
+   ]
+  },
+  {
+   "seconds": 8.5,
+   "template": "char_silhouette",
+   "description": "Espen stands, small and dark against the enormous dead lens \u2014 dawn breaking through its prisms into cold rainbow slivers around his silhouette. The museum piece dwarfs the boy who doesn't believe in it; composition quietly foreshadows scene 8. Pull back to make him smaller as he says it.",
+   "camera": "pull_back",
+   "transition": "cut",
+   "music": "theme_village",
+   "sfx": [
+    "wind_soft",
+    "creak"
+   ],
+   "subs": [
+    {
+     "at": 0.5,
+     "speaker": "ESPEN",
+     "text": "I don't keep a lamp. I carry stairs for one."
+    },
+    {
+     "at": 4.5,
+     "speaker": "ORLA",
+     "text": "Then carry the can to Hulda's. Full weight, and watch her thumb."
+    }
+   ]
+  },
+  {
+   "seconds": 5.5,
+   "template": "two_shot_silhouette",
+   "description": "Quick, dry, the volley traded across the table in profile \u2014 the closest this house gets to saying I love you. Her mouth barely moves on the return; his grin cracks despite himself. Gold light now full and warm on the glass behind them.",
+   "camera": "hold",
+   "transition": "cut",
+   "music": "theme_village",
+   "sfx": [],
+   "subs": [
+    {
+     "at": 0.5,
+     "speaker": "ESPEN",
+     "text": "Her thumb weighs a fish."
+    },
+    {
+     "at": 3.0,
+     "speaker": "ORLA",
+     "text": "So does your excuse."
+    }
+   ]
+  },
+  {
+   "seconds": 4,
+   "template": "close_hands",
+   "description": "Espen's hand screws the lid on and pockets the jar \u2014 slow, pointed, performative: silent protest with an audience of one. The blue chips mutter against the glass as they disappear into his coat. Last visible flash of blue swallowed by wool.",
+   "camera": "push_in",
+   "transition": "cut",
+   "music": "theme_village",
+   "sfx": [
+    "glass_chime"
+   ],
+   "subs": []
+  },
+  {
+   "seconds": 5.5,
+   "template": "close_eye",
+   "description": "Held final close-up: Orla's eye, steady and gold-lit, watching him not watch her. Everything she is not saying lives in the half-fall of the lid \u2014 the powder, the hands, the clock she can hear and he can't. The household theme thins to a single guitar note and the light cools a half-step before black.",
+   "camera": "hold",
+   "transition": "fade_out",
+   "music": "theme_village",
+   "sfx": [
+    "wind_soft",
+    "breath"
+   ],
+   "subs": []
+  }
+ ]
+}

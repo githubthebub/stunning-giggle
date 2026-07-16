@@ -1,0 +1,212 @@
+{
+ "scene_n": 10,
+ "shots": [
+  {
+   "seconds": 8,
+   "template": "dry_sea_vista",
+   "description": "Steam-gold dawn, horizon to horizon. The storm is gone and the dead seabed exhales gold vapor that rolls in long, slow swells \u2014 for one cruel held beat, framed through soft haze, it is almost, almost water. Warm rose-gold sky, pale bone flats beneath the steam. No figures. Let the audience believe it.",
+   "camera": "hold",
+   "transition": "fade_in",
+   "music": "theme_dawn",
+   "sfx": [
+    "waves_memory",
+    "wind_soft"
+   ],
+   "subs": []
+  },
+  {
+   "seconds": 4,
+   "template": "montage_detail",
+   "description": "Closer on the 'swell': a white shorebird steps down onto it \u2014 stilt legs, dry salt crust under its feet, no ripple. The vapor parts around its ankles and the illusion dies quietly. Push in just enough to make the cruelty legible.",
+   "camera": "push_in",
+   "transition": "cut",
+   "music": "theme_dawn",
+   "sfx": [
+    "salt_crunch",
+    "wind_soft"
+   ],
+   "subs": []
+  },
+  {
+   "seconds": 5,
+   "template": "lighthouse_ext",
+   "description": "Saltwick Light from below the gallery, black tower against the gold steam. Tilt up the salt-streaked stone to the lamp room: the lamp is still burning into daylight, its flame pale, stubborn, almost invisible against the sun \u2014 a night that refused to lose.",
+   "camera": "tilt_up",
+   "transition": "cut",
+   "music": "theme_dawn",
+   "sfx": [
+    "fire_lamp",
+    "wind_soft"
+   ],
+   "subs": []
+  },
+  {
+   "seconds": 8,
+   "template": "close_object",
+   "description": "The white-painted sill, raking morning light. Seven burnt matchsticks lined up in a row like little black soldiers, evenly spaced, heads charred to curls. Slow pan right down the rank, ending on the snapped eighth laid crosswise beside the open, empty tin. The whole night recapped in arithmetic \u2014 no faces, no narration. Household theme returns here, re-voiced on the litany's instruments.",
+   "camera": "pan_right",
+   "transition": "cut",
+   "music": "theme_village",
+   "sfx": [
+    "fire_lamp"
+   ],
+   "subs": []
+  },
+  {
+   "seconds": 5,
+   "template": "lamp_room_int",
+   "description": "Wide-ish interior: Orla propped on the daybed in the corner, grey blanket to her chest, hair down, gold light flooding the gallery glass behind her. She is reading the sill the way other people read a letter \u2014 motionless, eyes moving. Espen out of focus at the little stove with the kettle.",
+   "camera": "hold",
+   "transition": "cut",
+   "music": "theme_village",
+   "sfx": [
+    "breath",
+    "fire_lamp"
+   ],
+   "subs": []
+  },
+  {
+   "seconds": 7,
+   "template": "close_hands",
+   "description": "Her salt-stiff hand slides behind the great lens to the spare-match clip \u2014 empty. The fingers find nothing, hesitate, then close slowly on air and stay closed. Hold on the shut fist against the brass. This closing hand is the whole conversation: she knows exactly how close it came. Room tone drops out under it.",
+   "camera": "push_in",
+   "transition": "cut",
+   "music": "theme_village",
+   "sfx": [
+    "silence_drop",
+    "breath"
+   ],
+   "subs": []
+  },
+  {
+   "seconds": 4,
+   "template": "close_eye",
+   "description": "Orla's eye, held close-up. Dawn gold caught in it; dry, steady, doing sums. No tears \u2014 this family does grief in inventory.",
+   "camera": "hold",
+   "transition": "cut",
+   "music": "theme_village",
+   "sfx": [
+    "fire_lamp"
+   ],
+   "subs": [
+    {
+     "at": 1.2,
+     "speaker": "ORLA",
+     "text": "Seven."
+    }
+   ]
+  },
+  {
+   "seconds": 4.5,
+   "template": "char_silhouette",
+   "description": "Espen in silhouette against the blazing gallery glass, tea tray in hand, kettle steam braiding into the sea-steam beyond the pane. He doesn't turn around to answer; he corrects the count like a keeper amending a ledger.",
+   "camera": "hold",
+   "transition": "cut",
+   "music": "theme_village",
+   "sfx": [
+    "footsteps_wood",
+    "glass_chime"
+   ],
+   "subs": [
+    {
+     "at": 0.8,
+     "speaker": "ESPEN",
+     "text": "Eight. One snapped."
+    }
+   ]
+  },
+  {
+   "seconds": 3.5,
+   "template": "close_object",
+   "description": "Insert: the snapped eighth match, laid crosswise \u2014 a soldier fallen out of line, its two halves not quite touching. Her line lands over this image, the closest she will ever come to saying 'you nearly died.'",
+   "camera": "push_in",
+   "transition": "cut",
+   "music": "theme_village",
+   "sfx": [
+    "fire_lamp"
+   ],
+   "subs": [
+    {
+     "at": 0.7,
+     "speaker": "ORLA",
+     "text": "Snapped counts."
+    }
+   ]
+  },
+  {
+   "seconds": 8,
+   "template": "close_hands",
+   "description": "Two hands, one frame \u2014 the scene's thesis. Espen pours her tea; the cup trembles on its saucer with the specific tremor of a boy who has been awake all night being brave. Her salt-stiff hand comes up underneath and steadies it \u2014 the exact same save as the kettle in scene 3, offered now instead of hidden. Hold until the trembling stops.",
+   "camera": "hold",
+   "transition": "cut",
+   "music": "theme_village",
+   "sfx": [
+    "glass_chime",
+    "breath"
+   ],
+   "subs": [
+    {
+     "at": 5.2,
+     "speaker": "ESPEN",
+     "text": "I'll buy more matches."
+    }
+   ]
+  },
+  {
+   "seconds": 4,
+   "template": "close_eye",
+   "description": "Back to Orla's eye, tighter. A beat before she speaks \u2014 and the order comes back doubled. Play it flat, almost bored; let the audience do the math on how little time she is buying for.",
+   "camera": "hold",
+   "transition": "cut",
+   "music": "theme_village",
+   "sfx": [
+    "breath",
+    "fire_lamp"
+   ],
+   "subs": [
+    {
+     "at": 1.2,
+     "speaker": "ORLA",
+     "text": "Buy two tins."
+    }
+   ]
+  },
+  {
+   "seconds": 6,
+   "template": "two_shot_silhouette",
+   "description": "The two of them small against the gallery glass and the steaming gold sea \u2014 boy standing with the tray, grandmother propped in the daybed, the burning lamp between and above them. Gentle drift. The apprenticeship signs itself in two lines: he names his own sabotage unprompted, and she forgives everything in two words.",
+   "camera": "drift",
+   "transition": "cut",
+   "music": "theme_village",
+   "sfx": [
+    "fire_lamp",
+    "wind_soft"
+   ],
+   "subs": [
+    {
+     "at": 0.8,
+     "speaker": "ESPEN",
+     "text": "And putty. For the pane."
+    },
+    {
+     "at": 3.6,
+     "speaker": "ORLA",
+     "text": "I know."
+    }
+   ]
+  },
+  {
+   "seconds": 6,
+   "template": "light_beam",
+   "description": "Final image: the beam itself, pale as breath, sweeping once over the steaming gold flats in full daylight \u2014 a light burning past dawn because a boy kept it there, ticking down toward its rest. Slow pull back into the wide gold morning. Hold the last second in near-quiet, ready for the first far bell of the next scene.",
+   "camera": "pull_back",
+   "transition": "crossfade",
+   "music": "theme_dawn",
+   "sfx": [
+    "fire_lamp",
+    "wind_soft"
+   ],
+   "subs": []
+  }
+ ]
+}

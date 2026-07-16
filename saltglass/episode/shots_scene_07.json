@@ -1,0 +1,353 @@
+{
+ "scene_n": 7,
+ "shots": [
+  {
+   "seconds": 6,
+   "template": "black",
+   "description": "Dead black frame held long enough to feel wrong. The signal bell arrives out of the dark \u2014 dragged, arrhythmic, stopping mid-swing, a hand losing its grip on their private language mid-word. No image at all; the audience reads the break in the pattern before any character does. Score absent; the broken bell IS the music.",
+   "camera": "hold",
+   "transition": "cut",
+   "music": "silence",
+   "sfx": [
+    "silence_drop",
+    "bell_small"
+   ],
+   "fx": [],
+   "subs": [
+    {
+     "text": "[signal bell \u2014 dragged, wrong]",
+     "speaker": "NARRATION",
+     "at": 1.5
+    }
+   ]
+  },
+  {
+   "seconds": 4,
+   "template": "close_eye",
+   "description": "Extreme close-up: Espen's eye opens in the dark before the rest of him moves \u2014 the body knows the bell is wrong before the mind wakes. One blue-white lightning spill through the shutter slats crosses the iris and is taken away. Wet slate blacks, a single rim of lightning white.",
+   "camera": "push_in",
+   "transition": "cut",
+   "music": "silence",
+   "sfx": [
+    "bell_small",
+    "breath"
+   ],
+   "fx": [
+    "lightning_flash"
+   ],
+   "subs": []
+  },
+  {
+   "seconds": 4.5,
+   "template": "cottage_int",
+   "description": "Espen's black bedroom, all wet-slate darkness. His silhouette is already upright, blanket sliding off; each lightning flash prints the room in flat white then removes it, like frames torn out of the night. The dragged bell keeps arriving through the walls, each ring more wrong than the last.",
+   "camera": "drift",
+   "transition": "cut",
+   "music": "silence",
+   "sfx": [
+    "bell_small",
+    "thunder",
+    "creak"
+   ],
+   "fx": [
+    "lightning_flash"
+   ],
+   "subs": []
+  },
+  {
+   "seconds": 6,
+   "template": "stairs",
+   "description": "The black spiral stair in storm. The stair door has blown open and bangs on its hinge; rain climbs the steps in gusts like something crawling upward. Espen's small barefoot silhouette takes the turns two at a time; every lightning flash prints the full spiral in white then takes it away \u2014 geometry that exists only in strobes.",
+   "camera": "push_in",
+   "transition": "cut",
+   "music": "silence",
+   "sfx": [
+    "door",
+    "wind_storm",
+    "rain"
+   ],
+   "fx": [
+    "lightning_flash",
+    "rain_streaks"
+   ],
+   "subs": [
+    {
+     "at": 2.5,
+     "speaker": "ESPEN",
+     "text": "Gran? Gran\u2014"
+    }
+   ]
+  },
+  {
+   "seconds": 2.0,
+   "template": "montage_detail",
+   "description": "insert: Espen snatches his day jacket off the bedpost hook as he bolts \u2014 the match tin and the jar knock together inside the pocket",
+   "camera": "push_in",
+   "transition": "cut",
+   "subs": [],
+   "sfx": [
+    "glass_chime"
+   ],
+   "music": null
+  },
+  {
+   "seconds": 5,
+   "template": "stairs",
+   "description": "The landing below the lamp room, wide. A lightning flash prints it: Orla down on the wet stone, one arm still raised, hand tangled in the bell rope above her like a climber who almost held. The rope still sways; the bell gives its last dragged, dying strokes. Black spiral behind her, lightning-white edges, no warmth anywhere in frame.",
+   "camera": "hold",
+   "transition": "cut",
+   "music": "silence",
+   "sfx": [
+    "bell_small",
+    "rain",
+    "thunder"
+   ],
+   "fx": [
+    "lightning_flash"
+   ],
+   "subs": []
+  },
+  {
+   "seconds": 5,
+   "template": "close_hands",
+   "description": "Insert: her salt-cracked hand wound tight in the wet bell rope \u2014 the grip of someone who spent her last strength on a message. Espen's smaller hands work her fingers free one by one. Rain beads catch lightning; rope fiber and cracked knuckle in lightning-white rimlight against black.",
+   "camera": "push_in",
+   "transition": "cut",
+   "music": "silence",
+   "sfx": [
+    "creak",
+    "breath",
+    "rain"
+   ],
+   "fx": [
+    "rain_streaks"
+   ],
+   "subs": []
+  },
+  {
+   "seconds": 8,
+   "template": "two_shot_silhouette",
+   "description": "Two silhouettes against strobing rain: Espen gets under her arm and heaves. She is impossibly heavy the way only fallen people are; his bare feet slide on the wet stone and he catches them both against the wall. Play the struggle in silhouette \u2014 no faces yet, just weight and rain and the size difference between them.",
+   "camera": "drift",
+   "transition": "cut",
+   "music": "silence",
+   "sfx": [
+    "footsteps_stone",
+    "breath",
+    "wind_storm"
+   ],
+   "fx": [
+    "lightning_flash",
+    "rain_streaks"
+   ],
+   "subs": [
+    {
+     "at": 0.8,
+     "speaker": "ESPEN",
+     "text": "Okay. Up. Come on, up\u2014"
+    },
+    {
+     "at": 4.0,
+     "speaker": "ESPEN",
+     "text": "\u2014why are you heavy, you weigh nothing\u2014"
+    }
+   ]
+  },
+  {
+   "seconds": 6,
+   "template": "stairs",
+   "description": "THE tilt-up that breaks the night open: starting past her shoulder, the camera climbs the last turn of stairs alone \u2014 and the lamp room stands DARK. A hole where warmth has lived in every previous scene. Hold the top of the move a full beat; the darkness up there should read as depth, like the cold-open sea. All sound seems to fall away under it.",
+   "camera": "tilt_up",
+   "transition": "cut",
+   "music": "silence",
+   "sfx": [
+    "silence_drop",
+    "wind_storm"
+   ],
+   "fx": [
+    "lightning_flash"
+   ],
+   "subs": []
+  },
+  {
+   "seconds": 4,
+   "template": "close_object",
+   "description": "In one lightning flash: the cracked pane \u2014 HIS pane \u2014 its rag blown inward, hanging like a torn flag. The crack whistles triumphantly in the gust. Storm-green glass, rain threading through the gap, the dead lamp a black shape beyond. The whole night's cause in a single object.",
+   "camera": "push_in",
+   "transition": "cut",
+   "music": "silence",
+   "sfx": [
+    "glass_chime",
+    "wind_storm",
+    "rain"
+   ],
+   "fx": [
+    "lightning_flash",
+    "rain_streaks"
+   ],
+   "subs": []
+  },
+  {
+   "seconds": 4,
+   "template": "close_eye",
+   "description": "Orla's face, half in shadow, half printed lightning-white. Her eye finds him and is already past him \u2014 she doesn't ask how the flame died; she knows. Her breath is shallow and timed wrong, and the word comes out between the wrong breaths.",
+   "camera": "hold",
+   "transition": "cut",
+   "music": "silence",
+   "sfx": [
+    "breath",
+    "rain"
+   ],
+   "fx": [
+    "lightning_flash"
+   ],
+   "subs": [
+    {
+     "at": 1.8,
+     "speaker": "ORLA",
+     "text": "Pane."
+    }
+   ]
+  },
+  {
+   "seconds": 6.5,
+   "template": "two_shot_silhouette",
+   "description": "He braces her against the landing wall, both silhouetted, rain gusting through the open door past them. He talks fast, the way children bargain with disasters; her answer is two words and it lands heavier than the thunder. Keep her body slack, his rigid.",
+   "camera": "hold",
+   "transition": "cut",
+   "music": "silence",
+   "sfx": [
+    "breath",
+    "wind_storm",
+    "rain"
+   ],
+   "fx": [
+    "rain_streaks"
+   ],
+   "subs": [
+    {
+     "at": 0.5,
+     "speaker": "ESPEN",
+     "text": "I know. I know, I'm sorry, I'll fix it, just stand\u2014"
+    },
+    {
+     "at": 4.5,
+     "speaker": "ORLA",
+     "text": "Light first."
+    }
+   ]
+  },
+  {
+   "seconds": 3,
+   "template": "close_eye",
+   "description": "Hard cut to Espen's eyes \u2014 rain or tears, deliberately unreadable which. The outburst of a boy being ordered past his grandmother. Lightning rims the lashes; everything else is black.",
+   "camera": "hold",
+   "transition": "cut",
+   "music": "silence",
+   "sfx": [
+    "rain",
+    "breath"
+   ],
+   "fx": [
+    "lightning_flash"
+   ],
+   "subs": [
+    {
+     "at": 0.4,
+     "speaker": "ESPEN",
+     "text": "You're on the floor!"
+    }
+   ]
+  },
+  {
+   "seconds": 4,
+   "template": "close_hands",
+   "description": "Her hand closes on his wrist \u2014 the exact grip from the lesson in scene 5, now with almost no strength behind it. Salt-cracked fingers over a child's wrist, wet stone below, one lightning rim. The order arrives as two words through the wrong breathing.",
+   "camera": "hold",
+   "transition": "cut",
+   "music": "silence",
+   "sfx": [
+    "breath",
+    "creak"
+   ],
+   "fx": [],
+   "subs": [
+    {
+     "at": 1.2,
+     "speaker": "ORLA",
+     "text": "Then me."
+    }
+   ]
+  },
+  {
+   "seconds": 5,
+   "template": "two_shot_silhouette",
+   "description": "Slow push on the two of them, small on the vast dark landing, the spiral coiling up out of frame toward the dead lamp room. His protest dies half-spoken; her word replaces it. The storm seems to lean in to listen.",
+   "camera": "push_in",
+   "transition": "cut",
+   "music": "silence",
+   "sfx": [
+    "rain",
+    "breath",
+    "thunder"
+   ],
+   "fx": [
+    "lightning_flash",
+    "rain_streaks"
+   ],
+   "subs": [
+    {
+     "at": 0.6,
+     "speaker": "ESPEN",
+     "text": "Gran\u2014"
+    },
+    {
+     "at": 2.6,
+     "speaker": "ORLA",
+     "text": "Count."
+    }
+   ]
+  },
+  {
+   "seconds": 5,
+   "template": "close_eye",
+   "description": "Orla's half-shadowed face, closer than we have ever been. The second 'Count.' is quieter \u2014 it is the last thing she has strength for \u2014 and on the word, thunder lands directly overhead, whiting out the frame for two frames and leaving her face in full shadow after. Hold the aftermath.",
+   "camera": "push_in",
+   "transition": "cut",
+   "music": "silence",
+   "sfx": [
+    "breath",
+    "thunder",
+    "heartbeat"
+   ],
+   "fx": [
+    "lightning_flash"
+   ],
+   "subs": [
+    {
+     "at": 1.5,
+     "speaker": "ORLA",
+     "text": "Count."
+    }
+   ]
+  },
+  {
+   "seconds": 7,
+   "template": "stairs",
+   "description": "Final image: Espen at the foot of the last turn, looking up the dark spiral alone. The camera pulls back, leaving him small beneath the climb; lightning prints the spiral in white one last time and takes it away, and what remains is a boy, a staircase, and six minutes he doesn't know have already started. Cut straight into scene 8 on the black.",
+   "camera": "pull_back",
+   "transition": "cut",
+   "music": "silence",
+   "sfx": [
+    "wind_storm",
+    "rain",
+    "heartbeat"
+   ],
+   "fx": [
+    "lightning_flash",
+    "rain_streaks"
+   ],
+   "subs": []
+  }
+ ]
+}

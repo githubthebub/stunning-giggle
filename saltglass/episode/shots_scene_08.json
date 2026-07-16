@@ -1,0 +1,521 @@
+{
+ "scene_n": 8,
+ "shots": [
+  {
+   "seconds": 10,
+   "template": "lamp_room_int",
+   "description": "Fade in on abyssal black lamp room. The dead lamp is a black monolith; the only light is the jar on the floorboards, a faint ember-blue coal. Lightning rims the gallery glass, sketching Espen small and mid-frame. Blacks never crush \u2014 jar glow keeps every surface just legible.",
+   "camera": "drift",
+   "transition": "fade_in",
+   "music": "silence",
+   "sfx": [
+    "wind_storm",
+    "rain"
+   ],
+   "fx": [
+    "internal_light:jar_ember_glow",
+    "lightning_rim"
+   ],
+   "subs": []
+  },
+  {
+   "seconds": 11,
+   "template": "close_hands",
+   "description": "Minute one. Boy hands jam a rag and his balled jacket into the cracked storm-green pane; the wind bulges the cloth back at him twice, fighting him for it. Knuckles white in jar-blue and lightning rim; no warm light anywhere yet.",
+   "camera": "hold",
+   "transition": "cut",
+   "music": "silence",
+   "sfx": [
+    "wind_storm",
+    "creak"
+   ],
+   "fx": [
+    "internal_light:lightning_rim"
+   ],
+   "subs": [
+    {
+     "speaker": "ESPEN",
+     "text": "Minute one. Shut the pane.",
+     "at": 2.5
+    }
+   ]
+  },
+  {
+   "seconds": 8,
+   "template": "lamp_room_int",
+   "description": "Medium: he crosses to the great lens, jar-glow throwing his shadow tall across brass and glass. The six-note litany figure enters \u2014 one note, low, like a bell underwater. Composition tilts the lamp huge, the boy small.",
+   "camera": "pan_right",
+   "transition": "cut",
+   "music": "theme_duty",
+   "sfx": [
+    "footsteps_wood",
+    "rain"
+   ],
+   "fx": [
+    "internal_light:jar_glow"
+   ],
+   "subs": []
+  },
+  {
+   "seconds": 9,
+   "template": "close_hands",
+   "description": "Minute two. Fingers on the wick scissors, trembling but working. Slow push toward the trim: blue light on brass, breath fogging in the cold. The motions are hers \u2014 we can feel the drill under the panic.",
+   "camera": "push_in",
+   "transition": "cut",
+   "music": "theme_duty",
+   "sfx": [
+    "breath",
+    "wind_soft"
+   ],
+   "fx": [
+    "internal_light:jar_glow"
+   ],
+   "subs": [
+    {
+     "speaker": "ESPEN",
+     "text": "Minute two. Trim the wick.",
+     "at": 1.5
+    }
+   ]
+  },
+  {
+   "seconds": 8,
+   "template": "montage_detail",
+   "description": "Minute three, tight inserts: oil to the ring. His shaking fingers land in exact registration with Orla's from scene 5 \u2014 knuckle for knuckle, same framing, intercut so his hands and the memory of hers become one pair. Ember dusk of the memory flickers against the abyssal blue of now.",
+   "camera": "hold",
+   "transition": "cut",
+   "music": "theme_duty",
+   "sfx": [
+    "breath",
+    "rain"
+   ],
+   "fx": [
+    "hand_doubling_match_cut",
+    "internal_light:jar_glow"
+   ],
+   "subs": [
+    {
+     "speaker": "ESPEN",
+     "text": "Minute three. Oil to the ring.",
+     "at": 1.5
+    }
+   ]
+  },
+  {
+   "seconds": 8,
+   "template": "close_object",
+   "description": "Minute four. The tin, filling frame. First match drawn across the striker \u2014 the head crumbles wet against it, a sound like sand. The orange flare never comes; only damp grit falling. The tin he pocketed undried is lying, because he made it lie.",
+   "camera": "hold",
+   "transition": "cut",
+   "music": "theme_duty",
+   "sfx": [
+    "match_strike",
+    "salt_crunch"
+   ],
+   "fx": [
+    "internal_light:jar_glow"
+   ],
+   "subs": [
+    {
+     "speaker": "ESPEN",
+     "text": "Minute four. Dry hands. Dry\u2014",
+     "at": 1.0
+    }
+   ]
+  },
+  {
+   "seconds": 7,
+   "template": "close_hands",
+   "description": "Second match. Third. Both crumble; wet head-paste on his fingertips. His hands start to hurry \u2014 the exact opposite of the drill. The litany note under this one lands flat, degrading.",
+   "camera": "push_in",
+   "transition": "cut",
+   "music": "theme_duty",
+   "sfx": [
+    "match_strike",
+    "salt_crunch",
+    "heartbeat"
+   ],
+   "fx": [
+    "internal_light:jar_glow"
+   ],
+   "subs": [
+    {
+     "speaker": "ESPEN",
+     "text": "No. No no no. Not now\u2014",
+     "at": 1.5
+    }
+   ]
+  },
+  {
+   "seconds": 14,
+   "template": "montage_detail",
+   "description": "Seven small deaths. He shelters the tin inside his shirt; four, five, six, seven die in close-up \u2014 each dud laid gently on the white sill in a lengthening row, filmed like casualties. We count the row, never his face. Litany figure keeps losing pitch as each match goes.",
+   "camera": "hold",
+   "transition": "cut",
+   "music": "theme_duty",
+   "sfx": [
+    "match_strike",
+    "salt_crunch",
+    "heartbeat"
+   ],
+   "fx": [
+    "row_of_dead_matches",
+    "internal_light:jar_glow"
+   ],
+   "subs": []
+  },
+  {
+   "seconds": 5,
+   "template": "close_eye",
+   "description": "His eye, huge, rimmed in jar-blue; a held single close-up. He steadies his voice with her words \u2014 the drill as a handrail.",
+   "camera": "hold",
+   "transition": "cut",
+   "music": "theme_duty",
+   "sfx": [
+    "breath",
+    "heartbeat"
+   ],
+   "fx": [
+    "internal_light:jar_glow"
+   ],
+   "subs": [
+    {
+     "speaker": "ESPEN",
+     "text": "Minute five. Strike away from your body.",
+     "at": 0.8
+    }
+   ]
+  },
+  {
+   "seconds": 6,
+   "template": "close_hands",
+   "description": "The eighth match snaps unstruck between his fingers \u2014 two clean pieces on his palm. He is bargaining with a clock now. Sting under the snap; the litany dies with it.",
+   "camera": "hold",
+   "transition": "cut",
+   "music": "sting_dread",
+   "sfx": [
+    "salt_crunch",
+    "heartbeat"
+   ],
+   "fx": [
+    "internal_light:jar_glow"
+   ],
+   "subs": [
+    {
+     "speaker": "ESPEN",
+     "text": "That was still five. It's still five!",
+     "at": 2.0
+    }
+   ]
+  },
+  {
+   "seconds": 7,
+   "template": "close_object",
+   "description": "The world changes. The jar on the floor wakes \u2014 ember-blue floods up to drowned-noon-blue, brightening until the whole room reads underwater. Push in until the glow fills frame.",
+   "camera": "push_in",
+   "transition": "cut",
+   "music": "theme_undertow",
+   "sfx": [
+    "glass_chime",
+    "undertow_call"
+   ],
+   "fx": [
+    "internal_light:jar_bloom_blue"
+   ],
+   "subs": []
+  },
+  {
+   "seconds": 9,
+   "template": "lamp_room_int",
+   "description": "Wide on the gallery glass: the rain stops falling DOWN and streams SIDEWAYS across the panes like current \u2014 physics of weather replaced by physics of water. Espen tiny against the glass wall, lit drowned-noon-blue from the floor.",
+   "camera": "hold",
+   "transition": "cut",
+   "music": "theme_undertow",
+   "sfx": [
+    "rain",
+    "wind_storm"
+   ],
+   "fx": [
+    "sideways_rain_current",
+    "internal_light:jar_bloom_blue"
+   ],
+   "subs": []
+  },
+  {
+   "seconds": 6,
+   "template": "stairs",
+   "description": "Tilt up the black spiral stair as a long hull-creak rolls up through the tower from ten fathoms of stone below; dust sifts from the joints. Jar-blue spill bleeding down from the lamp room above keeps the dark readable.",
+   "camera": "tilt_up",
+   "transition": "cut",
+   "music": "theme_undertow",
+   "sfx": [
+    "creak",
+    "rumble"
+   ],
+   "fx": [
+    "internal_light:blue_spill_from_above"
+   ],
+   "subs": []
+  },
+  {
+   "seconds": 12,
+   "template": "undertow",
+   "description": "Outside the gallery glass: rows of faint cold fin-lights rise past, huge and slow, orderly as lanterns in a procession \u2014 the Dry Sea filling with darkness that moves like deep water. Their light is the frame's only source; the tower glass reflects them in cold rows.",
+   "camera": "drift",
+   "transition": "cut",
+   "music": "theme_undertow",
+   "sfx": [
+    "undertow_call",
+    "rumble"
+   ],
+   "fx": [
+    "internal_light:fin_light_rows"
+   ],
+   "subs": []
+  },
+  {
+   "seconds": 14,
+   "template": "undertow",
+   "description": "the vast undertow shape slides past the gallery glass, close, fills frame, fin-lights raking the dark, no eye visible, frost blooming across the pane, lighthouse unlit",
+   "camera": "hold",
+   "transition": "cut",
+   "music": "silence",
+   "sfx": [
+    "silence_drop",
+    "glass_chime",
+    "breath"
+   ],
+   "fx": [
+    "frost_bloom_toward_hand",
+    "internal_light:fin_light",
+    "eye_never_centered"
+   ],
+   "subs": [
+    {
+     "speaker": "ESPEN",
+     "text": "You're not real. The sea left.",
+     "at": 6.0
+    }
+   ]
+  },
+  {
+   "seconds": 7,
+   "template": "dry_sea_vista",
+   "description": "Cold-open reprise one, wider and heavier: the sea coming back wrong \u2014 darkness sliding over the moonlit flats like a tide with no water in it, keeling the ship skeletons upright again. Slow pull back; silence holds.",
+   "camera": "pull_back",
+   "transition": "crossfade",
+   "music": "silence",
+   "sfx": [
+    "undertow_call",
+    "wind_soft"
+   ],
+   "fx": [
+    "internal_light:fin_light_rows"
+   ],
+   "subs": []
+  },
+  {
+   "seconds": 7,
+   "template": "lighthouse_ext",
+   "description": "Reprise two: the dark leaning at a lone dead lamp \u2014 Saltwick Light a black tooth against fin-light rows, the darkness pressed against the lamp-room glass like surf against a hull.",
+   "camera": "hold",
+   "transition": "crossfade",
+   "music": "silence",
+   "sfx": [
+    "rumble",
+    "creak"
+   ],
+   "fx": [
+    "internal_light:fin_light_rows"
+   ],
+   "subs": []
+  },
+  {
+   "seconds": 5,
+   "template": "sky_vista",
+   "description": "Reprise three: emptiness where a beam should be. The sky over the strait holds no line of light at all \u2014 just the risen dark and a thin lightning rim on the cloudwall.",
+   "camera": "hold",
+   "transition": "crossfade",
+   "music": "silence",
+   "sfx": [
+    "wind_soft"
+   ],
+   "fx": [
+    "internal_light:lightning_rim"
+   ],
+   "subs": []
+  },
+  {
+   "seconds": 5,
+   "template": "close_hands",
+   "description": "her hand slack on the wet stone beside the still-swaying rope, six steps down on the landing; the bell barely ticks",
+   "camera": "hold",
+   "transition": "cut",
+   "music": "silence",
+   "sfx": [
+    "rain",
+    "bell_small"
+   ],
+   "fx": [
+    "internal_light:lightning_rim"
+   ],
+   "subs": []
+  },
+  {
+   "seconds": 8,
+   "template": "cliff_village",
+   "description": "Pressure valve two: the village's lit windows floating in the risen dark like buoys on a black swell \u2014 and going out one by one as people sleep, not knowing the tide is under them.",
+   "camera": "drift",
+   "transition": "cut",
+   "music": "silence",
+   "sfx": [
+    "wind_soft",
+    "undertow_call"
+   ],
+   "fx": [
+    "internal_light:window_buoys",
+    "windows_extinguish_one_by_one"
+   ],
+   "subs": []
+  },
+  {
+   "seconds": 6,
+   "template": "char_silhouette",
+   "description": "He stops looking at the eye and looks at the lens. Espen's silhouette turns from the frost-bloomed glass to the great dark lens, drowned-noon-blue behind him. The decision happens in posture, not face.",
+   "camera": "hold",
+   "transition": "cut",
+   "music": "silence",
+   "sfx": [
+    "heartbeat",
+    "breath"
+   ],
+   "fx": [
+    "internal_light:jar_bloom_blue"
+   ],
+   "subs": [
+    {
+     "speaker": "ESPEN",
+     "text": "...minute six.",
+     "at": 2.5
+    }
+   ]
+  },
+  {
+   "seconds": 6,
+   "template": "montage_detail",
+   "description": "He remembers her HANDS, not her words: flash-insert of scene 5 \u2014 the wrist-grip, her salt-cracked fingers guiding his to the brass clip behind the lens. The score returns as a single sustained tone, one held note. Ember-dusk memory light against the blue.",
+   "camera": "hold",
+   "transition": "cut",
+   "music": "theme_duty",
+   "sfx": [
+    "waves_memory",
+    "breath"
+   ],
+   "fx": [
+    "memory_insert_scene5",
+    "internal_light:ember_memory"
+   ],
+   "subs": [
+    {
+     "speaker": "ESPEN",
+     "text": "Behind the lens. One spare. Dry.",
+     "at": 1.5
+    }
+   ]
+  },
+  {
+   "seconds": 8,
+   "template": "close_object",
+   "description": "The brass clip behind the great lens, found by feel: one match, dry as a kept promise. Push in as his fingers close around it \u2014 the smallest object in the episode carrying the most weight.",
+   "camera": "push_in",
+   "transition": "cut",
+   "music": "theme_duty",
+   "sfx": [
+    "breath",
+    "glass_chime"
+   ],
+   "fx": [
+    "internal_light:jar_bloom_blue"
+   ],
+   "subs": []
+  },
+  {
+   "seconds": 11,
+   "template": "close_hands",
+   "description": "He shields the match inside her hanging coat \u2014 the wool a tent against the draft \u2014 and strikes it away from his body on the lens frame, exactly as taught. Match-flare orange: the first warm light of the scene, blooming inside the coat like a heart.",
+   "camera": "hold",
+   "transition": "cut",
+   "music": "theme_duty",
+   "sfx": [
+    "match_strike",
+    "breath",
+    "heartbeat"
+   ],
+   "fx": [
+    "internal_light:match_flare_orange"
+   ],
+   "subs": [
+    {
+     "speaker": "ESPEN",
+     "text": "For the night the tin lies.",
+     "at": 2.0
+    }
+   ]
+  },
+  {
+   "seconds": 7,
+   "template": "close_object",
+   "description": "The flame walks trembling to the wick. At the count of six, on the word, the wick catches \u2014 orange takes the frame from the blue in one breath.",
+   "camera": "push_in",
+   "transition": "cut",
+   "music": "sting_wonder",
+   "sfx": [
+    "fire_lamp",
+    "breath"
+   ],
+   "fx": [
+    "internal_light:wick_catch"
+   ],
+   "subs": [
+    {
+     "speaker": "ESPEN",
+     "text": "Burn.",
+     "at": 3.0
+    }
+   ]
+  },
+  {
+   "seconds": 10,
+   "template": "light_beam",
+   "description": "The beam slams outward through the gallery glass and the darkness recoils from it like surf off rock \u2014 fin-light rows scattering, the sideways rain snapping back into ordinary falling weather. Pull back with the beam as it claims the air.",
+   "camera": "pull_back",
+   "transition": "cut",
+   "music": "sting_wonder",
+   "sfx": [
+    "rumble",
+    "undertow_call"
+   ],
+   "fx": [
+    "internal_light:full_beam",
+    "darkness_recoil_surf"
+   ],
+   "subs": []
+  },
+  {
+   "seconds": 12,
+   "template": "dry_sea_vista",
+   "description": "Wide and final: dry land restored under the sweeping beam, the flats bone-pale again where the light passes. One whale-deep note sinks below the cliff and does not come back. Hold, then fade to black on the turning beam.",
+   "camera": "hold",
+   "transition": "fade_out",
+   "music": "theme_dawn",
+   "sfx": [
+    "undertow_call",
+    "wind_soft"
+   ],
+   "fx": [
+    "internal_light:beam_sweep"
+   ],
+   "subs": []
+  }
+ ]
+}

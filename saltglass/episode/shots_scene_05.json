@@ -1,0 +1,393 @@
+{
+ "scene_n": 5,
+ "shots": [
+  {
+   "seconds": 5,
+   "template": "lighthouse_ext",
+   "description": "Establishing: Saltwick Light against an ember-dusk sky, tower brass-edged by the last sun, the dead sea below already sunk in shadow. One gallery pane glints storm-green where the crack catches light. Quiet, warm, ominous only if you know to look.",
+   "camera": "drift",
+   "transition": "fade_in",
+   "music": "silence",
+   "sfx": [
+    "wind_soft",
+    "waves_memory"
+   ],
+   "fx": [
+    "ember dust motes"
+   ],
+   "subs": []
+  },
+  {
+   "seconds": 8,
+   "template": "lamp_room_int",
+   "description": "Wide interior: dusk turns the lamp room to embers and brass. Orla at the bench lays the match tin open with ritual precision; Espen slouches in behind her, spinning the blue saltglass jar between his fingers. The great lens looms honey-dark. She doesn't turn around when she speaks.",
+   "camera": "push_in",
+   "transition": "cut",
+   "music": "silence",
+   "sfx": [
+    "footsteps_wood",
+    "creak",
+    "wind_soft"
+   ],
+   "subs": [
+    {
+     "at": 5.5,
+     "speaker": "ORLA",
+     "text": "Hands."
+    }
+   ]
+  },
+  {
+   "seconds": 8,
+   "template": "close_hands",
+   "description": "The scene's grammar established: her salt-cracked hands, knuckles like rope knots, take his \u2014 young, quick, smooth \u2014 and turn them palms-up in the amber light. The jar is tucked under his arm, still turning slowly. Held close-up; no faces.",
+   "camera": "hold",
+   "transition": "cut",
+   "music": "silence",
+   "sfx": [
+    "breath"
+   ],
+   "subs": [
+    {
+     "at": 1.2,
+     "speaker": "ORLA",
+     "text": "Softer than mine were at eight. Never mind. Watch."
+    }
+   ]
+  },
+  {
+   "seconds": 7,
+   "template": "close_object",
+   "description": "Insert: the cracked storm-green pane, hairline whistling thin, the stuffed rag fluttering in the gap. Her finger enters frame and points at it. The six-note figure enters here \u2014 note ONE lands exactly on the point. Green sliver of cold in a warm room.",
+   "camera": "push_in",
+   "transition": "cut",
+   "music": "theme_duty",
+   "sfx": [
+    "wind_soft",
+    "glass_chime"
+   ],
+   "fx": [
+    "rag flutter",
+    "storm-green light sliver"
+   ],
+   "subs": [
+    {
+     "at": 0.8,
+     "speaker": "ORLA",
+     "text": "Minute one: shut the pane. Wind is a thief with patient fingers."
+    }
+   ]
+  },
+  {
+   "seconds": 7.0,
+   "template": "two_shot_silhouette",
+   "description": "The two silhouetted against the dusk glass, cracked pane between them like a third character. On his last line Espen shrugs \u2014 stage the shrug as clearly and readably as the crack itself; it is the shot's whole point. Hold on the shrug a beat too long.",
+   "camera": "hold",
+   "transition": "cut",
+   "music": "theme_duty",
+   "sfx": [
+    "wind_soft"
+   ],
+   "subs": [
+    {
+     "at": 0.5,
+     "speaker": "ESPEN",
+     "text": "The pane's fine."
+    },
+    {
+     "at": 3.0,
+     "speaker": "ORLA",
+     "text": "The pane is cracked and you've been told twice."
+    },
+    {
+     "at": 6.2,
+     "speaker": "ESPEN",
+     "text": "It whistles. I like the whistle."
+    }
+   ]
+  },
+  {
+   "seconds": 7,
+   "template": "close_hands",
+   "description": "Wick scissors snip the charred black beard off the wick \u2014 one clean cut. Beside her hands, his mimic the motion a beat late with an invisible pair. The doubling that pays off in scene 8, taught here as choreography. Note TWO of the figure.",
+   "camera": "hold",
+   "transition": "cut",
+   "music": "theme_duty",
+   "sfx": [
+    "breath",
+    "creak"
+   ],
+   "subs": [
+    {
+     "at": 0.8,
+     "speaker": "ORLA",
+     "text": "Minute two: trim the wick. Black beard, no flame."
+    }
+   ]
+  },
+  {
+   "seconds": 7,
+   "template": "close_hands",
+   "description": "Oil rises in the brass reservoir toward a scribed ring; her thumbnail rests exactly on the line as the amber meniscus climbs to meet it and stops. Tilt down follows the pour. His hand hovers, half-attending, jar still turning in the other. Note THREE.",
+   "camera": "tilt_down",
+   "transition": "cut",
+   "music": "theme_duty",
+   "sfx": [
+    "glass_chime"
+   ],
+   "fx": [
+    "amber refraction"
+   ],
+   "subs": [
+    {
+     "at": 0.8,
+     "speaker": "ORLA",
+     "text": "Minute three: oil to the ring. Not past it, not shy of it."
+    }
+   ]
+  },
+  {
+   "seconds": 8,
+   "template": "close_object",
+   "description": "Insert: the open tin. Eight loose matches, counted one by one under her cracked thumb \u2014 the rattle is a tiny, dry percussion. Espen's reply comes off-screen, flat, humoring her. Note FOUR lands on the eighth match.",
+   "camera": "push_in",
+   "transition": "cut",
+   "music": "theme_duty",
+   "sfx": [
+    "glass_chime",
+    "breath"
+   ],
+   "subs": [
+    {
+     "at": 0.6,
+     "speaker": "ORLA",
+     "text": "Minute four: dry hands, dry matches. Say it."
+    },
+    {
+     "at": 4.8,
+     "speaker": "ESPEN",
+     "text": "Dry hands, dry matches."
+    }
+   ]
+  },
+  {
+   "seconds": 6.5,
+   "template": "close_eye",
+   "description": "Her eye, ember-lit, unblinking \u2014 the stare that has outlasted storms. Off-screen, he says it again, slower this time, and for two words it is almost his. Cutting rhythm slows; let the held close-up do the discipline.",
+   "camera": "hold",
+   "transition": "cut",
+   "music": "theme_duty",
+   "sfx": [
+    "breath",
+    "wind_soft"
+   ],
+   "subs": [
+    {
+     "at": 0.6,
+     "speaker": "ORLA",
+     "text": "Say it like it's yours."
+    },
+    {
+     "at": 3.6,
+     "speaker": "ESPEN",
+     "text": "Dry hands. Dry matches."
+    }
+   ]
+  },
+  {
+   "seconds": 5,
+   "template": "close_hands",
+   "description": "She mimes the strike with a dead match \u2014 a long sweep away from the body, dry rasp, no flame. The gesture is exact, muscle-memory old. His hands copy it in the lower corner of frame, sloppy, a beat late. Note FIVE.",
+   "camera": "hold",
+   "transition": "cut",
+   "music": "theme_duty",
+   "sfx": [
+    "match_strike"
+   ],
+   "subs": [
+    {
+     "at": 0.6,
+     "speaker": "ORLA",
+     "text": "Minute five: strike away from your body."
+    }
+   ]
+  },
+  {
+   "seconds": 5,
+   "template": "light_beam",
+   "description": "The dying sun lines up through the great lens and floods the room molten amber \u2014 a rehearsal of flame, the lamp lit by the sky itself for one breath. Pull back as the caustics crawl across brass and faces. Note SIX lands and hangs unresolved.",
+   "camera": "pull_back",
+   "transition": "cut",
+   "music": "theme_duty",
+   "sfx": [
+    "glass_chime",
+    "wind_soft"
+   ],
+   "fx": [
+    "lens caustics",
+    "amber flare"
+   ],
+   "subs": [
+    {
+     "at": 0.7,
+     "speaker": "ORLA",
+     "text": "Minute six: burn."
+    }
+   ]
+  },
+  {
+   "seconds": 7.5,
+   "template": "two_shot_silhouette",
+   "description": "The figure stops mid-phrase \u2014 the music simply is not there anymore. Two silhouettes against the cooling glass, her back to him. His first question hangs; the second is spoken into her silence. The whistle through the crack is the only voice between them. Slow push toward her still shoulders.",
+   "camera": "push_in",
+   "transition": "cut",
+   "music": "silence",
+   "sfx": [
+    "silence_drop",
+    "wind_soft"
+   ],
+   "subs": [
+    {
+     "at": 0.8,
+     "speaker": "ESPEN",
+     "text": "And if it doesn't?"
+    },
+    {
+     "at": 5.0,
+     "speaker": "ESPEN",
+     "text": "Gran. What happens at minute seven?"
+    }
+   ]
+  },
+  {
+   "seconds": 6,
+   "template": "close_eye",
+   "description": "Her eye again \u2014 same framing as before, but now something moves behind it, deep and old. She answers with arithmetic instead of truth, and the shot holds long enough that both of them, and we, know it is not an answer.",
+   "camera": "hold",
+   "transition": "cut",
+   "music": "sting_dread",
+   "sfx": [
+    "breath"
+   ],
+   "subs": [
+    {
+     "at": 1.6,
+     "speaker": "ORLA",
+     "text": "The tin holds eight. Buy more tomorrow."
+    }
+   ]
+  },
+  {
+   "seconds": 8,
+   "template": "close_object",
+   "description": "Insert: the stove ledge. The wood worn pale in an exact tin-sized rectangle \u2014 a century of matches drying there overnight, generations of the same small obedience. Her hand enters and pats the spot once, like tucking in a child. The figure resumes, muted, dutiful.",
+   "camera": "push_in",
+   "transition": "crossfade",
+   "music": "theme_duty",
+   "sfx": [
+    "wind_soft",
+    "creak"
+   ],
+   "subs": [
+    {
+     "at": 0.6,
+     "speaker": "ORLA",
+     "text": "Matches sleep on the stove ledge. Every night. Even when I don't."
+    }
+   ]
+  },
+  {
+   "seconds": 5,
+   "template": "close_hands",
+   "description": "His hand pockets the tin instead \u2014 still damp from the seabed morning, rain ghosting the metal \u2014 while the jar keeps spinning in his other hand. Casual, thoughtless, fatal. The line is tossed off over his shoulder.",
+   "camera": "hold",
+   "transition": "cut",
+   "music": "theme_undertow",
+   "sfx": [
+    "glass_chime"
+   ],
+   "subs": [
+    {
+     "at": 0.6,
+     "speaker": "ESPEN",
+     "text": "Six minutes. It's a lamp, not a heart."
+    }
+   ]
+  },
+  {
+   "seconds": 5.5,
+   "template": "close_object",
+   "description": "The empty pale rectangle holds the frame alone for one long beat. Where the tin should sleep tonight: nothing. The whistle through the cracked pane threads under the silence like water finding a gap. No cut until it aches.",
+   "camera": "hold",
+   "transition": "cut",
+   "music": "theme_undertow",
+   "sfx": [
+    "wind_soft",
+    "creak"
+   ],
+   "fx": [
+    "dust in ember light"
+   ],
+   "subs": []
+  },
+  {
+   "seconds": 4,
+   "template": "close_hands",
+   "description": "Pattern break: her hand closes on his wrist \u2014 hard, older-strong, nothing like the patient teaching hands of the last two minutes. The jar stops spinning. Fast push-in; the first violent cut of the scene.",
+   "camera": "push_in",
+   "transition": "cut",
+   "music": "sting_dread",
+   "sfx": [
+    "heartbeat",
+    "breath"
+   ],
+   "subs": []
+  },
+  {
+   "seconds": 8.5,
+   "template": "close_object",
+   "description": "She guides his fingers into the shadow behind the great lens: a small brass clip, polished by decades of checking, where one match rests alone \u2014 dry as a kept promise. Drift around the lens edge as his fingertips find it. His yelp breaks the spell halfway through.",
+   "camera": "drift",
+   "transition": "cut",
+   "music": "theme_duty",
+   "sfx": [
+    "glass_chime",
+    "breath"
+   ],
+   "subs": [
+    {
+     "at": 1.0,
+     "speaker": "ORLA",
+     "text": "Behind the great lens. One spare. Dry."
+    },
+    {
+     "at": 5.2,
+     "speaker": "ESPEN",
+     "text": "Ow\u2014 fine. One spare. For what?"
+    }
+   ]
+  },
+  {
+   "seconds": 8,
+   "template": "char_silhouette",
+   "description": "Final frame: her face lit half by ember dusk, half by the storm-green of the cracked pane \u2014 the two futures of the episode split down her features. She answers, then opens her mouth on the next sentence \u2014 minute seven \u2014 and closes it. Hold on the almost-said. Fade out on the whistle.",
+   "camera": "hold",
+   "transition": "fade_out",
+   "music": "theme_undertow",
+   "sfx": [
+    "wind_soft",
+    "silence_drop"
+   ],
+   "fx": [
+    "split ember/green key light"
+   ],
+   "subs": [
+    {
+     "at": 1.2,
+     "speaker": "ORLA",
+     "text": "For the night the tin lies to you."
+    }
+   ]
+  }
+ ]
+}

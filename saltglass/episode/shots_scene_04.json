@@ -1,0 +1,353 @@
+{
+ "scene_n": 4,
+ "shots": [
+  {
+   "seconds": 7,
+   "template": "cliff_village",
+   "description": "Chalk-white noon flattens the cliff-town to paper cutouts: laundry lines cross the narrow market street like signal flags, hard black shadows pooled under rust-red awnings. Heat-haze shimmer at the far end of the street. Everything overexposed, bleached, bored.",
+   "camera": "pan_right",
+   "transition": "fade_in",
+   "music": "theme_village",
+   "sfx": [
+    "wind_soft"
+   ],
+   "subs": []
+  },
+  {
+   "seconds": 4,
+   "template": "montage_detail",
+   "description": "Texture beat: a cat asleep in a dry boat used as a planter, one paw over its eyes; a shirt on the line snaps once in the wind like a flag; salt dust drifting through a blade of noon light. The town has been bored for a hundred years.",
+   "camera": "hold",
+   "transition": "cut",
+   "music": "theme_village",
+   "sfx": [
+    "wind_soft",
+    "creak"
+   ],
+   "subs": []
+  },
+  {
+   "seconds": 11,
+   "template": "two_shot_silhouette",
+   "description": "Hulda's oil stall under the rust-red awning: Hulda big and sun-cured on one side of the counter, Espen small and slouched on the other, the oil can waiting between them like a hostage. She pokes through his tray of trinkets with one thick finger. Backlit by the white street; the awning throws them both into warm rust shadow.",
+   "camera": "drift",
+   "transition": "cut",
+   "music": "theme_village",
+   "sfx": [
+    "wind_soft"
+   ],
+   "subs": [
+    {
+     "at": 0.5,
+     "speaker": "HULDA",
+     "text": "Kelp glass, bone buttons... and what is this, a saint's toe?"
+    },
+    {
+     "at": 4.5,
+     "speaker": "ESPEN",
+     "text": "Whale ear-stone. Worth your whole awning, probably."
+    },
+    {
+     "at": 8.0,
+     "speaker": "HULDA",
+     "text": "Probably. The word I pay least for."
+    }
+   ]
+  },
+  {
+   "seconds": 8,
+   "template": "close_hands",
+   "description": "Insert: brass scale pans in warm awning light \u2014 trinkets heaped on one side, a short stack of coins on the other, and Hulda's thumb resting just so on the beam, permanently at home there. The pans clink and settle. Cheating and commerce indistinguishable, ritualized, honest about being dishonest.",
+   "camera": "push_in",
+   "transition": "cut",
+   "music": "theme_village",
+   "sfx": [
+    "glass_chime"
+   ],
+   "subs": [
+    {
+     "at": 1.0,
+     "speaker": "HULDA",
+     "text": "Oil's up again. Storm season."
+    },
+    {
+     "at": 3.4,
+     "speaker": "HULDA",
+     "text": "Everything true costs more in storm season."
+    }
+   ]
+  },
+  {
+   "seconds": 6,
+   "template": "two_shot_silhouette",
+   "description": "Same stall setup, slightly tighter. Espen straightens a little \u2014 quoting Gran is reflex, not conviction. Hulda doesn't look up from the pans; her answer is worn smooth from years of use.",
+   "camera": "hold",
+   "transition": "cut",
+   "music": "theme_village",
+   "sfx": [
+    "wind_soft"
+   ],
+   "subs": [
+    {
+     "at": 0.5,
+     "speaker": "ESPEN",
+     "text": "Gran says full weight."
+    },
+    {
+     "at": 2.8,
+     "speaker": "HULDA",
+     "text": "Your gran says a lot of hundred-year-old things."
+    }
+   ]
+  },
+  {
+   "seconds": 8,
+   "template": "char_silhouette",
+   "description": "Hulda alone in frame, leaning on the counter, filling it \u2014 a monument of sun-cured skepticism against the white-hot street behind her. She counts the century off on her fingers like debts. Rust awning glow on one side of her face, chalk glare on the other.",
+   "camera": "push_in",
+   "transition": "cut",
+   "music": "theme_village",
+   "sfx": [
+    "wind_soft"
+   ],
+   "subs": [
+    {
+     "at": 0.5,
+     "speaker": "HULDA",
+     "text": "A century, boy. Not one ship. Not a rowboat. Not a duck."
+    },
+    {
+     "at": 4.5,
+     "speaker": "HULDA",
+     "text": "And she burns coin every night to warn them."
+    }
+   ]
+  },
+  {
+   "seconds": 3,
+   "template": "char_silhouette",
+   "description": "Espen, medium-close, half in awning shadow. He doesn't argue. The agreement slips out flat, almost lazy \u2014 but it's the first crack showing. He's looking at the trinket tray, not at her.",
+   "camera": "hold",
+   "transition": "cut",
+   "music": "theme_village",
+   "sfx": [],
+   "subs": [
+    {
+     "at": 0.8,
+     "speaker": "ESPEN",
+     "text": "Yeah."
+    }
+   ]
+  },
+  {
+   "seconds": 3,
+   "template": "close_eye",
+   "description": "Snap insert: Hulda's eye \u2014 she actually looks up for the first time in the scene. Crow's feet, sun-bleached lashes, genuine surprise sharpening into interest. The boredom leaves the frame for exactly one beat.",
+   "camera": "push_in",
+   "transition": "cut",
+   "music": "theme_village",
+   "sfx": [
+    "breath"
+   ],
+   "subs": [
+    {
+     "at": 0.8,
+     "speaker": "HULDA",
+     "text": "Yeah?"
+    }
+   ]
+  },
+  {
+   "seconds": 5,
+   "template": "char_silhouette",
+   "description": "Espen grins \u2014 first time out loud, and it feels good and a little forbidden, like the words themselves are contraband. Chin up, backlit by laundry-white street. This is the betrayal spoken before the betrayal performed.",
+   "camera": "hold",
+   "transition": "cut",
+   "music": "theme_village",
+   "sfx": [],
+   "subs": [
+    {
+     "at": 0.6,
+     "speaker": "ESPEN",
+     "text": "It's a museum. She's the exhibit."
+    }
+   ]
+  },
+  {
+   "seconds": 6,
+   "template": "char_silhouette",
+   "description": "Hulda barks a laugh that startles the sleeping cat somewhere off-frame; she slaps the counter and the scale pans jump. Delight of a heretic finding a convert \u2014 and a convert from the priest's own house.",
+   "camera": "hold",
+   "transition": "cut",
+   "music": "theme_village",
+   "sfx": [
+    "glass_chime"
+   ],
+   "subs": [
+    {
+     "at": 0.5,
+     "speaker": "HULDA",
+     "text": "Ha! Ten years I've said it. First time a keeper's blood agreed with me."
+    }
+   ]
+  },
+  {
+   "seconds": 6,
+   "template": "two_shot_silhouette",
+   "description": "Two-shot across the counter. Espen backpedals on a technicality, suddenly cagey; Hulda flips open a fat ledger without looking, tapping a column. The word 'apprentice' hangs in the dry air and buys him nothing.",
+   "camera": "hold",
+   "transition": "cut",
+   "music": "theme_village",
+   "sfx": [
+    "wind_soft"
+   ],
+   "subs": [
+    {
+     "at": 0.5,
+     "speaker": "ESPEN",
+     "text": "Apprentice. It's different."
+    },
+    {
+     "at": 3.0,
+     "speaker": "HULDA",
+     "text": "Not in the ledger it isn't."
+    }
+   ]
+  },
+  {
+   "seconds": 9,
+   "template": "close_hands",
+   "description": "THE SKIM \u2014 tight, unmistakable, card-trick clean: Hulda counts the oil money coin by coin into Espen's palm; mid-pass his fingers roll the top coin back along his knuckles and it vanishes into the same pocket as the jar. One coin slides on skin, almost silent. Frame never cuts away; the audience is the only witness. His hand closes over the honest remainder like nothing happened.",
+   "camera": "pull_back",
+   "transition": "cut",
+   "music": "theme_village",
+   "sfx": [
+    "silence_drop",
+    "breath"
+   ],
+   "subs": [
+    {
+     "at": 2.0,
+     "speaker": "HULDA",
+     "text": "Spring caravan. There's still a place, if your legs are serious."
+    }
+   ]
+  },
+  {
+   "seconds": 9,
+   "template": "cliff_village",
+   "description": "They walk together up the market street toward the cliff rail, two silhouettes passing under crossing laundry lines \u2014 big and small, slow noon pace. Hard shadow stripes rake over them like ledger rules. The oil can swings in Espen's grip.",
+   "camera": "drift",
+   "transition": "cut",
+   "music": "theme_village",
+   "sfx": [
+    "footsteps_stone",
+    "wind_soft"
+   ],
+   "subs": [
+    {
+     "at": 0.5,
+     "speaker": "ESPEN",
+     "text": "I asked, didn't I?"
+    },
+    {
+     "at": 2.5,
+     "speaker": "HULDA",
+     "text": "You asked like a boy buying something behind his gran's back."
+    },
+    {
+     "at": 6.5,
+     "speaker": "ESPEN",
+     "text": "It's my back."
+    }
+   ]
+  },
+  {
+   "seconds": 8,
+   "template": "dry_sea_vista",
+   "description": "From the cliff rail: the strait as a vast hazed dry plain, chalk white burning into pale nothing at the horizon. Where Farholm's tower should stand there is only a smudge of haze \u2014 an absence shaped like a landmark. Hulda's silhouette at the rail's edge of frame, squinting. The frame holds on the wrongness without underlining it.",
+   "camera": "push_in",
+   "transition": "cut",
+   "music": "theme_village",
+   "sfx": [
+    "wind_soft"
+   ],
+   "subs": [
+    {
+     "at": 2.5,
+     "speaker": "HULDA",
+     "text": "Funny. Can't see Farholm's tower lately."
+    }
+   ]
+  },
+  {
+   "seconds": 7,
+   "template": "two_shot_silhouette",
+   "description": "At the rail: Hulda squinting hard at the horizon, hand shading her eyes; Espen slumped on the rail beside her, bored, chin on forearms, facing the wrong way. The one adult who notices something is the one who doesn't believe in anything.",
+   "camera": "hold",
+   "transition": "cut",
+   "music": "theme_village",
+   "sfx": [
+    "wind_soft"
+   ],
+   "subs": [
+    {
+     "at": 0.6,
+     "speaker": "ESPEN",
+     "text": "It's noon."
+    },
+    {
+     "at": 3.0,
+     "speaker": "HULDA",
+     "text": "At noon you see the tower. Haze, probably."
+    }
+   ]
+  },
+  {
+   "seconds": 6,
+   "template": "close_object",
+   "description": "TIGHT INSERT, inside Espen's pocket: darkness, rough cloth weave \u2014 and the saltglass jar gives ONE slow blue pulse, a soft glass hum, lighting the stolen coin lying against it. The coin's edge catches the blue like a tiny eclipse. All music gone; the world outside the pocket is muffled to nothing. Hold the after-dark a full beat.",
+   "camera": "push_in",
+   "transition": "cut",
+   "music": "silence",
+   "sfx": [
+    "glass_chime",
+    "silence_drop"
+   ],
+   "subs": []
+  },
+  {
+   "seconds": 6,
+   "template": "close_hands",
+   "description": "Espen's hand pulls the jar out into flat noon glare \u2014 it looks utterly inert, junk-shop blue. He taps it twice against the iron rail like a dead watch. Nothing. Shrug telegraphed through the wrist. Bleached palette, no glow at all in daylight; the muttered verdict is barely voiced.",
+   "camera": "hold",
+   "transition": "cut",
+   "music": "silence",
+   "sfx": [
+    "glass_chime",
+    "wind_soft"
+   ],
+   "subs": [
+    {
+     "at": 1.5,
+     "speaker": "ESPEN",
+     "text": "Cheap junk."
+    }
+   ]
+  },
+  {
+   "seconds": 7,
+   "template": "char_silhouette",
+   "description": "Wide-ish from behind: Espen pockets the jar and walks away along the cliff path, oil can swinging, small against the chalk sky \u2014 and behind him, unwatched, low in frame at his hip, the pocket blooms one more slow blue pulse, aimed like a compass needle across the strait toward the haze where Farholm should be. Nobody sees it. Hold, then out.",
+   "camera": "pull_back",
+   "transition": "fade_out",
+   "music": "sting_dread",
+   "sfx": [
+    "glass_chime",
+    "undertow_call",
+    "wind_soft"
+   ],
+   "subs": []
+  }
+ ]
+}
