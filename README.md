@@ -1,126 +1,88 @@
-# 🔴 Pokémon Unova — Dream Journey
+# COMPOUND — Learn Fast. Be Heard.
 
-A Pokémon **Black & White-style RPG** you play in the browser — walk the
-overworld, battle and catch Pokémon, earn badges, master every HM, and beat the
-**Elite Four & Champion**. Then step through the **Entralink** into a fully
-shareable **Dream World** where you can **cross over** into another player's
-dream and trade Pokémon.
+**A single, self-contained web page that turns the best of learning science and
+attention research into tools you can actually use.** No build step, no
+dependencies, no accounts, no server, no tracking — open the file and it runs.
 
-No build step, no dependencies, no accounts. Runs on plain Node + a browser.
-
-![Overworld](docs/island.png)
+> Two forces decide whether an idea sticks: how your **brain** stores it, and how
+> the **world** spreads it. COMPOUND distills both — the cognitive science of
+> memory (Ebbinghaus, Roediger & Karpicke, Bjork, Ericsson — the work that shows
+> up in Harvard and Stanford learning-science courses) and the attention
+> mechanics the most-watched creators on Earth obsess over — into one interactive
+> page.
 
 ## ▶️ Run it
 
+It's one file. Any of these work:
+
 ```bash
-npm start        # serves on http://127.0.0.1:4173
-# or: node server.js
+# Just open it
+open index.html            # macOS   (xdg-open on Linux)
+
+# …or serve it, if your browser is strict about file:// URLs
+python3 -m http.server 8000   # then visit http://localhost:8000
 ```
 
-Open the printed URL. Progress saves automatically to your browser.
+That's the entire setup. Everything — styles, logic, the spaced-repetition
+engine, the charts — is inlined in `index.html`.
 
-- **Move:** Arrow keys / WASD  ·  **Interact / Confirm:** Z / Space / Enter  ·
-  **Cancel:** X  ·  **Menu:** Esc  ·  on-screen touch controls on mobile.
+## What's inside
 
-## 🎮 Two ways to start
+| Section | What it does |
+|---|---|
+| **Retention Lab** | An interactive forgetting-curve simulator. Drag *review frequency* and *recall effort* and watch a memory fight exponential decay in real time. Shows *why* a handful of well-timed reviews beats one long study session — and that harder recall means **fewer** reviews needed. |
+| **The Learning OS** | Five evidence-based techniques — active recall, spaced repetition, interleaving, the Feynman technique, deliberate practice — each written as a protocol you can run this week, with its source. Plus the two popular methods that *don't* work well. |
+| **The Attention Engine** | A live audience-retention graph — the single chart top creators optimize obsessively — with toggles for the hook, curiosity gaps, escalation, and pacing. Plus the principles behind each, framed honestly as tools for making *true, useful* things travel further. |
+| **Flashcards** | A **real spaced-repetition system** running the **SM-2 algorithm** (the math behind SuperMemo and Anki), pre-loaded with the key ideas from the page. Grade your recall and it schedules the next review. Progress is saved privately in your browser via `localStorage`. |
+| **Mental Models** | Six reusable thinking tools — inversion, first-principles, opportunity cost, second-order thinking, expected value, Occam's razor — for using knowledge under uncertainty. |
 
-On the title screen:
+## How the interactive parts actually work
 
-- **✦ New Adventure** — the full journey. Get a starter from Prof. Juniper and
-  work your way north through Unova, earning badges and HMs, to the League.
-- **👑 Continue as Champion** — jump straight to the post-game with **all four
-  badges, all five HMs, and a team led by Darmanitan** (Lv 55) — free to roam
-  and use the Entralink immediately. (Exactly the "beaten E4 + Darmanitan +
-  every HM" state.)
+- **The forgetting curve** is modeled as retention `R = e^(−t/S)`, where the
+  memory's *stability* `S` grows every time you successfully recall it. Reviews
+  fire at expanding intervals (recall when retention decays to a target level),
+  which is the behavior behind real spaced-repetition schedulers — so the spaced
+  line stays near the top across the whole horizon while the study-once line
+  collapses. It's a teaching model, labeled as illustrative, not a clinical
+  prediction.
+- **The flashcards** implement SM-2 faithfully: each card carries an ease factor
+  (starting 2.5), a repetition count, and an interval. Grading updates the ease
+  (`EF' = EF + (0.1 − (5−q)(0.08 + (5−q)·0.02))`, floored at 1.3), and intervals
+  grow `1 day → 6 days → interval × ease`. "Again" resets the card to relearn.
+- **The charts** are hand-rolled SVG following a validated, colorblind-safe
+  data-visualization palette — thin marks, one baseline, recessive gridlines,
+  a legend, and full light/dark theming. No chart library.
 
-## 🗺️ The journey (New Adventure)
+## Design notes
 
-Home town → Route 1 → **Striaton** (Gym 1 → **Cut**) → **Desert Resort**
-(catch **Darumaka**, which evolves into **Darmanitan**!) → **Nacrene**
-(Gym 2 → **Strength**, and an NPC who gives you **Fly**) → Route 3 (roll away
-boulders with Strength) → **Castelia** (Gym 3 → **Surf**) → the **Sea**
-(Route 4, Surf across) → **Opelucid** (Gym 4 → **Waterfall**) → surf & climb the
-falls into **Victory Road** → the **Pokémon League**: **Shauntal, Grimsley,
-Caitlin, Marshal**, and **Champion Alder**.
+- **Accessible & theme-aware.** Works in light and dark (respects your OS setting
+  and a manual toggle), honors `prefers-reduced-motion`, keeps content visible
+  for print and when `IntersectionObserver` is unavailable, and never encodes
+  meaning by color alone.
+- **Private by construction.** Nothing leaves the page. The only stored state is
+  your flashcard schedule and theme choice, in your own browser.
+- **Keyboard-friendly flashcards.** `Space` reveals the answer; `1`–`4` grade it.
 
-Every HM has a real field use gating your progress:
+## A note on sources & honesty
 
-| HM | Use in the world |
-| --- | --- |
-| **Cut** | Fell the slim trees blocking the desert. |
-| **Strength** | Roll away boulders on Route 3. |
-| **Surf** | Cross the sea on Route 4 (and Victory Road's water). |
-| **Waterfall** | Climb the falls to reach Victory Road. |
-| **Fly** | Fast-travel to any city you've visited (menu → Fly). |
+COMPOUND is an **educational synthesis**. It references the ideas of the
+researchers and creators it names; it is **not affiliated with, endorsed by, or
+produced in partnership with** any of them, nor with Harvard University, Stanford
+University, or any individual creator. Figures marked "illustrative" are teaching
+models, not measurements. The attention techniques are tools for *attention* —
+pointed at something worth people's time they teach and inspire; pointed at
+nothing they're just noise. Verify anything you'd stake a decision on against the
+primary sources, which are cited in the page footer.
 
-## ⚔️ Battle system
-
-A real turn-based engine: the full **17-type** chart, **STAB**, critical hits,
-**status** (burn / poison / badly-poisoned / paralysis / sleep / freeze),
-**stat stages**, PP, priority moves, multi-hit, recoil & drain, switching,
-items, and **catching** with Poké/Great/Ultra Balls (status & HP affect the
-odds). Pokémon gain EXP, **level up, learn moves, and evolve** — Darumaka →
-Darmanitan at Lv 35, the starters into their final forms, and more.
-
-## ↔️ The Entralink (1:1 with Black & White — available from the start)
-
-Open the menu (Esc) → **Entralink** and you are *pulled into the Entralink
-itself* — the mystical realm at the heart of Unova, exactly like the C-Gear
-trip in the original. It works from the very first minute of a new game.
-
-Inside the Entralink map:
-
-- **The glowing Entree tree** — interact for **Game Sync**: tuck in a Pokémon
-  and enter the **Dream World** (Island of Dreams, berry garden, dream house).
-- **The Entree Forest** (north) — Pokémon you befriend in the Dream World
-  physically wake up here, dozing under the trees. Battle them and, just like
-  the real Entree Forest, **a Poké Ball never fails** — they join your party
-  keeping their **Dream World Hidden Ability**.
-- **The white bridges** (east/west) — walk across to **cross over to a
-  friend's world**: share a Dream Link code / URL so a friend can visit your
-  dream and receive a gift Pokémon, or connect **live, peer-to-peer over
-  WebRTC** to visit each other and trade in real time.
-- **The warp pads** — return exactly where you were standing in Unova.
-
-The full BW pipeline works end-to-end: befriend in the Dream World → it leaves
-the Dream World and waits in the Entree Forest → guaranteed catch → it's in
-your game with its Hidden Ability.
-
-The Dream World is also playable on its own at **`/dreamworld.html`**.
-
-## 🎨 Notes
-
-- **Sprites:** cute procedural monster art renders instantly, then transparently
-  upgrades to official Pokémon artwork when the network allows — so it looks
-  good online *and* offline.
-- **Sound:** a tiny WebAudio synth for SFX and looping chiptune music. No assets.
-- Works on desktop and mobile (touch d-pad + A/B/Menu).
-
-## 🗂️ Project layout
+## Repo layout
 
 ```
-index.html          # the RPG
-dreamworld.html     # the Dream World (also opened by the Entralink)
-server.js           # zero-dependency static server
-game.css            # RPG styling
-styles.css          # Dream World styling
-game/               # the RPG
-  data.js           # types, moves, species (stats/learnsets/evolutions), items
-  party.js          # Pokémon instances, stats, XP/leveling, evolution, save-state
-  battle.js         # turn-based battle engine (event stream)
-  tiles.js          # tile terrain + procedural drawing
-  sprites.js        # battle sprites (+ procedural fallback) & overworld characters
-  maps.js           # the world: 11 maps, warps, NPCs, gyms, E4, encounters
-  audio.js          # SFX + chiptune music
-  gameui.js         # dialogue, menus, transitions
-  save.js           # persistence + New Adventure / Champion presets
-  input.js          # keyboard + touch input
-  world.js          # overworld scene: movement, HMs, encounters, interaction
-  battlescene.js    # battle UI + event playback
-  menu.js           # party / bag / shop / fly / trainer card
-  entralink.js      # the portal into the Dream World
-  main.js           # boot, title, scene manager, game loop
-js/                 # the Dream World (data, sprites, minigame, garden, crossover, …)
+index.html                     # ← COMPOUND, the flagship (this is the whole app)
+games/
+  pokemon-dream-journey/       # an earlier project kept in the repo — a Pokémon
+                               # Black/White-style browser RPG (see its own README)
 ```
 
-Sweet dreams, Champion. 🌙
+## License
+
+MIT.

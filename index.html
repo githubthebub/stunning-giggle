@@ -1,57 +1,1028 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="theme-color" content="#1b2440" />
-  <meta name="description" content="A Pokémon Black/White-style RPG: beat the Elite Four, catch Darmanitan, master every HM, and cross over through the Entralink into the Dream World." />
-  <title>Pokémon Unova — Dream Journey</title>
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%94%B4%3C/text%3E%3C/svg%3E" />
-  <link rel="stylesheet" href="game.css" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>COMPOUND — Learn Fast. Be Heard.</title>
+<meta name="description" content="The evidence-based science of learning anything faster and getting it heard — cognitive science from Harvard & Stanford, attention mechanics from the world's best creators, with real interactive tools." />
+<style>
+/* ============================================================
+   COMPOUND — design tokens
+   Palette derived from the validated data-viz reference set.
+   ============================================================ */
+:root {
+  color-scheme: dark;
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+  /* --- surfaces & ink (dark is the default look) --- */
+  --page:        #0d0d0d;
+  --surface-1:   #17171a;
+  --surface-2:   #202024;
+  --surface-3:   #2a2a30;
+  --ink:         #ffffff;
+  --ink-2:       #c3c2b7;
+  --ink-muted:   #8b8a84;
+  --hair:        rgba(255,255,255,0.10);
+  --hair-2:      rgba(255,255,255,0.06);
+  --grid:        #2c2c2a;
+  --baseline:    #383835;
+
+  /* --- data-viz categorical slots --- */
+  --series-1: #3987e5;  /* blue    */
+  --series-2: #1baf7a;  /* aqua/green */
+  --series-3: #d55181;  /* magenta */
+  --series-4: #c98500;  /* yellow  */
+  --series-5: #9085e9;  /* violet  */
+  --series-6: #d95926;  /* orange  */
+  --series-7: #008300;  /* green   */
+  --series-8: #e66767;  /* red     */
+
+  --good:    #0ca30c;
+  --warning: #fab219;
+  --critical:#d03b3b;
+
+  /* --- brand accent --- */
+  --accent:      #3987e5;
+  --accent-soft: rgba(57,135,229,0.14);
+  --accent-2:    #9085e9;
+
+  --radius:   14px;
+  --radius-s: 10px;
+  --shadow:   0 1px 0 rgba(255,255,255,0.03) inset, 0 12px 40px -18px rgba(0,0,0,0.8);
+  --maxw: 1180px;
+}
+:root[data-theme="light"] {
+  color-scheme: light;
+  --page:        #f4f3ef;
+  --surface-1:   #ffffff;
+  --surface-2:   #f7f6f2;
+  --surface-3:   #eceae3;
+  --ink:         #0b0b0b;
+  --ink-2:       #33322f;
+  --ink-muted:   #6f6e68;
+  --hair:        rgba(11,11,11,0.12);
+  --hair-2:      rgba(11,11,11,0.06);
+  --grid:        #e1e0d9;
+  --baseline:    #c3c2b7;
+
+  --series-1: #2a78d6;
+  --series-2: #1baf7a;
+  --series-3: #e87ba4;
+  --series-4: #eda100;
+  --series-5: #4a3aa7;
+  --series-6: #eb6834;
+  --series-7: #008300;
+  --series-8: #e34948;
+
+  --accent:      #2a78d6;
+  --accent-soft: rgba(42,120,214,0.12);
+  --accent-2:    #4a3aa7;
+  --shadow:   0 1px 0 rgba(255,255,255,0.6) inset, 0 14px 40px -22px rgba(24,32,54,0.35);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  background: var(--page);
+  color: var(--ink);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+h1,h2,h3,h4 { line-height: 1.15; letter-spacing: -0.02em; margin: 0 0 .4em; font-weight: 700; }
+h2 { font-size: clamp(1.7rem, 3.6vw, 2.6rem); }
+h3 { font-size: 1.24rem; letter-spacing: -0.01em; }
+p { margin: 0 0 1rem; color: var(--ink-2); }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+strong { color: var(--ink); font-weight: 650; }
+::selection { background: var(--accent); color: #fff; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+
+.wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+.eyebrow {
+  display: inline-flex; align-items: center; gap: .5em;
+  font-size: .74rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase;
+  color: var(--accent);
+}
+.eyebrow::before { content: ""; width: 22px; height: 2px; background: var(--accent); border-radius: 2px; }
+
+/* ============================================================ NAV */
+.nav {
+  position: sticky; top: 0; z-index: 50;
+  backdrop-filter: saturate(140%) blur(14px);
+  background: color-mix(in srgb, var(--page) 78%, transparent);
+  border-bottom: 1px solid var(--hair-2);
+}
+.nav-inner { display: flex; align-items: center; gap: 20px; height: 62px; }
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 800; letter-spacing: -0.02em; font-size: 1.06rem; color: var(--ink); }
+.brand .dot {
+  width: 22px; height: 22px; border-radius: 7px;
+  background: conic-gradient(from 210deg, var(--series-1), var(--series-5), var(--series-2), var(--series-1));
+  box-shadow: 0 0 0 1px var(--hair) inset;
+}
+.nav-links { display: flex; gap: 4px; margin-left: auto; align-items: center; }
+.nav-links a {
+  color: var(--ink-2); font-size: .9rem; font-weight: 550; padding: 7px 12px; border-radius: 8px;
+}
+.nav-links a:hover { color: var(--ink); background: var(--surface-2); text-decoration: none; }
+.theme-btn {
+  display: inline-grid; place-items: center; width: 38px; height: 38px; border-radius: 10px;
+  border: 1px solid var(--hair); background: var(--surface-1); color: var(--ink); cursor: pointer;
+  font-size: 1rem; transition: background .15s;
+}
+.theme-btn:hover { background: var(--surface-2); }
+@media (max-width: 780px){ .nav-links a:not(.pill){ display: none; } }
+
+/* ============================================================ HERO */
+.hero { position: relative; padding: 88px 0 40px; overflow: hidden; }
+.hero::before {
+  content:""; position:absolute; inset:-40% -20% auto -20%; height: 620px; z-index:0;
+  background:
+    radial-gradient(60% 60% at 20% 10%, color-mix(in srgb, var(--series-1) 26%, transparent), transparent 70%),
+    radial-gradient(50% 50% at 82% 0%, color-mix(in srgb, var(--series-5) 24%, transparent), transparent 70%);
+  filter: blur(10px); opacity: .8; pointer-events:none;
+}
+.hero .wrap { position: relative; z-index: 1; }
+.hero h1 {
+  font-size: clamp(2.5rem, 6.4vw, 5rem); font-weight: 820; letter-spacing: -0.035em; margin: 18px 0 10px;
+  max-width: 16ch;
+}
+.hero h1 .grad {
+  background: linear-gradient(100deg, var(--series-1), var(--series-5) 55%, var(--series-3));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.hero .lede { font-size: clamp(1.05rem, 2.1vw, 1.32rem); color: var(--ink-2); max-width: 60ch; }
+.hero-cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; }
+.btn {
+  display: inline-flex; align-items: center; gap: .55em; cursor: pointer;
+  padding: 13px 22px; border-radius: 12px; font-weight: 650; font-size: .98rem;
+  border: 1px solid transparent; transition: transform .12s, background .15s, box-shadow .2s;
+}
+.btn:hover { text-decoration: none; transform: translateY(-1px); }
+.btn-primary { background: var(--accent); color: #fff; box-shadow: 0 10px 24px -12px var(--accent); }
+.btn-primary:hover { box-shadow: 0 14px 30px -12px var(--accent); }
+.btn-ghost { background: var(--surface-1); color: var(--ink); border-color: var(--hair); }
+.btn-ghost:hover { background: var(--surface-2); }
+
+.stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 44px; }
+.stat {
+  background: var(--surface-1); border: 1px solid var(--hair-2); border-radius: var(--radius);
+  padding: 18px 18px 16px; box-shadow: var(--shadow);
+}
+.stat .v { font-size: clamp(1.5rem, 3vw, 2.05rem); font-weight: 760; letter-spacing: -0.02em; color: var(--ink); }
+.stat .v small { font-size: .62em; font-weight: 650; color: var(--ink-muted); letter-spacing: 0; }
+.stat .k { font-size: .82rem; color: var(--ink-muted); margin-top: 2px; }
+@media (max-width: 720px){ .stat-row { grid-template-columns: repeat(2,1fr); } }
+
+/* ============================================================ SECTIONS */
+section { padding: 72px 0; scroll-margin-top: 74px; }
+.section-head { max-width: 66ch; margin-bottom: 34px; }
+.section-head p { font-size: 1.06rem; }
+
+.grid { display: grid; gap: 18px; }
+.cols-3 { grid-template-columns: repeat(3, 1fr); }
+.cols-2 { grid-template-columns: repeat(2, 1fr); }
+@media (max-width: 900px){ .cols-3 { grid-template-columns: 1fr; } .cols-2 { grid-template-columns: 1fr; } }
+
+.card {
+  background: var(--surface-1); border: 1px solid var(--hair-2); border-radius: var(--radius);
+  padding: 24px; box-shadow: var(--shadow); position: relative; overflow: hidden;
+}
+.card .num {
+  font-variant-numeric: tabular-nums; font-weight: 800; font-size: .82rem; letter-spacing: .05em;
+  color: var(--accent); display:inline-flex; align-items:center; gap:.5em; margin-bottom: 10px;
+}
+.card .num::before { content:""; width:8px; height:8px; border-radius:50%; background: currentColor; }
+.card h3 { margin-bottom: 8px; }
+.card p { font-size: .96rem; margin-bottom: .8rem; }
+.card .proto {
+  margin: 12px 0 4px; padding: 12px 14px; background: var(--surface-2); border: 1px solid var(--hair-2);
+  border-radius: var(--radius-s); font-size: .88rem; color: var(--ink-2);
+}
+.card .proto b { color: var(--ink); }
+.tagrow { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.tag {
+  font-size: .72rem; font-weight: 600; letter-spacing: .02em; color: var(--ink-muted);
+  border: 1px solid var(--hair); border-radius: 999px; padding: 3px 10px; background: var(--surface-2);
+}
+.tag.src { color: var(--accent); border-color: color-mix(in srgb, var(--accent) 40%, transparent); }
+
+/* ============================================================ LAB / PANELS */
+.panel {
+  background: var(--surface-1); border: 1px solid var(--hair-2); border-radius: 18px;
+  box-shadow: var(--shadow); overflow: hidden;
+}
+.panel-grid { display: grid; grid-template-columns: 320px 1fr; }
+@media (max-width: 860px){ .panel-grid { grid-template-columns: 1fr; } }
+.panel-controls { padding: 26px; border-right: 1px solid var(--hair-2); background: var(--surface-2); }
+@media (max-width: 860px){ .panel-controls { border-right: none; border-bottom: 1px solid var(--hair-2); } }
+.panel-chart { padding: 22px 24px 18px; min-width: 0; }
+.ctrl { margin-bottom: 22px; }
+.ctrl label { display: flex; justify-content: space-between; align-items: baseline; font-size: .86rem; font-weight: 600; color: var(--ink-2); margin-bottom: 8px; }
+.ctrl label .val { font-variant-numeric: tabular-nums; color: var(--accent); font-weight: 700; }
+input[type=range]{ -webkit-appearance:none; appearance:none; width:100%; height:6px; border-radius:6px; background: var(--surface-3); outline:none; }
+input[type=range]::-webkit-slider-thumb{ -webkit-appearance:none; appearance:none; width:20px; height:20px; border-radius:50%; background: var(--accent); border:3px solid var(--surface-1); box-shadow: 0 2px 6px rgba(0,0,0,.35); cursor:pointer; }
+input[type=range]::-moz-range-thumb{ width:20px; height:20px; border-radius:50%; background: var(--accent); border:3px solid var(--surface-1); cursor:pointer; }
+.seg { display:inline-flex; background: var(--surface-3); border-radius: 10px; padding: 3px; gap:2px; }
+.seg button { border:none; background:transparent; color: var(--ink-2); font-weight:600; font-size:.84rem; padding:7px 12px; border-radius:8px; cursor:pointer; }
+.seg button[aria-pressed=true]{ background: var(--surface-1); color: var(--ink); box-shadow: 0 1px 3px rgba(0,0,0,.25); }
+.toggle-row { display:flex; align-items:center; justify-content: space-between; gap: 10px; margin-bottom: 14px; }
+.switch { position: relative; width: 44px; height: 26px; flex: none; }
+.switch input { opacity:0; width:0; height:0; }
+.switch span { position:absolute; inset:0; background: var(--surface-3); border-radius: 999px; transition:.2s; cursor:pointer; }
+.switch span::before { content:""; position:absolute; width:20px; height:20px; left:3px; top:3px; background:#fff; border-radius:50%; transition:.2s; }
+.switch input:checked + span { background: var(--accent); }
+.switch input:checked + span::before { transform: translateX(18px); }
+
+.legend { display:flex; flex-wrap:wrap; gap: 16px; margin: 4px 2px 12px; }
+.legend .lk { display:inline-flex; align-items:center; gap:7px; font-size:.85rem; color: var(--ink-2); font-weight:550; }
+.legend .lk i { width: 14px; height: 3px; border-radius: 2px; display:inline-block; }
+.legend .lk.dash i { background: repeating-linear-gradient(90deg, currentColor 0 5px, transparent 5px 9px); height:3px; }
+
+.readout { display:flex; gap: 20px; flex-wrap: wrap; margin-top: 6px; padding-top: 14px; border-top: 1px solid var(--hair-2); }
+.readout .r { }
+.readout .r .rv { font-size: 1.5rem; font-weight: 760; letter-spacing:-0.02em; color: var(--ink); font-variant-numeric: tabular-nums; }
+.readout .r .rv.up { color: var(--good); }
+.readout .r .rk { font-size: .78rem; color: var(--ink-muted); }
+.note { font-size:.82rem; color: var(--ink-muted); margin-top: 12px; }
+.axis-label { fill: var(--ink-muted); font-size: 11px; font-family: var(--font-sans); }
+.tick-label { fill: var(--ink-muted); font-size: 11px; font-family: var(--font-sans); font-variant-numeric: tabular-nums; }
+
+/* ============================================================ FLASHCARDS */
+.deck-wrap { display:grid; grid-template-columns: 1fr 300px; gap: 20px; align-items: start; }
+@media (max-width: 900px){ .deck-wrap { grid-template-columns: 1fr; } }
+.flashcard {
+  position: relative; min-height: 340px; border-radius: 20px; padding: 34px;
+  background: linear-gradient(160deg, var(--surface-1), var(--surface-2));
+  border: 1px solid var(--hair); box-shadow: var(--shadow);
+  display:flex; flex-direction: column;
+}
+.flashcard .fc-top { display:flex; justify-content: space-between; align-items:center; font-size:.78rem; color: var(--ink-muted); font-weight:600; letter-spacing:.04em; text-transform: uppercase; }
+.flashcard .fc-cat { color: var(--accent); }
+.flashcard .fc-body { flex:1; display:flex; flex-direction:column; justify-content:center; }
+.fc-q { font-size: clamp(1.3rem, 3vw, 1.7rem); font-weight: 700; letter-spacing:-0.02em; color: var(--ink); margin: 14px 0; }
+.fc-a { font-size: 1.02rem; color: var(--ink-2); border-top: 1px solid var(--hair-2); padding-top: 16px; margin-top: 4px; }
+.hidden { display: none !important; }
+.fc-a.hidden { display:none; }
+.fc-a .src { display:block; margin-top:10px; font-size:.82rem; color: var(--ink-muted); }
+.fc-actions { display:flex; gap:10px; flex-wrap:wrap; margin-top: 20px; }
+.grade { flex:1; min-width: 76px; border:1px solid var(--hair); border-radius: 12px; padding: 11px 8px; cursor:pointer; background: var(--surface-1); color: var(--ink); font-weight:650; font-size:.9rem; transition: transform .1s, background .15s; text-align:center; }
+.grade:hover { transform: translateY(-1px); }
+.grade small { display:block; font-size:.7rem; font-weight:500; color: var(--ink-muted); margin-top:2px; }
+.grade.again { border-color: color-mix(in srgb, var(--critical) 50%, transparent); }
+.grade.again:hover { background: color-mix(in srgb, var(--critical) 14%, var(--surface-1)); }
+.grade.hard:hover { background: color-mix(in srgb, var(--warning) 16%, var(--surface-1)); }
+.grade.good:hover { background: color-mix(in srgb, var(--accent) 14%, var(--surface-1)); }
+.grade.easy { border-color: color-mix(in srgb, var(--good) 50%, transparent); }
+.grade.easy:hover { background: color-mix(in srgb, var(--good) 14%, var(--surface-1)); }
+.reveal-btn { width:100%; margin-top: 20px; }
+.deck-side { display:flex; flex-direction:column; gap: 14px; }
+.mini-stat { background: var(--surface-1); border:1px solid var(--hair-2); border-radius: var(--radius); padding: 16px 18px; }
+.mini-stat .v { font-size: 1.7rem; font-weight: 760; letter-spacing:-0.02em; color: var(--ink); font-variant-numeric: tabular-nums; }
+.mini-stat .k { font-size: .8rem; color: var(--ink-muted); }
+.progress { height: 8px; border-radius: 6px; background: var(--surface-3); overflow:hidden; margin-top: 4px; }
+.progress i { display:block; height:100%; background: linear-gradient(90deg, var(--series-1), var(--series-5)); border-radius:6px; transition: width .4s; }
+.deck-done { text-align:center; padding: 40px 20px; }
+.deck-done .big { font-size: 3rem; }
+.deck-pills { display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+.deck-pill { border:1px solid var(--hair); background: var(--surface-2); border-radius:999px; padding:6px 12px; font-size:.82rem; color: var(--ink-2); cursor:pointer; font-weight:600; }
+.deck-pill[aria-pressed=true]{ background: var(--accent); color:#fff; border-color: transparent; }
+
+/* ============================================================ MODELS */
+.model { display:flex; gap:16px; align-items:flex-start; padding: 20px; }
+.model .ic { flex:none; width:44px; height:44px; border-radius:12px; display:grid; place-items:center; font-size:1.3rem; background: var(--accent-soft); }
+.model h3 { font-size:1.05rem; margin-bottom:4px; }
+.model p { font-size:.92rem; margin:0; }
+
+/* ============================================================ FOOTER */
+footer { border-top: 1px solid var(--hair-2); padding: 46px 0 60px; margin-top: 30px; }
+.foot-grid { display:flex; justify-content: space-between; gap: 30px; flex-wrap: wrap; align-items:flex-start; }
+.foot-src { max-width: 60ch; }
+.foot-src h4 { font-size:.82rem; text-transform:uppercase; letter-spacing:.1em; color: var(--ink-muted); }
+.foot-src p { font-size:.86rem; color: var(--ink-muted); }
+.disclaimer { font-size:.8rem; color: var(--ink-muted); margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--hair-2); }
+
+.reveal-up { opacity: 0; transform: translateY(18px); transition: opacity .7s cubic-bezier(.2,.7,.2,1), transform .7s cubic-bezier(.2,.7,.2,1); }
+.reveal-up.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce){ .reveal-up { opacity:1; transform:none; transition:none; } html{ scroll-behavior:auto; } }
+@media print { .reveal-up { opacity:1 !important; transform:none !important; } }
+</style>
 </head>
 <body>
-  <div id="game-root">
-    <div id="hud" style="display:none">
-      <span class="hud-loc">Unova</span>
-      <span class="hud-badges">◇◇◇◇</span>
-      <span class="hud-money">¥0</span>
+
+<!-- ================= NAV ================= -->
+<nav class="nav">
+  <div class="wrap nav-inner">
+    <a class="brand" href="#top"><span class="dot"></span> COMPOUND</a>
+    <div class="nav-links">
+      <a href="#lab">Retention Lab</a>
+      <a href="#system">Learning OS</a>
+      <a href="#attention">Attention Engine</a>
+      <a href="#cards">Flashcards</a>
+      <a href="#models">Mental Models</a>
+      <button class="theme-btn" id="themeBtn" aria-label="Toggle light/dark theme" title="Toggle theme">◐</button>
     </div>
-    <div id="stage">
-      <canvas id="game-canvas"></canvas>
+  </div>
+</nav>
+
+<span id="top"></span>
+
+<!-- ================= HERO ================= -->
+<header class="hero">
+  <div class="wrap">
+    <span class="eyebrow">The science of getting better, faster</span>
+    <h1>Learn anything <span class="grad">fast</span>.<br>Make it <span class="grad">impossible to ignore</span>.</h1>
+    <p class="lede">
+      Two forces decide whether an idea sticks: how your <strong>brain</strong> stores it, and how the
+      <strong>world</strong> spreads it. COMPOUND distills the best of both — cognitive science from
+      Harvard &amp; Stanford, attention mechanics from the world's most-watched creators — into tools you can
+      actually use. No fluff. Just what the evidence says works.
+    </p>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="#lab">Open the Retention Lab →</a>
+      <a class="btn btn-ghost" href="#cards">Try the flashcard engine</a>
     </div>
-    <div id="touch-controls">
-      <div class="dpad">
-        <button id="btn-up" class="tc-btn tc-up" aria-label="Up">▲</button>
-        <button id="btn-left" class="tc-btn tc-left" aria-label="Left">◀</button>
-        <button id="btn-right" class="tc-btn tc-right" aria-label="Right">▶</button>
-        <button id="btn-down" class="tc-btn tc-down" aria-label="Down">▼</button>
-      </div>
-      <div class="face-btns">
-        <button id="btn-start" class="tc-btn tc-start" aria-label="Menu">☰</button>
-        <div class="ab">
-          <button id="btn-b" class="tc-btn tc-b" aria-label="B">B</button>
-          <button id="btn-a" class="tc-btn tc-a" aria-label="A">A</button>
+
+    <div class="stat-row">
+      <div class="stat reveal-up"><div class="v">~50%</div><div class="k">of new information forgotten within an hour, untouched <sup>1</sup></div></div>
+      <div class="stat reveal-up"><div class="v">2–3×</div><div class="k">recall from active retrieval vs. re-reading <sup>2</sup></div></div>
+      <div class="stat reveal-up"><div class="v">&lt;3s</div><div class="k">to win or lose a viewer's attention <sup>3</sup></div></div>
+      <div class="stat reveal-up"><div class="v">100%</div><div class="k">free, private, runs in your browser — nothing leaves this page</div></div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<!-- ================= RETENTION LAB ================= -->
+<section id="lab">
+  <div class="wrap">
+    <div class="section-head reveal-up">
+      <span class="eyebrow">Interactive · the forgetting curve</span>
+      <h2>Why you forget — and how spacing beats it</h2>
+      <p>
+        In 1885 Hermann Ebbinghaus measured his own memory and found it decays exponentially: steep at first,
+        then leveling off. But every time you successfully recall something, the curve gets <em>flatter</em> — you
+        forget slower. Drag the controls and watch a memory fight the curve.
+      </p>
+    </div>
+
+    <div class="panel reveal-up">
+      <div class="panel-grid">
+        <div class="panel-controls">
+          <div class="ctrl">
+            <label>How often you review <span class="val" id="revVal">Balanced</span></label>
+            <input type="range" id="revs" min="0" max="2" value="1" step="1" />
+            <p class="note">Review sooner (before you've forgotten much) and the line stays higher — at the cost of more reviews.</p>
+          </div>
+          <div class="ctrl">
+            <label>Recall effort each review <span class="val" id="effVal">Solid</span></label>
+            <input type="range" id="eff" min="0" max="2" value="1" step="1" />
+            <p class="note">Harder retrieval — recalling when you <em>almost</em> forgot — strengthens memory more, so intervals can grow faster and you need fewer reviews. "Desirable difficulty."</p>
+          </div>
+          <div class="ctrl">
+            <label style="margin-bottom:10px;">Time horizon</label>
+            <div class="seg" role="group" aria-label="Time horizon">
+              <button data-h="30"  aria-pressed="false">30d</button>
+              <button data-h="90"  aria-pressed="true">90d</button>
+              <button data-h="365" aria-pressed="false">1yr</button>
+            </div>
+          </div>
+          <div class="readout">
+            <div class="r"><div class="rv up" id="roA">—</div><div class="rk">retention with spacing</div></div>
+            <div class="r"><div class="rv" id="roB">—</div><div class="rk">if you'd studied once</div></div>
+            <div class="r"><div class="rv" id="roC">—</div><div class="rk">reviews needed</div></div>
+          </div>
+          <p class="note" id="labNote"></p>
+        </div>
+        <div class="panel-chart">
+          <div class="legend">
+            <span class="lk"><i style="background:var(--series-1)"></i> Spaced repetition</span>
+            <span class="lk dash" style="color:var(--series-8)"><i></i> Studied once, no review</span>
+            <span class="lk"><i style="background:var(--good);height:2px"></i> Review moment</span>
+          </div>
+          <div id="curveChart" style="width:100%;"></div>
+          <p class="note">Retention = e<sup>−t/S</sup>, where stability <em>S</em> grows with each successful recall (a spaced-repetition model of Ebbinghaus's curve). Illustrative, not a clinical prediction.</p>
         </div>
       </div>
     </div>
   </div>
-  <div id="game-ui"></div>
+</section>
 
-  <script src="game/spritedata.js"></script>
-  <script src="game/data.js"></script>
-  <script src="game/party.js"></script>
-  <script src="game/battle.js"></script>
-  <script src="game/tiles.js"></script>
-  <script src="game/sprites.js"></script>
-  <script src="game/maps.js"></script>
-  <script src="game/audio.js"></script>
-  <script src="game/gameui.js"></script>
-  <script src="game/save.js"></script>
-  <script src="game/input.js"></script>
-  <script src="game/world.js"></script>
-  <script src="game/battlescene.js"></script>
-  <script src="game/menu.js"></script>
-  <script src="game/entralink.js"></script>
-  <script src="game/main.js"></script>
+<!-- ================= LEARNING OS ================= -->
+<section id="system" style="background:var(--surface-2); border-top:1px solid var(--hair-2); border-bottom:1px solid var(--hair-2);">
+  <div class="wrap">
+    <div class="section-head reveal-up">
+      <span class="eyebrow">The Learning Operating System</span>
+      <h2>Five techniques that actually move the needle</h2>
+      <p>
+        Decades of cognitive-science research keep pointing at the same short list. Most of what students do —
+        highlighting, re-reading, cramming — barely helps. These do. Each card is a protocol you can run this week.
+      </p>
+    </div>
+
+    <div class="grid cols-3">
+      <article class="card reveal-up">
+        <span class="num">01</span>
+        <h3>Active Recall</h3>
+        <p>Don't re-read — <strong>retrieve</strong>. Close the book and force your brain to produce the answer. The struggle to remember is what builds the memory, not the looking.</p>
+        <div class="proto"><b>Run it:</b> After any chapter, shut it and write everything you remember on a blank page. Only then check what you missed. That gap is your study list.</div>
+        <div class="tagrow"><span class="tag src">Roediger &amp; Karpicke</span><span class="tag">the testing effect</span></div>
+      </article>
+
+      <article class="card reveal-up">
+        <span class="num">02</span>
+        <h3>Spaced Repetition</h3>
+        <p>Review just as you're about to forget. Spacing the same total study time across days beats one long session — sometimes doubling long-term recall for zero extra effort.</p>
+        <div class="proto"><b>Run it:</b> Review at expanding gaps — 1 day, 3 days, 1 week, 2 weeks, 1 month. The <a href="#cards">flashcard engine below</a> schedules this for you automatically.</div>
+        <div class="tagrow"><span class="tag src">Ebbinghaus · Cepeda et al.</span><span class="tag">the spacing effect</span></div>
+      </article>
+
+      <article class="card reveal-up">
+        <span class="num">03</span>
+        <h3>Interleaving</h3>
+        <p>Mix problem types instead of blocking them. It feels harder and slower — and that's the point. Interleaving trains you to <strong>choose</strong> the right approach, not just execute a known one.</p>
+        <div class="proto"><b>Run it:</b> Instead of 20 problems of type A then 20 of B, shuffle them. You'll score worse in practice and far better on the test.</div>
+        <div class="tagrow"><span class="tag src">Rohrer &amp; Taylor</span><span class="tag">discrimination</span></div>
+      </article>
+
+      <article class="card reveal-up">
+        <span class="num">04</span>
+        <h3>Elaboration &amp; the Feynman Technique</h3>
+        <p>Explain it simply, out loud, as if teaching a 12-year-old. The moment you stumble, you've found the hole in your understanding — jargon can no longer hide it.</p>
+        <div class="proto"><b>Run it:</b> Write the concept in plain words. Hit a gap? Go back to the source, fill it, simplify again. Repeat until it flows.</div>
+        <div class="tagrow"><span class="tag src">Feynman · self-explanation</span><span class="tag">generation effect</span></div>
+      </article>
+
+      <article class="card reveal-up">
+        <span class="num">05</span>
+        <h3>Deliberate Practice</h3>
+        <p>Expertise isn't hours logged — it's hours spent at the <strong>edge</strong> of your ability with immediate feedback. Practice the specific thing you can't do yet, not the thing you've already mastered.</p>
+        <div class="proto"><b>Run it:</b> Isolate the weakest sub-skill, drill it with a tight feedback loop, and raise the difficulty the instant it gets comfortable.</div>
+        <div class="tagrow"><span class="tag src">K. Anders Ericsson</span><span class="tag">the edge of ability</span></div>
+      </article>
+
+      <article class="card reveal-up" style="background:linear-gradient(160deg, var(--accent-soft), var(--surface-1));">
+        <span class="num">＋</span>
+        <h3>Two things that <em>don't</em> work (much)</h3>
+        <p><strong>Highlighting &amp; re-reading</strong> feel productive because they feel fluent — but fluency is not memory. <strong>Cramming</strong> can pass tomorrow's test, then evaporates by next week.</p>
+        <div class="proto">The rule of thumb: if a study method feels easy, it's probably not building durable memory. <b>Difficulty is the signal.</b></div>
+        <div class="tagrow"><span class="tag src">Dunlosky et al., 2013</span></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ATTENTION ENGINE ================= -->
+<section id="attention">
+  <div class="wrap">
+    <div class="section-head reveal-up">
+      <span class="eyebrow">The Attention Engine · how ideas spread</span>
+      <h2>Knowing it isn't enough. It has to be heard.</h2>
+      <p>
+        The best teachers and the biggest creators obey the same law: <strong>retention is everything</strong>. If people
+        leave, nothing you say lands. Below is a live model of an audience-retention graph — the single chart the
+        most-watched creators on Earth optimize obsessively — plus the principles behind it.
+      </p>
+    </div>
+
+    <div class="panel reveal-up" style="margin-bottom:26px;">
+      <div class="panel-grid">
+        <div class="panel-controls">
+          <p style="font-size:.9rem;color:var(--ink-2);margin-top:0;">A retention graph shows what % of the audience is still watching at each moment. The goal is to keep the line high and flat. Toggle the techniques and watch it respond.</p>
+          <div class="toggle-row"><span style="font-size:.9rem;font-weight:600;color:var(--ink-2)">Strong 3-second hook</span><label class="switch"><input type="checkbox" id="tHook" checked><span></span></label></div>
+          <div class="toggle-row"><span style="font-size:.9rem;font-weight:600;color:var(--ink-2)">Open loops / curiosity gaps</span><label class="switch"><input type="checkbox" id="tLoop" checked><span></span></label></div>
+          <div class="toggle-row"><span style="font-size:.9rem;font-weight:600;color:var(--ink-2)">Escalating stakes &amp; re-hooks</span><label class="switch"><input type="checkbox" id="tEsc" checked><span></span></label></div>
+          <div class="toggle-row"><span style="font-size:.9rem;font-weight:600;color:var(--ink-2)">Cut the boring parts (pacing)</span><label class="switch"><input type="checkbox" id="tPace" checked><span></span></label></div>
+          <div class="readout">
+            <div class="r"><div class="rv up" id="retAvg">—</div><div class="rk">average view duration</div></div>
+            <div class="r"><div class="rv" id="retEnd">—</div><div class="rk">still watching at the end</div></div>
+          </div>
+        </div>
+        <div class="panel-chart">
+          <div class="legend">
+            <span class="lk"><i style="background:var(--series-5)"></i> Your retention</span>
+            <span class="lk dash" style="color:var(--ink-muted)"><i></i> Typical drop-off</span>
+          </div>
+          <div id="retChart" style="width:100%;"></div>
+          <p class="note">A stylized audience-retention model. The shape — big early decision, then the fight to stay flat — mirrors what real creator analytics show.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid cols-3">
+      <article class="card reveal-up">
+        <span class="num">01</span>
+        <h3>Win the first 3 seconds</h3>
+        <p>Every viewer decides almost instantly whether to stay. Open on the most interesting moment — the payoff, the stakes, the promise — never the throat-clearing intro.</p>
+        <div class="proto"><b>Apply it:</b> Whatever your best moment is, some version of it belongs in second one. Then earn the right to slow down.</div>
+      </article>
+      <article class="card reveal-up">
+        <span class="num">02</span>
+        <h3>The title &amp; thumbnail are the product</h3>
+        <p>Most creators treat packaging as an afterthought. The best treat the <strong>idea, title, and thumbnail as the actual product</strong> — and build the content to deliver on that promise. A great video no one clicks does not exist.</p>
+        <div class="proto"><b>Apply it:</b> Write the headline first. If you can't make the promise irresistible <em>and</em> honest, the idea isn't ready.</div>
+      </article>
+      <article class="card reveal-up">
+        <span class="num">03</span>
+        <h3>Open loops &amp; curiosity gaps</h3>
+        <p>The brain hates an unresolved question. Pose one early — "by the end, one of these will be gone" — and the audience stays to close the loop. Then open the next one before you close it.</p>
+        <div class="proto"><b>Apply it:</b> Tease the outcome, delay the reveal, and stack a new question on top of each answer.</div>
+      </article>
+      <article class="card reveal-up">
+        <span class="num">04</span>
+        <h3>Escalate — never plateau</h3>
+        <p>Attention leaks continuously, so the stakes must keep rising. Each act should feel bigger than the last: more at risk, more surprising, more consequential. Comfort is where audiences leave.</p>
+        <div class="proto"><b>Apply it:</b> Map your piece as a staircase, not a flat hallway. Every landing raises the stakes.</div>
+      </article>
+      <article class="card reveal-up">
+        <span class="num">05</span>
+        <h3>Ruthless pacing</h3>
+        <p>Cut anything that doesn't advance the story or the payoff. The most-watched creators re-edit around the retention graph — wherever the line dips, something gets tightened or removed.</p>
+        <div class="proto"><b>Apply it:</b> If a sentence, scene, or slide doesn't earn its seconds, delete it. Density is respect for attention.</div>
+      </article>
+      <article class="card reveal-up" style="background:linear-gradient(160deg, color-mix(in srgb,var(--series-5) 14%, var(--surface-1)), var(--surface-1));">
+        <span class="num">◆</span>
+        <h3>The honest version of virality</h3>
+        <p>These are tools for <strong>attention</strong> — pointed at something worth people's time, they teach and inspire; pointed at nothing, they're just noise. Use them to make true, useful things travel further.</p>
+        <div class="proto"><b>The test:</b> Would a viewer be glad they stayed? If yes, engineer the retention. If no, fix the substance first.</div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FLASHCARDS ================= -->
+<section id="cards" style="background:var(--surface-2); border-top:1px solid var(--hair-2); border-bottom:1px solid var(--hair-2);">
+  <div class="wrap">
+    <div class="section-head reveal-up">
+      <span class="eyebrow">Dogfooding · spaced repetition, live</span>
+      <h2>Learn this page — with the engine it describes</h2>
+      <p>
+        A real spaced-repetition system running the <strong>SM-2 algorithm</strong> (the math behind SuperMemo and Anki),
+        pre-loaded with the key ideas from this page. Grade how well you recalled each card and it schedules the next
+        review for you. Your progress is saved privately in your browser.
+      </p>
+    </div>
+
+    <div class="deck-pills reveal-up" id="deckPills" style="margin-bottom:18px;">
+      <button class="deck-pill" data-cat="all" aria-pressed="true">All topics</button>
+      <button class="deck-pill" data-cat="Learning" aria-pressed="false">Learning science</button>
+      <button class="deck-pill" data-cat="Attention" aria-pressed="false">Attention</button>
+      <button class="deck-pill" data-cat="Models" aria-pressed="false">Mental models</button>
+    </div>
+
+    <div class="deck-wrap reveal-up">
+      <div id="deckMain">
+        <div class="flashcard" id="flashcard">
+          <div class="fc-top"><span class="fc-cat" id="fcCat">Learning</span><span id="fcCount">Card 1 / 12</span></div>
+          <div class="fc-body">
+            <div class="fc-q" id="fcQ">Loading…</div>
+            <div class="fc-a hidden" id="fcA"></div>
+          </div>
+          <button class="btn btn-primary reveal-btn" id="revealBtn">Show answer</button>
+          <div class="fc-actions hidden" id="fcGrades">
+            <button class="grade again" data-q="0">Again<small>&lt;1 min</small></button>
+            <button class="grade hard"  data-q="3">Hard<small id="gHard"></small></button>
+            <button class="grade good"  data-q="4">Good<small id="gGood"></small></button>
+            <button class="grade easy"  data-q="5">Easy<small id="gEasy"></small></button>
+          </div>
+        </div>
+      </div>
+      <aside class="deck-side">
+        <div class="mini-stat">
+          <div class="k">Session progress</div>
+          <div class="v"><span id="doneCount">0</span> <span style="font-size:1rem;color:var(--ink-muted)">reviewed</span></div>
+          <div class="progress"><i id="deckProg" style="width:0%"></i></div>
+        </div>
+        <div class="mini-stat"><div class="k">Cards due now</div><div class="v" id="dueCount">—</div></div>
+        <div class="mini-stat"><div class="k">Mastered (interval ≥ 21d)</div><div class="v" id="masterCount">0</div></div>
+        <button class="btn btn-ghost" id="resetDeck" style="justify-content:center;">Reset progress</button>
+        <p class="note">SM-2 grades: <b>Again</b> resets the card; <b>Good</b> pushes the next review out by your current interval × ease; <b>Easy</b> pushes it further still.</p>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ================= MENTAL MODELS ================= -->
+<section id="models">
+  <div class="wrap">
+    <div class="section-head reveal-up">
+      <span class="eyebrow">Thinking tools · decide better</span>
+      <h2>Mental models for a sharper mind</h2>
+      <p>Knowledge is inert until you can <em>use</em> it under uncertainty. These are the reusable thinking tools that show up again and again across great decision-makers.</p>
+    </div>
+    <div class="grid cols-2">
+      <div class="card reveal-up model"><div class="ic">🔁</div><div><h3>Inversion</h3><p>Instead of "how do I succeed?", ask "how would I guarantee failure?" — then avoid those things. Solving the inverse is often easier and catches blind spots forward-thinking misses.</p></div></div>
+      <div class="card reveal-up model"><div class="ic">✂️</div><div><h3>First-Principles Thinking</h3><p>Strip an idea down to what you know is true, then reason up from there — instead of arguing by analogy or "how it's always been done." This is where non-obvious answers live.</p></div></div>
+      <div class="card reveal-up model"><div class="ic">📉</div><div><h3>Opportunity Cost</h3><p>Every yes is a no to everything else you could do with that time or money. The real cost of a choice is the best alternative you gave up — not the price on the tag.</p></div></div>
+      <div class="card reveal-up model"><div class="ic">🎯</div><div><h3>Second-Order Thinking</h3><p>"And then what?" Most people stop at the immediate result. Great decisions come from tracing the consequences of the consequences — two and three moves ahead.</p></div></div>
+      <div class="card reveal-up model"><div class="ic">⚖️</div><div><h3>Expected Value</h3><p>Weigh each outcome by its probability, not just its size. A small chance of a huge win — or loss — dominates. Play the odds repeatedly and the math wins.</p></div></div>
+      <div class="card reveal-up model"><div class="ic">🪒</div><div><h3>Occam's Razor &amp; the Map ≠ Territory</h3><p>Prefer the simplest explanation that fits the facts — and remember every model is a simplified map. When the map and reality disagree, reality wins. Update the map.</p></div></div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-src">
+        <div class="brand" style="margin-bottom:10px;"><span class="dot"></span> COMPOUND</div>
+        <p>A single, self-contained page. No tracking, no accounts, no server — your flashcard progress lives only in this browser. Built to be genuinely useful, then read the source and make it your own.</p>
+      </div>
+      <div class="foot-src">
+        <h4>Grounded in</h4>
+        <p>
+          <sup>1</sup> H. Ebbinghaus, <em>Memory: A Contribution to Experimental Psychology</em> (1885). ·
+          <sup>2</sup> Roediger &amp; Karpicke, "Test-Enhanced Learning" (<em>Psychological Science</em>, 2006);
+          Dunlosky et al., "Improving Students' Learning" (<em>PSPI</em>, 2013). ·
+          <sup>3</sup> Audience-retention practice widely documented across creator analytics.
+          Learning-science framing follows work associated with Harvard, Stanford, and the broader
+          cognitive-science literature (Bjork's "desirable difficulties," Ericsson's deliberate practice,
+          Cepeda et al. on spacing). Attention principles synthesize widely-shared creator craft.
+        </p>
+      </div>
+    </div>
+    <p class="disclaimer">
+      COMPOUND is an educational synthesis. It references the ideas of the researchers and creators named above; it is
+      not affiliated with, endorsed by, or produced in partnership with any of them, nor with Harvard University,
+      Stanford University, or any individual creator. Figures marked "illustrative" are teaching models, not
+      measurements. Verify anything you'd stake a decision on against the primary sources.
+    </p>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   COMPOUND — interactive engine (vanilla JS, no dependencies)
+   ============================================================ */
+(function(){
+  "use strict";
+  const $  = (s, r=document) => r.querySelector(s);
+  const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
+  const clamp = (v,a,b) => Math.max(a, Math.min(b, v));
+  const cssvar = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  const SVGNS = "http://www.w3.org/2000/svg";
+  const el = (tag, attrs={}) => { const e = document.createElementNS(SVGNS, tag); for(const k in attrs) e.setAttribute(k, attrs[k]); return e; };
+
+  /* ---------- theme ---------- */
+  const root = document.documentElement;
+  const savedTheme = localStorage.getItem("compound-theme");
+  if (savedTheme) root.setAttribute("data-theme", savedTheme);
+  $("#themeBtn").addEventListener("click", () => {
+    const next = root.getAttribute("data-theme") === "light" ? "dark" : "light";
+    root.setAttribute("data-theme", next);
+    localStorage.setItem("compound-theme", next);
+    drawCurve(); drawRetention();
+  });
+
+  /* ---------- scroll reveal (with a fallback so content can never stay hidden) ---------- */
+  const revealables = $$(".reveal-up");
+  if ("IntersectionObserver" in window) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); } });
+    }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
+    revealables.forEach((n,i) => { n.style.transitionDelay = (Math.min(i,6)*40)+"ms"; io.observe(n); });
+  } else {
+    revealables.forEach(n => n.classList.add("in"));
+  }
+
+  /* ============================================================
+     1) FORGETTING-CURVE / SPACED-REPETITION SIMULATOR
+     ============================================================ */
+  const revEl = $("#revs"), effEl = $("#eff");
+  const freqNames = ["Relaxed", "Balanced", "Diligent"];
+  const effNames  = ["Light", "Solid", "Effortful"];
+  const S0 = 1.4;                        // stability after a single study session (days)
+  const freqTarget = [0.75, 0.85, 0.93]; // review when retention decays to this level
+  const effEase    = [1.9, 2.4, 3.0];    // interval-expansion factor per successful recall
+  let horizon = 90;
+
+  // Review at expanding intervals: whenever retention decays to `target`, review and
+  // multiply stability by `ease`. This is the behaviour behind SM-2 / Anki, and it keeps
+  // the memory near the top of the curve across the whole horizon.
+  function buildCurve(freq, effort, days){
+    const target = freqTarget[freq], ease = effEase[effort];
+    const events = [{ t: 0, S: S0 }];    // t = day of review, S = stability just after it
+    let S = S0, t = 0, guard = 0;
+    while (guard++ < 200){
+      const gap = -S * Math.log(target); // time until retention falls to target
+      t += gap;
+      if (t > days) break;
+      S *= ease;                          // successful recall strengthens the memory
+      events.push({ t, S });
+    }
+    const N = 260, pts = [];
+    let ei = 0;
+    for (let s=0; s<=N; s++){
+      const time = (s/N)*days;
+      while (ei+1 < events.length && events[ei+1].t <= time) ei++;
+      const since = time - events[ei].t;
+      pts.push({ t: time, r: Math.exp(-since/events[ei].S) });
+    }
+    return { pts, events, reviews: events.length-1, finalR: pts[pts.length-1].r };
+  }
+  function buildSingle(days){
+    const N = 260, pts = [];
+    for (let s=0; s<=N; s++){ const time=(s/N)*days; pts.push({ t:time, r: Math.exp(-time/S0) }); }
+    return { pts, finalR: pts[pts.length-1].r };
+  }
+
+  function drawCurve(){
+    const host = $("#curveChart");
+    const freq = +revEl.value, effort = +effEl.value;
+    const spaced = buildCurve(freq, effort, horizon);
+    const single = buildSingle(horizon);
+
+    const W = host.clientWidth || 640, H = 300;
+    const m = { t: 14, r: 16, b: 34, l: 40 };
+    const iw = W - m.l - m.r, ih = H - m.t - m.b;
+    const x = t => m.l + (t/horizon)*iw;
+    const y = r => m.t + (1-r)*ih;
+
+    host.innerHTML = "";
+    const svg = el("svg", { width:"100%", viewBox:`0 0 ${W} ${H}`, role:"img", "aria-label":"Memory retention over time" });
+
+    // gridlines + y ticks (0,25,50,75,100%)
+    [0,.25,.5,.75,1].forEach(r=>{
+      svg.appendChild(el("line",{ x1:m.l, x2:W-m.r, y1:y(r), y2:y(r), stroke:cssvar("--grid"), "stroke-width":1 }));
+      const tl = el("text",{ x:m.l-8, y:y(r)+4, "text-anchor":"end", class:"tick-label" }); tl.textContent = Math.round(r*100)+"%"; svg.appendChild(tl);
+    });
+    // x ticks
+    const xticks = horizon<=30?[0,10,20,30]:horizon<=90?[0,30,60,90]:[0,90,180,270,365];
+    xticks.forEach(d=>{ const tx=el("text",{x:x(d), y:H-10, "text-anchor":"middle", class:"tick-label"}); tx.textContent = d+"d"; svg.appendChild(tx); });
+    const ax = el("text",{ x:m.l+iw/2, y:H-10, "text-anchor":"middle", class:"axis-label", opacity:0 }); svg.appendChild(ax);
+
+    const path = pts => "M" + pts.map(p=>`${x(p.t).toFixed(1)},${y(p.r).toFixed(1)}`).join("L");
+
+    // single-study (dashed red)
+    svg.appendChild(el("path",{ d:path(single.pts), fill:"none", stroke:cssvar("--series-8"),
+      "stroke-width":2, "stroke-dasharray":"5 5", "stroke-linejoin":"round", "stroke-linecap":"round", opacity:.9 }));
+    // spaced (blue, on top)
+    svg.appendChild(el("path",{ d:path(spaced.pts), fill:"none", stroke:cssvar("--series-1"),
+      "stroke-width":2.4, "stroke-linejoin":"round", "stroke-linecap":"round" }));
+
+    // review markers
+    spaced.events.forEach(ev=>{
+      if (ev.t>horizon) return;
+      svg.appendChild(el("line",{ x1:x(ev.t), x2:x(ev.t), y1:m.t, y2:m.t+ih, stroke:cssvar("--good"), "stroke-width":1.4, opacity:.35 }));
+      svg.appendChild(el("circle",{ cx:x(ev.t), cy:y(1), r:4.5, fill:cssvar("--good"), stroke:cssvar("--surface-1"), "stroke-width":2 }));
+    });
+    host.appendChild(svg);
+
+    $("#roA").textContent = Math.round(spaced.finalR*100)+"%";
+    $("#roB").textContent = Math.round(single.finalR*100)+"%";
+    $("#roC").textContent = spaced.reviews;
+    const sPct = Math.round(spaced.finalR*100), oPct = Math.round(single.finalR*100);
+    const reviewsTxt = `<b>${spaced.reviews} well-timed review${spaced.reviews===1?"":"s"}</b>`;
+    let tail;
+    if (oPct < 5) {
+      tail = `while a single study session leaves <b>almost nothing (${oPct}%)</b>. That gap is the whole game.`;
+    } else {
+      const gain = spaced.finalR/single.finalR;
+      tail = `versus <b>${oPct}%</b> from one study session — ${gain>=1.5?"<b>"+gain.toFixed(1)+"×</b> the memory":"noticeably more"} for the same material.`;
+    }
+    $("#labNote").innerHTML = `Over ${horizon} days, ${reviewsTxt} keep you at <b>${sPct}%</b> — ${tail}`;
+  }
+
+  revEl.addEventListener("input", ()=>{ $("#revVal").textContent = freqNames[+revEl.value]; drawCurve(); });
+  effEl.addEventListener("input", ()=>{ $("#effVal").textContent = effNames[+effEl.value]; drawCurve(); });
+  $$('.seg [data-h]').forEach(b=> b.addEventListener("click", ()=>{
+    $$('.seg [data-h]').forEach(x=>x.setAttribute("aria-pressed","false"));
+    b.setAttribute("aria-pressed","true"); horizon = +b.dataset.h; drawCurve();
+  }));
+
+  /* ============================================================
+     2) AUDIENCE-RETENTION MODEL
+     ============================================================ */
+  function retentionSeries(opts){
+    // returns array of {x: 0..1 (video progress), r: 0..1 retention}
+    const N = 120, out = [];
+    for (let i=0;i<=N;i++){
+      const x = i/N;
+      let r;
+      // baseline: sharp early drop then slow decay to ~35%
+      const base = 0.4 + 0.6*Math.exp(-3.2*x);
+      r = base;
+      if (opts.hook)  r += 0.10*Math.exp(-14*x);            // softens the very first cliff
+      if (opts.pace)  r += 0.10*(x);                         // pacing lifts the whole back half
+      if (opts.loop)  r += 0.06*Math.sin(Math.PI*x)*1;       // curiosity keeps the middle up
+      if (opts.esc){                                          // re-hooks: little bumps that fight decay
+        r += 0.05*Math.exp(-40*Math.pow(x-0.33,2));
+        r += 0.06*Math.exp(-40*Math.pow(x-0.66,2));
+        r += 0.05*Math.exp(-60*Math.pow(x-0.92,2));
+      }
+      out.push({ x, r: clamp(r, 0.05, 1) });
+    }
+    return out;
+  }
+  const typicalSeries = (()=>{ const N=120,o=[]; for(let i=0;i<=N;i++){const x=i/N; o.push({x, r: clamp(0.32+0.68*Math.exp(-3.6*x),0.05,1)});} return o; })();
+
+  function drawRetention(){
+    const host = $("#retChart");
+    const opts = { hook:$("#tHook").checked, loop:$("#tLoop").checked, esc:$("#tEsc").checked, pace:$("#tPace").checked };
+    const you = retentionSeries(opts);
+
+    const W = host.clientWidth || 640, H = 300;
+    const m = { t: 14, r: 16, b: 34, l: 40 };
+    const iw = W-m.l-m.r, ih = H-m.t-m.b;
+    const x = v => m.l + v*iw;
+    const y = r => m.t + (1-r)*ih;
+
+    host.innerHTML = "";
+    const svg = el("svg",{ width:"100%", viewBox:`0 0 ${W} ${H}`, role:"img", "aria-label":"Audience retention across a video" });
+
+    [0,.25,.5,.75,1].forEach(r=>{
+      svg.appendChild(el("line",{ x1:m.l,x2:W-m.r,y1:y(r),y2:y(r), stroke:cssvar("--grid"), "stroke-width":1 }));
+      const tl=el("text",{ x:m.l-8,y:y(r)+4,"text-anchor":"end", class:"tick-label" }); tl.textContent=Math.round(r*100)+"%"; svg.appendChild(tl);
+    });
+    ["Start","25%","50%","75%","End"].forEach((lab,i)=>{ const tx=el("text",{x:x(i/4),y:H-10,"text-anchor":"middle",class:"tick-label"}); tx.textContent=lab; svg.appendChild(tx); });
+
+    const path = pts => "M"+pts.map(p=>`${x(p.x).toFixed(1)},${y(p.r).toFixed(1)}`).join("L");
+
+    // area wash under 'you'
+    const area = path(you) + `L${x(1)},${y(0)}L${x(0)},${y(0)}Z`;
+    svg.appendChild(el("path",{ d:area, fill:cssvar("--series-5"), opacity:.10 }));
+    // typical (dashed muted)
+    svg.appendChild(el("path",{ d:path(typicalSeries), fill:"none", stroke:cssvar("--ink-muted"),
+      "stroke-width":2, "stroke-dasharray":"5 5", "stroke-linecap":"round", opacity:.7 }));
+    // you (violet)
+    svg.appendChild(el("path",{ d:path(you), fill:"none", stroke:cssvar("--series-5"),
+      "stroke-width":2.4, "stroke-linejoin":"round", "stroke-linecap":"round" }));
+    // end marker
+    const endR = you[you.length-1].r;
+    svg.appendChild(el("circle",{ cx:x(1),cy:y(endR),r:4.5, fill:cssvar("--series-5"), stroke:cssvar("--surface-1"), "stroke-width":2 }));
+    host.appendChild(svg);
+
+    const avg = you.reduce((a,p)=>a+p.r,0)/you.length;
+    $("#retAvg").textContent = Math.round(avg*100)+"%";
+    $("#retEnd").textContent = Math.round(endR*100)+"%";
+  }
+  ["#tHook","#tLoop","#tEsc","#tPace"].forEach(s=> $(s).addEventListener("change", drawRetention));
+
+  /* ============================================================
+     3) SPACED-REPETITION FLASHCARDS (SM-2)
+     ============================================================ */
+  const DECK = [
+    { cat:"Learning",  q:"What is 'active recall' and why does it beat re-reading?",
+      a:"Retrieving information from memory (testing yourself) rather than reviewing it. The effort of retrieval is what strengthens the memory — re-reading only builds a false sense of fluency.",
+      src:"Roediger & Karpicke, the testing effect" },
+    { cat:"Learning",  q:"State the 'spacing effect' in one sentence.",
+      a:"The same total study time produces far more durable memory when spread across multiple sessions than when massed into one — reviewing just as you're about to forget is optimal.",
+      src:"Ebbinghaus; Cepeda et al." },
+    { cat:"Learning",  q:"Why does 'interleaving' feel worse but work better?",
+      a:"Mixing problem types forces your brain to choose the right approach each time, not just execute a known one. Practice performance drops, but test performance and transfer rise.",
+      src:"Rohrer & Taylor" },
+    { cat:"Learning",  q:"What does the Feynman Technique reveal?",
+      a:"By forcing you to explain a concept in plain language, it exposes exactly where your understanding breaks down — jargon can no longer paper over the gaps.",
+      src:"Elaboration / self-explanation" },
+    { cat:"Learning",  q:"Deliberate practice: what makes practice actually improve skill?",
+      a:"Working at the edge of your current ability on a specific weakness, with immediate feedback — not just accumulating hours doing what you can already do.",
+      src:"K. Anders Ericsson" },
+    { cat:"Learning",  q:"What is a 'desirable difficulty'?",
+      a:"A challenge that slows learning in the moment but strengthens long-term retention — like recalling something right when you're about to forget it. Easy study feels good but builds little.",
+      src:"Robert Bjork" },
+    { cat:"Attention", q:"What has to happen in the first ~3 seconds of any content?",
+      a:"You must win the viewer's decision to stay — open on the most interesting moment (the payoff, stakes, or promise), never on throat-clearing introductions.",
+      src:"Retention practice" },
+    { cat:"Attention", q:"Why treat the title and thumbnail as 'the product'?",
+      a:"Content no one clicks effectively doesn't exist. The idea and its packaging determine whether anyone ever sees the work — so they deserve as much craft as the content itself.",
+      src:"Creator craft" },
+    { cat:"Attention", q:"What is an 'open loop' / curiosity gap?",
+      a:"An unresolved question posed early that the brain wants closed, keeping the audience watching. Stacking a new question onto each answer sustains attention across the whole piece.",
+      src:"Curiosity gap" },
+    { cat:"Attention", q:"Why must stakes 'escalate' rather than plateau?",
+      a:"Attention leaks continuously, so each act must feel bigger than the last. Comfort and repetition are where audiences leave — the piece should be a staircase, not a flat hallway.",
+      src:"Escalation" },
+    { cat:"Models",    q:"What is 'inversion' as a thinking tool?",
+      a:"Instead of asking how to succeed, ask how you'd guarantee failure — then avoid those things. The inverse problem is often easier and surfaces blind spots.",
+      src:"Charlie Munger / Jacobi" },
+    { cat:"Models",    q:"Define 'second-order thinking'.",
+      a:"Asking 'and then what?' — tracing the consequences of the consequences, two or three moves ahead, instead of stopping at the immediate result.",
+      src:"Consequence chains" },
+  ];
+
+  const STORE = "compound-srs-v1";
+  let sched = JSON.parse(localStorage.getItem(STORE) || "{}");
+  // sched[i] = { ef, reps, interval, due (ms epoch) }
+  function cardState(i){ return sched[i] || { ef:2.5, reps:0, interval:0, due:0 }; }
+  function isDue(i){ return cardState(i).due <= Date.now(); }
+
+  let filter = "all";
+  let queue = [];
+  let cur = null, sessionDone = 0, revealed = false;
+
+  function matchesFilter(i){ return filter==="all" || DECK[i].cat===filter; }
+
+  function rebuildQueue(){
+    // Only cards whose scheduled review time has arrived. When none are due, the deck is
+    // "caught up" — the whole point of spaced repetition is that it makes you wait.
+    const idx = DECK.map((_,i)=>i).filter(matchesFilter);
+    queue = idx.filter(isDue).sort((a,b)=>cardState(a).due - cardState(b).due);
+  }
+
+  // SM-2: quality q in {0,3,4,5}
+  function schedule(i, q){
+    const s = cardState(i);
+    let { ef, reps, interval } = s;
+    if (q < 3){ reps = 0; interval = 0; }       // "Again" — relearn
+    else {
+      ef = clamp(ef + (0.1 - (5-q)*(0.08 + (5-q)*0.02)), 1.3, 3.2);
+      reps += 1;
+      if (reps === 1) interval = 1;
+      else if (reps === 2) interval = 6;
+      else interval = Math.round(interval * ef);
+    }
+    const dueMs = q<3 ? Date.now() + 60*1000 : Date.now() + interval*24*3600*1000;
+    sched[i] = { ef:+ef.toFixed(2), reps, interval, due: dueMs };
+    localStorage.setItem(STORE, JSON.stringify(sched));
+  }
+  function previewInterval(i, q){
+    const s = cardState(i); let { ef, reps, interval } = s;
+    if (q<3) return "<1 min";
+    ef = clamp(ef + (0.1 - (5-q)*(0.08+(5-q)*0.02)), 1.3, 3.2);
+    reps += 1;
+    let iv = reps===1?1:reps===2?6:Math.round(interval*ef);
+    return iv<=1 ? "1 day" : iv<30 ? iv+" days" : iv<60 ? "~1 mo" : (iv/30).toFixed(1).replace(".0","")+" mo";
+  }
+
+  function updateSideStats(){
+    const idx = DECK.map((_,i)=>i).filter(matchesFilter);
+    $("#dueCount").textContent = idx.filter(isDue).length;
+    $("#masterCount").textContent = DECK.map((_,i)=>i).filter(i=>cardState(i).interval>=21).length;
+    $("#doneCount").textContent = sessionDone;
+    const total = idx.length || 1;
+    $("#deckProg").style.width = clamp(sessionDone/total*100,0,100)+"%";
+  }
+
+  function renderCard(){
+    const main = $("#deckMain");
+    if (!queue.length){
+      main.innerHTML = `<div class="flashcard deck-done"><div class="big">✓</div>
+        <h3>All caught up</h3><p style="max-width:36ch;margin:8px auto 0;">No cards due in this topic right now. Come back later — or switch topics above. Spaced repetition works precisely because it makes you wait.</p></div>`;
+      updateSideStats(); return;
+    }
+    cur = queue[0]; revealed = false;
+    const c = DECK[cur], st = cardState(cur);
+    const total = DECK.filter(matchesFilter).length;
+    main.innerHTML = `<div class="flashcard" id="flashcard">
+      <div class="fc-top"><span class="fc-cat">${c.cat}</span><span>${st.reps===0?"New card":"Review · seen "+st.reps+"×"}</span></div>
+      <div class="fc-body"><div class="fc-q">${c.q}</div><div class="fc-a hidden" id="fcA">${c.a}<span class="src">Source: ${c.src}</span></div></div>
+      <button class="btn btn-primary reveal-btn" id="revealBtn">Show answer</button>
+      <div class="fc-actions hidden" id="fcGrades">
+        <button class="grade again" data-q="0">Again<small>&lt;1 min</small></button>
+        <button class="grade hard"  data-q="3">Hard<small>${previewInterval(cur,3)}</small></button>
+        <button class="grade good"  data-q="4">Good<small>${previewInterval(cur,4)}</small></button>
+        <button class="grade easy"  data-q="5">Easy<small>${previewInterval(cur,5)}</small></button>
+      </div></div>`;
+    $("#revealBtn").addEventListener("click", reveal);
+    $$("#fcGrades .grade").forEach(b=> b.addEventListener("click", ()=> gradeCard(+b.dataset.q)));
+    updateSideStats();
+  }
+  function reveal(){
+    revealed = true;
+    $("#fcA").classList.remove("hidden");
+    $("#revealBtn").classList.add("hidden");
+    $("#fcGrades").classList.remove("hidden");
+  }
+  function gradeCard(q){
+    if (cur===null) return;
+    schedule(cur, q);
+    sessionDone++;
+    rebuildQueue();
+    renderCard();
+  }
+
+  $("#resetDeck").addEventListener("click", ()=>{
+    sched = {}; localStorage.removeItem(STORE); sessionDone = 0;
+    rebuildQueue(); renderCard();
+  });
+  $$("#deckPills .deck-pill").forEach(b=> b.addEventListener("click", ()=>{
+    $$("#deckPills .deck-pill").forEach(x=>x.setAttribute("aria-pressed","false"));
+    b.setAttribute("aria-pressed","true"); filter = b.dataset.cat; sessionDone = 0;
+    rebuildQueue(); renderCard();
+  }));
+
+  // keyboard: space reveals, 1-4 grade
+  document.addEventListener("keydown",(e)=>{
+    if (!$("#flashcard")) return;
+    const inView = $("#cards").getBoundingClientRect().top < window.innerHeight*0.7 && $("#cards").getBoundingClientRect().bottom>0;
+    if (!inView) return;
+    if (e.code==="Space" && !revealed){ e.preventDefault(); reveal(); }
+    else if (revealed && ["1","2","3","4"].includes(e.key)){ gradeCard([0,3,4,5][+e.key-1]); }
+  });
+
+  /* ---------- init + responsive redraw ---------- */
+  function initAll(){ drawCurve(); drawRetention(); rebuildQueue(); renderCard(); }
+  initAll();
+  let rt; window.addEventListener("resize", ()=>{ clearTimeout(rt); rt=setTimeout(()=>{ drawCurve(); drawRetention(); }, 150); });
+})();
+</script>
 </body>
 </html>
