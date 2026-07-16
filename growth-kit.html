@@ -1,0 +1,579 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Starter Squad Growth Kit</title>
+</head>
+<body>
+<!-- ARTIFACT-START -->
+<style>
+  :root {
+    --ground: #EFF2E9;
+    --panel: #FBFCF6;
+    --panel-2: #E6EBDB;
+    --text: #242B3D;
+    --muted: #5C6478;
+    --frame: #2A3248;
+    --grass: #3E9E60;
+    --fire: #DF5F3B;
+    --water: #3E7CC8;
+    --gold: #C9992F;
+    --shadow: #2A3248;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ground: #111726;
+      --panel: #1A2135;
+      --panel-2: #141B2C;
+      --text: #E9ECDE;
+      --muted: #99A2B7;
+      --frame: #B7C0D4;
+      --grass: #52B876;
+      --fire: #EE7351;
+      --water: #5D97DD;
+      --gold: #DDB050;
+      --shadow: #090D18;
+    }
+  }
+  :root[data-theme="light"] {
+    --ground: #EFF2E9; --panel: #FBFCF6; --panel-2: #E6EBDB;
+    --text: #242B3D; --muted: #5C6478; --frame: #2A3248;
+    --grass: #3E9E60; --fire: #DF5F3B; --water: #3E7CC8; --gold: #C9992F;
+    --shadow: #2A3248;
+  }
+  :root[data-theme="dark"] {
+    --ground: #111726; --panel: #1A2135; --panel-2: #141B2C;
+    --text: #E9ECDE; --muted: #99A2B7; --frame: #B7C0D4;
+    --grass: #52B876; --fire: #EE7351; --water: #5D97DD; --gold: #DDB050;
+    --shadow: #090D18;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { animation: none !important; transition: none !important; }
+  }
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--text);
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-size: 16px;
+    line-height: 1.55;
+  }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 0 20px 80px; }
+
+  .display {
+    font-family: Verdana, Tahoma, "DejaVu Sans", sans-serif;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    text-wrap: balance;
+  }
+  .mono {
+    font-family: ui-monospace, "Cascadia Mono", Menlo, Consolas, "Courier New", monospace;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* ---- game-box chrome: hard corners, double border, offset shadow ---- */
+  .box {
+    background: var(--panel);
+    border: 3px solid var(--frame);
+    border-radius: 2px;
+    box-shadow: 0 0 0 2px var(--panel) inset, 5px 5px 0 var(--shadow);
+    padding: 22px 24px;
+  }
+
+  /* ---- top menu ---- */
+  nav {
+    position: sticky; top: 0; z-index: 10;
+    background: var(--ground);
+    border-bottom: 3px solid var(--frame);
+    padding: 10px 20px;
+  }
+  .nav-row {
+    max-width: 880px; margin: 0 auto;
+    display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  }
+  .nav-title { font-size: 13px; margin-right: auto; }
+  nav a {
+    font-size: 11px; text-decoration: none; color: var(--text);
+    border: 2px solid var(--frame); border-radius: 2px;
+    padding: 4px 10px; background: var(--panel);
+  }
+  nav a:hover, nav a:focus-visible { background: var(--panel-2); outline: 2px solid var(--water); outline-offset: 1px; }
+
+  header.hero { padding: 44px 0 10px; }
+  .eyebrow { font-size: 11px; color: var(--muted); margin: 0 0 10px; }
+  h1 { font-size: clamp(28px, 5.5vw, 44px); line-height: 1.08; margin: 0 0 14px; }
+  h1 .g { color: var(--grass); } h1 .f { color: var(--fire); } h1 .w { color: var(--water); }
+  .lede { max-width: 62ch; color: var(--muted); margin: 0 0 34px; }
+
+  section { margin: 46px 0 0; scroll-margin-top: 70px; }
+  .sec-head { display: flex; align-items: center; gap: 12px; margin: 0 0 6px; }
+  .gem { width: 14px; height: 14px; border: 3px solid var(--frame); border-radius: 2px; flex: none; }
+  .sec-head h2 { font-size: 20px; margin: 0; }
+  .sec-sub { color: var(--muted); margin: 0 0 18px; max-width: 65ch; }
+
+  /* ---- buttons ---- */
+  button {
+    font-family: Verdana, Tahoma, sans-serif; font-weight: 800;
+    text-transform: uppercase; letter-spacing: 0.04em; font-size: 13px;
+    color: var(--text); background: var(--panel);
+    border: 3px solid var(--frame); border-radius: 2px;
+    padding: 10px 18px; cursor: pointer;
+    box-shadow: 3px 3px 0 var(--shadow);
+  }
+  button:hover { background: var(--panel-2); }
+  button:active { transform: translate(3px, 3px); box-shadow: none; }
+  button:focus-visible { outline: 2px solid var(--water); outline-offset: 2px; }
+  button.primary { background: var(--grass); color: #fff; border-color: var(--frame); }
+  button.primary:hover { filter: brightness(1.06); }
+  button.ghost { font-size: 11px; padding: 6px 12px; box-shadow: 2px 2px 0 var(--shadow); }
+
+  /* ---- generator ---- */
+  .dialog { margin-top: 14px; }
+  .pitch-label { font-size: 10px; color: var(--muted); margin: 14px 0 3px; }
+  .pitch-label:first-child { margin-top: 0; }
+  .premise { font-size: 18px; font-weight: 650; min-height: 3.1em; margin: 0; }
+  .cursor { display: inline-block; animation: blink 1s steps(1) infinite; color: var(--muted); }
+  @keyframes blink { 50% { opacity: 0; } }
+  .pitch-line { margin: 0; }
+  ul.titles { margin: 0; padding-left: 1.2em; }
+  ul.titles li { margin: 2px 0; }
+  .tag-row { display: flex; gap: 8px; flex-wrap: wrap; margin: 0 0 14px; }
+  .tag {
+    font-size: 10px; padding: 3px 9px; border-radius: 2px;
+    border: 2px solid; background: var(--panel-2);
+  }
+  .tag.grass { color: var(--grass); border-color: var(--grass); }
+  .tag.fire  { color: var(--fire);  border-color: var(--fire); }
+  .tag.water { color: var(--water); border-color: var(--water); }
+  .tag.gold  { color: var(--gold);  border-color: var(--gold); }
+  .gen-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 20px; }
+
+  /* ---- title lab ---- */
+  .name-row { display: flex; gap: 14px; flex-wrap: wrap; margin: 0 0 18px; }
+  .name-row label { display: flex; flex-direction: column; gap: 5px; font-size: 10px; color: var(--muted); }
+  .name-row input {
+    font: inherit; color: var(--text); background: var(--panel);
+    border: 3px solid var(--frame); border-radius: 2px; padding: 8px 12px; width: 180px;
+  }
+  .name-row input:focus-visible { outline: 2px solid var(--water); outline-offset: 2px; }
+  .formula-list { display: flex; flex-direction: column; gap: 10px; }
+  .formula {
+    display: flex; align-items: center; gap: 14px; justify-content: space-between;
+    background: var(--panel); border: 3px solid var(--frame); border-radius: 2px;
+    padding: 12px 16px; cursor: pointer; text-align: left; width: 100%;
+    box-shadow: 3px 3px 0 var(--shadow);
+    font-family: inherit; font-weight: 600; text-transform: none; letter-spacing: 0; font-size: 16px;
+    color: var(--text);
+  }
+  .formula .why { font-size: 10px; color: var(--muted); flex: none; }
+  .title-rules { margin: 18px 0 0; padding-left: 1.2em; color: var(--muted); font-size: 14px; }
+  .title-rules li { margin: 3px 0; }
+
+  /* ---- playbook ---- */
+  .quest-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
+  @media (min-width: 720px) { .quest-grid { grid-template-columns: 1fr 1fr; } }
+  .quest-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 4px; }
+  .quest-head h3 { font-size: 14px; margin: 0; }
+  .quest-count { font-size: 10px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .hp { height: 14px; border: 3px solid var(--frame); border-radius: 2px; background: var(--panel-2); margin: 8px 0 14px; }
+  .hp-fill { height: 100%; width: 0%; background: var(--fire); transition: width 0.25s, background 0.25s; }
+  .quests { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+  .quests label { display: flex; gap: 10px; align-items: flex-start; cursor: pointer; font-size: 14.5px; }
+  .quests input { width: 17px; height: 17px; margin-top: 2px; accent-color: var(--grass); flex: none; }
+  .quests input:focus-visible { outline: 2px solid var(--water); outline-offset: 2px; }
+  .quests input:checked + span { color: var(--muted); text-decoration: line-through; }
+  .quest-foot { margin-top: 14px; }
+
+  /* ---- monetization ---- */
+  .warn { border-color: var(--fire); box-shadow: 0 0 0 2px var(--panel) inset, 5px 5px 0 var(--shadow); margin-bottom: 20px; }
+  .warn h3 { color: var(--fire); font-size: 14px; margin: 0 0 8px; }
+  .warn p { margin: 0; font-size: 14.5px; }
+  .ladder { display: flex; flex-direction: column; gap: 14px; }
+  .rung { display: flex; gap: 16px; align-items: flex-start; }
+  .rung .milestone {
+    flex: none; width: 108px; font-size: 10px; padding-top: 3px;
+    color: var(--gold); font-variant-numeric: tabular-nums;
+  }
+  .rung h4 { margin: 0 0 3px; font-size: 15px; }
+  .rung p { margin: 0; font-size: 14.5px; color: var(--muted); max-width: 58ch; }
+
+  footer { margin-top: 60px; font-size: 11px; color: var(--muted); }
+  .toast {
+    position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%);
+    background: var(--frame); color: var(--ground);
+    border-radius: 2px; padding: 8px 16px; font-size: 11px;
+    opacity: 0; pointer-events: none; transition: opacity 0.2s;
+  }
+  .toast.on { opacity: 1; }
+</style>
+
+<nav aria-label="Sections">
+  <div class="nav-row">
+    <span class="nav-title display">Starter Squad Growth Kit</span>
+    <a class="mono" href="#generator">Generator</a>
+    <a class="mono" href="#titles">Title Lab</a>
+    <a class="mono" href="#playbook">Playbook</a>
+    <a class="mono" href="#money">Poké Mart</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <header class="hero">
+    <p class="eyebrow mono">Channel growth kit · fanfic edition</p>
+    <h1 class="display">Grow the <span class="g">Squad</span>.<br>Hook the <span class="f">Feed</span>.<br>Own the <span class="w">Fans</span>.</h1>
+    <p class="lede">A working toolkit for a Pokémon starter-squad fanfic channel: generate episode pitches with titles and hooks built in, run the per-upload checklist that actually moves retention, and follow a monetization ladder that doesn't bet your income on IP you don't own.</p>
+  </header>
+
+  <section id="generator" aria-label="Episode generator">
+    <div class="sec-head"><span class="gem" style="background: var(--grass)"></span><h2 class="display">Episode Generator</h2></div>
+    <p class="sec-sub">One press = a full pitch package: premise, three titles, a cold-open hook, a thumbnail concept, and the Shorts cutdown. Roll until something makes you want to start writing.</p>
+
+    <div class="box dialog" role="group" aria-label="Generated pitch">
+      <div class="tag-row" id="genTags"></div>
+      <p class="pitch-label mono">Premise</p>
+      <p class="premise"><span id="genPremise"></span><span class="cursor" id="genCursor" aria-hidden="true">▼</span></p>
+      <p class="pitch-label mono">Titles — pick one, keep it under 55 characters</p>
+      <ul class="titles" id="genTitles"></ul>
+      <p class="pitch-label mono">Cold open (first 15 seconds)</p>
+      <p class="pitch-line" id="genHook"></p>
+      <p class="pitch-label mono">Thumbnail concept</p>
+      <p class="pitch-line" id="genThumb"></p>
+      <p class="pitch-label mono">Shorts cutdown</p>
+      <p class="pitch-line" id="genShort"></p>
+      <div class="gen-actions">
+        <button class="primary" id="genBtn">▸ New Episode</button>
+        <button id="genCopy">Copy Pitch</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="titles" aria-label="Title lab">
+    <div class="sec-head"><span class="gem" style="background: var(--water)"></span><h2 class="display">Title Lab</h2></div>
+    <p class="sec-sub">Formulas that keep earning clicks on story channels. Type your characters and tap any title to copy it. The title promises the drama; the thumbnail shows the emotion — never make them say the same thing twice.</p>
+
+    <div class="name-row">
+      <label class="mono">Character A <input id="charA" value="Squirtle" maxlength="24"></label>
+      <label class="mono">Character B <input id="charB" value="Charmander" maxlength="24"></label>
+    </div>
+    <div class="formula-list" id="formulaList"></div>
+    <ul class="title-rules">
+      <li>Front-load the character's name — it's what fans scan for in the feed.</li>
+      <li>Stay under 55 characters so nothing gets cut off on mobile.</li>
+      <li>Open a question the video actually answers. Underdelivering kills a fanfic channel faster than no clicks at all.</li>
+    </ul>
+  </section>
+
+  <section id="playbook" aria-label="Growth playbook">
+    <div class="sec-head"><span class="gem" style="background: var(--fire)"></span><h2 class="display">Growth Playbook</h2></div>
+    <p class="sec-sub">Two quest logs, saved in your browser. "Every Episode" resets each upload; "Channel Quests" are one-time systems. Fill the bars — retention and serialization are the whole game for story channels.</p>
+
+    <div class="quest-grid">
+      <div class="box">
+        <div class="quest-head"><h3 class="display">Every Episode</h3><span class="quest-count mono" id="epCount"></span></div>
+        <div class="hp" role="progressbar" aria-label="Every-episode progress" aria-valuemin="0" aria-valuemax="100"><div class="hp-fill" id="epBar"></div></div>
+        <ul class="quests" id="epQuests"></ul>
+        <div class="quest-foot"><button class="ghost" id="epReset">Reset for next upload</button></div>
+      </div>
+      <div class="box">
+        <div class="quest-head"><h3 class="display">Channel Quests</h3><span class="quest-count mono" id="chCount"></span></div>
+        <div class="hp" role="progressbar" aria-label="Channel quest progress" aria-valuemin="0" aria-valuemax="100"><div class="hp-fill" id="chBar"></div></div>
+        <ul class="quests" id="chQuests"></ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="money" aria-label="Monetization">
+    <div class="sec-head"><span class="gem" style="background: var(--gold)"></span><h2 class="display">Poké Mart — Making It Pay</h2></div>
+    <p class="sec-sub">Climb in order. Each rung funds the next, and the ladder ends with something you own.</p>
+
+    <div class="box warn">
+      <h3 class="display">IP reality check</h3>
+      <p>Pokémon belongs to Nintendo, Creatures, GAME FREAK, and The Pokémon Company. Fan animation has historically been tolerated, but any monetized fan video can be claimed or struck at any time. Fully original animation, art, and voice work is safer than reusing game sprites, footage, or music — and even then, nothing fan-made is truly safe. Treat ad revenue as a bonus, never the plan, and use the audience to launch things you own.</p>
+    </div>
+
+    <div class="box">
+      <div class="ladder">
+        <div class="rung"><span class="milestone mono">0–1K subs</span><div><h4>Grind phase</h4><p>No money here and that's fine — retention is the only currency. Target: 70% of viewers still watching at 30 seconds. Every checklist item above exists to buy you this.</p></div></div>
+        <div class="rung"><span class="milestone mono">1K subs</span><div><h4>YouTube Partner Program</h4><p>Turn on ads knowing fan content gets claimed. Whatever trickles through is pizza money — celebrate it, don't budget around it.</p></div></div>
+        <div class="rung"><span class="milestone mono">500 true fans</span><div><h4>Patreon / memberships</h4><p>Sell access to <em>you</em>, not the IP: early episodes, votes on the next twist, names in the credits, behind-the-scenes writing streams. A hundred fans at $3 beats a million claimed views.</p></div></div>
+        <div class="rung"><span class="milestone mono">Any size</span><div><h4>Commissions</h4><p>The channel is a public portfolio. Sell what it proves you can do: voice acting, script writing, custom fanfic commissions, editing for other creators.</p></div></div>
+        <div class="rung"><span class="milestone mono">Endgame</span><div><h4>Original series</h4><p>Introduce one original character you fully own, let the audience fall for them, then spin them into their own series. Merch, sponsors, and real licensing only ever attach to what's yours. Audience first — then own the IP.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>Fan-made planning tool. Not affiliated with Nintendo, Creatures, GAME FREAK, or The Pokémon Company. Quest progress is stored only in this browser.</p>
+  </footer>
+</div>
+
+<div class="toast" id="toast" role="status">Copied</div>
+
+<script>
+(function () {
+  "use strict";
+
+  var pick = function (arr) { return arr[Math.floor(Math.random() * arr.length)]; };
+  var reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  var STARTERS = ["Bulbasaur","Charmander","Squirtle","Chikorita","Cyndaquil","Totodile","Treecko","Torchic","Mudkip","Turtwig","Chimchar","Piplup","Snivy","Tepig","Oshawott","Chespin","Fennekin","Froakie","Rowlet","Litten","Popplio","Grookey","Scorbunny","Sobble","Sprigatito","Fuecoco","Quaxly"];
+
+  var TROPES = [
+    { t: "Tournament arc", p: function (a, b) { return a + " enters an underground battle tournament to win back something " + b + " lost"; } },
+    { t: "Villain origin", p: function (a, b) { return "the origin story that explains how " + a + " became the villain the squad is afraid of"; } },
+    { t: "Body swap", p: function (a, b) { return a + " and " + b + " wake up in each other's bodies the morning of the biggest battle of the season"; } },
+    { t: "Time loop", p: function (a, b) { return a + " relives the same route encounter over and over until they figure out what " + b + " is hiding"; } },
+    { t: "Betrayal", p: function (a, b) { return b + " sells out the squad — and only " + a + " saw it coming"; } },
+    { t: "Redemption", p: function (a, b) { return a + " comes back after the incident nobody talks about, asking " + b + " for a second chance"; } },
+    { t: "Horror episode", p: function (a, b) { return "the squad camps in a forest where trainers go missing, and " + a + " keeps hearing a voice that sounds exactly like " + b; } },
+    { t: "Lost tape", p: function (a, b) { return "a recovered “lost tape” shows " + a + " and " + b + "'s first meeting — and it's nothing like the story they tell"; } },
+    { t: "Heist", p: function (a, b) { return a + " plans a heist to steal the squad's badges back from a corrupt gym leader, with " + b + " as the inside man"; } },
+    { t: "Role swap", p: function (a, b) { return a + " has to lead the squad for one week while " + b + " quietly undermines every single decision"; } },
+    { t: "Evolution crisis", p: function (a, b) { return a + " is the last one who hasn't evolved — and " + b + " knows the real reason why"; } },
+    { t: "Mockumentary", p: function (a, b) { return "a documentary crew follows the squad for a day, and " + a + " cannot stop lying to the camera about " + b; } },
+    { t: "Survival", p: function (a, b) { return a + " and " + b + " get separated from the squad in a cave with one Oran Berry between them"; } },
+    { t: "Rival defection", p: function (a, b) { return a + " joins the rival team for an episode — and starts to like it more than " + b + " can stand"; } }
+  ];
+
+  var TWISTS = [
+    "the whole thing was a training simulation",
+    "it's told from the villain's point of view",
+    "they lose, and the episode ends on it",
+    "the weakest squad member is the one who saves everyone",
+    "it's set ten years after the main series",
+    "the narrator has been lying the entire episode",
+    "a Legendary is watching the whole time and never steps in",
+    "the final shot reveals a character everyone thought was gone",
+    "halfway through, the perspective flips to the other side",
+    "it secretly doubles as the origin of a running gag"
+  ];
+
+  var FORMATS = [
+    { f: "Full episode", c: "grass" },
+    { f: "Full episode", c: "grass" },
+    { f: "Two-parter", c: "fire" },
+    { f: "YouTube Short", c: "water" },
+    { f: "Poll-driven episode", c: "gold" }
+  ];
+
+  var TITLE_FNS = [
+    function (a, b) { return "What If " + a + " Snapped?"; },
+    function (a, b) { return "The REAL Reason " + a + " Never Evolved"; },
+    function (a, b) { return a + "'s Darkest Episode Yet"; },
+    function (a, b) { return a + " vs " + b + ": It Finally Happens"; },
+    function (a, b) { return "Why " + a + " Will Never Forgive " + b; },
+    function (a, b) { return "I Wrote " + a + "'s Villain Origin"; },
+    function (a, b) { return "The Episode That Breaks the Squad"; },
+    function (a, b) { return a + " Has a Secret"; }
+  ];
+
+  var HOOKS = [
+    function (a, b) { return "Cold open, mid-fight: " + a + " is already on the ground. No logo, no recap — the first line is " + b + " saying “Get up. They're coming.”"; },
+    function (a, b) { return "Open on the aftermath: smoke, silence, and " + a + " holding something that belongs to " + b + ". Then cut to “12 hours earlier.”"; },
+    function (a, b) { return "Start on the twist's echo: one line of dialogue from the final scene, out of context, over black. Then " + a + " wakes up."; },
+    function (a, b) { return "Open with " + b + " talking straight to camera like nothing is wrong — while " + a + " is visibly missing from the squad behind them."; },
+    function (a, b) { return "First frame is the scoreboard: the squad is losing badly, and " + a + " just did the one thing " + b + " made them promise never to do."; }
+  ];
+
+  var THUMBS = [
+    function (a, b) { return a + "'s face in close-up, shocked, with " + b + " silhouetted behind. Two characters max, one readable emotion, test it at 120px wide."; },
+    function (a, b) { return "Split frame: " + a + " on the left, " + b + " on the right, a crack down the middle. No text beyond one word."; },
+    function (a, b) { return a + " walking away from the squad, back turned. Cold colors. The title carries the question; the image carries the mood."; },
+    function (a, b) { return "Extreme close-up on " + a + "'s eyes reflecting " + b + ". Dark vignette, one hot accent color."; }
+  ];
+
+  var el = function (id) { return document.getElementById(id); };
+  var toastTimer = null;
+  function toast(msg) {
+    var t = el("toast");
+    t.textContent = msg;
+    t.classList.add("on");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { t.classList.remove("on"); }, 1600);
+  }
+  function copyText(text, msg) {
+    var done = function () { toast(msg || "Copied"); };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done, done);
+    } else { done(); }
+  }
+
+  /* ---------- generator ---------- */
+  var currentPitch = "";
+  var typeTimer = null;
+
+  function typeInto(node, text) {
+    clearInterval(typeTimer);
+    if (reducedMotion) { node.textContent = text; return; }
+    node.textContent = "";
+    var i = 0;
+    typeTimer = setInterval(function () {
+      i += 2;
+      node.textContent = text.slice(0, i);
+      if (i >= text.length) clearInterval(typeTimer);
+    }, 14);
+  }
+
+  function generate() {
+    var a = pick(STARTERS);
+    var b = pick(STARTERS);
+    while (b === a) b = pick(STARTERS);
+
+    var trope = pick(TROPES);
+    var twist = pick(TWISTS);
+    var format = pick(FORMATS);
+
+    var premise = trope.p(a, b) + " — except " + twist + ".";
+    premise = premise.charAt(0).toUpperCase() + premise.slice(1);
+
+    var fns = TITLE_FNS.slice();
+    var titles = [];
+    for (var i = 0; i < 3; i++) {
+      var idx = Math.floor(Math.random() * fns.length);
+      titles.push(fns.splice(idx, 1)[0](a, b));
+    }
+    var hook = pick(HOOKS)(a, b);
+    var thumb = pick(THUMBS)(a, b);
+    var short_ = "Cut the “" + trope.t.toLowerCase() + "” reveal into a 25-second Short. Freeze one beat before the payoff and end on “full episode on the channel.”";
+
+    el("genTags").innerHTML =
+      '<span class="tag mono grass">' + a + "</span>" +
+      '<span class="tag mono water">' + b + "</span>" +
+      '<span class="tag mono fire">' + trope.t + "</span>" +
+      '<span class="tag mono ' + format.c + '">' + format.f + "</span>";
+
+    typeInto(el("genPremise"), premise);
+    el("genTitles").innerHTML = titles.map(function (t) { return "<li>" + t + "</li>"; }).join("");
+    el("genHook").textContent = hook;
+    el("genThumb").textContent = thumb;
+    el("genShort").textContent = short_;
+
+    currentPitch =
+      "PREMISE: " + premise + "\n\nTITLE OPTIONS:\n- " + titles.join("\n- ") +
+      "\n\nCOLD OPEN: " + hook + "\n\nTHUMBNAIL: " + thumb + "\n\nSHORTS CUTDOWN: " + short_ +
+      "\n\nFORMAT: " + format.f;
+  }
+
+  el("genBtn").addEventListener("click", generate);
+  el("genCopy").addEventListener("click", function () { copyText(currentPitch, "Pitch copied"); });
+
+  /* ---------- title lab ---------- */
+  var WHY = ["what-if gap", "curiosity", "escalation", "payoff promise", "drama", "creator-forward", "stakes", "secret"];
+  function renderFormulas() {
+    var a = el("charA").value.trim() || "Squirtle";
+    var b = el("charB").value.trim() || "Charmander";
+    var list = el("formulaList");
+    list.innerHTML = "";
+    TITLE_FNS.forEach(function (fn, i) {
+      var text = fn(a, b);
+      var btn = document.createElement("button");
+      btn.className = "formula";
+      btn.type = "button";
+      var span = document.createElement("span");
+      span.textContent = text;
+      var why = document.createElement("span");
+      why.className = "why mono";
+      why.textContent = WHY[i] + " · " + text.length + " ch";
+      btn.appendChild(span);
+      btn.appendChild(why);
+      btn.addEventListener("click", function () { copyText(text, "Title copied"); });
+      list.appendChild(btn);
+    });
+  }
+  el("charA").addEventListener("input", renderFormulas);
+  el("charB").addEventListener("input", renderFormulas);
+
+  /* ---------- playbook ---------- */
+  var EP_QUESTS = [
+    "Cold open mid-conflict — no logo, no recap; the first 15 seconds is the hook",
+    "Title under 55 characters with the character's name up front",
+    "Thumbnail: two faces max, one emotion — checked at 120px wide",
+    "Cut 3 Shorts: best fight beat, funniest line, the cliffhanger",
+    "End on a hook and say the next episode's premise out loud",
+    "Pinned comment: link the previous episode + ask a question fans will argue about",
+    "Added to the series playlist, episode number in the title or card",
+    "48 hours later: read the retention graph and note where the first dip starts"
+  ];
+  var CH_QUESTS = [
+    "Lock a weekly upload slot and announce it in every outro",
+    "Write a thumbnail style guide (same outline, palette, face scale) so fans recognize you in the feed",
+    "Run a Community poll letting fans vote the next episode's twist",
+    "List 10 similar-size Pokémon channels and comment genuinely for two weeks",
+    "Pitch one collab per month — voice swaps cost nothing and trade audiences",
+    "Write a 3-episode arc ahead so cliffhangers actually connect",
+    "End screens on every video: next episode + series playlist",
+    "Create one fully original character you own — that's your future IP"
+  ];
+
+  function loadState(key, len) {
+    try {
+      var raw = JSON.parse(localStorage.getItem(key) || "[]");
+      if (Array.isArray(raw) && raw.length === len) return raw;
+    } catch (e) { /* fresh start */ }
+    var out = [];
+    for (var i = 0; i < len; i++) out.push(false);
+    return out;
+  }
+  function saveState(key, state) {
+    try { localStorage.setItem(key, JSON.stringify(state)); } catch (e) { /* private mode */ }
+  }
+
+  function buildQuests(quests, listId, barId, countId, storeKey) {
+    var state = loadState(storeKey, quests.length);
+    var list = el(listId);
+
+    function refresh() {
+      var done = state.filter(Boolean).length;
+      var pct = Math.round((done / quests.length) * 100);
+      var bar = el(barId);
+      bar.style.width = pct + "%";
+      bar.style.background = pct < 34 ? "var(--fire)" : pct < 67 ? "var(--gold)" : "var(--grass)";
+      bar.parentElement.setAttribute("aria-valuenow", String(pct));
+      el(countId).textContent = done + " / " + quests.length;
+      saveState(storeKey, state);
+    }
+
+    quests.forEach(function (q, i) {
+      var li = document.createElement("li");
+      var label = document.createElement("label");
+      var input = document.createElement("input");
+      input.type = "checkbox";
+      input.checked = state[i];
+      input.addEventListener("change", function () { state[i] = input.checked; refresh(); });
+      var span = document.createElement("span");
+      span.textContent = q;
+      label.appendChild(input);
+      label.appendChild(span);
+      li.appendChild(label);
+      list.appendChild(li);
+    });
+    refresh();
+
+    return {
+      reset: function () {
+        for (var i = 0; i < state.length; i++) state[i] = false;
+        list.querySelectorAll("input").forEach(function (cb) { cb.checked = false; });
+        refresh();
+      }
+    };
+  }
+
+  var ep = buildQuests(EP_QUESTS, "epQuests", "epBar", "epCount", "ssgk-ep");
+  buildQuests(CH_QUESTS, "chQuests", "chBar", "chCount", "ssgk-ch");
+  el("epReset").addEventListener("click", function () { ep.reset(); toast("Checklist reset — good luck on the upload"); });
+
+  renderFormulas();
+  generate();
+})();
+</script>
+<!-- ARTIFACT-END -->
+</body>
+</html>
