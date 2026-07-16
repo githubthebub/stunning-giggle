@@ -96,6 +96,15 @@ The Dream World is also playable on its own at **`/dreamworld.html`**.
 - **Sound:** a tiny WebAudio synth for SFX and looping chiptune music. No assets.
 - Works on desktop and mobile (touch d-pad + A/B/Menu).
 
+## 📺 The fanfic channel
+
+The game doubles as a film set: [`channel/`](channel/README.md) holds a
+YouTube fanfic channel built entirely inside this world — a master plan,
+a flagship episode script ([*This Pokémon Game Remembers a Journey Nobody
+Took*](channel/episodes/ep01-a-journey-nobody-took.md)), and a ranked
+10-video backlog. Every scene is capturable in-game, and every forensic
+claim in the scripts is literally true in this repo's code.
+
 ## 🗂️ Project layout
 
 ```
@@ -121,6 +130,7 @@ game/               # the RPG
   entralink.js      # the portal into the Dream World
   main.js           # boot, title, scene manager, game loop
 js/                 # the Dream World (data, sprites, minigame, garden, crossover, …)
+channel/            # the fanfic channel: master plan, episode scripts, backlog
 ```
 
 Sweet dreams, Champion. 🌙
