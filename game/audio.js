@@ -50,6 +50,7 @@
     battle: { tempo: 200, bass: [110, 110, 98, 98], arp: [440, 554, 659, 554] },
     league: { tempo: 220, bass: [98, 98, 110, 123], arp: [392, 494, 587, 494] },
     victory:{ tempo: 240, bass: [131, 165, 196, 262], arp: [523, 659, 784, 1047] },
+    entralink: { tempo: 340, bass: [82, 98, 73, 110], arp: [330, 392, 494, 392] },
   };
   function startMusic(name) {
     if (currentTrack === name) return;

@@ -113,9 +113,12 @@
     G.world.enter(player.map, player.x, player.y, player.dir);
     game.updateHud();
     if (player.champion) {
-      G.gui.toast('Welcome back, Champion! Open the menu (Esc) → Entralink for the Dream World.', { duration: 4200, kind: 'good' });
+      G.gui.toast('Welcome back, Champion! Open the menu (Esc) → Entralink to visit the realm of dreams.', { duration: 4200, kind: 'good' });
     } else if (player.party.length === 0) {
-      setTimeout(() => G.gui.dialogue(['Talk to Prof. Juniper (green) to choose your first partner!']), 400);
+      setTimeout(() => G.gui.dialogue([
+        'Talk to Prof. Juniper (green) to choose your first partner!',
+        'Psst — the ENTRALINK is open from the very start: press Esc and choose Entralink to visit the realm of dreams.',
+      ]), 400);
     }
   }
 

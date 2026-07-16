@@ -11,7 +11,7 @@
   function start(cfg) {
     return new Promise((resolve) => {
       resolveFn = resolve; evolves = [];
-      battle = G.battle.create({ kind: cfg.kind, playerParty: G.game.player.party, foeParty: cfg.foeParty, foeName: cfg.foeName, money: cfg.money });
+      battle = G.battle.create({ kind: cfg.kind, playerParty: G.game.player.party, foeParty: cfg.foeParty, foeName: cfg.foeName, money: cfg.money, dreamForest: cfg.dreamForest });
       // Lead with the first non-fainted party member.
       const lead = battle.player.party.findIndex((m) => m.hp > 0);
       if (lead > 0) battle.player.i = lead;

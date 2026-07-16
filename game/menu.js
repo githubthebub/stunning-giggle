@@ -25,7 +25,7 @@
     if (v === 'party') await openParty();
     else if (v === 'bag') await openBag();
     else if (v === 'fly') await openFly();
-    else if (v === 'entralink') await G.entralink.open();
+    else if (v === 'entralink') await G.entralink.warpIn();
     else if (v === 'card') await openCard();
     else if (v === 'save') { G.save.save(p); G.gui.toast('Game saved!', { kind: 'good' }); }
   }

@@ -22,6 +22,7 @@
       foeName: cfg.foeName || '',
       trainerClass: cfg.trainerClass || '',
       canCatch: cfg.kind !== 'trainer',
+      dreamForest: !!cfg.dreamForest, // Entree Forest: a ball never fails
       money: cfg.money || 0,          // prize for trainer
       over: false,
       result: null,
@@ -393,7 +394,8 @@
     const statusBonus = (foe.status === 'slp' || foe.status === 'frz') ? 2.5 : (foe.status ? 1.5 : 1);
     const a = ((3 * foe.stats.maxHp - 2 * foe.hp) * s.catchRate * ball.bonus * statusBonus) / (3 * foe.stats.maxHp);
     let shakes = 0;
-    if (a >= 255) shakes = 4;
+    if (b.dreamForest) shakes = 4; // Entree Forest: never fails
+    else if (a >= 255) shakes = 4;
     else {
       const bVal = 1048560 / Math.sqrt(Math.sqrt(16711680 / a));
       for (let i = 0; i < 4; i++) { if (rand(65536) < bVal) shakes++; else break; }

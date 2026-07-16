@@ -9,6 +9,7 @@
   let map = null, busy = false;
   let moving = false, moveT = 0, fromX = 0, fromY = 0, stepFrame = 0, animClock = 0;
   let bump = 0;
+  let dreamSpots = []; // Entree Forest: befriended Dream World Pokémon
   const P = () => G.game.player;
 
   function enter(mapId, x, y, dir, opts) {
@@ -24,10 +25,16 @@
     if (map.npcs && map.npcs.some((n) => n.type === 'heal')) { if (p.visitedTowns.indexOf(mapId) < 0) p.visitedTowns.push(mapId); p.lastHeal = { map: mapId, x: p.x, y: p.y }; }
     else if (p.visitedTowns.indexOf(mapId) < 0 && (mapId === 'nuvema')) p.visitedTowns.push(mapId);
     applyDefeatedNpcs();
+    refreshDreamSpots();
     if (G.audio) G.audio.startMusic(map.music || 'route');
     if (!opts.noSave) G.save.save(p);
     G.game.updateHud && G.game.updateHud();
   }
+
+  function refreshDreamSpots() {
+    dreamSpots = (map && map.id === 'entralink' && G.entralink) ? G.entralink.assignSlots(map) : [];
+  }
+  function dreamSpotAt(x, y) { return dreamSpots.find((s) => s.x === x && s.y === y); }
 
   function applyDefeatedNpcs() {
     const p = P();
@@ -40,7 +47,7 @@
   // Can the player stand on (x,y) given surf state?
   function passable(x, y) {
     const t = G.maps.tileAt(map, x, y);
-    if (npcAt(x, y)) return false;
+    if (npcAt(x, y) || dreamSpotAt(x, y)) return false;
     if (t.terrain === 'water') return G.game.surfing || G.party.hasHM(P(), 'surf');
     if (t.terrain === 'waterfall') return G.game.surfing && G.party.hasHM(P(), 'waterfall');
     if (t.terrain === 'cut' || t.terrain === 'boulder' || t.terrain === 'sign') return false;
@@ -99,6 +106,19 @@
     // update surf state
     if (G.game.surfing && t.terrain !== 'water' && t.terrain !== 'waterfall') G.game.surfing = false;
     if (G.audio) G.audio.play('step');
+    // Entralink specials: warp pads home, bridges to a friend's world.
+    if (map.id === 'entralink') {
+      const ch = G.maps.charAt(map, p.x, p.y);
+      if (ch === 'v') { busy = true; G.entralink.exitPrompt().then(() => { busy = false; }); return; }
+      if (ch === 'b' && (p.x <= 0 || p.x >= map.w - 1)) {
+        const backX = p.x <= 0 ? 1 : map.w - 2;
+        busy = true;
+        G.entralink.bridgePrompt().then(() => { p.x = backX; busy = false; G.save.save(p); });
+        return;
+      }
+      G.save.save(p);
+      return; // no warps or wild encounters inside the Entralink
+    }
     // warp?
     const w = (map.warps || []).find((w) => w.x === p.x && w.y === p.y);
     if (w) { doWarp(w); return; }
@@ -145,7 +165,10 @@
     const fx = p.x + dx, fy = p.y + dy;
     const npc = npcAt(fx, fy);
     if (npc) { npc.dir = opp(p.dir); return interactNpc(npc); }
+    const spot = dreamSpotAt(fx, fy);
+    if (spot) { busy = true; return G.entralink.encounterDream(spot).finally(() => { busy = false; }); }
     const t = G.maps.tileAt(map, fx, fy);
+    if (t.terrain === 'entree') { busy = true; return G.entralink.gameSyncMenu().finally(() => { busy = false; }); }
     if (t.terrain === 'sign') { const s = (map.signs || []).find((s) => s.x === fx && s.y === fy); if (s) return G.gui.dialogue(s.text.split('\n')); return; }
     if (t.terrain === 'cut') {
       if (G.party.hasHM(p, 'cut')) { busy = true; if (G.audio) G.audio.play('hm'); await G.gui.dialogue(['You used Cut!']); G.maps.setChar(map, fx, fy, '.'); busy = false; }
@@ -311,6 +334,7 @@
     // entities sorted by y
     const ents = [];
     (map.activeNpcs || []).forEach((n) => ents.push({ y: n.y, draw: (c) => G.sprites.drawCharacter(c, n.x * TS - camX, n.y * TS - camY, TS, { dir: n.dir, body: n.body, step: 0 }) }));
+    dreamSpots.forEach((s) => ents.push({ y: s.y, draw: (c) => G.sprites.drawMonTile(c, s.dm.speciesId, s.dm.types, s.x * TS - camX, s.y * TS - camY, TS, animClock) }));
     ents.push({ y: p.y + 0.5, draw: (c) => {
       const dx = ppx - camX, dy = ppy - camY;
       if (G.game.surfing) { c.fillStyle = '#4d90d5'; c.beginPath(); c.ellipse(dx + TS / 2, dy + TS * 0.85, TS * 0.42, TS * 0.24, 0, 0, 7); c.fill(); }
@@ -324,5 +348,5 @@
     G.input.on('start', () => { if (G.game.scene === 'world' && !busy && !G.gui.isBusy()) G.menu.openPause(); });
   }
 
-  G.world = { init, enter, update, render, interact, flyTo, isBusy: () => busy, mapObj: () => map, TS, VIEW_W, VIEW_H };
+  G.world = { init, enter, update, render, interact, flyTo, refreshDreamSpots, isBusy: () => busy, mapObj: () => map, TS, VIEW_W, VIEW_H };
 })();

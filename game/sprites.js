@@ -63,6 +63,39 @@
     return img;
   }
 
+  // Draw a Pokémon sprite directly on the world canvas (Entree Forest, etc.).
+  const tileImgCache = {};
+  function monTileImage(dex) {
+    if (tileImgCache[dex] !== undefined) return tileImgCache[dex];
+    const b = bank();
+    const src = b && b.front && b.front[dex];
+    if (!src) { tileImgCache[dex] = null; return null; }
+    const img = new Image();
+    img.src = src;
+    tileImgCache[dex] = img;
+    return img;
+  }
+  function drawMonTile(ctx, dex, types, px, py, ts, time) {
+    const bob = Math.sin((time || 0) / 320 + dex) * 1.5;
+    ctx.fillStyle = 'rgba(0,0,0,0.22)';
+    ctx.beginPath(); ctx.ellipse(px + ts / 2, py + ts * 0.92, ts * 0.32, ts * 0.1, 0, 0, 7); ctx.fill();
+    const img = monTileImage(dex);
+    if (img && img.complete && img.naturalWidth) {
+      const prev = ctx.imageSmoothingEnabled;
+      ctx.imageSmoothingEnabled = false;
+      const size = ts * 1.5;
+      ctx.drawImage(img, px - (size - ts) / 2, py - (size - ts) + bob, size, size);
+      ctx.imageSmoothingEnabled = prev;
+    } else {
+      ctx.fillStyle = G.TYPE_COLOR[(types && types[0]) || 'normal'] || '#9fa19f';
+      ctx.beginPath(); ctx.arc(px + ts / 2, py + ts * 0.5 + bob, ts * 0.34, 0, 7); ctx.fill();
+    }
+    // sleepy "z"
+    ctx.fillStyle = 'rgba(255,255,255,0.85)';
+    ctx.font = 'bold ' + Math.round(ts * 0.4) + 'px sans-serif';
+    ctx.fillText('z', px + ts * 0.78, py + bob + ts * 0.05);
+  }
+
   // Draw a top-down trainer/NPC directly on a canvas ctx (tile-sized).
   function drawCharacter(ctx, px, py, ts, opts) {
     opts = opts || {};
@@ -105,5 +138,5 @@
     ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath();
   }
 
-  G.sprites = { monImg, proceduralDataURL, drawCharacter, roundRect, cdnUrl: (dex) => CDN + dex + '.png' };
+  G.sprites = { monImg, proceduralDataURL, drawCharacter, drawMonTile, roundRect, cdnUrl: (dex) => CDN + dex + '.png' };
 })();

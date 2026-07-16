@@ -62,18 +62,29 @@ items, and **catching** with Poké/Great/Ultra Balls (status & HP affect the
 odds). Pokémon gain EXP, **level up, learn moves, and evolve** — Darumaka →
 Darmanitan at Lv 35, the starters into their final forms, and more.
 
-## ↔️ Entralink → Dream World (crossover)
+## ↔️ The Entralink (1:1 with Black & White — available from the start)
 
-Open the menu (Esc) → **Entralink** to step into the **Pokémon Dream World** —
-the soft, dreamy companion experience:
+Open the menu (Esc) → **Entralink** and you are *pulled into the Entralink
+itself* — the mystical realm at the heart of Unova, exactly like the C-Gear
+trip in the original. It works from the very first minute of a new game.
 
-- Send a Pokémon to sleep and explore the **Island of Dreams**, befriending
-  Pokémon (each arrives with its **Hidden Ability**).
-- Grow a berry **garden**, decorate a **house**, collect dream friends.
-- **Cross over to another player who has it:** share a **Dream Link** code / URL
-  so a friend can visit your dream and receive a gift Pokémon — or connect
-  **live, peer-to-peer over WebRTC** (no server) to visit each other's dreams
-  and trade in real time.
+Inside the Entralink map:
+
+- **The glowing Entree tree** — interact for **Game Sync**: tuck in a Pokémon
+  and enter the **Dream World** (Island of Dreams, berry garden, dream house).
+- **The Entree Forest** (north) — Pokémon you befriend in the Dream World
+  physically wake up here, dozing under the trees. Battle them and, just like
+  the real Entree Forest, **a Poké Ball never fails** — they join your party
+  keeping their **Dream World Hidden Ability**.
+- **The white bridges** (east/west) — walk across to **cross over to a
+  friend's world**: share a Dream Link code / URL so a friend can visit your
+  dream and receive a gift Pokémon, or connect **live, peer-to-peer over
+  WebRTC** to visit each other and trade in real time.
+- **The warp pads** — return exactly where you were standing in Unova.
+
+The full BW pipeline works end-to-end: befriend in the Dream World → it leaves
+the Dream World and waits in the Entree Forest → guaranteed catch → it's in
+your game with its Hidden Ability.
 
 The Dream World is also playable on its own at **`/dreamworld.html`**.
 

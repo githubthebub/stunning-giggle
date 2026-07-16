@@ -112,14 +112,24 @@
   }
 
   // Full-screen fade. mode 'out' -> to black, 'in' -> from black.
+  // A single shared layer so out+in pairs never strand a black overlay.
+  let fadeEl = null;
   function fade(mode, ms) {
     ms = ms || 300;
     return new Promise((resolve) => {
-      const f = el('div', { class: 'fade-layer' });
-      f.style.opacity = mode === 'out' ? '0' : '1';
-      ensure().appendChild(f);
-      requestAnimationFrame(() => { f.style.transition = 'opacity ' + ms + 'ms ease'; f.style.opacity = mode === 'out' ? '1' : '0'; });
-      setTimeout(() => { if (mode === 'in') f.remove(); resolve(f); }, ms + 20);
+      if (!fadeEl) {
+        fadeEl = el('div', { class: 'fade-layer' });
+        fadeEl.style.opacity = mode === 'out' ? '0' : '1';
+        ensure().appendChild(fadeEl);
+      }
+      requestAnimationFrame(() => {
+        fadeEl.style.transition = 'opacity ' + ms + 'ms ease';
+        fadeEl.style.opacity = mode === 'out' ? '1' : '0';
+      });
+      setTimeout(() => {
+        if (mode === 'in' && fadeEl) { fadeEl.remove(); fadeEl = null; }
+        resolve();
+      }, ms + 20);
     });
   }
 

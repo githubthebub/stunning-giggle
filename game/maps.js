@@ -284,6 +284,37 @@
       ],
     },
 
+    entralink: {
+      name: 'Entralink', music: 'entralink',
+      // The mystical hub at Unova's heart: the glowing Entree tree (Y) with the
+      // Entree Forest (k) behind it, white bridges (b) east/west to friends'
+      // worlds, and warp pads (v) home. Dream World Pokémon wait at dreamSlots.
+      rows: [
+        'oooooooooooooooooooo',
+        'okkkkkkkkkkkkkkkkkko',
+        'okkkkkkkkkkkkkkkkkko',
+        'oeeeeeeeeYYeeeeeeeeo',
+        'oeeeeeeeeYYeeeeeeeeo',
+        'oeeeeEEEEEEEEEEeeeeo',
+        'bbbbbEEEEEEEEEEbbbbb',
+        'oeeeeEEEEEEEEEEeeeeo',
+        'oeeeeeEEEEEEEEeeeeeo',
+        'oeeeeeeeevveeeeeeeeo',
+        'oeeeeeeeeeeeeeeeeeeo',
+        'oooooooooooooooooooo',
+      ],
+      warps: [],
+      dreamSlots: [
+        { x: 3, y: 1 }, { x: 6, y: 1 }, { x: 9, y: 1 }, { x: 12, y: 1 },
+        { x: 15, y: 1 }, { x: 4, y: 2 }, { x: 11, y: 2 }, { x: 16, y: 2 },
+      ],
+      signs: [{ x: 15, y: 10, text: 'ENTRALINK\nThe realm between Unova and dreams.\nEast/west bridges: a friend\'s world. The glowing Entree: Game Sync.' }],
+      npcs: [
+        { id: 'fennel_aide', x: 5, y: 8, dir: 'right', body: '#8f6fd6', name: 'Fennel\'s Aide', type: 'talk',
+          lines: ['This is the Entralink — the heart of Unova!', 'Touch the glowing Entree tree to Game Sync: tuck in a Pokémon and explore the Dream World.', 'Pokémon you befriend there wake up in the Entree Forest just north — walk up and catch them! In this forest, a Poké Ball never fails.', 'And the white bridges? They lead to other players\' worlds. Go say hi!'] },
+      ],
+    },
+
     league: {
       name: 'Pokémon League', music: 'town',
       rows: [

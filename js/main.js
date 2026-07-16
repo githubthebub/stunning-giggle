@@ -20,6 +20,12 @@
   function boot() {
     DW.state.load();
     buildShell();
+    // The Entralink (parent frame) can ask us to open a specific view,
+    // e.g. jumping straight to Crossover from the white bridge.
+    window.addEventListener('message', (e) => {
+      const d = (e && e.data) || {};
+      if (d.dw === 'view' && typeof d.view === 'string') { try { DW.main.setView(d.view); } catch (err) {} }
+    });
     const st = DW.state.get();
     if (!st.onboarded) openOnboarding();
     else rerender();

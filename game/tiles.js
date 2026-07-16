@@ -62,6 +62,37 @@
   def('S', { solid: true, terrain: 'sign' }, (c, x, y, s) => { c.fillStyle = '#7dc36a'; c.fillRect(x, y, s, s); c.fillStyle = '#8a6a3f'; c.fillRect(x + s * 0.42, y + s * 0.5, s * 0.16, s * 0.4); c.fillStyle = '#c79a5a'; rr(c, x + s * 0.2, y + s * 0.2, s * 0.6, s * 0.42, 3); c.fill(); c.fillStyle = '#5a4632'; c.fillRect(x + s * 0.28, y + s * 0.3, s * 0.44, 2); c.fillRect(x + s * 0.28, y + s * 0.4, s * 0.34, 2); });
   def('L', { terrain: 'ledge' }, (c, x, y, s) => { c.fillStyle = '#7dc36a'; c.fillRect(x, y, s, s); c.fillStyle = '#5f9e4f'; c.fillRect(x, y + s * 0.7, s, s * 0.3); c.fillStyle = '#4d8a40'; c.fillRect(x, y + s * 0.7, s, 3); });
 
+  // --- Entralink tiles ---
+  def('e', {}, (c, x, y, s) => { c.fillStyle = '#463f6e'; c.fillRect(x, y, s, s); speckle(c, x, y, s, '#3d3760'); });
+  def('E', {}, (c, x, y, s) => { c.fillStyle = '#575081'; c.fillRect(x, y, s, s); speckle(c, x, y, s, '#4c466f'); });
+  def('k', {}, (c, x, y, s) => { c.fillStyle = '#355261'; c.fillRect(x, y, s, s); blades(c, x, y, s, '#457587'); });
+  def('o', { solid: true }, (c, x, y, s) => {
+    c.fillStyle = '#241f38'; c.fillRect(x, y, s, s);
+    c.fillStyle = '#181426'; c.fillRect(x + s * 0.44, y + s * 0.55, s * 0.12, s * 0.35);
+    c.fillStyle = '#2f2950'; c.beginPath(); c.arc(x + s / 2, y + s * 0.42, s * 0.36, 0, 7); c.fill();
+    c.fillStyle = '#3a3462'; c.beginPath(); c.arc(x + s * 0.42, y + s * 0.36, s * 0.26, 0, 7); c.fill();
+  });
+  def('Y', { solid: true, terrain: 'entree' }, (c, x, y, s, time) => {
+    c.fillStyle = '#463f6e'; c.fillRect(x, y, s, s);
+    const pulse = 0.75 + 0.25 * Math.sin((time || 0) / 500);
+    c.fillStyle = 'rgba(180,220,255,' + (0.25 * pulse) + ')'; c.beginPath(); c.arc(x + s / 2, y + s / 2, s * 0.55, 0, 7); c.fill();
+    c.fillStyle = '#b9d2ea'; c.fillRect(x + s * 0.44, y + s * 0.6, s * 0.12, s * 0.35);
+    c.fillStyle = '#cfe6ff'; c.beginPath(); c.arc(x + s / 2, y + s * 0.4, s * 0.34, 0, 7); c.fill();
+    c.fillStyle = '#e8f4ff'; c.beginPath(); c.arc(x + s * 0.42, y + s * 0.34, s * 0.2, 0, 7); c.fill();
+  });
+  def('b', {}, (c, x, y, s) => {
+    c.fillStyle = '#e8ecf6'; c.fillRect(x, y, s, s);
+    c.fillStyle = '#c9d2e6'; for (let i = 2; i < s; i += 5) c.fillRect(x, y + i, s, 1);
+    c.fillStyle = '#aab6d0'; c.fillRect(x, y, s, 2); c.fillRect(x, y + s - 2, s, 2);
+  });
+  def('v', {}, (c, x, y, s, time) => {
+    c.fillStyle = '#463f6e'; c.fillRect(x, y, s, s);
+    const p = 0.5 + 0.5 * Math.sin((time || 0) / 300);
+    c.fillStyle = 'rgba(120,240,255,' + (0.15 + 0.15 * p) + ')'; c.beginPath(); c.arc(x + s / 2, y + s / 2, s * 0.3, 0, 7); c.fill();
+    c.strokeStyle = 'rgba(120,240,255,' + (0.5 + 0.4 * p) + ')'; c.lineWidth = 2;
+    c.beginPath(); c.arc(x + s / 2, y + s / 2, s * 0.32, 0, 7); c.stroke();
+  });
+
   // helpers
   function speckle(c, x, y, s, col) { c.fillStyle = col; for (let i = 0; i < 4; i++) { const rx = x + (((x * 7 + i * 53) % s)), ry = y + (((y * 11 + i * 31) % s)); c.fillRect(rx, ry, 2, 2); } }
   function blades(c, x, y, s, col) { c.strokeStyle = col; c.lineWidth = 1.5; for (let i = 0; i < 5; i++) { const bx = x + 3 + i * (s / 5); c.beginPath(); c.moveTo(bx, y + s - 2); c.lineTo(bx - 1, y + s * 0.5); c.stroke(); c.beginPath(); c.moveTo(bx + 2, y + s - 2); c.lineTo(bx + 3, y + s * 0.55); c.stroke(); } }
