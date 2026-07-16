@@ -5,6 +5,9 @@ name: media-bridge
 # video-pipeline/bridge.json and commit them to the branch. upload: PUT files
 # from the repo to presigned URLs listed in the same manifest.
 on:
+  push:
+    paths:
+      - "video-pipeline/bridge.json"
   workflow_dispatch:
     inputs:
       mode:
@@ -24,6 +27,7 @@ jobs:
         run: |
           set -euo pipefail
           MODE="${{ github.event.inputs.mode }}"
+          if [ -z "$MODE" ]; then MODE=$(jq -r '.mode // "fetch"' video-pipeline/bridge.json); fi
           if [ "$MODE" = "fetch" ]; then
             jq -c '.fetch[]' video-pipeline/bridge.json | while read -r item; do
               url=$(jq -r .url <<<"$item"); out=$(jq -r .out <<<"$item")
