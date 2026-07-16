@@ -1,0 +1,15 @@
+SALTGLASS - Episode 1: "Six Minutes" (720p, 12 parts)
+
+Each part is a normal MP4 you can watch on its own (they are the
+episode's 12 scenes in order). To join them into one file without
+re-encoding:
+
+  1. Put all 12 parts in one folder
+  2. Create list.txt containing one line per file, in order:
+       file 'SALTGLASS_E01_part01.mp4'
+       ...
+       file 'SALTGLASS_E01_part12.mp4'
+  3. Run:
+       ffmpeg -f concat -safe 0 -i list.txt -c copy SALTGLASS_E01.mp4
+
+Subtitles are burned in; episode.srt is also provided separately.
