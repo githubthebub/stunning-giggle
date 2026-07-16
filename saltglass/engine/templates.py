@@ -283,8 +283,15 @@ def t_close_hands(desc, pal, seed):
     img = P.vgrad(BW, BH, [(0, pal['ink']), (0.6, pal['near']), (1.0, pal['far'])], seed=seed)
     spec = []
     if _has(desc, 'ilsa', 'orla', 'old', 'knot', 'salt-stiff', 'wrinkl'):
-        A.old_hands(img, 0.5, 0.52, 0.5, rim='#c9a26a')
-        P.glow(img, 0.2 * BW, 0.2 * BH, BH * 0.5, '#ffca7a', intensity=0.18, falloff=2.4)
+        # interior close-up: warm dark room, a surface the hands rest on
+        img = P.vgrad(BW, BH, [(0, '#0b070d'), (0.5, '#180f12'), (1.0, '#221410')], seed=seed)
+        P.draw_poly(img, [(0, BH * 0.40), (BW, BH * 0.44), (BW, BH), (0, BH)], '#2a1c14', blur_r=2.0)
+        tex = P.fbm(BW, int(BH * 0.6), cells=14, octaves=2, seed=seed + 2)
+        img[int(BH * 0.4):int(BH * 0.4) + tex.shape[0]] *= (0.9 + 0.2 * tex[..., None])
+        P.glow(img, 0.24 * BW, 0.10 * BH, BH * 0.62, '#ffca7a', intensity=0.30, falloff=2.2)
+        A.old_hands(img, 0.5, 0.62, 0.46, rim='#d9b078')
+        spec.append({'type': 'glow_pulse', 'cx': 0.24 * BW, 'cy': 0.12 * BH, 'r': BH * 0.4,
+                     'color': '#ffca7a', 'period': 3.4, 'base': 0.06, 'amp': 0.05, 'space': 'base'})
     else:
         amt = 0.9 if _has(desc, 'lit', 'flame', 'catch') else (0.0 if _has(desc, 'unlit', 'dark') else 0.5)
         A.hands_cupped(img, 0.5, 0.55, 0.55, glow_amt=amt)

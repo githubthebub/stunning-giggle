@@ -702,22 +702,38 @@ def hands_cupped(img, cx, cy, scale, color='#0a0c11', rim='#ffb45e', glow_amt=0.
 
 
 def old_hands(img, cx, cy, scale, color='#141019', rim='#c9a26a'):
-    """Ilsa's knotted hands, resting; close-up asset."""
+    """Orla's knotted hands resting on a surface, seen from across the table:
+    two low mounds with fingers extended forward, knuckles slightly swollen."""
     h, w, _ = img.shape
     x, y = cx * w, cy * h
     s = scale * h
     m = Image.new('L', (w, h), 0)
     d = ImageDraw.Draw(m)
-    for side, dy in ((-1, 0), (1, s * 0.08)):
-        px = x + side * s * 0.30
-        d.ellipse([px - s * 0.3, y + dy - s * 0.14, px + s * 0.3, y + dy + s * 0.22], fill=255)
+    for side, dy in ((-1, 0), (1, s * 0.05)):
+        px = x + side * s * 0.33
+        # forearm entering from the bottom edge up to the wrist
+        d.polygon([(px - s * 0.15, h), (px - s * 0.12, y + dy + s * 0.10),
+                   (px + s * 0.12, y + dy + s * 0.10), (px + s * 0.16, h)], fill=255)
+        # back of the hand: a low mound above the wrist
+        d.ellipse([px - s * 0.24, y + dy - s * 0.14, px + s * 0.24, y + dy + s * 0.16], fill=255)
+        # fingers extend up-frame (away from us), foreshortened, resting flat
         for i in range(4):
-            fx = px - s * 0.24 + i * s * 0.16
-            fl = s * (0.30 + 0.05 * np.sin(i * 2.1 + side))
-            d.line([(fx, y + dy + s * 0.02), (fx + s * 0.06, y + dy + fl)], fill=255, width=max(3, int(s * 0.075)))
-            jx, jy = fx + s * 0.03, y + dy + fl * 0.55
-            d.ellipse([jx - s * 0.045, jy - s * 0.045, jx + s * 0.045, jy + s * 0.045], fill=255)
-    _figure_fill(img, m, color, rim, (0, -1), rim_strength=0.65, blur_r=1.4)
+            fx = px - s * 0.175 + i * s * 0.115
+            fl = s * (0.30 + 0.05 * np.sin(i * 2.1 + side)) * 0.62
+            splay = (i - 1.5) * s * 0.028
+            base_y = y + dy - s * 0.10
+            tip_y = base_y - fl
+            d.line([(fx, base_y), (fx + splay, tip_y)],
+                   fill=255, width=max(3, int(s * 0.085)))
+            jx, jy = fx + splay * 0.4, base_y - fl * 0.45
+            d.ellipse([jx - s * 0.032, jy - s * 0.032, jx + s * 0.032, jy + s * 0.032], fill=255)
+            d.ellipse([fx + splay - s * 0.038, tip_y - s * 0.038,
+                       fx + splay + s * 0.038, tip_y + s * 0.038], fill=255)
+        # thumb angled inward across the table
+        d.line([(px - side * s * 0.20, y + dy + s * 0.02),
+                (px - side * s * 0.33, y + dy - s * 0.14)],
+               fill=255, width=max(3, int(s * 0.078)))
+    _figure_fill(img, m, color, rim, (0, -1), rim_strength=0.7, blur_r=1.4)
     return img
 
 
