@@ -264,6 +264,10 @@ def t_stairs(desc, pal, seed):
     img, spec = base_sky(pal, seed, clouds_amt=0.4)
     A.cliff_drop(img, 'left', 0.0, 0.55, pal['near'], seed=seed + 4)
     A.stairs_cliff(img, 0.53, 0.05, 0.2, 0.95, pal['ink'], seed=seed + 5)
+    # the lamp above always spills a little light down the stairwell
+    P.glow(img, 0.56 * BW, 0.02 * BH, BH * 0.45, pal['accent'], intensity=0.30, falloff=2.2)
+    spec.append({'type': 'glow_pulse', 'cx': 0.56 * BW, 'cy': 0.02 * BH, 'r': BH * 0.3,
+                 'color': pal['accent'], 'period': 3.0, 'base': 0.10, 'amp': 0.07, 'space': 'base'})
     if _has(desc, 'yuma', 'espen'):
         t = 0.45
         A.yuma(img, 0.42, 0.42, 0.14, pal['ink'], rim=pal['accent'], pose='climb', phase=0.4, facing=1)

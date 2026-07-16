@@ -179,7 +179,7 @@ def apply_layer(frame, layer, t, cam=None, dur=6.0):
             px, py = xs + lx * scale, ys + ly * scale
             if 0 <= px < W and 0 <= py < H:
                 k = 0.5 + 0.5 * np.sin(t * 1.1 + lp * 6.28 + i)
-                _glow(frame, px, py, 10 + 8 * k * scale, '#7fe8ff', intensity=0.5 * k, falloff=1.8)
+                _glow(frame, px, py, 14 + 11 * k * scale, '#7fe8ff', intensity=0.6 * k, falloff=1.8)
     elif typ == 'mist':
         b0, b1 = layer['band']
         y0i, y1i = int(b0 * H), int(b1 * H)

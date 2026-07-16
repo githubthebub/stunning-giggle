@@ -65,6 +65,13 @@ PALETTES = {
         'ground_top': '#8a7078', 'ground_bot': '#3a2e40',
         'star_density': 0.00004, 'grain': 0.02,
     },
+    'day_chalk': {  # hard pale noon — high-key, silhouettes still carry
+        'sky': [(0.0, '#7e96b4'), (0.4, '#a8bccc'), (0.75, '#d2dde4'), (1.0, '#e8ecec')],
+        'far': '#8a9cb0', 'near': '#5a6a7e', 'ink': '#232c3a',
+        'accent': '#fff2d0', 'ambient': '#d2dde4',
+        'ground_top': '#cdd6da', 'ground_bot': '#98a6ac',
+        'star_density': 0.0, 'grain': 0.016,
+    },
     'title': {
         'sky': [(0.0, '#04060e'), (0.6, '#0a1424'), (1.0, '#12233a')],
         'far': '#0a1220', 'near': '#060b16', 'ink': '#020409',

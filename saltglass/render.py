@@ -40,6 +40,26 @@ FONT_TITLE = '/usr/share/fonts/truetype/dejavu/DejaVuSerif-Bold.ttf'
 FONT_SUB = '/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf'
 
 BEDS = {'wind_soft', 'wind_storm', 'rain', 'waves_memory', 'fire_lamp', 'heartbeat'}
+
+# Art-directed color script: scene -> base palette. Shot-level overrides below.
+SCENE_PALETTES = {
+    1: 'night_ink', 2: 'title', 3: 'dusk_amber', 4: 'day_chalk', 5: 'dusk_amber',
+    6: 'dusk_amber', 7: 'storm_slate', 8: 'dead_dark', 9: 'night_ink',
+    10: 'dawn_rose', 11: 'dawn_rose', 12: 'day_chalk',
+}
+_DARK = {'night_ink', 'dead_dark', 'storm_slate'}
+
+
+def shot_palette(sh):
+    base_name = SCENE_PALETTES.get(sh['scene'])
+    if base_name is None:
+        return PAL.pick(sh['palette_text'] + ' ' + sh['desc'])
+    d = (sh['desc'] or '').lower()
+    if any(k in d for k in ('abyssal', 'pitch dark', 'full dark', 'lightless')):
+        return PAL.by_name('dead_dark')
+    if sh['template'] == 'undertow' and base_name in _DARK:
+        return PAL.by_name('undertow_deep')
+    return PAL.by_name(base_name)
 VALID_TEMPLATES = set(T.BUILDERS.keys())
 TEMPLATE_ALIASES = {
     'two_shot': 'two_shot_silhouette', 'silhouette': 'char_silhouette',
@@ -222,7 +242,7 @@ def render_scenes(tl, scene_ids, draft=False, label=''):
         n_frames_total = 0
         vg3 = vg[..., None].astype(np.float32)
         for sh in sc['shots']:
-            pal = PAL.pick(sh['palette_text'] + ' ' + sh['desc'])
+            pal = shot_palette(sh)
             grain_amt0 = pal.get('grain', 0.025)
             sgrains = [g * grain_amt0 for g in grains]
             seed = (sc['n'] * 97 + sh['idx'] * 13) % 90000

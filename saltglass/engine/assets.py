@@ -138,10 +138,11 @@ def salt_flats(img, horizon_y, top_color, bottom_color, crack_color=None,
             d.line(pts, fill=70, width=1)
         mask = _finish_mask(m, 0.6) * 0.85
         _apply_mask(img, mask, crack_color)
-    # faint band of reflected sky at the horizon line
-    band_h = max(2, int(0.012 * h))
+    # faint band of reflected sky at the horizon, fading downward softly
+    band_h = max(4, int(0.03 * h))
     if hy + band_h < h:
-        img[hy:hy + band_h] = np.clip(img[hy:hy + band_h] * 1.18 + 0.02, 0, 1)
+        fade = np.linspace(1.0, 0.0, band_h, dtype=np.float32)[:, None, None] ** 1.6
+        img[hy:hy + band_h] = np.clip(img[hy:hy + band_h] * (1 + 0.08 * fade) + 0.008 * fade, 0, 1)
     return img
 
 
