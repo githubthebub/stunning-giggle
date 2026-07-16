@@ -1,11 +1,5 @@
 {
-  "mode": "upload",
+  "mode": "fetch",
   "fetch": [],
-  "upload": [
-    {
-      "file": "video-pipeline/hook.mp4",
-      "content_type": "video/mp4",
-      "url": "https://upload.higgsfield.ai/user_36KNmFd6iH5Y3yk4Gh9GpEgWGDw/08d423d1-d914-4c26-a69c-fd74bd883dc0.mp4?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAYPNTVMCGUXC233X7%2F20260716%2Feu-north-1%2Fs3%2Faws4_request&X-Amz-Date=20260716T140618Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=content-type%3Bhost&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEH4aCmV1LW5vcnRoLTEiRzBFAiEA2obKFVwQA%2FoDdHbNrtx57rFNYRnpyDIO4WAaQhqJ9HkCICEQ488KvtO8DPW2GGYsugbO2AQUAxyg059uese%2BUwH3KqYFCEcQABoMNTgyODgxNzMwNzAxIgwWW92bD6YwTo%2FfL6QqgwUciX%2B2XDv7Sz8CeXQ8UlY0GkE6SLQR6nT%2BqD10YshHNL1pxS6JfUteu6DeTV3q%2Bot8fm%2FsVAe8hsym1U%2BXrosnMGHjL9sdqzdCv2worMioeZzvUehjS%2F1YXVzvhv8mdz%2BVa0ef2tOlJm5FWU%2FyOpJF6%2FH8RDeovAe7lMEl7NLv95rCcWkZDVN%2FooJ8chsFEI%2Bv4qDUdja3jtqtGy8Kq%2B%2Bs4dihedu8XteVNqa1iYTUEDPgUCkEeSfizimq4%2BBajrlQyUU4H0r%2BRihKwBB0z5d9oxAB3BgPdUpWNBladTVUUDpZq1qpia2ZiwQbwq9HepjqS0O5VjmWG9sXewr2vvAbe40ScbExYBdJNGw%2BPulcQvZqvvjG34uoutBxUPdMmBRNdtIfmc9pmAqHKG6r%2BCmz9DJSQqkhXH1hZTBlLIosd8uQpMFl1YwuE1%2B7AtD8HAjuQor0NGnjpkEvH%2BCVW3lybIeuFcX%2BV7lSg6%2Bxuh9tLCpaiiJv%2F6VDtOju72sW6WuFrwBip1bWtKHPiS6IR%2FjN1wzNTIKH8aelb5UbIIGwf1Bp5up0YraF%2BmiUpfE3yzeeBO8adW%2FMoBLeAj7EFYE%2Bdx19WfEFR4qnzNSDglxCFOfymGdkWaHZk1VdgppdAmyhtvvgi3O96AZhOLBewymXUxW7njRcuawo0qHd5DcTfO%2BYKefE%2BziOKafmrLTnes6JcOyVeFHVKkhErGogOMvJPiomSDFm5HwpQekaaDM9vdXsTFtZSTPDX9GBEI%2BYDUYc2JBdQYetFmLbo%2B%2FtWBrJwnrgluaWQMs5d%2FkvcHfJuirr5%2Bl2LRO9XYZFXbZcPccojiHtVsg3gQqU1K5xEQg4ciLpMM7C49IGOpAB4wIq1sq6rzFUpd1Jm9Dlnqv%2BDJIEII%2BRclYZnuTEboVsyXdBKZXmMHGmO%2FRBj1f7RbGGveV9%2FvYZQsGUHK57ELD6BCXkV5EL62q%2B2MWiwinWjfYHodwZjYuDvwL8Zsq1CuHnpKWwdbOHzIrZGRsaKBbpamlOZ4AZMD2leM1R5RGHFQPnDKMUUVLmKfbSXu4H&X-Amz-Signature=31fbf823358b38e6fb8040c48f4c41db4fee8a316a7dd6e86b9f502b5630051a"
-    }
-  ]
+  "upload": []
 }
