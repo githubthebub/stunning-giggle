@@ -186,3 +186,13 @@ button { font-family: inherit; cursor: pointer; }
   /* keep touch controls visible but smaller on desktop */
   #touch-controls { opacity: .85; }
 }
+
+/* Card Dex quick link (opens /pokedex/ in a new tab) */
+#carddex-link {
+  position: fixed; top: 10px; right: 10px; z-index: 400;
+  background: linear-gradient(160deg, #d5232d, #9e1219);
+  color: #ffe9e7; text-decoration: none; font-weight: 700; font-size: 13px;
+  border: 2px solid #6e0a10; border-radius: 999px; padding: 7px 14px;
+  box-shadow: 0 4px 14px rgba(0,0,0,.45);
+}
+#carddex-link:hover { filter: brightness(1.12); }
