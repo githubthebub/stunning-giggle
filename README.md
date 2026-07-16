@@ -22,6 +22,20 @@ Open the printed URL. Progress saves automatically to your browser.
 - **Move:** Arrow keys / WASD  ·  **Interact / Confirm:** Z / Space / Enter  ·
   **Cancel:** X  ·  **Menu:** Esc  ·  on-screen touch controls on mobile.
 
+## 🚀 Also on board: OCCUPY MARS — Booster Down
+
+A physics booster-landing game in a single file. Land an orbital-class booster
+softly, upright, **on the pad** — then on a drifting droneship, through the
+gusts of Boca Chica, into **Mechazilla's chopsticks** (no legs — the tower
+catches *you*), and finally on Mars. After that, Full Self-Landing (Beta)
+ramps up forever. Doge coins are worth +420. Obviously.
+
+Open **`/mars.html`** from the server, or just open the file in a browser —
+zero dependencies, works offline, saves your best score.
+
+- **Fly:** ← → / A D steer · ↑ / W / Space thrust · **R** retry ·
+  **M** sound · **Esc** menu · on-screen touch controls on mobile.
+
 ## 🎮 Two ways to start
 
 On the title screen:
