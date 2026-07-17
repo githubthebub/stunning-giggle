@@ -180,6 +180,96 @@ def apply_layer(frame, layer, t, cam=None, dur=6.0):
             if 0 <= px < W and 0 <= py < H:
                 k = 0.5 + 0.5 * np.sin(t * 1.1 + lp * 6.28 + i)
                 _glow(frame, px, py, 14 + 11 * k * scale, '#7fe8ff', intensity=0.6 * k, falloff=1.8)
+    elif typ == 'figure':
+        bank = layer['bank']
+        idx = int(t * layer.get('anim_fps', 8)) % len(bank)
+        spr = bank[idx]
+        sh, sw, _ = spr.shape
+        x = layer['x0'] + layer.get('vx', 0.0) * t
+        y = layer['y0'] + layer.get('vy', 0.0) * t
+        if cam is not None and layer.get('space') == 'base':
+            cx0, cy0, s = cam
+            xs, ys = (x - cx0) * s, (y - cy0) * s
+            nw, nh = max(2, int(sw * s)), max(2, int(sh * s))
+        else:
+            xs, ys, nw, nh = x, y, sw, sh
+        cache = layer.setdefault('_rc', {})
+        ck = (idx, nw)
+        spr_r = cache.get(ck)
+        if spr_r is None:
+            if nw != sw:
+                im = Image.fromarray((np.clip(spr, 0, 1) * 255).astype(np.uint8), 'RGBA')
+                spr_r = np.asarray(im.resize((nw, nh), Image.BILINEAR), dtype=np.float32) / 255.0
+            else:
+                spr_r = spr
+            if len(cache) > 40:
+                cache.clear()
+            cache[ck] = spr_r
+        x0i, y0i = int(xs - nw / 2), int(ys - nh)  # anchor: bottom-center
+        fx0, fy0 = max(0, x0i), max(0, y0i)
+        fx1, fy1 = min(W, x0i + nw), min(H, y0i + nh)
+        if fx1 > fx0 and fy1 > fy0:
+            sub = spr_r[fy0 - y0i:fy1 - y0i, fx0 - x0i:fx1 - x0i]
+            a = sub[..., 3:4]
+            frame[fy0:fy1, fx0:fx1] = frame[fy0:fy1, fx0:fx1] * (1 - a) + sub[..., :3] * a
+    elif typ == 'sprite':
+        # static RGBA overlay in base coords with optional parallax factor
+        spr = layer['rgba']
+        sh, sw, _ = spr.shape
+        if cam is not None and layer.get('space') == 'base':
+            cx0, cy0, s = cam
+            par = layer.get('parallax', 1.0)
+            from .util import BW as _BW, BH as _BH
+            cam_cx = cx0 + (W / s) / 2
+            extra = (cam_cx - _BW / 2) * (par - 1.0)
+            xs = (layer['x0'] - cx0 - extra) * s
+            ys = (layer['y0'] - cy0) * s
+            nw, nh = max(2, int(sw * s)), max(2, int(sh * s))
+        else:
+            xs, ys, nw, nh = layer['x0'], layer['y0'], sw, sh
+        cache = layer.setdefault('_rc', {})
+        spr_r = cache.get(nw)
+        if spr_r is None:
+            if nw != sw:
+                im = Image.fromarray((np.clip(spr, 0, 1) * 255).astype(np.uint8), 'RGBA')
+                spr_r = np.asarray(im.resize((nw, nh), Image.BILINEAR), dtype=np.float32) / 255.0
+            else:
+                spr_r = spr
+            cache.clear()
+            cache[nw] = spr_r
+        x0i, y0i = int(xs), int(ys)
+        fx0, fy0 = max(0, x0i), max(0, y0i)
+        fx1, fy1 = min(W, x0i + nw), min(H, y0i + nh)
+        if fx1 > fx0 and fy1 > fy0:
+            sub = spr_r[fy0 - y0i:fy1 - y0i, fx0 - x0i:fx1 - x0i]
+            a = sub[..., 3:4]
+            frame[fy0:fy1, fx0:fx1] = frame[fy0:fy1, fx0:fx1] * (1 - a) + sub[..., :3] * a
+    elif typ == 'impact':
+        # 2 inverted frames + 1 white frame at the named moment
+        dt = t - layer['at']
+        if 0 <= dt < 3.0 / 24.0:
+            if dt < 2.0 / 24.0:
+                frame[:] = np.clip(1.0 - frame * 0.92, 0, 1)
+            else:
+                frame[:] = np.clip(frame * 0.3 + 0.7, 0, 1)
+    elif typ == 'light_slam':
+        # expanding ring of light + warm flood decaying fast: light as impact
+        dt = t - layer['at']
+        if 0 <= dt < 1.1:
+            cxs, cys = layer.get('cx', W * 0.5), layer.get('cy', H * 0.42)
+            if cam is not None and layer.get('space') == 'base':
+                x0c, y0c, s = cam
+                cxs, cys = (cxs - x0c) * s, (cys - y0c) * s
+            grid = layer.get('_grid')
+            if grid is None:
+                yy, xx = np.mgrid[0:H, 0:W].astype(np.float32)
+                grid = np.sqrt((xx - cxs) ** 2 + (yy - cys) ** 2)
+                layer['_grid'] = grid
+            r = dt * W * 1.6
+            ring = np.exp(-((grid - r) / (W * 0.04)) ** 2) * np.exp(-dt * 2.6)
+            flood = np.exp(-dt * 4.0) * 0.55
+            col = hx(layer.get('color', '#ffd98a'))
+            frame += (ring[..., None] * 0.9 + flood) * col[None, None, :]
     elif typ == 'mist':
         b0, b1 = layer['band']
         y0i, y1i = int(b0 * H), int(b1 * H)

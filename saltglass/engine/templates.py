@@ -74,6 +74,48 @@ def _grade(img, pal):
     return img
 
 
+
+
+def _figure_layer(kind, cx, base_y, height, pal, pose='stand', facing=1,
+                  jar_glow=0.0, seed=17, vx=0.0, vy=0.0):
+    """Animated character as a sprite-bank layer (drawn per frame)."""
+    bank = A.figure_bank(kind, int(height * BH), pose=pose, facing=facing,
+                         rim=pal['accent'], color=pal['ink'], jar_glow=jar_glow,
+                         seed=seed, frames=8)
+    fps = 10 if pose in ('run',) else (8 if pose in ('walk', 'climb') else 5)
+    return {'type': 'figure', 'bank': bank, 'x0': cx * BW, 'y0': base_y * BH,
+            'vx': vx, 'vy': vy, 'anim_fps': fps, 'space': 'base'}
+
+
+def _walk_vx(pose, facing):
+    if pose == 'run':
+        return facing * BW * 0.012
+    if pose == 'walk':
+        return facing * BW * 0.005
+    return 0.0
+
+
+def _fg_band(pal, seed, kind='ground'):
+    """Near-foreground parallax band: dark soft ridge along the frame bottom."""
+    bh = int(BH * 0.30)
+    bw2 = int(BW * 1.3)
+    prof = P.fbm1d(bw2, cells=7, octaves=4, seed=seed + 77)
+    line = (0.35 + (prof - prof.mean()) * 0.5) * bh
+    yy = np.arange(bh, dtype=np.float32)[:, None]
+    alpha = np.clip((yy - line[None, :]) / 3.0, 0, 1)
+    rgba = np.zeros((bh, bw2, 4), dtype=np.float32)
+    ink = hx(pal['ink']) * 0.55
+    rgba[..., :3] = ink[None, None, :]
+    rgba[..., 3] = alpha * 0.96
+    if kind == 'kelp':
+        sub = np.zeros((bh, bw2, 3), dtype=np.float32)
+        A.stone_kelp(sub, [0.1, 0.16, 0.55, 0.83, 0.9], 1.05, 0.9, '#050608', seed=seed + 5)
+        klum = sub.max(axis=2)
+        kmask = np.clip(klum * 4, 0, 1)
+        rgba[..., 3] = np.clip(rgba[..., 3] + kmask, 0, 1)
+    return {'type': 'sprite', 'rgba': rgba, 'x0': -BW * 0.15, 'y0': BH - bh,
+            'parallax': 1.16, 'space': 'base'}
+
 # ---------------------------------------------------------------- templates
 
 def t_sky_vista(desc, pal, seed):
@@ -90,6 +132,7 @@ def t_sky_vista(desc, pal, seed):
                          'color': pal['accent'], 'space': 'base'})
     if _has(desc, 'birds', 'gulls'):
         spec.append({'type': 'birds', 'n': 7, 'space': 'screen'})
+    spec.append(_fg_band(pal, seed))
     return _grade(img, pal), spec
 
 
@@ -110,12 +153,17 @@ def t_dry_sea_vista(desc, pal, seed):
         A.cliff_drop(img, 'left' if _pos_x(desc, 0.3) < 0.5 else 'right', hy - 0.28, 0.16, pal['near'], seed=seed + 9)
     if _has(desc, 'yuma', 'espen'):
         x = _pos_x(desc, 0.54)
-        A.yuma(img, x, min(0.93, hy + 0.34), 0.22, pal['ink'], rim=pal['accent'], pose=_pose(desc),
-               facing=_facing(desc, x), jar_glow=0.5 if _has(desc, 'jar', 'glow') else 0)
+        pose = _pose(desc)
+        f = _facing(desc, x)
+        spec.append(_figure_layer('yuma', x, min(0.93, hy + 0.34), 0.22, pal, pose=pose,
+                                  facing=f, jar_glow=0.5 if _has(desc, 'jar', 'glow') else 0,
+                                  seed=seed, vx=_walk_vx(pose, f)))
     if _has(desc, 'deepwalker', 'bellfarer'):
         x = _pos_x(desc, 0.58)
-        A.deepwalker(img, x, min(0.93, hy + 0.34), 0.26, pal['ink'], rim=pal['accent'],
-                     facing=_facing(desc, x))
+        f = _facing(desc, x)
+        spec.append(_figure_layer('deepwalker', x, min(0.93, hy + 0.34), 0.26, pal,
+                                  facing=f, seed=seed + 3, vx=_walk_vx(_pose(desc), f)))
+    spec.append(_fg_band(pal, seed, kind='kelp' if _has(desc, 'kelp') else 'ground'))
     if _has(desc, 'mist', 'haze', 'fog'):
         spec.append({'type': 'mist', 'band': (hy - 0.06, hy + 0.2), 'alpha': 0.16,
                      'color': pal['ambient'], 'space': 'screen'})
@@ -139,7 +187,10 @@ def t_cliff_village(desc, pal, seed):
             spec.append({'type': 'beam', 'cx': lamp[0], 'cy': lamp[1], 'period': 9.0,
                          'color': pal['accent'], 'space': 'base'})
     if _has(desc, 'yuma', 'espen') and _has(desc, 'run', 'walk', 'climb'):
-        A.yuma(img, 0.3, 0.715, 0.09, pal['ink'], rim=pal['accent'], pose=_pose(desc), phase=0.3)
+        pose = _pose(desc)
+        spec.append(_figure_layer('yuma', 0.3, 0.715, 0.09, pal, pose=pose, facing=1,
+                                  seed=seed, vx=_walk_vx(pose, 1)))
+    spec.append(_fg_band(pal, seed))
     return _grade(img, pal), spec
 
 
@@ -161,12 +212,17 @@ def t_lighthouse_ext(desc, pal, seed):
                      'color': pal['accent'], 'period': 3.2, 'base': 0.25, 'amp': 0.12, 'space': 'base'})
     if _has(desc, 'yuma', 'espen'):
         x = 0.5 + (lx - 0.5) - 0.14
-        A.yuma(img, x, 0.885, 0.13, pal['ink'], rim=pal['accent'], pose=_pose(desc),
-               facing=1 if x < lx else -1, jar_glow=0.4 if _has(desc, 'jar') else 0)
+        pose = _pose(desc)
+        fdir = 1 if x < lx else -1
+        spec.append(_figure_layer('yuma', x, 0.885, 0.13, pal, pose=pose, facing=fdir,
+                                  jar_glow=0.4 if _has(desc, 'jar') else 0, seed=seed,
+                                  vx=_walk_vx(pose, fdir)))
     if _has(desc, 'ilsa', 'orla'):
-        A.ilsa(img, lx + 0.1, 0.885, 0.12, pal['ink'], rim=pal['accent'], pose=_pose(desc, 'stand'))
+        spec.append(_figure_layer('ilsa', lx + 0.1, 0.885, 0.12, pal,
+                                  pose=_pose(desc, 'stand'), facing=-1, seed=seed + 1))
     if _has(desc, 'deepwalker', 'bellfarer'):
-        A.deepwalker(img, 0.3, 0.885, 0.16, pal['ink'], rim=pal['accent'])
+        spec.append(_figure_layer('deepwalker', 0.3, 0.885, 0.16, pal, facing=1, seed=seed + 2))
+    spec.append(_fg_band(pal, seed))
     if _has(desc, 'rain', 'storm'):
         spec.append({'type': 'rain', 'intensity': 0.8, 'angle': 16, 'space': 'screen'})
     if _has(desc, 'lightning'):
@@ -206,10 +262,11 @@ def t_lamp_room_int(desc, pal, seed):
                      'color': '#7fe8ff', 'period': 2.4, 'base': 0.15, 'amp': 0.14, 'space': 'base'})
     if _has(desc, 'yuma', 'espen'):
         x = _pos_x(desc, 0.32) - 0.05
-        A.yuma(img, x, 0.97, 0.5, pal['ink'], rim=pal['accent'], pose=_pose(desc),
-               facing=_facing(desc, x))
+        spec.append(_figure_layer('yuma', x, 0.97, 0.5, pal, pose=_pose(desc),
+                                  facing=_facing(desc, x), seed=seed))
     if _has(desc, 'ilsa', 'orla'):
-        A.ilsa(img, 0.68, 0.97, 0.48, pal['ink'], rim=pal['accent'], pose=_pose(desc, 'stand'))
+        spec.append(_figure_layer('ilsa', 0.68, 0.97, 0.48, pal, pose=_pose(desc, 'stand'),
+                                  facing=-1, seed=seed + 1))
     if _has(desc, 'rain', 'storm'):
         spec.append({'type': 'rain', 'intensity': 0.55, 'angle': 14, 'clip_y': 0.62, 'space': 'screen'})
     if _has(desc, 'lightning'):
@@ -251,10 +308,14 @@ def t_cottage_int(desc, pal, seed):
                         '#241a16', blur_r=1.5)
             A.ilsa(img, 0.58, 0.745, 0.30, pal['ink'], rim='#ffca7a', pose='lying')
         else:
-            A.ilsa(img, 0.55, 0.95, 0.50, pal['ink'], rim='#ffca7a', pose=pose)
+            warm = dict(pal)
+            warm['accent'] = '#ffca7a'
+            spec.append(_figure_layer('ilsa', 0.55, 0.95, 0.50, warm, pose=pose, facing=-1, seed=seed))
     if _has(desc, 'yuma', 'espen'):
-        A.yuma(img, 0.35 if _has(desc, 'ilsa', 'orla') else 0.5, 0.97, 0.45, pal['ink'],
-               rim='#ffca7a', pose=_pose(desc, 'stand'), facing=1)
+        warm = dict(pal)
+        warm['accent'] = '#ffca7a'
+        spec.append(_figure_layer('yuma', 0.35 if _has(desc, 'ilsa', 'orla') else 0.5, 0.97, 0.45,
+                                  warm, pose=_pose(desc, 'stand'), facing=1, seed=seed + 1))
     if _has(desc, 'jar'):
         A.saltglass_jar(img, 0.47, 0.34, 0.09, glow_amt=0.5 if _has(desc, 'glow') else 0.15, seed=seed + 3)
     return _grade(img, pal), spec
@@ -269,9 +330,10 @@ def t_stairs(desc, pal, seed):
     spec.append({'type': 'glow_pulse', 'cx': 0.56 * BW, 'cy': 0.02 * BH, 'r': BH * 0.3,
                  'color': pal['accent'], 'period': 3.0, 'base': 0.10, 'amp': 0.07, 'space': 'base'})
     if _has(desc, 'yuma', 'espen'):
-        t = 0.45
-        A.yuma(img, 0.42, 0.42, 0.14, pal['ink'], rim=pal['accent'], pose='climb', phase=0.4, facing=1)
-        P.glow(img, 0.42 * BW, 0.40 * BH, BH * 0.07, pal['accent'], intensity=0.4)
+        spec.append(_figure_layer('yuma', 0.42, 0.42, 0.14, pal, pose='climb', facing=1,
+                                  seed=seed, vx=-BW * 0.003, vy=-BH * 0.004))
+        spec.append({'type': 'glow_pulse', 'cx': 0.42 * BW, 'cy': 0.38 * BH, 'r': BH * 0.08,
+                     'color': pal['accent'], 'period': 1.6, 'base': 0.25, 'amp': 0.1, 'space': 'base'})
     if _has(desc, 'rain', 'storm'):
         spec.append({'type': 'rain', 'intensity': 0.85, 'angle': 20, 'space': 'screen'})
     if _has(desc, 'lightning'):
@@ -348,13 +410,16 @@ def t_char_silhouette(desc, pal, seed):
     x = _pos_x(desc, 0.44)
     f = _facing(desc, x)
     size = 0.62 if _has(desc, 'big', 'medium', 'waist') else 0.42
+    pose = _pose(desc)
     if _has(desc, 'deepwalker', 'bellfarer'):
-        A.deepwalker(img, x, 0.86, size, pal['ink'], rim=pal['accent'], facing=f)
+        spec.append(_figure_layer('deepwalker', x, 0.86, size, pal, facing=f, seed=seed,
+                                  vx=_walk_vx(pose, f)))
     elif _has(desc, 'ilsa', 'orla'):
-        A.ilsa(img, x, 0.86, size, pal['ink'], rim=pal['accent'], pose=_pose(desc), facing=f)
+        spec.append(_figure_layer('ilsa', x, 0.86, size, pal, pose=pose, facing=f, seed=seed))
     else:
-        A.yuma(img, x, 0.86, size, pal['ink'], rim=pal['accent'], pose=_pose(desc),
-               facing=f, jar_glow=0.6 if _has(desc, 'jar') else 0, phase=0.25)
+        spec.append(_figure_layer('yuma', x, 0.86, size, pal, pose=pose, facing=f,
+                                  jar_glow=0.6 if _has(desc, 'jar') else 0, seed=seed,
+                                  vx=_walk_vx(pose, f)))
     if _has(desc, 'rain', 'storm'):
         spec.append({'type': 'rain', 'intensity': 0.8, 'angle': 18, 'space': 'screen'})
     if _has(desc, 'lightning'):
@@ -367,13 +432,13 @@ def t_two_shot(desc, pal, seed):
                          moon=(0.5, 0.16, 0.035) if _has(desc, 'moon') else None)
     A.ridge(img, 0.83, 0.02, pal['near'], cells=5, seed=seed + 4)
     if _has(desc, 'deepwalker', 'bellfarer'):
-        A.deepwalker(img, 0.62, 0.86, 0.5, pal['ink'], rim=pal['accent'], facing=-1)
-        A.yuma(img, 0.34, 0.86, 0.34, pal['ink'], rim=pal['accent'], pose=_pose(desc), facing=1)
+        spec.append(_figure_layer('deepwalker', 0.62, 0.86, 0.5, pal, facing=-1, seed=seed))
+        spec.append(_figure_layer('yuma', 0.34, 0.86, 0.34, pal, pose=_pose(desc), facing=1, seed=seed + 1))
     else:
-        A.ilsa(img, 0.58, 0.86, 0.40, pal['ink'], rim=pal['accent'],
-               pose='sit' if _has(desc, 'sit') else 'stand', facing=-1)
-        A.yuma(img, 0.38, 0.86, 0.34 if not _has(desc, 'sit') else 0.29, pal['ink'],
-               rim=pal['accent'], pose=_pose(desc), facing=1)
+        spec.append(_figure_layer('ilsa', 0.58, 0.86, 0.40, pal,
+                                  pose='sit' if _has(desc, 'sit') else 'stand', facing=-1, seed=seed))
+        spec.append(_figure_layer('yuma', 0.38, 0.86, 0.34 if not _has(desc, 'sit') else 0.29, pal,
+                                  pose=_pose(desc), facing=1, seed=seed + 1))
     if _has(desc, 'rain', 'storm'):
         spec.append({'type': 'rain', 'intensity': 0.7, 'angle': 15, 'space': 'screen'})
     return _grade(img, pal), spec
@@ -430,7 +495,9 @@ def t_storm(desc, pal, seed):
     spec.append({'type': 'rain', 'intensity': 1.0, 'angle': 22, 'space': 'screen'})
     spec.append({'type': 'lightning', 'times': [0.8, 3.6, 7.4], 'bolt': _has(desc, 'bolt'), 'space': 'screen'})
     if _has(desc, 'yuma', 'espen'):
-        A.yuma(img, 0.34, 0.78, 0.12, pal['ink'], rim=pal['accent'], pose=_pose(desc, 'run'), phase=0.6)
+        pose = _pose(desc, 'run')
+        spec.append(_figure_layer('yuma', 0.34, 0.78, 0.12, pal, pose=pose, facing=1,
+                                  seed=seed, vx=_walk_vx(pose, 1)))
     return _grade(img, pal), spec
 
 

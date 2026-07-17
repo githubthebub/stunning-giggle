@@ -336,7 +336,7 @@ def yuma(img, cx, base_y, height, color='#0c0e14', rim=None, rim_dir=(-1, 0),
     d = ImageDraw.Draw(m)
     f = facing
     head_r = ph * 0.095
-    hx_, hy_ = x + f * ph * 0.01, by - ph * 0.88
+    hx_, hy_ = x + f * ph * 0.01, by - ph * 0.88 + np.sin(phase * 2 * np.pi) * ph * 0.006
     d.ellipse([hx_ - head_r, hy_ - head_r, hx_ + head_r, hy_ + head_r], fill=255)
     g = _rng(seed)
     for i in range(5):
@@ -394,15 +394,15 @@ def yuma(img, cx, base_y, height, color='#0c0e14', rim=None, rim_dir=(-1, 0),
                  (x - f * (coat_top_w + ph * 0.09), scarf_y + ph * 0.13 + flap * 2)], 10)
     lower = [(px, py + ph * (0.020 - 0.001 * i)) for i, (px, py) in enumerate(tail)]
     d.polygon(tail + lower[::-1], fill=255)
-    _figure_fill(img, m, color, rim, rim_dir)
+    mask = _figure_fill(img, m, color, rim, rim_dir)
     if jar_glow > 0:
         jx, jy = x + f * ph * 0.10, sh_y + ph * 0.24
         glow(img, jx, jy, ph * 0.16, '#7fe8ff', intensity=0.55 * jar_glow, falloff=2.0)
-    return img
+    return mask
 
 
 def ilsa(img, cx, base_y, height, color='#0c0e14', rim=None, rim_dir=(-1, 0),
-         pose='stand', facing=1, cane=True, seed=18):
+         pose='stand', facing=1, cane=True, seed=18, breath=0.0):
     """Ilsa: bent posture, hooded shawl, braid, cane."""
     h, w, _ = img.shape
     x = cx * w
@@ -421,11 +421,11 @@ def ilsa(img, cx, base_y, height, color='#0c0e14', rim=None, rim_dir=(-1, 0),
         d.ellipse([hxp - hr, by - ph * 0.115 - hr, hxp + hr, by - ph * 0.115 + hr], fill=255)
         d.line([(hxp + f * hr * 0.6, by - ph * 0.08), (hxp + f * (hr * 0.6 + ph * 0.1), by - ph * 0.01)],
                fill=255, width=max(2, int(ph * 0.02)))
-        _figure_fill(img, m, color, rim, rim_dir)
-        return img
+        return _figure_fill(img, m, color, rim, rim_dir)
     # bent, rounded old keeper under a hooded shawl — narrow, human-scaled
     bend = {'stand': 0.10, 'walk': 0.13, 'sit': 0.05, 'kneel': 0.08}.get(pose, 0.10)
-    top_y = by - ph * (1.0 if pose in ('stand', 'walk') else 0.72)
+    bend += breath * 0.012  # slow breathing sways the bent shoulders
+    top_y = by - ph * (1.0 if pose in ('stand', 'walk') else 0.72) + breath * ph * 0.006
     hxp = x + f * ph * bend  # head pushed forward of the hips
     head_r = ph * 0.08
     hyp = top_y + head_r * 1.1
@@ -449,12 +449,11 @@ def ilsa(img, cx, base_y, height, color='#0c0e14', rim=None, rim_dir=(-1, 0),
         cane_x = hxp + f * ph * 0.16
         d.line([(hxp + f * head_r * 1.1, hyp + head_r * 2.4), (cane_x, by)],
                fill=255, width=max(2, int(ph * 0.016)))
-    _figure_fill(img, m, color, rim, rim_dir)
-    return img
+    return _figure_fill(img, m, color, rim, rim_dir)
 
 
 def deepwalker(img, cx, base_y, height, color='#0a0c11', rim=None, rim_dir=(1, 0),
-               facing=-1, lantern=True, bell_sparkle=0.6, seed=19):
+               facing=-1, lantern=True, bell_sparkle=0.6, seed=19, breath=0.0):
     """The Deepwalker: wide flat hat, long coat, staff-lantern, bell specks."""
     h, w, _ = img.shape
     x = cx * w
@@ -463,7 +462,7 @@ def deepwalker(img, cx, base_y, height, color='#0a0c11', rim=None, rim_dir=(1, 0
     f = facing
     m = _mask_canvas(img)
     d = ImageDraw.Draw(m)
-    hat_y = by - ph * 0.93
+    hat_y = by - ph * 0.93 + breath * ph * 0.005
     hat_w = ph * 0.22
     d.ellipse([x - hat_w, hat_y - ph * 0.018, x + hat_w, hat_y + ph * 0.028], fill=255)
     d.ellipse([x - hat_w * 0.35, hat_y - ph * 0.05, x + hat_w * 0.35, hat_y + ph * 0.01], fill=255)
@@ -479,18 +478,21 @@ def deepwalker(img, cx, base_y, height, color='#0a0c11', rim=None, rim_dir=(1, 0
     # lantern box hanging just below the staff head
     lx, ly = sx, hat_y + ph * 0.05
     d.rectangle([lx - ph * 0.030, ly - ph * 0.038, lx + ph * 0.030, ly + ph * 0.038], fill=255)
-    _figure_fill(img, m, color, rim, rim_dir)
+    mask = _figure_fill(img, m, color, rim, rim_dir)
     if lantern:
-        glow(img, lx, ly, ph * 0.09, '#ffca7a', intensity=0.95, falloff=1.6)
-        glow(img, lx, ly, ph * 0.28, '#ffca7a', intensity=0.28, falloff=2.2)
+        k = 1.0 + 0.15 * np.sin(breath * 2.4)
+        glow(img, lx, ly, ph * 0.09 * k, '#ffca7a', intensity=0.95, falloff=1.6)
+        glow(img, lx, ly, ph * 0.28 * k, '#ffca7a', intensity=0.28, falloff=2.2)
     if bell_sparkle > 0:
-        g = _rng(seed)
+        g = _rng(seed + int(breath * 3) % 7)
         for _ in range(10):
             bx = x + g.uniform(-0.13, 0.13) * ph
             byy = by - g.uniform(0.1, 0.6) * ph
             b = g.uniform(0.2, 1.0) * bell_sparkle
-            img[int(byy), int(bx)] = np.clip(img[int(byy), int(bx)] + b * hx('#ffe9b0'), 0, 1)
-    return img
+            yi, xi = int(byy), int(bx)
+            if 0 <= yi < h and 0 <= xi < w:
+                img[yi, xi] = np.clip(img[yi, xi] + b * hx('#ffe9b0'), 0, 1)
+    return mask
 
 
 # ---------------------------------------------------------------- creature
@@ -516,9 +518,11 @@ def undertow_sprite(sw, sh, seed=23, dark=0.92):
                (cx - bw * 0.9, cy + bh * 0.35)], fill=255)
     mb = m.filter(ImageFilter.GaussianBlur(sh * 0.035))
     alpha = np.asarray(mb, dtype=np.float32) / 255.0 * dark
+    wide = np.asarray(m.filter(ImageFilter.GaussianBlur(sh * 0.09)), dtype=np.float32) / 255.0
+    edge = np.clip(wide - alpha / max(1e-6, dark), 0, 1)
     rgba = np.zeros((sh, sw, 4), dtype=np.float32)
-    rgba[..., :3] = hx('#04060c')
-    rgba[..., 3] = alpha
+    rgba[..., :3] = hx('#04060c') + edge[..., None] * hx('#1a4a5e') * 0.9
+    rgba[..., 3] = np.clip(alpha + edge * 0.35, 0, 1)
     lights = []
     n = 9
     for i in range(n):
@@ -754,7 +758,7 @@ def eye_closeup(img, cx, cy, scale, iris_color='#7a5a3a', reflect_color='#ffd98a
     d = ImageDraw.Draw(m)
     d.polygon(upper + lower, fill=255)
     mask = _finish_mask(m, s * 0.015)
-    white = np.array([0.50, 0.48, 0.50], np.float32) * 0.42
+    white = np.array([0.46, 0.42, 0.42], np.float32) * 0.34
     _apply_mask(img, mask, white)
     ir = s * 0.34
     iy = y - eh * 0.05
@@ -825,3 +829,53 @@ def smoke_wisp(img, x, y, height, color='#9aa4b8', seed=33, alpha=0.18):
         d.ellipse([px - r, py - r, px + r, py + r], fill=int(140 * (1 - t * 0.7)))
     mask = _finish_mask(m, 6) * alpha
     return _apply_mask(img, mask, color)
+
+
+# ---------------------------------------------------------------- sprite banks
+
+_FIGURES = {}
+
+
+def _register_figures():
+    _FIGURES.update({'yuma': yuma, 'espen': yuma, 'ilsa': ilsa, 'orla': ilsa,
+                     'deepwalker': deepwalker, 'bellfarer': deepwalker})
+
+
+def render_figure_rgba(kind, height_px, pose='stand', phase=0.0, facing=1,
+                       rim=None, color='#0c0e14', jar_glow=0.0, seed=17):
+    """Render one character pose into a tight RGBA sprite (float32).
+
+    The figure is drawn on a small transparent canvas; alpha comes from the
+    silhouette mask plus any emitted light (rim, lantern, jar glow)."""
+    if not _FIGURES:
+        _register_figures()
+    fn = _FIGURES[kind]
+    ch = int(height_px * 1.30)
+    cw = int(height_px * 1.20)
+    img = np.zeros((ch, cw, 3), dtype=np.float32)
+    kw = dict(color=color, rim=rim, facing=facing, seed=seed)
+    if fn is yuma:
+        kw.update(pose=pose, phase=phase, jar_glow=jar_glow)
+    elif fn is ilsa:
+        kw.update(pose=pose, breath=np.sin(phase * 2 * np.pi))
+    else:
+        kw.update(breath=phase * 2 * np.pi)
+    mask = fn(img, 0.5, 0.96, height_px / ch, **kw)
+    lum = img.max(axis=2)
+    alpha = np.clip(mask + lum * 1.6, 0.0, 1.0).astype(np.float32)
+    rgba = np.concatenate([img, alpha[..., None]], axis=2)
+    return rgba
+
+
+def figure_bank(kind, height_px, pose='stand', facing=1, rim=None,
+                color='#0c0e14', jar_glow=0.0, seed=17, frames=8):
+    """A cycle of poses for in-shot animation (anime-on-twos feel)."""
+    cyclic = pose in ('walk', 'run', 'climb')
+    bank = []
+    for i in range(frames):
+        ph = i / frames
+        bank.append(render_figure_rgba(kind, height_px, pose=pose,
+                                       phase=ph if cyclic else np.sin(ph * 2 * np.pi) * 0.5,
+                                       facing=facing, rim=rim, color=color,
+                                       jar_glow=jar_glow, seed=seed))
+    return bank

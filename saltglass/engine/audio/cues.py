@@ -218,6 +218,34 @@ def theme_end(dur, seed=0):
     return S.reverb(lead + pads, 0.4, decay=3.0, seed=seed + 1, tilt=2800)
 
 
+def theme_title(dur, seed=0):
+    """The opening statement: taiko pickup, the motif in bold octaves,
+    a plucked counterline, ending suspended — the show's calling card."""
+    bpm = 72
+    spb = 60.0 / bpm
+    n = int(dur * S.SR)
+    buf = np.zeros((n, 2), dtype=np.float32)
+    _mix_into(buf, S.taiko(1.2, vel=0.9, pitch=85, seed=seed), 0.0)
+    _mix_into(buf, S.taiko(1.0, vel=0.65, pitch=120, seed=seed + 1), spb * 1.0)
+    _mix_into(buf, S.taiko(1.4, vel=1.0, pitch=75, seed=seed + 2), spb * 2.0)
+    lead = _seq([(st + 3, nd, m) for st, nd, m in MOTIF], S.bell, dur, bpm=bpm, vel=0.75, seed=seed + 3)
+    lead2 = _seq([(st + 3, nd, m + 12) for st, nd, m in MOTIF], S.piano, dur, bpm=bpm, vel=0.5, seed=seed + 4)
+    counter = []
+    for k in range(int((dur / spb - 3) * 2)):
+        beat = 3 + k * 0.5
+        arp = [D4 - 12, A4 - 12, D4, F4, A4, F4, D4, A4 - 12]
+        counter.append((beat, 0.45, arp[k % len(arp)]))
+    plk = _seq(counter, S.pluck, dur, bpm=bpm, vel=0.4, seed=seed + 5)
+    pads = _chord_pads([(3, 8, [D4 - 24, D4 - 12, A4 - 12, F4]), (11, 8, [Bb4 - 24, Bb4 - 12, F4, D5]),
+                        (19, 8, [F4 - 24, F4 - 12, C5, A4]), (27, 999, [A4 - 24, A4 - 12, E4 + 12, C5 + 1])],
+                       dur, bpm, vel=0.8, cutoff=980, seed=seed + 6)
+    hits = int(dur / (8 * spb))
+    for hbeat in range(1, hits + 1):
+        _mix_into(buf, S.taiko(1.2, vel=0.7, pitch=80, seed=seed + 7 + hbeat), (3 + hbeat * 8 - 0.02) * spb)
+    x = buf + lead + lead2 + plk + pads
+    return S.reverb(x, 0.32, decay=2.4, seed=seed + 8, tilt=3200)
+
+
 def sting_dread(dur=4.0, seed=0):
     n = int(dur * S.SR)
     buf = np.zeros((n, 2), dtype=np.float32)
@@ -246,6 +274,7 @@ def _wrap(fn):
 
 CUES = {
     'silence': silence,
+    'theme_title': _wrap(theme_title),
     'theme_legend': _wrap(theme_legend),
     'theme_village': _wrap(theme_village),
     'theme_duty': _wrap(theme_duty),

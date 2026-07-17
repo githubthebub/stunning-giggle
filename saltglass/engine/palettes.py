@@ -38,17 +38,17 @@ PALETTES = {
         'star_density': 0.0, 'grain': 0.036,
     },
     'dead_dark': {  # the six minutes: near-black, saltglass blue
-        'sky': [(0.0, '#010207'), (0.5, '#03040c'), (1.0, '#060a16')],
-        'far': '#04060e', 'near': '#020409', 'ink': '#010204',
-        'accent': '#7fe8ff', 'ambient': '#0a1220',
-        'ground_top': '#0a0f1a', 'ground_bot': '#030509',
+        'sky': [(0.0, '#020310'), (0.5, '#050818'), (1.0, '#0a1226')],
+        'far': '#060a18', 'near': '#03060f', 'ink': '#010204',
+        'accent': '#7fe8ff', 'ambient': '#0e1830',
+        'ground_top': '#101828', 'ground_bot': '#05080f',
         'star_density': 0.0, 'grain': 0.045,
     },
     'undertow_deep': {  # creature shots: abyssal blue-green
         'sky': [(0.0, '#02040a'), (0.5, '#051020'), (0.85, '#0a2030'), (1.0, '#0e2a3a')],
         'far': '#051220', 'near': '#030a14', 'ink': '#010306',
         'accent': '#7fe8ff', 'ambient': '#0a2030',
-        'ground_top': '#0c1c28', 'ground_bot': '#04080e',
+        'ground_top': '#122430', 'ground_bot': '#060c14',
         'star_density': 0.0001, 'grain': 0.04,
     },
     'lamp_warm': {  # interiors by lamplight

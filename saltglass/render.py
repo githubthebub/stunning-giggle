@@ -141,6 +141,19 @@ def compile_timeline():
     if cur:
         spans.append(tuple(cur))
     spans = [s for s in spans if s[2] != 'silence']
+    # merge micro-spans (<12s, non-sting) into their predecessor to stop churn
+    merged = []
+    for s in spans:
+        if merged and (s[1] - s[0]) < 12.0 and not s[2].startswith('sting')                 and not merged[-1][2].startswith('sting') and abs(s[0] - merged[-1][1]) < 3.0:
+            merged[-1] = (merged[-1][0], s[1], merged[-1][2])
+        else:
+            merged.append(tuple(s))
+    spans = merged
+    # the title card carries its own opening statement
+    for sc in scenes:
+        if sc['n'] == 2:
+            spans = [s for s in spans if not (s[0] < sc['end'] and s[1] > sc['start'])] +                     [(sc['start'], sc['end'] + 2.0, 'theme_title')]
+    spans.sort()
     # ambience beds + one-shots
     beds, shots_fx = [], []
     open_beds = {}
@@ -170,6 +183,19 @@ def compile_timeline():
                     del open_beds[b]
     for b, (a, z) in open_beds.items():
         beds.append((a, z, b, 1.0))
+    # the moment the wick catches: impact frames + a slam of light + deep bell
+    for sc in scenes:
+        if sc['n'] != 8:
+            continue
+        for sh in sc['shots']:
+            d = sh['desc'].lower()
+            if 'catch' in d and ('wick' in d or 'match' in d or 'flame' in d or 'light' in d):
+                sh['fx_special'] = ['light_slam']
+                sh['sfx'] = list(set((sh['sfx'] or []) + ['bell_deep', 'rumble']))
+                break
+        else:
+            continue
+        break
     total = t_abs
     tl = {'title': beat.get('episode_title', 'SALTGLASS'), 'total': round(total, 2),
           'scenes': scenes, 'music_spans': spans, 'beds': beds, 'oneshots': shots_fx}
@@ -247,6 +273,11 @@ def render_scenes(tl, scene_ids, draft=False, label=''):
             sgrains = [g * grain_amt0 for g in grains]
             seed = (sc['n'] * 97 + sh['idx'] * 13) % 90000
             base, spec = T.build(sh['template'], sh['desc'], pal, seed)
+            if 'light_slam' in (sh.get('fx_special') or []):
+                slam_t = max(0.4, min(1.2, sh['dur'] * 0.25))
+                spec.append({'type': 'impact', 'at': slam_t, 'space': 'screen'})
+                spec.append({'type': 'light_slam', 'at': slam_t, 'cx': W * 0.5, 'cy': H * 0.40,
+                             'color': pal['accent'], 'space': 'screen'})
             base_u8 = Image.fromarray(to_u8(base))
             has_shake = any(l['type'] == 'shake' for l in spec)
             cam = Camera(sh['camera'], sh['dur'],
