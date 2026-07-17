@@ -6,7 +6,12 @@
   <meta name="theme-color" content="#d5232d" />
   <meta name="description" content="Card Dex — point your camera at a real Pokémon trading card, get its Pokédex entry, and catch it into your collection." />
   <title>Card Dex — Pokémon Card Scanner</title>
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='46' fill='%23fff' stroke='%23222' stroke-width='6'/%3E%3Cpath d='M4 50a46 46 0 0 1 92 0z' fill='%23e3350d'/%3E%3Crect x='4' y='46' width='92' height='8' fill='%23222'/%3E%3Ccircle cx='50' cy='50' r='13' fill='%23fff' stroke='%23222' stroke-width='6'/%3E%3C/svg%3E" />
+  <link rel="icon" href="icon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="icon-180.png" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <link rel="stylesheet" href="pokedex.css" />
 </head>
 <body>
@@ -45,6 +50,7 @@
           <input type="file" id="file-input" accept="image/*" hidden />
           <button id="btn-scan" aria-label="Scan card"><span></span></button>
           <button id="btn-flip" class="btn btn-ghost" title="Switch camera">🔄 Flip</button>
+          <button id="btn-torch" class="btn btn-ghost" title="Toggle flashlight" hidden>🔦</button>
         </div>
 
         <div id="search-row">

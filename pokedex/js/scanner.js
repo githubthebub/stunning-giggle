@@ -42,6 +42,23 @@ export async function flipCamera(video) {
   return startCamera(video, facing === 'environment' ? 'user' : 'environment');
 }
 
+/** True when the active camera has a controllable flash (phones, usually). */
+export function torchSupported() {
+  const track = stream && stream.getVideoTracks()[0];
+  return !!(track && track.getCapabilities && track.getCapabilities().torch);
+}
+
+export async function setTorch(on) {
+  const track = stream && stream.getVideoTracks()[0];
+  if (!track) return false;
+  try {
+    await track.applyConstraints({ advanced: [{ torch: !!on }] });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 /** Grab the current video frame at full sensor resolution. */
 export function captureFrame(video) {
   const c = document.createElement('canvas');
@@ -125,6 +142,7 @@ export function preprocess(source, rect, targetW = 1200) {
 function loadScript(src) {
   return new Promise((resolve, reject) => {
     const s = document.createElement('script');
+    s.crossOrigin = 'anonymous'; // CORS-readable so the service worker can cache it
     s.src = src;
     s.onload = resolve;
     s.onerror = () => reject(new Error('Could not load the OCR engine — check your connection.'));

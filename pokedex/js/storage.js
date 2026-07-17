@@ -5,6 +5,7 @@
  */
 
 const KEY = 'carddex.caught.v1';
+const CAREER_KEY = 'carddex.career.v1';
 
 function load() {
   try {
@@ -31,19 +32,39 @@ export function caughtCount() {
   return Object.keys(load()).length;
 }
 
+/**
+ * Career total across all catches (duplicates included) — drives ball
+ * unlocks. A separate monotonic counter, NOT derived from the inventory,
+ * so releasing Pokémon never takes earned unlocks away. Seeded from the
+ * inventory once for saves that predate the counter.
+ */
+export function totalCatches() {
+  const raw = localStorage.getItem(CAREER_KEY);
+  if (raw != null) {
+    const n = Number(raw);
+    if (Number.isFinite(n) && n >= 0) return n;
+  }
+  const seed = Object.values(load()).reduce((sum, m) => sum + (m.count || 1), 0);
+  try { localStorage.setItem(CAREER_KEY, String(seed)); } catch { /* quota */ }
+  return seed;
+}
+
 /** Store (or re-register) a catch. Returns { stored, isNew }. */
 export function recordCatch(entry) {
+  const career = totalCatches() + 1; // seed (if needed) BEFORE this catch lands
   const d = load();
   const now = new Date().toISOString();
   const prev = d[entry.id];
   const stored = {
     ...entry,
     count: ((prev && prev.count) || 0) + 1,
+    shiny: !!(entry.shiny || (prev && prev.shiny)), // once shiny, always shiny
     firstCaughtAt: (prev && prev.firstCaughtAt) || now,
     lastCaughtAt: now,
   };
   d[entry.id] = stored;
   save(d);
+  try { localStorage.setItem(CAREER_KEY, String(career)); } catch { /* quota */ }
   return { stored, isNew: !prev };
 }
 

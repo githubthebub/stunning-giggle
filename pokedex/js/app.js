@@ -4,6 +4,8 @@
 
 import { getSpeciesList, getEntry, prettify } from './api.js';
 import { matchFromOcr, normalizeName, similarity, prepareSpecies } from './matcher.js';
+import { BALLS, ballById, catchProbability, rollCatch, rollShiny, breakoutText } from './game.js';
+import { sfx } from './sfx.js';
 import * as store from './storage.js';
 import * as scanner from './scanner.js';
 
@@ -20,6 +22,7 @@ const els = {
   suggestions: $('#suggestions'),
   btnScan: $('#btn-scan'),
   btnFlip: $('#btn-flip'),
+  btnTorch: $('#btn-torch'),
   fileInput: $('#file-input'),
   search: $('#search'),
   btnSearch: $('#btn-search'),
@@ -33,6 +36,7 @@ const els = {
   entryCard: $('#entry-card'),
   catchOverlay: $('#catch-overlay'),
   pokeball: $('#pokeball'),
+  catchStars: $('#catch-stars'),
   toast: $('#toast'),
 };
 
@@ -47,6 +51,10 @@ let cameraOn = false;
 let busy = false;
 let currentEntry = null;
 let entryFromDex = false;
+let encounterShiny = false; // rolled once per wild encounter (scan/search)
+let attemptCount = 0;       // failed throws this encounter — feeds the pity ramp
+let selectedBallId = 'poke';
+let throwing = false;
 
 async function init() {
   bindTabs();
@@ -54,6 +62,11 @@ async function init() {
   bindSearch();
   bindModal();
   renderDex();
+
+  // Pre-create the audio context on the first tap so post-scan jingles play.
+  document.addEventListener('pointerdown', () => sfx.unlock(), { once: true });
+
+  registerServiceWorker();
 
   try {
     species = prepareSpecies(await getSpeciesList());
@@ -64,6 +77,11 @@ async function init() {
   }
 
   startCameraSafe();
+}
+
+function registerServiceWorker() {
+  if (!('serviceWorker' in navigator)) return;
+  navigator.serviceWorker.register('./sw.js').catch(() => { /* http dev server etc. */ });
 }
 
 /* ---------------- tabs ---------------- */
@@ -87,12 +105,26 @@ async function startCameraSafe() {
     cameraOn = true;
     els.cameraOff.hidden = true;
     els.video.hidden = false;
+    updateTorchButton();
   } catch (e) {
     cameraOn = false;
     els.video.hidden = true;
     els.cameraOff.hidden = false;
     els.cameraOffMsg.textContent = `📵 ${e && e.message ? e.message : 'Camera unavailable.'}`;
   }
+}
+
+let torchOn = false;
+let torchBusy = false;
+function updateTorchButton() {
+  torchOn = false;
+  torchBusy = false;
+  els.btnTorch.classList.remove('active');
+  els.btnTorch.hidden = !scanner.torchSupported();
+  // Android Chrome may not report torch capability until the track settles.
+  setTimeout(() => {
+    if (cameraOn && scanner.torchSupported()) els.btnTorch.hidden = false;
+  }, 700);
 }
 
 function bindScan() {
@@ -104,8 +136,22 @@ function bindScan() {
       cameraOn = true;
       els.cameraOff.hidden = true;
       els.video.hidden = false;
+      updateTorchButton();
     } catch {
       setStatus('Could not switch camera.', 'error');
+    }
+  });
+  els.btnTorch.addEventListener('click', async () => {
+    if (torchBusy) return;
+    torchBusy = true;
+    const next = !torchOn;
+    try {
+      if (await scanner.setTorch(next)) {
+        torchOn = next;
+        els.btnTorch.classList.toggle('active', torchOn);
+      }
+    } finally {
+      torchBusy = false;
     }
   });
   els.fileInput.addEventListener('change', async () => {
@@ -303,6 +349,7 @@ function bindModal() {
 }
 
 async function openEntry(id, fromDex = false) {
+  if (throwing) return; // don't hijack an in-flight throw
   entryFromDex = fromDex;
   try {
     setStatus('📖 Opening Pokédex entry…');
@@ -314,6 +361,14 @@ async function openEntry(id, fromDex = false) {
       if (!entry) throw err;
     }
     currentEntry = entry;
+    attemptCount = 0;
+    if (fromDex) {
+      const caught = store.getCaught(id);
+      encounterShiny = !!(caught && caught.shiny);
+    } else {
+      encounterShiny = rollShiny();
+      if (encounterShiny) sfx.shiny();
+    }
     renderEntry(entry);
     els.entryOverlay.hidden = false;
     setStatus('Point the camera at a Pokémon card, then press the button.');
@@ -323,6 +378,7 @@ async function openEntry(id, fromDex = false) {
 }
 
 function closeEntry() {
+  if (throwing) return; // no running from a battle mid-throw
   els.entryOverlay.hidden = true;
   currentEntry = null;
 }
@@ -333,7 +389,9 @@ const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({
 
 function renderEntry(entry) {
   const caught = store.getCaught(entry.id);
-  const num = `#${String(entry.id).padStart(4, '0')}`;
+  const num = esc(`#${String(entry.id).padStart(4, '0')}`);
+  const shiny = encounterShiny;
+  const art = (shiny && entry.artworkShiny) || entry.artwork;
   const types = entry.types
     .map((t) => `<span class="type-badge type-${esc(t)}">${esc(t)}</span>`)
     .join('');
@@ -351,34 +409,64 @@ function renderEntry(entry) {
       </div>`;
   }).join('');
 
+  const total = store.totalCatches();
+  if (total < ballById(selectedBallId).unlockAt) selectedBallId = 'poke'; // never keep a locked ball selected
+  const nextLocked = BALLS.find((b) => total < b.unlockAt);
+  const ballRow = BALLS.map((b) => {
+    const locked = total < b.unlockAt;
+    const pct = Math.round(catchProbability(entry.captureRate, b.mult, attemptCount) * 100);
+    return `
+      <button class="ball-option${b.id === selectedBallId ? ' selected' : ''}${locked ? ' locked' : ''}"
+              data-ball="${b.id}" ${locked ? 'disabled' : ''}
+              title="${esc(b.name)}${locked ? ` — unlocks at ${b.unlockAt} catches` : ''}">
+        <span class="ball-icon" style="--ball-top:${b.top}"></span>
+        <span class="ball-name">${esc(b.name.replace(' Ball', ''))}</span>
+        <span class="ball-odds">${locked ? '🔒' : `${pct}%`}</span>
+      </button>`;
+  }).join('');
+
   els.entryCard.innerHTML = `
     <button class="entry-close" aria-label="Close">✕</button>
     <header class="entry-head">
       <span class="entry-no">${num}</span>
-      <h2>${esc(entry.displayName)}</h2>
+      <h2>${shiny ? '✨ ' : ''}${esc(entry.displayName)}</h2>
       <span class="entry-genus">${esc(entry.genus || '')}</span>
+      ${shiny && !entryFromDex ? '<span class="shiny-banner">✨ It’s a SHINY! ✨</span>' : ''}
       ${rarity}
-      ${caught ? `<span class="caught-badge">✔ Caught${caught.count > 1 ? ` ×${caught.count}` : ''}</span>` : ''}
+      ${caught ? `<span class="caught-badge">✔ Caught${caught.count > 1 ? ` ×${caught.count}` : ''}${caught.shiny ? ' ✨' : ''}</span>` : ''}
     </header>
-    <div class="entry-art">${entry.artwork ? `<img src="${esc(entry.artwork)}" alt="${esc(entry.displayName)}" />` : '❔'}</div>
+    <div class="entry-art${shiny ? ' shiny' : ''}">${art ? `<img src="${esc(art)}" alt="${esc(entry.displayName)}" crossorigin="anonymous" />` : '❔'}</div>
     <div class="entry-types">${types}</div>
     ${entry.flavor ? `<p class="entry-flavor">${esc(entry.flavor)}</p>` : ''}
     <p class="entry-meta">Height <b>${entry.heightM} m</b> · Weight <b>${entry.weightKg} kg</b></p>
     <div class="entry-stats">${statRows}</div>
+    <div class="ball-row">${ballRow}</div>
+    ${nextLocked ? `<p class="unlock-hint">🎯 ${total} career catches — ${esc(nextLocked.name)} unlocks at ${nextLocked.unlockAt}</p>` : ''}
     <div class="entry-actions">
       ${entry.cry ? '<button id="btn-cry" class="btn btn-ghost">🔊 Cry</button>' : ''}
-      <button id="btn-catch" class="btn btn-catch">${caught ? '● Catch again' : '● Catch!'}</button>
+      <button id="btn-catch" class="btn btn-catch">● Throw!</button>
       ${caught && entryFromDex ? '<button id="btn-release" class="btn btn-ghost">Release</button>' : ''}
     </div>
     ${caught ? `<p class="entry-caughtat">First caught ${new Date(caught.firstCaughtAt).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })}</p>` : ''}
   `;
 
   els.entryCard.querySelector('.entry-close').addEventListener('click', closeEntry);
-  els.entryCard.querySelector('#btn-catch').addEventListener('click', onCatch);
+  els.entryCard.querySelector('#btn-catch').addEventListener('click', onThrow);
+  for (const btn of els.entryCard.querySelectorAll('.ball-option')) {
+    btn.addEventListener('click', () => {
+      if (btn.disabled) return;
+      selectedBallId = btn.dataset.ball;
+      for (const b of els.entryCard.querySelectorAll('.ball-option')) {
+        b.classList.toggle('selected', b === btn);
+      }
+    });
+  }
   const cryBtn = els.entryCard.querySelector('#btn-cry');
   if (cryBtn) {
     cryBtn.addEventListener('click', () => {
-      const a = new Audio(entry.cry);
+      const a = new Audio();
+      a.crossOrigin = 'anonymous';
+      a.src = entry.cry;
       a.volume = 0.5;
       a.play().catch(() => {});
     });
@@ -397,50 +485,119 @@ function renderEntry(entry) {
 
 /* ---------------- catching ---------------- */
 
-async function onCatch() {
-  if (!currentEntry) return;
+const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+
+async function onThrow() {
+  if (!currentEntry || throwing) return;
+  throwing = true;
+  // Snapshot everything the throw depends on — the awaited animation takes
+  // seconds, and module state may be redirected at another entry meanwhile.
   const entry = currentEntry;
+  const shiny = encounterShiny;
+  if (store.totalCatches() < ballById(selectedBallId).unlockAt) selectedBallId = 'poke';
+  const ball = ballById(selectedBallId);
   const btn = els.entryCard.querySelector('#btn-catch');
   if (btn) btn.disabled = true;
 
-  await playCatchAnimation();
+  const p = catchProbability(entry.captureRate, ball.mult, attemptCount);
+  const { caught, shakes } = rollCatch(p);
 
-  const { stored, isNew } = store.recordCatch({
-    id: entry.id,
-    name: entry.name,
-    displayName: entry.displayName,
-    genus: entry.genus,
-    flavor: entry.flavor,
-    types: entry.types,
-    stats: entry.stats,
-    heightM: entry.heightM,
-    weightKg: entry.weightKg,
-    artwork: entry.artwork,
-    sprite: entry.sprite,
-    cry: entry.cry,
-    isLegendary: entry.isLegendary,
-    isMythical: entry.isMythical,
-  });
+  await playThrowAnimation(ball, shakes, caught);
 
-  renderDex();
+  if (caught) {
+    const { stored, isNew } = store.recordCatch({
+      id: entry.id,
+      name: entry.name,
+      displayName: entry.displayName,
+      genus: entry.genus,
+      flavor: entry.flavor,
+      types: entry.types,
+      stats: entry.stats,
+      heightM: entry.heightM,
+      weightKg: entry.weightKg,
+      artwork: entry.artwork,
+      artworkShiny: entry.artworkShiny,
+      sprite: entry.sprite,
+      spriteShiny: entry.spriteShiny,
+      cry: entry.cry,
+      captureRate: entry.captureRate,
+      isLegendary: entry.isLegendary,
+      isMythical: entry.isMythical,
+      shiny,
+    });
+    sfx.gotcha();
+    if (isNew) {
+      sfx.newEntry();
+      spawnConfetti(shiny ? 70 : 40);
+    }
+    if (currentEntry === entry) attemptCount = 0; // fresh odds for the next ball
+    renderDex();
+    toast(isNew
+      ? `Gotcha! ${shiny ? '✨ SHINY ' : ''}${entry.displayName} was caught and added to your Pokédex!`
+      : `${entry.displayName} was caught again! (×${stored.count})`);
+  } else {
+    if (currentEntry === entry) attemptCount++; // pity ramp: next throw gets better odds
+    sfx.breakout();
+    toast(breakoutText(shakes, entry.displayName));
+  }
+
   if (currentEntry && currentEntry.id === entry.id) renderEntry(currentEntry);
-  toast(isNew
-    ? `Gotcha! ${entry.displayName} was caught and added to your Pokédex!`
-    : `${entry.displayName} was caught again! (×${stored.count})`);
+  throwing = false;
 }
 
-function playCatchAnimation() {
-  return new Promise((resolve) => {
-    els.catchOverlay.hidden = false;
-    els.pokeball.classList.remove('wobble');
-    // restart the CSS animation even on back-to-back catches
-    void els.pokeball.offsetWidth;
-    els.pokeball.classList.add('wobble');
-    setTimeout(() => {
-      els.catchOverlay.hidden = true;
-      resolve();
-    }, 1900);
-  });
+/** Drop the ball in, shake 0–3 times, then either click shut or burst open. */
+async function playThrowAnimation(ball, shakes, caught) {
+  const ballEl = els.pokeball;
+  ballEl.className = '';
+  ballEl.querySelector('.ball-top').style.background =
+    `linear-gradient(180deg, ${ball.top}, ${ball.top})`;
+  els.catchStars.hidden = true;
+  els.catchOverlay.hidden = false;
+
+  sfx.throw();
+  ballEl.classList.add('drop');
+  await wait(600);
+  sfx.bounce();
+  await wait(350);
+
+  for (let i = 0; i < shakes; i++) {
+    ballEl.classList.remove('shake');
+    void ballEl.offsetWidth; // restart the animation
+    sfx.shake();
+    ballEl.classList.add('shake');
+    await wait(650);
+  }
+
+  if (caught) {
+    ballEl.classList.add('clicked');
+    els.catchStars.hidden = false;
+    await wait(900);
+  } else {
+    ballEl.classList.add('burst');
+    await wait(600);
+  }
+
+  els.catchOverlay.hidden = true;
+  ballEl.className = '';
+}
+
+function spawnConfetti(n = 40) {
+  let host = document.getElementById('confetti');
+  if (!host) {
+    host = document.createElement('div');
+    host.id = 'confetti';
+    document.body.appendChild(host);
+  }
+  const colors = ['#ff5b4d', '#ffd23e', '#58e07c', '#3fc1ff', '#d685ad', '#fff'];
+  for (let i = 0; i < n; i++) {
+    const s = document.createElement('span');
+    s.style.left = `${Math.random() * 100}vw`;
+    s.style.background = colors[i % colors.length];
+    s.style.animationDelay = `${Math.random() * 0.4}s`;
+    s.style.animationDuration = `${1.2 + Math.random() * 1.2}s`;
+    host.appendChild(s);
+    setTimeout(() => s.remove(), 3000);
+  }
 }
 
 let toastTimer = null;
@@ -470,11 +627,12 @@ function renderDex() {
   const frag = document.createDocumentFragment();
   for (const mon of caught) {
     const cell = document.createElement('button');
-    cell.className = 'dex-cell';
+    cell.className = mon.shiny ? 'dex-cell shiny' : 'dex-cell';
+    const sprite = (mon.shiny && mon.spriteShiny) || mon.sprite || mon.artwork || '';
     cell.innerHTML = `
-      <img src="${esc(mon.sprite || mon.artwork || '')}" alt="" loading="lazy" />
-      <span class="dex-cell-no">#${String(mon.id).padStart(4, '0')}</span>
-      <span class="dex-cell-name">${esc(mon.displayName || prettify(mon.name))}</span>
+      <img src="${esc(sprite)}" alt="" loading="lazy" crossorigin="anonymous" />
+      <span class="dex-cell-no">${esc(`#${String(mon.id).padStart(4, '0')}`)}</span>
+      <span class="dex-cell-name">${mon.shiny ? '✨' : ''}${esc(mon.displayName || prettify(mon.name))}</span>
       ${mon.count > 1 ? `<span class="dex-cell-count">×${mon.count}</span>` : ''}
     `;
     cell.addEventListener('click', () => openEntry(mon.id, true));

@@ -59,7 +59,7 @@ export async function getEntry(id) {
   for (const st of p.stats || []) stats[st.stat.name] = st.base_stat;
 
   return {
-    id: s.id,
+    id: Number(s.id),
     name: s.name,
     displayName: (en(s.names) || {}).name || prettify(s.name),
     genus: (en(s.genera) || {}).genus || '',
@@ -75,8 +75,13 @@ export async function getEntry(id) {
       (p.sprites && p.sprites.other && p.sprites.other['official-artwork'] &&
         p.sprites.other['official-artwork'].front_default) ||
       (p.sprites && p.sprites.front_default) || '',
+    artworkShiny:
+      (p.sprites && p.sprites.other && p.sprites.other['official-artwork'] &&
+        p.sprites.other['official-artwork'].front_shiny) || '',
     sprite: (p.sprites && p.sprites.front_default) || '',
+    spriteShiny: (p.sprites && p.sprites.front_shiny) || '',
     cry: (p.cries && (p.cries.latest || p.cries.legacy)) || '',
+    captureRate: Number.isFinite(s.capture_rate) ? s.capture_rate : 128,
     isLegendary: !!s.is_legendary,
     isMythical: !!s.is_mythical,
   };
