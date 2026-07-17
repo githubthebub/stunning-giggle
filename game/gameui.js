@@ -133,5 +133,19 @@
     });
   }
 
-  G.gui = { el, dialogue, choice, confirm, toast, fade, isBusy };
+  // Classic encounter flash before a battle: white/black strobes, then dark.
+  function battleFlash() {
+    return new Promise((resolve) => {
+      const f = el('div', { class: 'battle-flash-layer' });
+      ensure().appendChild(f);
+      setTimeout(resolve, 480);
+      setTimeout(() => {
+        f.style.transition = 'opacity .25s ease';
+        f.style.opacity = '0';
+        setTimeout(() => f.remove(), 280);
+      }, 560);
+    });
+  }
+
+  G.gui = { el, dialogue, choice, confirm, toast, fade, battleFlash, isBusy };
 })();

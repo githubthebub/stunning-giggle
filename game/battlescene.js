@@ -61,6 +61,7 @@
     const wrap = side === 'foe' ? foeSprite : plySprite;
     wrap.innerHTML = '';
     const img = G.sprites.monImg(mon, side === 'foe' ? 108 : 128, { className: side, back: side === 'ply' });
+    if (mon.shiny) img.classList.add('shiny');
     wrap.appendChild(img);
     if (mon.shiny) wrap.appendChild(el('span', { class: 'b-shiny' }, '✦'));
   }
@@ -113,7 +114,8 @@
     for (const ev of events) {
       if (ev.t === 'text') { await msg(ev.s, ev.level ? 900 : 700); }
       else if (ev.t === 'move') { flash(ev.side); if (G.audio) G.audio.play('hit'); }
-      else if (ev.t === 'hp') { await animHp(ev.side, ev.hp, ev.max); if (ev.dmg && G.audio) G.audio.play(ev.dmg > 0 ? 'hit' : 'weakhit'); }
+      else if (ev.t === 'hp') { if (ev.dmg > 0) spawnDmg(ev.side, ev.dmg); await animHp(ev.side, ev.hp, ev.max); if (ev.dmg && G.audio) G.audio.play(ev.dmg > 0 ? 'hit' : 'weakhit'); }
+      else if (ev.t === 'learnprompt') { await learnPrompt(ev.mon, ev.key); }
       else if (ev.t === 'status') { updateBar(ev.side); }
       else if (ev.t === 'stat') { flash(ev.side); }
       else if (ev.t === 'faint') { if (G.audio) G.audio.play('faint'); await faintAnim(ev.side); }
@@ -125,6 +127,25 @@
     }
   }
   function wait(ms) { return new Promise((r) => setTimeout(r, ms)); }
+  function spawnDmg(side, dmg) {
+    const wrap = side === 'foe' ? foeSprite : plySprite;
+    const d = el('div', { class: 'dmg-float' }, '−' + dmg);
+    wrap.appendChild(d);
+    setTimeout(() => d.remove(), 850);
+  }
+  async function learnPrompt(mon, key) {
+    const nm = G.move(key).name;
+    const items = mon.moves.map((mv, i) => ({ label: 'Forget ' + G.move(mv.key).name, value: i, hint: G.move(mv.key).type.slice(0, 3).toUpperCase() }));
+    items.push({ label: 'Give up on ' + nm, value: -1 });
+    const v = await G.gui.choice(items, { title: G.party.displayName(mon) + ' wants to learn ' + nm + '!', layerClass: 'battle-menu', cancelValue: -1 });
+    if (v != null && v >= 0) {
+      const old = G.move(mon.moves[v].key).name;
+      mon.moves[v] = { key, pp: G.move(key).pp, ppMax: G.move(key).pp };
+      await msg(G.party.displayName(mon) + ' forgot ' + old + ' and learned ' + nm + '!', 900);
+    } else {
+      await msg(G.party.displayName(mon) + ' did not learn ' + nm + '.', 700);
+    }
+  }
   function flash(side) { const w = side === 'foe' ? foeSprite : plySprite; w.classList.remove('flash'); void w.offsetWidth; w.classList.add('flash'); }
   function faintAnim(side) { const w = side === 'foe' ? foeSprite : plySprite; w.classList.add('faint'); return wait(650).then(() => w.classList.remove('faint')); }
   function ballAnim() { foeSprite.classList.add('caught'); return wait(500); }
@@ -149,7 +170,7 @@
     const mon = G.battle.active(battle.player);
     const items = mon.moves.map((mv, i) => {
       const m = G.move(mv.key);
-      return { label: m.name, value: i, hint: m.type.slice(0, 3).toUpperCase() + ' ' + mv.pp + '/' + mv.ppMax, disabled: mv.pp <= 0 };
+      return { label: m.name, value: i, hint: m.type.slice(0, 3).toUpperCase() + '·' + (m.power || '—') + '  ' + mv.pp + '/' + mv.ppMax, disabled: mv.pp <= 0 };
     });
     return G.gui.choice(items, { title: 'Choose a move', layerClass: 'battle-menu move-menu', cancelValue: null });
   }
@@ -205,6 +226,8 @@
       await msg('A wild ' + G.battle.active(battle.foe).species + ' appeared!', 900);
     }
     await msg('Go! ' + G.party.displayName(G.battle.active(battle.player)) + '!', 700);
+    const entry = G.battle.entryEvents(battle);
+    if (entry.length) await playEvents(entry);
 
     while (!battle.over) {
       const action = await chooseAction();
@@ -213,7 +236,13 @@
       if (battle.over) break;
       if (res.needsPlayerSwitch) {
         const idx = await chooseSwitch(true);
-        if (idx != null) { G.battle.forceSwitch(battle, 'player', idx); setSprite('ply', G.battle.active(battle.player)); updateBar('ply'); await msg('Go! ' + G.party.displayName(G.battle.active(battle.player)) + '!', 600); }
+        if (idx != null) {
+          G.battle.forceSwitch(battle, 'player', idx);
+          setSprite('ply', G.battle.active(battle.player)); updateBar('ply');
+          await msg('Go! ' + G.party.displayName(G.battle.active(battle.player)) + '!', 600);
+          const e2 = G.battle.entryEvents(battle, 'player');
+          if (e2.length) await playEvents(e2);
+        }
       }
     }
     await finish();

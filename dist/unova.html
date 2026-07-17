@@ -112,6 +112,28 @@ button { font-family: inherit; cursor: pointer; }
 .ply-sprite img { width: clamp(110px, 22vw, 185px); }
 .mon-sprite { image-rendering: auto; filter: drop-shadow(0 6px 6px rgba(0,0,0,.3)); }
 .mon-sprite.pixel { image-rendering: pixelated; image-rendering: crisp-edges; }
+.mon-sprite.shiny { filter: hue-rotate(130deg) saturate(1.25) drop-shadow(0 6px 6px rgba(0,0,0,.3)); }
+
+/* Floating damage numbers */
+.dmg-float {
+  position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+  font-weight: 900; font-size: 20px; color: #fff;
+  text-shadow: 0 2px 4px rgba(0,0,0,.65), 0 0 3px #c03a52;
+  animation: dmgUp .8s ease forwards; pointer-events: none; z-index: 5;
+}
+@keyframes dmgUp { from { opacity: 1; transform: translate(-50%, 0); } to { opacity: 0; transform: translate(-50%, -34px); } }
+
+/* Encounter strobe into battle */
+.battle-flash-layer { position: absolute; inset: 0; z-index: 300; pointer-events: none; background: #000; animation: battleFlash .56s steps(1) forwards; }
+@keyframes battleFlash {
+  0% { background: #fff; opacity: .95; } 16% { background: #05070f; opacity: .95; }
+  32% { background: #fff; opacity: .95; } 48% { background: #05070f; opacity: .9; }
+  100% { background: #05070f; opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .battle-flash-layer { animation: none; opacity: .92; }
+  .dmg-float { animation-duration: .3s; }
+}
 .foe-sprite.flash, .ply-sprite.flash { animation: hitFlash .3s; }
 @keyframes hitFlash { 0%,100% { filter: none; } 30% { filter: brightness(2) saturate(.3); transform: translateX(-4px); } 60% { transform: translateX(4px); } }
 .foe-sprite.faint, .ply-sprite.faint { animation: faintDrop .6s forwards; }
@@ -569,10 +591,12 @@ window.SPRITE_DATA = { front: {"1":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUg
       // learn moves at this level
       const s = G.species(mon.species);
       s.ls.filter(([lv]) => lv === mon.level).forEach(([, key]) => {
-        if (!mon.moves.find((m) => m.key === key)) {
-          if (mon.moves.length < 4) mon.moves.push({ key, pp: G.move(key).pp, ppMax: G.move(key).pp });
-          else events.push({ type: 'learnFull', key, mon });
-          if (mon.moves.length <= 4 && mon.moves.find((m) => m.key === key)) events.push({ type: 'learn', key, mon });
+        if (mon.moves.find((m) => m.key === key)) return;
+        if (mon.moves.length < 4) {
+          mon.moves.push({ key, pp: G.move(key).pp, ppMax: G.move(key).pp });
+          events.push({ type: 'learn', key, mon });
+        } else {
+          events.push({ type: 'learnFull', key, mon }); // UI offers to forget a move
         }
       });
       // evolution by level
@@ -685,11 +709,16 @@ window.SPRITE_DATA = { front: {"1":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUg
     return v;
   }
 
+  // Abilities that boost same-type moves in a pinch (HP <= 1/3).
+  const PINCH = { Blaze: 'fire', Overgrow: 'grass', Torrent: 'water', Swarm: 'bug' };
+
   function damage(attacker, aside, defender, dside, move) {
     const m = G.move(move);
     const isPhys = m.cat === 'phys';
-    const A = effStat(attacker, aside, isPhys ? 'atk' : 'spa');
+    if (m.type === 'ground' && defender.ability === 'Levitate') return { dmg: 0, eff: 0, crit: false };
+    let A = effStat(attacker, aside, isPhys ? 'atk' : 'spa');
     const D = effStat(defender, dside, isPhys ? 'def' : 'spd');
+    if (isPhys && attacker.ability === 'Guts' && attacker.status) A *= 1.5;
     const eff = G.typeEff(m.type, defender.types);
     if (eff === 0) return { dmg: 0, eff, crit: false };
     const stab = attacker.types.indexOf(m.type) >= 0 ? 1.5 : 1;
@@ -698,8 +727,31 @@ window.SPRITE_DATA = { front: {"1":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUg
     const rnd = (85 + rand(16)) / 100;
     let base = Math.floor(Math.floor(Math.floor((2 * attacker.level / 5 + 2) * m.power * A / D) / 50) + 2);
     let mod = stab * eff * rnd * (crit ? 1.5 : 1);
-    if (attacker.status === 'brn' && isPhys) mod *= 0.5;
+    if (attacker.status === 'brn' && isPhys && attacker.ability !== 'Guts') mod *= 0.5;
+    if (PINCH[attacker.ability] === m.type && attacker.hp <= attacker.stats.maxHp / 3) mod *= 1.5;
     return { dmg: Math.max(1, Math.floor(base * mod)), eff, crit };
+  }
+
+  // Switch-in abilities (Intimidate). Returns events; safe to call anytime.
+  function entryFor(b, side, other, ev) {
+    const mon = active(side);
+    if (!mon || mon.hp <= 0) return;
+    if (mon.ability === 'Intimidate' && active(other) && active(other).hp > 0) {
+      const before = other.stages.atk;
+      other.stages.atk = Math.max(-6, before - 1);
+      if (other.stages.atk !== before) {
+        const who = (side.isPlayer ? '' : 'Foe ') + P().displayName(mon);
+        const tgt = (other.isPlayer ? '' : 'the foe\'s');
+        ev.push({ t: 'stat', side: other.isPlayer ? 'player' : 'foe', stat: 'atk', delta: -1 });
+        ev.push({ t: 'text', s: who + '\'s Intimidate lowered ' + (other.isPlayer ? 'your Pokémon\'s' : tgt) + ' Attack!' });
+      }
+    }
+  }
+  function entryEvents(b, which) {
+    const ev = [];
+    if (!which || which === 'foe') entryFor(b, b.foe, b.player, ev);
+    if (!which || which === 'player') entryFor(b, b.player, b.foe, ev);
+    return ev;
   }
 
   function accuracyHit(attacker, aside, defender, dside, move) {
@@ -765,18 +817,21 @@ window.SPRITE_DATA = { front: {"1":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUg
     if (m.cat !== 'status' && m.power > 0) {
       if (m.eff && m.eff.needsSleep && defender.status !== 'slp') { ev.push({ t: 'text', s: 'But it failed!' }); return; }
       const hits = m.eff && m.eff.multi ? m.eff.multi : 1;
-      let totalEff = 1, anyCrit = false;
+      let totalEff = 1, anyCrit = false, sturdy = false;
       for (let h = 0; h < hits; h++) {
         if (defender.hp <= 0) break;
         const r = damage(attacker, aside, defender, dside, mvSlot.key);
         totalEff = r.eff; anyCrit = anyCrit || r.crit;
         if (r.eff === 0) { ev.push({ t: 'text', s: 'It doesn\'t affect ' + P().displayName(defender) + '...' }); return; }
+        let dmgVal = r.dmg;
+        if (defender.ability === 'Sturdy' && defender.hp === defender.stats.maxHp && dmgVal >= defender.hp) { dmgVal = defender.hp - 1; sturdy = true; }
         const prevHp = defender.hp;
-        defender.hp = Math.max(0, defender.hp - r.dmg);
+        defender.hp = Math.max(0, defender.hp - dmgVal);
         dealt += (prevHp - defender.hp); // actual HP lost (for recoil/drain)
-        ev.push({ t: 'hp', side: dside.isPlayer ? 'player' : 'foe', hp: defender.hp, max: defender.stats.maxHp, dmg: r.dmg });
+        ev.push({ t: 'hp', side: dside.isPlayer ? 'player' : 'foe', hp: defender.hp, max: defender.stats.maxHp, dmg: dmgVal });
       }
       if (anyCrit) ev.push({ t: 'text', s: 'A critical hit!' });
+      if (sturdy) ev.push({ t: 'text', s: P().displayName(defender) + ' endured the hit with Sturdy!' });
       if (totalEff > 1) ev.push({ t: 'text', s: 'It\'s super effective!' });
       else if (totalEff < 1) ev.push({ t: 'text', s: 'It\'s not very effective...' });
       if (m.eff && m.eff.multi) ev.push({ t: 'text', s: 'Hit ' + m.eff.multi + ' times!' });
@@ -864,6 +919,11 @@ window.SPRITE_DATA = { front: {"1":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUg
   function endOfTurn(b, side, ev) {
     const mon = active(side); if (mon.hp <= 0) return;
     const name = (side.isPlayer ? '' : (b.kind === 'trainer' ? 'Foe ' : 'Wild ')) + P().displayName(mon);
+    if (mon.status && mon.ability === 'Shed Skin' && chance(30)) {
+      mon.status = null; mon.statusCounter = 0;
+      ev.push({ t: 'status', side: side.isPlayer ? 'player' : 'foe' });
+      ev.push({ t: 'text', s: name + ' shed its skin and recovered!' });
+    }
     if (mon.status === 'brn' || mon.status === 'psn') {
       const dmg = Math.max(1, Math.floor(mon.stats.maxHp / (mon.status === 'brn' ? 16 : 8)));
       mon.hp = Math.max(0, mon.hp - dmg);
@@ -890,6 +950,7 @@ window.SPRITE_DATA = { front: {"1":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUg
     events.forEach((e2) => {
       if (e2.type === 'level') ev.push({ t: 'text', s: P().displayName(winner) + ' grew to Lv. ' + e2.level + '!', level: true });
       else if (e2.type === 'learn') ev.push({ t: 'text', s: P().displayName(winner) + ' learned ' + G.move(e2.key).name + '!' });
+      else if (e2.type === 'learnFull') ev.push({ t: 'learnprompt', mon: winner, key: e2.key });
       else if (e2.type === 'evolve') ev.push({ t: 'evolve', mon: winner, to: e2.to });
     });
   }
@@ -915,6 +976,7 @@ window.SPRITE_DATA = { front: {"1":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUg
         ply.i = idx; ply.stages = freshStages();
         ev.push({ t: 'switch', side: 'player', monIndex: idx });
         ev.push({ t: 'text', s: 'Go! ' + P().displayName(active(ply)) + '!' });
+        entryFor(b, ply, foe, ev);
       }
       playerActed = true;
     } else if (action.type === 'item') {
@@ -987,6 +1049,7 @@ window.SPRITE_DATA = { front: {"1":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUg
           b.foe.i = next; b.foe.stages = freshStages();
           ev.push({ t: 'text', s: (b.foeName || 'Trainer') + ' sent out ' + P().displayName(active(b.foe)) + '!' });
           ev.push({ t: 'switch', side: 'foe', monIndex: next });
+          entryFor(b, b.foe, b.player, ev);
         }
       } else if (!anyHealthy(b.foe)) {
         b.over = true; b.result = 'win';
@@ -1049,7 +1112,7 @@ window.SPRITE_DATA = { front: {"1":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUg
 
   function finalize(b, ev) { return { events: ev, over: true, result: b.result }; }
 
-  G.battle = { create, doTurn, forceSwitch, active, firstHealthy, anyHealthy, tryCatch, stageMul, damage, typeEff: G.typeEff };
+  G.battle = { create, doTurn, forceSwitch, active, firstHealthy, anyHealthy, tryCatch, stageMul, damage, entryEvents, typeEff: G.typeEff };
 })(typeof window !== 'undefined' ? window : globalThis);
 </script>
 <script>/* tiles.js — tile definitions (collision / terrain / HM obstacles) and their
@@ -1923,7 +1986,21 @@ window.SPRITE_DATA = { front: {"1":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUg
     });
   }
 
-  G.gui = { el, dialogue, choice, confirm, toast, fade, isBusy };
+  // Classic encounter flash before a battle: white/black strobes, then dark.
+  function battleFlash() {
+    return new Promise((resolve) => {
+      const f = el('div', { class: 'battle-flash-layer' });
+      ensure().appendChild(f);
+      setTimeout(resolve, 480);
+      setTimeout(() => {
+        f.style.transition = 'opacity .25s ease';
+        f.style.opacity = '0';
+        setTimeout(() => f.remove(), 280);
+      }, 560);
+    });
+  }
+
+  G.gui = { el, dialogue, choice, confirm, toast, fade, battleFlash, isBusy };
 })();
 </script>
 <script>/* save.js — persistence + preset saves (New Adventure, Champion quick-start). */
@@ -2062,7 +2139,7 @@ window.SPRITE_DATA = { front: {"1":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUg
 
   let map = null, busy = false;
   let moving = false, moveT = 0, fromX = 0, fromY = 0, stepFrame = 0, animClock = 0;
-  let bump = 0;
+  let bump = 0, stepDur = MOVE_MS;
   let dreamSpots = []; // Entree Forest: befriended Dream World Pokémon
   const P = () => G.game.player;
 
@@ -2092,7 +2169,8 @@ window.SPRITE_DATA = { front: {"1":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUg
 
   function applyDefeatedNpcs() {
     const p = P();
-    map.activeNpcs = (map.npcs || []).filter((n) => !((n.type === 'e4' || n.type === 'champion') && p.flags[n.id]));
+    // Everyone stays — the Elite Four and Champion accept rematches.
+    map.activeNpcs = (map.npcs || []).slice();
     (map.npcs || []).forEach((n) => { n.beaten = !!p.flags['beat_' + n.id]; });
   }
 
@@ -2113,7 +2191,7 @@ window.SPRITE_DATA = { front: {"1":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUg
     if (G.game.scene !== 'world' || !map) return;
     animClock += dt;
     if (moving) {
-      moveT += dt / MOVE_MS;
+      moveT += dt / stepDur;
       if (moveT >= 1) { moving = false; moveT = 0; onArrive(); }
       stepFrame = moveT < 0.5 ? 1 : 2;
       return;
@@ -2136,9 +2214,9 @@ window.SPRITE_DATA = { front: {"1":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUg
       doBump(); return;
     }
     if (!passable(nx, ny)) { doBump(); return; }
-    // begin move
+    // begin move (hold B to run)
+    stepDur = G.input.isHeld('b') ? Math.round(MOVE_MS * 0.55) : MOVE_MS;
     fromX = p.x; fromY = p.y; p.x = nx; p.y = ny; moving = true; moveT = 0;
-    if (G.audio && animClock % 2 < 1) {}
   }
 
   function doBump() { bump = 180; if (G.audio) G.audio.play('bump'); }
@@ -2176,12 +2254,43 @@ window.SPRITE_DATA = { front: {"1":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUg
     // warp?
     const w = (map.warps || []).find((w) => w.x === p.x && w.y === p.y);
     if (w) { doWarp(w); return; }
+    // a trainer spots you?
+    const spotter = trainerSpotting();
+    if (spotter) { startSpottedBattle(spotter); return; }
     // encounter?
     const onGrass = t.terrain === 'grass';
     const onWater = t.terrain === 'water' && G.game.surfing;
     if ((onGrass || onWater) && Math.random() < ENC_RATE) { startWildEncounter(onWater ? 'water' : 'grass'); return; }
     // keep walking if still holding a dir
     G.save.save(p);
+  }
+
+  // Trainers with line-of-sight challenge you as you cross their gaze.
+  function trainerSpotting() {
+    const p = P();
+    return (map.activeNpcs || []).find((n) => {
+      if (n.type !== 'trainer' || p.flags['beat_' + n.id]) return false;
+      const sight = n.sight != null ? n.sight : 3;
+      const [dx, dy] = DIRV[n.dir] || [0, 1];
+      for (let i = 1; i <= sight; i++) {
+        const tx = n.x + dx * i, ty = n.y + dy * i;
+        if (tx === p.x && ty === p.y) return true;
+        if (G.maps.tileAt(map, tx, ty).solid) return false;
+        if (npcAt(tx, ty)) return false;
+      }
+      return false;
+    });
+  }
+  async function startSpottedBattle(npc) {
+    busy = true;
+    try {
+      if (G.audio) G.audio.play('select');
+      const p = P();
+      npc.dir = p.x > npc.x ? 'right' : p.x < npc.x ? 'left' : p.y > npc.y ? 'down' : 'up';
+      p.dir = opp(npc.dir);
+      await G.gui.dialogue(['! ' + npc.name + ' spotted you!']);
+      await handleTrainer(npc);
+    } finally { busy = false; }
   }
 
   async function doWarp(w) {
@@ -2285,9 +2394,15 @@ window.SPRITE_DATA = { front: {"1":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUg
 
   async function handleTrainer(npc) {
     const p = P();
-    if (p.flags['beat_' + npc.id] && npc.type === 'trainer') { await G.gui.dialogue([npc.postLines ? npc.postLines[0] : 'Great battle earlier!'], { speaker: npc.name }); return; }
-    if (p.flags['beat_' + npc.id] && (npc.type === 'leader')) { await G.gui.dialogue(['Your bond keeps growing. Well done!'], { speaker: npc.name }); return; }
-    await G.gui.dialogue(npc.preLines || npc.lines || ['Let\'s battle!'], { speaker: npc.name });
+    const beaten = p.flags['beat_' + npc.id] || p.flags[npc.id];
+    if (beaten && npc.type === 'trainer') { await G.gui.dialogue([npc.postLines ? npc.postLines[0] : 'Great battle earlier!'], { speaker: npc.name }); return; }
+    if (beaten && npc.type === 'leader') { await G.gui.dialogue(['Your bond keeps growing. Well done!'], { speaker: npc.name }); return; }
+    if (beaten && (npc.type === 'e4' || npc.type === 'champion')) {
+      const again = await G.gui.confirm(null, { title: npc.name + ': "Back for a rematch?"', yes: 'Battle!', no: 'Not now' });
+      if (!again) return;
+    } else {
+      await G.gui.dialogue(npc.preLines || npc.lines || ['Let\'s battle!'], { speaker: npc.name });
+    }
     const foeParty = npc.team.map(([s, l]) => G.party.makeMon(s, l));
     const res = await G.game.startBattle({ kind: 'trainer', foeParty, foeName: npc.name });
     if (res.result === 'win') {
@@ -2301,8 +2416,14 @@ window.SPRITE_DATA = { front: {"1":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUg
         if (G.audio) G.audio.play('win');
       }
       if (npc.type === 'e4' || npc.type === 'champion') {
+        const firstWin = !p.flags[npc.id];
         p.flags[npc.id] = true;
-        if (npc.type === 'champion') { p.champion = true; p.flags.champion = true; if (G.audio) G.audio.play('win'); await championEnding(); }
+        if (npc.type === 'champion') {
+          p.champion = true; p.flags.champion = true;
+          if (G.audio) G.audio.play('win');
+          if (firstWin) await championEnding();
+          else await G.gui.dialogue(['Still the strongest bond in Unova. Magnificent!'], { speaker: npc.name });
+        }
         applyDefeatedNpcs();
       }
       G.game.updateHud && G.game.updateHud();
@@ -2468,6 +2589,7 @@ window.SPRITE_DATA = { front: {"1":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUg
     const wrap = side === 'foe' ? foeSprite : plySprite;
     wrap.innerHTML = '';
     const img = G.sprites.monImg(mon, side === 'foe' ? 108 : 128, { className: side, back: side === 'ply' });
+    if (mon.shiny) img.classList.add('shiny');
     wrap.appendChild(img);
     if (mon.shiny) wrap.appendChild(el('span', { class: 'b-shiny' }, '✦'));
   }
@@ -2520,7 +2642,8 @@ window.SPRITE_DATA = { front: {"1":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUg
     for (const ev of events) {
       if (ev.t === 'text') { await msg(ev.s, ev.level ? 900 : 700); }
       else if (ev.t === 'move') { flash(ev.side); if (G.audio) G.audio.play('hit'); }
-      else if (ev.t === 'hp') { await animHp(ev.side, ev.hp, ev.max); if (ev.dmg && G.audio) G.audio.play(ev.dmg > 0 ? 'hit' : 'weakhit'); }
+      else if (ev.t === 'hp') { if (ev.dmg > 0) spawnDmg(ev.side, ev.dmg); await animHp(ev.side, ev.hp, ev.max); if (ev.dmg && G.audio) G.audio.play(ev.dmg > 0 ? 'hit' : 'weakhit'); }
+      else if (ev.t === 'learnprompt') { await learnPrompt(ev.mon, ev.key); }
       else if (ev.t === 'status') { updateBar(ev.side); }
       else if (ev.t === 'stat') { flash(ev.side); }
       else if (ev.t === 'faint') { if (G.audio) G.audio.play('faint'); await faintAnim(ev.side); }
@@ -2532,6 +2655,25 @@ window.SPRITE_DATA = { front: {"1":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUg
     }
   }
   function wait(ms) { return new Promise((r) => setTimeout(r, ms)); }
+  function spawnDmg(side, dmg) {
+    const wrap = side === 'foe' ? foeSprite : plySprite;
+    const d = el('div', { class: 'dmg-float' }, '−' + dmg);
+    wrap.appendChild(d);
+    setTimeout(() => d.remove(), 850);
+  }
+  async function learnPrompt(mon, key) {
+    const nm = G.move(key).name;
+    const items = mon.moves.map((mv, i) => ({ label: 'Forget ' + G.move(mv.key).name, value: i, hint: G.move(mv.key).type.slice(0, 3).toUpperCase() }));
+    items.push({ label: 'Give up on ' + nm, value: -1 });
+    const v = await G.gui.choice(items, { title: G.party.displayName(mon) + ' wants to learn ' + nm + '!', layerClass: 'battle-menu', cancelValue: -1 });
+    if (v != null && v >= 0) {
+      const old = G.move(mon.moves[v].key).name;
+      mon.moves[v] = { key, pp: G.move(key).pp, ppMax: G.move(key).pp };
+      await msg(G.party.displayName(mon) + ' forgot ' + old + ' and learned ' + nm + '!', 900);
+    } else {
+      await msg(G.party.displayName(mon) + ' did not learn ' + nm + '.', 700);
+    }
+  }
   function flash(side) { const w = side === 'foe' ? foeSprite : plySprite; w.classList.remove('flash'); void w.offsetWidth; w.classList.add('flash'); }
   function faintAnim(side) { const w = side === 'foe' ? foeSprite : plySprite; w.classList.add('faint'); return wait(650).then(() => w.classList.remove('faint')); }
   function ballAnim() { foeSprite.classList.add('caught'); return wait(500); }
@@ -2556,7 +2698,7 @@ window.SPRITE_DATA = { front: {"1":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUg
     const mon = G.battle.active(battle.player);
     const items = mon.moves.map((mv, i) => {
       const m = G.move(mv.key);
-      return { label: m.name, value: i, hint: m.type.slice(0, 3).toUpperCase() + ' ' + mv.pp + '/' + mv.ppMax, disabled: mv.pp <= 0 };
+      return { label: m.name, value: i, hint: m.type.slice(0, 3).toUpperCase() + '·' + (m.power || '—') + '  ' + mv.pp + '/' + mv.ppMax, disabled: mv.pp <= 0 };
     });
     return G.gui.choice(items, { title: 'Choose a move', layerClass: 'battle-menu move-menu', cancelValue: null });
   }
@@ -2612,6 +2754,8 @@ window.SPRITE_DATA = { front: {"1":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUg
       await msg('A wild ' + G.battle.active(battle.foe).species + ' appeared!', 900);
     }
     await msg('Go! ' + G.party.displayName(G.battle.active(battle.player)) + '!', 700);
+    const entry = G.battle.entryEvents(battle);
+    if (entry.length) await playEvents(entry);
 
     while (!battle.over) {
       const action = await chooseAction();
@@ -2620,7 +2764,13 @@ window.SPRITE_DATA = { front: {"1":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUg
       if (battle.over) break;
       if (res.needsPlayerSwitch) {
         const idx = await chooseSwitch(true);
-        if (idx != null) { G.battle.forceSwitch(battle, 'player', idx); setSprite('ply', G.battle.active(battle.player)); updateBar('ply'); await msg('Go! ' + G.party.displayName(G.battle.active(battle.player)) + '!', 600); }
+        if (idx != null) {
+          G.battle.forceSwitch(battle, 'player', idx);
+          setSprite('ply', G.battle.active(battle.player)); updateBar('ply');
+          await msg('Go! ' + G.party.displayName(G.battle.active(battle.player)) + '!', 600);
+          const e2 = G.battle.entryEvents(battle, 'player');
+          if (e2.length) await playEvents(e2);
+        }
       }
     }
     await finish();
@@ -2663,22 +2813,68 @@ window.SPRITE_DATA = { front: {"1":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUg
 
   async function openPause() {
     const p = P();
+    const boxCount = (p.boxes[0] || []).length;
     const items = [
       { label: '📕 Pokémon', value: 'party' },
       { label: '🎒 Bag', value: 'bag' },
+      { label: '💻 PC Box', value: 'pc', hint: boxCount ? '×' + boxCount : '' },
     ];
     if (G.party.hasHM(p, 'fly')) items.push({ label: '🕊 Fly', value: 'fly' });
     items.push({ label: '↔ Entralink', value: 'entralink' });
     items.push({ label: '🧑 ' + p.name, value: 'card' });
+    items.push({ label: (p.flags.muted ? '🔇 Sound: Off' : '🔊 Sound: On'), value: 'sound' });
     items.push({ label: '💾 Save', value: 'save' });
     items.push({ label: '✖ Close', value: 'close' });
     const v = await G.gui.choice(items, { title: 'MENU', layerClass: 'pause-menu', cancelValue: 'close' });
     if (v === 'party') await openParty();
     else if (v === 'bag') await openBag();
+    else if (v === 'pc') await openPC();
     else if (v === 'fly') await openFly();
     else if (v === 'entralink') await G.entralink.warpIn();
     else if (v === 'card') await openCard();
+    else if (v === 'sound') {
+      p.flags.muted = !p.flags.muted;
+      G.audio.setEnabled(!p.flags.muted);
+      if (!p.flags.muted) { const m = G.world.mapObj(); G.audio.startMusic((m && m.music) || 'town'); }
+      G.save.save(p);
+      G.gui.toast(p.flags.muted ? 'Sound off.' : 'Sound on!', {});
+    }
     else if (v === 'save') { G.save.save(p); G.gui.toast('Game saved!', { kind: 'good' }); }
+  }
+
+  // PC storage: withdraw from / deposit to Box 1.
+  async function openPC() {
+    const p = P();
+    while (true) {
+      const box = p.boxes[0] || (p.boxes[0] = []);
+      const v = await G.gui.choice([
+        { label: '⬇ Withdraw', value: 'w', hint: '×' + box.length, disabled: !box.length },
+        { label: '⬆ Deposit', value: 'd', disabled: p.party.length <= 1 },
+        { label: '‹ Back', value: -1 },
+      ], { title: 'PC BOX  (' + box.length + ' stored)', layerClass: 'bag-menu', cancelValue: -1 });
+      if (v === -1 || v == null) break;
+      if (v === 'w') {
+        const i = await G.gui.choice(box.map((m, idx) => ({
+          label: (m.shiny ? '✦ ' : '') + G.party.displayName(m), value: idx, hint: 'Lv' + m.level,
+        })).concat([{ label: '‹ Cancel', value: -1 }]), { title: 'Withdraw which Pokémon?', layerClass: 'bag-menu', cancelValue: -1 });
+        if (i == null || i < 0) continue;
+        if (p.party.length >= 6) { await G.gui.dialogue(['Your party is full. Deposit someone first.']); continue; }
+        const mon = box.splice(i, 1)[0];
+        p.party.push(mon);
+        G.gui.toast(G.party.displayName(mon) + ' joined the party!', { kind: 'good' });
+      } else if (v === 'd') {
+        const i = await G.gui.choice(p.party.map((m, idx) => ({
+          label: G.party.displayName(m), value: idx, hint: 'Lv' + m.level,
+        })).concat([{ label: '‹ Cancel', value: -1 }]), { title: 'Deposit which Pokémon?', layerClass: 'bag-menu', cancelValue: -1 });
+        if (i == null || i < 0) continue;
+        if (p.party.length <= 1) { await G.gui.dialogue(['You need at least one Pokémon with you!']); continue; }
+        const mon = p.party.splice(i, 1)[0];
+        box.push(mon);
+        G.gui.toast(G.party.displayName(mon) + ' was stored in the PC.', {});
+      }
+      G.save.save(p);
+      G.game.updateHud && G.game.updateHud();
+    }
   }
 
   async function openParty() {
@@ -3025,6 +3221,7 @@ window.SPRITE_DATA = { front: {"1":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUg
     surfing: false,
     ctx: null,
     async startBattle(cfg) {
+      await G.gui.battleFlash();
       this.scene = 'battle';
       const res = await G.battlescene.start(cfg);
       this.scene = 'world';
@@ -3097,7 +3294,7 @@ window.SPRITE_DATA = { front: {"1":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUg
       el('label', { class: 'title-label' }, 'Trainer name'),
       nameInput,
       menu,
-      el('div', { class: 'title-tip' }, 'Move: Arrows / WASD · Interact: Z / Space · Menu: Esc · (touch controls on mobile)'),
+      el('div', { class: 'title-tip' }, 'Move: Arrows / WASD · Interact: Z / Space · Hold X to run · Menu: Esc · (touch controls on mobile)'),
     ]);
     const overlay = el('div', { class: 'ui-layer title-layer' }, panel);
     overlay.id = 'title-overlay';
@@ -3123,6 +3320,7 @@ window.SPRITE_DATA = { front: {"1":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUg
   async function startGame(player) {
     game.player = player;
     game.scene = 'world';
+    if (player.flags && player.flags.muted && G.audio) G.audio.setEnabled(false);
     document.getElementById('hud').style.display = '';
     await G.gui.fade('in', 200);
     G.world.enter(player.map, player.x, player.y, player.dir);

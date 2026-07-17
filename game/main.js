@@ -10,6 +10,7 @@
     surfing: false,
     ctx: null,
     async startBattle(cfg) {
+      await G.gui.battleFlash();
       this.scene = 'battle';
       const res = await G.battlescene.start(cfg);
       this.scene = 'world';
@@ -82,7 +83,7 @@
       el('label', { class: 'title-label' }, 'Trainer name'),
       nameInput,
       menu,
-      el('div', { class: 'title-tip' }, 'Move: Arrows / WASD · Interact: Z / Space · Menu: Esc · (touch controls on mobile)'),
+      el('div', { class: 'title-tip' }, 'Move: Arrows / WASD · Interact: Z / Space · Hold X to run · Menu: Esc · (touch controls on mobile)'),
     ]);
     const overlay = el('div', { class: 'ui-layer title-layer' }, panel);
     overlay.id = 'title-overlay';
@@ -108,6 +109,7 @@
   async function startGame(player) {
     game.player = player;
     game.scene = 'world';
+    if (player.flags && player.flags.muted && G.audio) G.audio.setEnabled(false);
     document.getElementById('hud').style.display = '';
     await G.gui.fade('in', 200);
     G.world.enter(player.map, player.x, player.y, player.dir);

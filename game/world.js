@@ -8,7 +8,7 @@
 
   let map = null, busy = false;
   let moving = false, moveT = 0, fromX = 0, fromY = 0, stepFrame = 0, animClock = 0;
-  let bump = 0;
+  let bump = 0, stepDur = MOVE_MS;
   let dreamSpots = []; // Entree Forest: befriended Dream World Pokémon
   const P = () => G.game.player;
 
@@ -38,7 +38,8 @@
 
   function applyDefeatedNpcs() {
     const p = P();
-    map.activeNpcs = (map.npcs || []).filter((n) => !((n.type === 'e4' || n.type === 'champion') && p.flags[n.id]));
+    // Everyone stays — the Elite Four and Champion accept rematches.
+    map.activeNpcs = (map.npcs || []).slice();
     (map.npcs || []).forEach((n) => { n.beaten = !!p.flags['beat_' + n.id]; });
   }
 
@@ -59,7 +60,7 @@
     if (G.game.scene !== 'world' || !map) return;
     animClock += dt;
     if (moving) {
-      moveT += dt / MOVE_MS;
+      moveT += dt / stepDur;
       if (moveT >= 1) { moving = false; moveT = 0; onArrive(); }
       stepFrame = moveT < 0.5 ? 1 : 2;
       return;
@@ -82,9 +83,9 @@
       doBump(); return;
     }
     if (!passable(nx, ny)) { doBump(); return; }
-    // begin move
+    // begin move (hold B to run)
+    stepDur = G.input.isHeld('b') ? Math.round(MOVE_MS * 0.55) : MOVE_MS;
     fromX = p.x; fromY = p.y; p.x = nx; p.y = ny; moving = true; moveT = 0;
-    if (G.audio && animClock % 2 < 1) {}
   }
 
   function doBump() { bump = 180; if (G.audio) G.audio.play('bump'); }
@@ -122,12 +123,43 @@
     // warp?
     const w = (map.warps || []).find((w) => w.x === p.x && w.y === p.y);
     if (w) { doWarp(w); return; }
+    // a trainer spots you?
+    const spotter = trainerSpotting();
+    if (spotter) { startSpottedBattle(spotter); return; }
     // encounter?
     const onGrass = t.terrain === 'grass';
     const onWater = t.terrain === 'water' && G.game.surfing;
     if ((onGrass || onWater) && Math.random() < ENC_RATE) { startWildEncounter(onWater ? 'water' : 'grass'); return; }
     // keep walking if still holding a dir
     G.save.save(p);
+  }
+
+  // Trainers with line-of-sight challenge you as you cross their gaze.
+  function trainerSpotting() {
+    const p = P();
+    return (map.activeNpcs || []).find((n) => {
+      if (n.type !== 'trainer' || p.flags['beat_' + n.id]) return false;
+      const sight = n.sight != null ? n.sight : 3;
+      const [dx, dy] = DIRV[n.dir] || [0, 1];
+      for (let i = 1; i <= sight; i++) {
+        const tx = n.x + dx * i, ty = n.y + dy * i;
+        if (tx === p.x && ty === p.y) return true;
+        if (G.maps.tileAt(map, tx, ty).solid) return false;
+        if (npcAt(tx, ty)) return false;
+      }
+      return false;
+    });
+  }
+  async function startSpottedBattle(npc) {
+    busy = true;
+    try {
+      if (G.audio) G.audio.play('select');
+      const p = P();
+      npc.dir = p.x > npc.x ? 'right' : p.x < npc.x ? 'left' : p.y > npc.y ? 'down' : 'up';
+      p.dir = opp(npc.dir);
+      await G.gui.dialogue(['! ' + npc.name + ' spotted you!']);
+      await handleTrainer(npc);
+    } finally { busy = false; }
   }
 
   async function doWarp(w) {
@@ -231,9 +263,15 @@
 
   async function handleTrainer(npc) {
     const p = P();
-    if (p.flags['beat_' + npc.id] && npc.type === 'trainer') { await G.gui.dialogue([npc.postLines ? npc.postLines[0] : 'Great battle earlier!'], { speaker: npc.name }); return; }
-    if (p.flags['beat_' + npc.id] && (npc.type === 'leader')) { await G.gui.dialogue(['Your bond keeps growing. Well done!'], { speaker: npc.name }); return; }
-    await G.gui.dialogue(npc.preLines || npc.lines || ['Let\'s battle!'], { speaker: npc.name });
+    const beaten = p.flags['beat_' + npc.id] || p.flags[npc.id];
+    if (beaten && npc.type === 'trainer') { await G.gui.dialogue([npc.postLines ? npc.postLines[0] : 'Great battle earlier!'], { speaker: npc.name }); return; }
+    if (beaten && npc.type === 'leader') { await G.gui.dialogue(['Your bond keeps growing. Well done!'], { speaker: npc.name }); return; }
+    if (beaten && (npc.type === 'e4' || npc.type === 'champion')) {
+      const again = await G.gui.confirm(null, { title: npc.name + ': "Back for a rematch?"', yes: 'Battle!', no: 'Not now' });
+      if (!again) return;
+    } else {
+      await G.gui.dialogue(npc.preLines || npc.lines || ['Let\'s battle!'], { speaker: npc.name });
+    }
     const foeParty = npc.team.map(([s, l]) => G.party.makeMon(s, l));
     const res = await G.game.startBattle({ kind: 'trainer', foeParty, foeName: npc.name });
     if (res.result === 'win') {
@@ -247,8 +285,14 @@
         if (G.audio) G.audio.play('win');
       }
       if (npc.type === 'e4' || npc.type === 'champion') {
+        const firstWin = !p.flags[npc.id];
         p.flags[npc.id] = true;
-        if (npc.type === 'champion') { p.champion = true; p.flags.champion = true; if (G.audio) G.audio.play('win'); await championEnding(); }
+        if (npc.type === 'champion') {
+          p.champion = true; p.flags.champion = true;
+          if (G.audio) G.audio.play('win');
+          if (firstWin) await championEnding();
+          else await G.gui.dialogue(['Still the strongest bond in Unova. Magnificent!'], { speaker: npc.name });
+        }
         applyDefeatedNpcs();
       }
       G.game.updateHud && G.game.updateHud();

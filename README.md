@@ -59,8 +59,20 @@ A real turn-based engine: the full **17-type** chart, **STAB**, critical hits,
 **status** (burn / poison / badly-poisoned / paralysis / sleep / freeze),
 **stat stages**, PP, priority moves, multi-hit, recoil & drain, switching,
 items, and **catching** with Poké/Great/Ultra Balls (status & HP affect the
-odds). Pokémon gain EXP, **level up, learn moves, and evolve** — Darumaka →
-Darmanitan at Lv 35, the starters into their final forms, and more.
+odds). **Abilities matter** — Intimidate drops Attack on entry, Levitate dodges
+Ground, Sturdy survives a OHKO, Blaze/Overgrow/Torrent/Swarm power up in a
+pinch, Guts turns status into muscle, Shed Skin shrugs off ailments. Pokémon
+gain EXP, **level up, learn moves** (with a forget-a-move prompt when their set
+is full), **and evolve** — Darumaka → Darmanitan at Lv 35, the starters into
+their final forms, and more.
+
+**Trainers spot you** the moment you cross their line of sight, the **Elite
+Four and Champion take rematches**, and battles open with a classic encounter
+flash, floating damage numbers, and a green tint for shinies.
+
+### Quality of life
+Hold **X** to run · a **PC Box** to store and swap Pokémon · a **Sound** toggle
+in the menu · everything saves automatically.
 
 ## ↔️ The Entralink (1:1 with Black & White — available from the start)
 

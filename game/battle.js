@@ -44,11 +44,16 @@
     return v;
   }
 
+  // Abilities that boost same-type moves in a pinch (HP <= 1/3).
+  const PINCH = { Blaze: 'fire', Overgrow: 'grass', Torrent: 'water', Swarm: 'bug' };
+
   function damage(attacker, aside, defender, dside, move) {
     const m = G.move(move);
     const isPhys = m.cat === 'phys';
-    const A = effStat(attacker, aside, isPhys ? 'atk' : 'spa');
+    if (m.type === 'ground' && defender.ability === 'Levitate') return { dmg: 0, eff: 0, crit: false };
+    let A = effStat(attacker, aside, isPhys ? 'atk' : 'spa');
     const D = effStat(defender, dside, isPhys ? 'def' : 'spd');
+    if (isPhys && attacker.ability === 'Guts' && attacker.status) A *= 1.5;
     const eff = G.typeEff(m.type, defender.types);
     if (eff === 0) return { dmg: 0, eff, crit: false };
     const stab = attacker.types.indexOf(m.type) >= 0 ? 1.5 : 1;
@@ -57,8 +62,31 @@
     const rnd = (85 + rand(16)) / 100;
     let base = Math.floor(Math.floor(Math.floor((2 * attacker.level / 5 + 2) * m.power * A / D) / 50) + 2);
     let mod = stab * eff * rnd * (crit ? 1.5 : 1);
-    if (attacker.status === 'brn' && isPhys) mod *= 0.5;
+    if (attacker.status === 'brn' && isPhys && attacker.ability !== 'Guts') mod *= 0.5;
+    if (PINCH[attacker.ability] === m.type && attacker.hp <= attacker.stats.maxHp / 3) mod *= 1.5;
     return { dmg: Math.max(1, Math.floor(base * mod)), eff, crit };
+  }
+
+  // Switch-in abilities (Intimidate). Returns events; safe to call anytime.
+  function entryFor(b, side, other, ev) {
+    const mon = active(side);
+    if (!mon || mon.hp <= 0) return;
+    if (mon.ability === 'Intimidate' && active(other) && active(other).hp > 0) {
+      const before = other.stages.atk;
+      other.stages.atk = Math.max(-6, before - 1);
+      if (other.stages.atk !== before) {
+        const who = (side.isPlayer ? '' : 'Foe ') + P().displayName(mon);
+        const tgt = (other.isPlayer ? '' : 'the foe\'s');
+        ev.push({ t: 'stat', side: other.isPlayer ? 'player' : 'foe', stat: 'atk', delta: -1 });
+        ev.push({ t: 'text', s: who + '\'s Intimidate lowered ' + (other.isPlayer ? 'your Pokémon\'s' : tgt) + ' Attack!' });
+      }
+    }
+  }
+  function entryEvents(b, which) {
+    const ev = [];
+    if (!which || which === 'foe') entryFor(b, b.foe, b.player, ev);
+    if (!which || which === 'player') entryFor(b, b.player, b.foe, ev);
+    return ev;
   }
 
   function accuracyHit(attacker, aside, defender, dside, move) {
@@ -124,18 +152,21 @@
     if (m.cat !== 'status' && m.power > 0) {
       if (m.eff && m.eff.needsSleep && defender.status !== 'slp') { ev.push({ t: 'text', s: 'But it failed!' }); return; }
       const hits = m.eff && m.eff.multi ? m.eff.multi : 1;
-      let totalEff = 1, anyCrit = false;
+      let totalEff = 1, anyCrit = false, sturdy = false;
       for (let h = 0; h < hits; h++) {
         if (defender.hp <= 0) break;
         const r = damage(attacker, aside, defender, dside, mvSlot.key);
         totalEff = r.eff; anyCrit = anyCrit || r.crit;
         if (r.eff === 0) { ev.push({ t: 'text', s: 'It doesn\'t affect ' + P().displayName(defender) + '...' }); return; }
+        let dmgVal = r.dmg;
+        if (defender.ability === 'Sturdy' && defender.hp === defender.stats.maxHp && dmgVal >= defender.hp) { dmgVal = defender.hp - 1; sturdy = true; }
         const prevHp = defender.hp;
-        defender.hp = Math.max(0, defender.hp - r.dmg);
+        defender.hp = Math.max(0, defender.hp - dmgVal);
         dealt += (prevHp - defender.hp); // actual HP lost (for recoil/drain)
-        ev.push({ t: 'hp', side: dside.isPlayer ? 'player' : 'foe', hp: defender.hp, max: defender.stats.maxHp, dmg: r.dmg });
+        ev.push({ t: 'hp', side: dside.isPlayer ? 'player' : 'foe', hp: defender.hp, max: defender.stats.maxHp, dmg: dmgVal });
       }
       if (anyCrit) ev.push({ t: 'text', s: 'A critical hit!' });
+      if (sturdy) ev.push({ t: 'text', s: P().displayName(defender) + ' endured the hit with Sturdy!' });
       if (totalEff > 1) ev.push({ t: 'text', s: 'It\'s super effective!' });
       else if (totalEff < 1) ev.push({ t: 'text', s: 'It\'s not very effective...' });
       if (m.eff && m.eff.multi) ev.push({ t: 'text', s: 'Hit ' + m.eff.multi + ' times!' });
@@ -223,6 +254,11 @@
   function endOfTurn(b, side, ev) {
     const mon = active(side); if (mon.hp <= 0) return;
     const name = (side.isPlayer ? '' : (b.kind === 'trainer' ? 'Foe ' : 'Wild ')) + P().displayName(mon);
+    if (mon.status && mon.ability === 'Shed Skin' && chance(30)) {
+      mon.status = null; mon.statusCounter = 0;
+      ev.push({ t: 'status', side: side.isPlayer ? 'player' : 'foe' });
+      ev.push({ t: 'text', s: name + ' shed its skin and recovered!' });
+    }
     if (mon.status === 'brn' || mon.status === 'psn') {
       const dmg = Math.max(1, Math.floor(mon.stats.maxHp / (mon.status === 'brn' ? 16 : 8)));
       mon.hp = Math.max(0, mon.hp - dmg);
@@ -249,6 +285,7 @@
     events.forEach((e2) => {
       if (e2.type === 'level') ev.push({ t: 'text', s: P().displayName(winner) + ' grew to Lv. ' + e2.level + '!', level: true });
       else if (e2.type === 'learn') ev.push({ t: 'text', s: P().displayName(winner) + ' learned ' + G.move(e2.key).name + '!' });
+      else if (e2.type === 'learnFull') ev.push({ t: 'learnprompt', mon: winner, key: e2.key });
       else if (e2.type === 'evolve') ev.push({ t: 'evolve', mon: winner, to: e2.to });
     });
   }
@@ -274,6 +311,7 @@
         ply.i = idx; ply.stages = freshStages();
         ev.push({ t: 'switch', side: 'player', monIndex: idx });
         ev.push({ t: 'text', s: 'Go! ' + P().displayName(active(ply)) + '!' });
+        entryFor(b, ply, foe, ev);
       }
       playerActed = true;
     } else if (action.type === 'item') {
@@ -346,6 +384,7 @@
           b.foe.i = next; b.foe.stages = freshStages();
           ev.push({ t: 'text', s: (b.foeName || 'Trainer') + ' sent out ' + P().displayName(active(b.foe)) + '!' });
           ev.push({ t: 'switch', side: 'foe', monIndex: next });
+          entryFor(b, b.foe, b.player, ev);
         }
       } else if (!anyHealthy(b.foe)) {
         b.over = true; b.result = 'win';
@@ -408,5 +447,5 @@
 
   function finalize(b, ev) { return { events: ev, over: true, result: b.result }; }
 
-  G.battle = { create, doTurn, forceSwitch, active, firstHealthy, anyHealthy, tryCatch, stageMul, damage, typeEff: G.typeEff };
+  G.battle = { create, doTurn, forceSwitch, active, firstHealthy, anyHealthy, tryCatch, stageMul, damage, entryEvents, typeEff: G.typeEff };
 })(typeof window !== 'undefined' ? window : globalThis);

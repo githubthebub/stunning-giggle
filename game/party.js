@@ -95,10 +95,12 @@
       // learn moves at this level
       const s = G.species(mon.species);
       s.ls.filter(([lv]) => lv === mon.level).forEach(([, key]) => {
-        if (!mon.moves.find((m) => m.key === key)) {
-          if (mon.moves.length < 4) mon.moves.push({ key, pp: G.move(key).pp, ppMax: G.move(key).pp });
-          else events.push({ type: 'learnFull', key, mon });
-          if (mon.moves.length <= 4 && mon.moves.find((m) => m.key === key)) events.push({ type: 'learn', key, mon });
+        if (mon.moves.find((m) => m.key === key)) return;
+        if (mon.moves.length < 4) {
+          mon.moves.push({ key, pp: G.move(key).pp, ppMax: G.move(key).pp });
+          events.push({ type: 'learn', key, mon });
+        } else {
+          events.push({ type: 'learnFull', key, mon }); // UI offers to forget a move
         }
       });
       // evolution by level

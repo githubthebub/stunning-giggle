@@ -12,22 +12,68 @@
 
   async function openPause() {
     const p = P();
+    const boxCount = (p.boxes[0] || []).length;
     const items = [
       { label: '📕 Pokémon', value: 'party' },
       { label: '🎒 Bag', value: 'bag' },
+      { label: '💻 PC Box', value: 'pc', hint: boxCount ? '×' + boxCount : '' },
     ];
     if (G.party.hasHM(p, 'fly')) items.push({ label: '🕊 Fly', value: 'fly' });
     items.push({ label: '↔ Entralink', value: 'entralink' });
     items.push({ label: '🧑 ' + p.name, value: 'card' });
+    items.push({ label: (p.flags.muted ? '🔇 Sound: Off' : '🔊 Sound: On'), value: 'sound' });
     items.push({ label: '💾 Save', value: 'save' });
     items.push({ label: '✖ Close', value: 'close' });
     const v = await G.gui.choice(items, { title: 'MENU', layerClass: 'pause-menu', cancelValue: 'close' });
     if (v === 'party') await openParty();
     else if (v === 'bag') await openBag();
+    else if (v === 'pc') await openPC();
     else if (v === 'fly') await openFly();
     else if (v === 'entralink') await G.entralink.warpIn();
     else if (v === 'card') await openCard();
+    else if (v === 'sound') {
+      p.flags.muted = !p.flags.muted;
+      G.audio.setEnabled(!p.flags.muted);
+      if (!p.flags.muted) { const m = G.world.mapObj(); G.audio.startMusic((m && m.music) || 'town'); }
+      G.save.save(p);
+      G.gui.toast(p.flags.muted ? 'Sound off.' : 'Sound on!', {});
+    }
     else if (v === 'save') { G.save.save(p); G.gui.toast('Game saved!', { kind: 'good' }); }
+  }
+
+  // PC storage: withdraw from / deposit to Box 1.
+  async function openPC() {
+    const p = P();
+    while (true) {
+      const box = p.boxes[0] || (p.boxes[0] = []);
+      const v = await G.gui.choice([
+        { label: '⬇ Withdraw', value: 'w', hint: '×' + box.length, disabled: !box.length },
+        { label: '⬆ Deposit', value: 'd', disabled: p.party.length <= 1 },
+        { label: '‹ Back', value: -1 },
+      ], { title: 'PC BOX  (' + box.length + ' stored)', layerClass: 'bag-menu', cancelValue: -1 });
+      if (v === -1 || v == null) break;
+      if (v === 'w') {
+        const i = await G.gui.choice(box.map((m, idx) => ({
+          label: (m.shiny ? '✦ ' : '') + G.party.displayName(m), value: idx, hint: 'Lv' + m.level,
+        })).concat([{ label: '‹ Cancel', value: -1 }]), { title: 'Withdraw which Pokémon?', layerClass: 'bag-menu', cancelValue: -1 });
+        if (i == null || i < 0) continue;
+        if (p.party.length >= 6) { await G.gui.dialogue(['Your party is full. Deposit someone first.']); continue; }
+        const mon = box.splice(i, 1)[0];
+        p.party.push(mon);
+        G.gui.toast(G.party.displayName(mon) + ' joined the party!', { kind: 'good' });
+      } else if (v === 'd') {
+        const i = await G.gui.choice(p.party.map((m, idx) => ({
+          label: G.party.displayName(m), value: idx, hint: 'Lv' + m.level,
+        })).concat([{ label: '‹ Cancel', value: -1 }]), { title: 'Deposit which Pokémon?', layerClass: 'bag-menu', cancelValue: -1 });
+        if (i == null || i < 0) continue;
+        if (p.party.length <= 1) { await G.gui.dialogue(['You need at least one Pokémon with you!']); continue; }
+        const mon = p.party.splice(i, 1)[0];
+        box.push(mon);
+        G.gui.toast(G.party.displayName(mon) + ' was stored in the PC.', {});
+      }
+      G.save.save(p);
+      G.game.updateHud && G.game.updateHud();
+    }
   }
 
   async function openParty() {
