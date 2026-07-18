@@ -130,12 +130,12 @@ duplicate counts, working toward all **1025** species.
 
 ### 🌐 Play it anywhere
 
-The repo ships a GitHub Actions workflow that publishes everything to
-**GitHub Pages** on every push to the default branch. One-time setup: in the
-repo's **Settings → Pages**, set **Source** to **"GitHub Actions"** — then
-play at `https://<owner>.github.io/<repo>/pokedex/` (and the RPG at the site
-root). Pages serves over **HTTPS, so the camera works on your phone** — no
-local server needed. The Card Dex is also a **PWA**: open it on your phone,
+**Live now:** the site is published on GitHub Pages —
+**[githubthebub.github.io/stunning-giggle/pokedex/](https://githubthebub.github.io/stunning-giggle/pokedex/)**
+(the RPG lives at the site root). A GitHub Actions workflow republishes it on
+every push to the default branch by updating the `gh-pages` branch — no
+settings or tokens needed (the repo just has to be public). Pages serves over
+**HTTPS, so the camera works on your phone** — no local server needed. The Card Dex is also a **PWA**: open it on your phone,
 "Add to Home Screen", and it launches full-screen like a real Pokédex, with
 the app shell, sprites, and OCR engine cached for instant repeat scans.
 
