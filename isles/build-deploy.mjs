@@ -47,6 +47,7 @@ fs.copyFileSync(path.join(ROOT, 'arena/index.html'), path.join(OUT, 'index.html'
 // ---- adventure + shared assets under assets/
 fs.cpSync(path.join(PUB, 'js'), path.join(OUT, 'assets/js'), { recursive: true });
 fs.cpSync(path.join(PUB, 'css'), path.join(OUT, 'assets/css'), { recursive: true });
+fs.copyFileSync(path.join(ROOT, 'arena/arena-client.js'), path.join(OUT, 'assets/js/arena-client.js'));
 
 let adventure = fs.readFileSync(path.join(PUB, 'game.html'), 'utf8');
 adventure = adventure
@@ -60,12 +61,13 @@ fs.writeFileSync(path.join(OUT, 'assets/adventure.html'), adventure);
 const gamejs = path.join(OUT, 'assets/js/game.js');
 fs.writeFileSync(gamejs, fs.readFileSync(gamejs, 'utf8').replaceAll("window.open('hub.html', '_blank')", "window.open('../', '_blank')"));
 
-// hub.js is only used by the self-hosted flavor; keep the bundle lean
-fs.rmSync(path.join(OUT, 'assets/js/hub.js'), { force: true });
-
 // ---- zip it (contents at archive root, per the platform layout)
-const zipPath = path.join(ROOT, 'shellfire-isles.zip');
-fs.rmSync(zipPath, { force: true });
-execSync(`cd "${OUT}" && zip -qr "${zipPath}" .`, { stdio: 'inherit' });
-console.log('bundle ready:', zipPath);
-console.log(execSync(`unzip -l "${zipPath}"`).toString());
+if (!process.argv.includes('--no-zip')) {
+  const zipPath = path.join(ROOT, 'shellfire-isles.zip');
+  fs.rmSync(zipPath, { force: true });
+  execSync(`cd "${OUT}" && zip -qr "${zipPath}" .`, { stdio: 'inherit' });
+  console.log('bundle ready:', zipPath);
+  console.log(execSync(`unzip -l "${zipPath}"`).toString());
+} else {
+  console.log('bundle ready:', OUT);
+}

@@ -3,77 +3,171 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Shellfire Isles — Arena</title>
+<title>Shellfire Isles — Island Depot</title>
 <link rel="icon" href="data:,">
 <link rel="stylesheet" href="./assets/css/isles.css">
 <style>
-  .arena { max-width: 940px; margin: 0 auto; padding: 18px 14px; }
-  .arena h1 { color: #e8863c; letter-spacing: 2px; }
-  .arena .sub { opacity: .7; font-size: .85rem; margin: 4px 0 14px; }
-  .topbar { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 6px; }
-  .topbar a { color: #3f74c9; font-size: .85rem; }
-  .bigwait { text-align: center; padding: 36px 10px; }
-  .bigwait .share-line { font-size: 1rem; margin: 16px auto; max-width: 620px; }
-  .vs-strip { display: flex; gap: 14px; flex-wrap: wrap; }
-  .vs-strip .hub-card { flex: 1; min-width: 300px; }
-  .pill { display: inline-block; background: #262e45; border-radius: 20px; padding: 2px 10px; font-size: .72rem; margin-left: 6px; }
-  .result-banner { background: #262e45; border: 3px solid #e8c33c; border-radius: 10px; padding: 12px 16px; margin: 12px 0; font-weight: bold; }
-  .actions-row { display: flex; gap: 10px; flex-wrap: wrap; margin: 10px 0; }
-  .picker input { width: 100%; max-width: 300px; margin-bottom: 10px; }
-  .locked-note { opacity: .7; font-style: italic; }
-  #err { color: #c94a4a; min-height: 1.2em; font-size: .85rem; margin-top: 6px; }
+  .arena { max-width: 980px; margin: 0 auto; padding: 16px 12px 40px; }
+  .topbar { display: flex; gap: 12px; align-items: baseline; flex-wrap: wrap; }
+  .topbar h1 { color: var(--accent); letter-spacing: 2px; font-size: 1.5rem; }
+  .topbar a { color: var(--accent2); font-size: .85rem; }
+  .sub { opacity: .7; font-size: .85rem; margin: 4px 0 12px; }
+  .roomline { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; font-size: .8rem; margin-bottom: 10px; }
+  .roomline .code { background: var(--panel2); border-radius: 6px; padding: 3px 10px; font-weight: bold; letter-spacing: 1px; }
+  .bigwait { text-align: center; padding: 40px 10px; }
+  .bigwait .share-line { font-size: 1rem; margin: 16px auto; max-width: 640px; }
+
+  .tabs { display: flex; gap: 6px; margin: 12px 0 10px; flex-wrap: wrap; }
+  .tabs button { background: var(--panel); color: var(--ink); border: 2px solid var(--panel2);
+    border-radius: 8px 8px 0 0; padding: 9px 16px; font-weight: bold; font-size: .85rem; }
+  .tabs button.on { background: var(--panel2); border-color: var(--warn); color: var(--warn); }
+  .tabs button .cnt { background: var(--bad); color: #fff; border-radius: 10px; padding: 0 6px; font-size: .68rem; margin-left: 4px; }
+
+  .player-row { display: flex; align-items: center; gap: 10px; background: var(--panel2); border-radius: 8px; padding: 8px 12px; margin: 6px 0; flex-wrap: wrap; }
+  .dot { width: 9px; height: 9px; border-radius: 50%; background: #555; flex: none; }
+  .dot.on { background: var(--ok); box-shadow: 0 0 6px var(--ok); }
+  .player-row .who { flex: 1; min-width: 140px; }
+  .player-row .who small { display: block; opacity: .65; font-size: .7rem; }
+  .minimons { display: flex; gap: 2px; }
+  .minimons img { image-rendering: pixelated; }
+
+  .depot-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 10px; }
+  .depot-card { background: var(--panel2); border: 2px solid #333c58; border-radius: 10px; padding: 10px; position: relative; }
+  .depot-card.mine { border-color: var(--warn); }
+  .depot-card.ready { border-color: var(--ok); box-shadow: 0 0 10px rgba(90,168,69,.35); }
+  .depot-card .head { display: flex; gap: 8px; align-items: center; }
+  .depot-card img { image-rendering: pixelated; }
+  .depot-card .wish { font-size: .75rem; margin: 6px 0; opacity: .9; }
+  .depot-card .owner { font-size: .68rem; opacity: .6; }
+  .depot-card button { margin-top: 6px; }
+  .tagline { font-size: .8rem; opacity: .75; margin-bottom: 10px; line-height: 1.5; }
+
+  .mist-box { text-align: center; padding: 22px 10px; }
+  .mist-box .cloud { font-size: 3rem; }
+
+  table.ranks { width: 100%; border-collapse: collapse; font-size: .85rem; }
+  table.ranks td, table.ranks th { padding: 7px 8px; border-bottom: 1px solid #2c3450; text-align: left; }
+  table.ranks .streak { color: var(--warn); }
+
+  .chatdock { margin-top: 14px; }
+  .emotes { display: flex; gap: 6px; margin: 6px 0; }
+  .emotes button { background: var(--panel2); border: none; border-radius: 8px; font-size: 1.05rem; padding: 5px 9px; }
+
+  /* battle scene */
+  #battleOverlay { position: fixed; inset: 0; z-index: 40; background: rgba(8,10,18,.88); display: none; align-items: flex-start; justify-content: center; overflow-y: auto; padding: 18px 8px; }
+  #battleOverlay.on { display: flex; }
+  .bwrap { width: min(96vw, 760px); }
+  .bstage { position: relative; border: 5px solid #2a2a3d; border-radius: 12px; overflow: hidden;
+    background: linear-gradient(#9ecf6e 0 63%, #7ec850 63% 100%); aspect-ratio: 2.1 / 1; min-height: 240px; }
+  .bstage .foe { position: absolute; top: 5%; right: 5%; text-align: right; }
+  .bstage .ally { position: absolute; bottom: 3%; left: 4%; }
+  .bstage .spr { display: inline-block; filter: drop-shadow(0 6px 2px rgba(0,0,0,.25)); }
+  .bstage .spr.hit { animation: hit .35s; }
+  .bstage .spr.faint { animation: faint .5s forwards; }
+  @keyframes faint { to { transform: translateY(40px); opacity: 0; } }
+  .bstage .vsbadge { position: absolute; top: 6px; left: 10px; font-size: .72rem; background: rgba(16,16,24,.7); color: var(--ink); padding: 3px 8px; border-radius: 6px; }
+  .bplate { background: #f7f2e0; color: #22222e; border: 3px solid #3c4e6b; border-radius: 8px; padding: 6px 10px; min-width: 180px; display: inline-block; text-align: left; margin: 4px; }
+  .bhpfill { transition: width .5s; }
+  .bconsole { background: #22222e; border: 5px solid #2a2a3d; border-top: none; border-radius: 0 0 12px 12px; padding: 10px; }
+  .bconsole .blog { height: 120px; overflow-y: auto; background: #0e1220; border-radius: 6px; padding: 8px 10px; font-size: .82rem; line-height: 1.5; margin-bottom: 8px; }
+  .bconsole .blog div:last-child { color: var(--warn); }
+  .bmoves { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+  .bmoves button { border: 3px solid #3c4e6b; border-radius: 8px; padding: 9px; font-weight: bold; background: #f7f2e0; color: #22222e; }
+  .bmoves button small { display: block; font-weight: normal; font-size: .64rem; }
+  .bmoves button:disabled { opacity: .45; }
+  .bside { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+  .bside button { background: var(--panel2); color: var(--ink); border: 2px solid #3c4e6b; border-radius: 8px; padding: 7px 10px; font-size: .78rem; }
+  .bfoot { display: flex; gap: 8px; margin-top: 8px; justify-content: space-between; flex-wrap: wrap; }
+  .bfoot .quiet { background: none; border: none; color: #8892b0; font-size: .72rem; text-decoration: underline; }
+  .locked-note { opacity: .75; font-style: italic; padding: 6px 2px; }
+
+  .toastbar { position: fixed; top: 12px; left: 50%; transform: translateX(-50%); z-index: 60; display: flex; flex-direction: column; gap: 6px; align-items: center; }
+  .toastbar div { background: var(--panel2); border: 2px solid var(--warn); color: var(--ink); border-radius: 8px; padding: 8px 16px; font-size: .85rem; animation: pop .25s; max-width: 90vw; }
+  @keyframes pop { from { transform: scale(.85); opacity: 0; } }
+  .banner { border: 3px solid var(--warn); background: linear-gradient(135deg, #262e45, #3a2c1a); border-radius: 12px; padding: 14px 18px; margin: 12px 0; font-weight: bold; animation: pop .3s; }
+
+  .modal { position: fixed; inset: 0; z-index: 50; background: rgba(8,10,18,.7); display: none; align-items: center; justify-content: center; padding: 12px; }
+  .modal.on { display: flex; }
+  .modal .box { background: var(--panel); border: 3px solid var(--panel2); border-radius: 12px; padding: 16px; max-width: 560px; width: 100%; max-height: 88vh; overflow-y: auto; }
+  .modal h3 { color: var(--warn); margin-bottom: 8px; }
+  .pickgrid { display: flex; gap: 8px; flex-wrap: wrap; margin: 10px 0; }
+  #err { color: var(--bad); min-height: 1.2em; font-size: .85rem; margin-top: 8px; }
+  .team-slot.locked { opacity: .45; }
+  .team-slot.locked::after { content: '📦'; position: absolute; }
+  .team-slot { position: relative; cursor: pointer; }
+  .team-slot.static { cursor: default; }
 </style>
 </head>
 <body>
 <div class="arena">
   <div class="topbar">
-    <h1>⚔ SHELLFIRE ARENA</h1>
-    <a href="./assets/adventure.html">▶ play the solo adventure</a>
+    <h1>🏝 ISLAND DEPOT</h1>
+    <a href="./assets/adventure.html">▶ solo adventure</a>
   </div>
-  <p class="sub">Battle and trade with a friend — they just open your invite link in any browser. Teams play at level 50.</p>
+  <p class="sub">The Shellfire Isles meeting place — battle head-to-head, list creatures at the Trade Depot with a wish, or gamble in the Mist. Friends just open your link.</p>
+  <div class="roomline">
+    <span>Room</span><span class="code" id="roomCode"></span>
+    <button class="ghost" id="copyBtn">copy invite link</button>
+    <button class="ghost" id="globalBtn" title="One shared public room">🌐 global room</button>
+  </div>
 
   <div id="waiting" class="hub-card bigwait">
     <h3 id="waitTitle">Connecting…</h3>
-    <div class="share-line">Invite link: <b id="shareUrl"></b> <button class="ghost" id="copyBtn">copy</button></div>
-    <p style="opacity:.7;font-size:.85rem">Send this to a friend — when they open it, the room starts.</p>
+    <div class="share-line" id="shareWrap">Invite link: <b id="shareUrl"></b></div>
+    <p style="opacity:.7;font-size:.85rem" id="waitHint">You can gear up meanwhile — the room opens the moment you do.</p>
   </div>
 
-  <div id="picker" class="hub-card hidden picker">
+  <div id="picker" class="hub-card hidden">
     <h3>Gear up</h3>
-    <input id="nameInput" maxlength="14" placeholder="Your trainer name">
-    <div class="actions-row">
+    <input id="nameInput" maxlength="14" placeholder="Your trainer name" style="max-width:280px;width:100%;margin-bottom:10px">
+    <div class="actions-row" style="display:flex;gap:10px;flex-wrap:wrap">
       <button class="primary" id="useSaveBtn">Use my adventure team</button>
       <button class="ghost" id="useRentalBtn">Give me a rental team</button>
     </div>
-    <p style="opacity:.7;font-size:.8rem">No save in this browser? Take a rental — six random creatures, ready to fight. (Play the <a href="./assets/adventure.html" style="color:#e8863c">adventure</a> to build your own team; trades here go into that save.)</p>
+    <p style="opacity:.7;font-size:.8rem;margin-top:10px">Rental = six random creatures, ready instantly. Adventure team = your real save from the <a href="./assets/adventure.html" style="color:#e8863c">solo adventure</a> on this site — Depot deals and trades are written back into it.</p>
   </div>
 
-  <div id="lobby" class="hidden">
-    <div id="resultBanner" class="result-banner hidden"></div>
-    <div class="vs-strip">
-      <div class="hub-card"><h3 id="myLabel">You</h3><div class="team-strip" id="myTeam"></div></div>
-      <div class="hub-card"><h3 id="foeLabel">Opponent</h3><div class="team-strip" id="foeTeam"></div></div>
-    </div>
-    <div class="actions-row">
-      <button class="primary" id="battleBtn">⚔ Battle!</button>
-      <button class="ghost" id="tradeBtn">⇄ Trade</button>
-    </div>
-
-    <div id="tradeCard" class="hub-card hidden">
-      <h3>⇄ Trade</h3>
-      <p style="font-size:.85rem;opacity:.8">Each side picks one creature, then both confirm. If you joined with your adventure team, what you receive is written into your adventure save.</p>
-      <h4 style="margin:8px 0 4px">You offer:</h4><div class="team-strip" id="tradeMine"></div>
-      <h4 style="margin:8px 0 4px">They offer:</h4><div class="team-strip" id="tradeTheirs"></div>
-      <div class="actions-row">
-        <button class="primary" id="tradeConfirm">Confirm trade</button>
-        <button class="ghost" id="tradeCancel">Cancel</button>
-      </div>
-      <p id="tradeStatus" style="font-size:.85rem"></p>
+  <div id="main" class="hidden">
+    <div id="banners"></div>
+    <div class="tabs">
+      <button data-tab="lounge" class="on">🏝 Trainers</button>
+      <button data-tab="depot">📦 Depot <span class="cnt hidden" id="depotCnt"></span></button>
+      <button data-tab="mist">🌫 Mist</button>
+      <button data-tab="ranks">🏆 Ranks</button>
+      <button data-tab="team">🎒 My team</button>
     </div>
 
-    <div class="hub-card">
+    <div id="tab-lounge" class="tabpane">
+      <div id="roster"></div>
+      <div id="resultsFeed" style="margin-top:8px"></div>
+    </div>
+
+    <div id="tab-depot" class="tabpane hidden">
+      <p class="tagline">📦 <b>The Trade Depot.</b> List a creature with a wish — it stays on the shelf even while you're away. Anyone can fulfill your wish with a matching creature; you collect your side whenever you come back.</p>
+      <button class="primary" id="depotPutBtn">List a creature…</button>
+      <div class="depot-grid" id="depotGrid" style="margin-top:10px"></div>
+    </div>
+
+    <div id="tab-mist" class="tabpane hidden">
+      <p class="tagline">🌫 <b>The Mist.</b> A blind trade: slip a creature into the mist, and when a stranger's offering drifts by, they swap — no peeking. What comes back might be treasure… or a very confident Gravelim.</p>
+      <div class="hub-card mist-box" id="mistBox"></div>
+    </div>
+
+    <div id="tab-ranks" class="tabpane hidden">
+      <p class="tagline">🏆 <b>Room records.</b> Wins are earned, never given. Streaks reset on a loss.</p>
+      <table class="ranks" id="ranksTable"></table>
+    </div>
+
+    <div id="tab-team" class="tabpane hidden">
+      <p class="tagline" id="teamNote"></p>
+      <div class="team-strip" id="myTeam"></div>
+      <button class="ghost" id="regearBtn" style="margin-top:10px">Change name / team…</button>
+    </div>
+
+    <div class="hub-card chatdock">
       <h3>Chat</h3>
       <div id="chatLog"></div>
+      <div class="emotes" id="emotes"></div>
       <div style="display:flex;gap:8px">
         <input id="chatInput" style="flex:1" maxlength="200" placeholder="Say something…">
         <button class="primary" id="chatSend">Send</button>
@@ -81,258 +175,14 @@
     </div>
   </div>
 
-  <div id="battleCard" class="hub-card hidden">
-    <h3 id="battleTitle">Battle</h3>
-    <div id="battleField"></div>
-    <div class="log" id="battleLog"></div>
-    <div id="battleControls"></div>
-  </div>
-
   <div id="err"></div>
-  <p style="opacity:.5;font-size:.72rem;margin-top:18px">Shellfire Isles is a fully original game — every creature, map, and sprite is original to this project, with all art drawn procedurally in code.</p>
+  <p style="opacity:.5;font-size:.72rem;margin-top:18px">Shellfire Isles is a fully original game — every creature, name, map and sprite is original to this project; all art is drawn procedurally in code.</p>
 </div>
 
-<script type="module">
-import { SPECIES, MOVES } from './assets/js/data.js';
-import { monCanvas } from './assets/js/art.js';
+<div id="battleOverlay"></div>
+<div id="modal" class="modal"><div class="box" id="modalBox"></div></div>
+<div class="toastbar" id="toasts"></div>
 
-const SAVE_KEY = 'shellfire-save-v1';
-const $ = s => document.querySelector(s);
-const esc = s => { const d = document.createElement('div'); d.textContent = String(s); return d.innerHTML; };
-
-// --- room id: from ?room= or generate one and put it in the URL
-const params = new URLSearchParams(location.search);
-let room = params.get('room');
-if (!room) {
-  room = Math.random().toString(36).slice(2, 8);
-  params.set('room', room);
-  history.replaceState(null, '', location.pathname + '?' + params);
-}
-$('#shareUrl').textContent = location.href;
-$('#copyBtn').onclick = () => navigator.clipboard?.writeText(location.href);
-
-// --- identity: sessionStorage so two tabs = two players
-let playerId = sessionStorage.getItem('mp-player-id');
-if (!playerId) {
-  playerId = 'p-' + Math.random().toString(36).slice(2, 10);
-  sessionStorage.setItem('mp-player-id', playerId);
-}
-
-// --- connection with auto-reconnect
-const base = location.pathname.replace(/\/+$/, '');
-const wsUrl = (location.protocol === 'https:' ? 'wss://' : 'ws://') + location.host + base + '/ws/' + room;
-let ws, latest = null, joinedWith = null; // joinedWith: 'save' | 'rental'
-function send(obj) { if (ws && ws.readyState === 1) ws.send(JSON.stringify(obj)); }
-function act(action) { send({ type: 'action', action }); }
-function connect() {
-  ws = new WebSocket(wsUrl);
-  ws.onopen = () => { $('#err').textContent = ''; send({ type: 'join', playerId }); };
-  ws.onclose = () => { $('#waitTitle').textContent = 'Disconnected — retrying…'; show('waiting'); setTimeout(connect, 1500); };
-  ws.onmessage = e => {
-    const msg = JSON.parse(e.data);
-    if (msg.type === 'error') { $('#err').textContent = msg.error; return; }
-    if (msg.type !== 'state') return;
-    $('#err').textContent = '';
-    latest = msg;
-    render(msg);
-  };
-}
-
-// --- adventure-save helpers
-function loadAdventureTeam() {
-  try {
-    const data = JSON.parse(localStorage.getItem(SAVE_KEY) || 'null');
-    if (!data?.party?.length) return null;
-    return data.party.map(d => ({ sp: d.sp, nick: d.nick, level: d.level, moves: d.moves }));
-  } catch { return null; }
-}
-function applyTradeToSave(gaveIndex, incoming) {
-  try {
-    const data = JSON.parse(localStorage.getItem(SAVE_KEY) || 'null');
-    if (!data?.party?.[gaveIndex] || !SPECIES[incoming.sp]) return;
-    const level = Math.max(1, data.party[gaveIndex].level | 0 || 50);
-    data.party[gaveIndex] = {
-      sp: incoming.sp, nick: incoming.nick, level,
-      moves: (incoming.moves || []).filter(id => MOVES[id]).slice(0, 4),
-      hp: 1, xp: Math.pow(level, 3), status: null,
-    };
-    // hp is refilled on load/heal; keep it simple and honest: freshly traded, needs a Rest House
-    localStorage.setItem(SAVE_KEY, JSON.stringify(data));
-  } catch { /* rental play — nothing to persist */ }
-}
-const appliedKey = 'shellfire-arena-applied-' + room;
-function applyNewTrades(v) {
-  if (joinedWith !== 'save') return;
-  let applied = Number(localStorage.getItem(appliedKey) || 0);
-  for (const t of v.tradeLog || []) {
-    if (t.seq <= applied || !t.got?.[playerId]) continue;
-    applyTradeToSave(t.gaveIndex[playerId], t.got[playerId]);
-    applied = t.seq;
-    note(`⇄ ${SPECIES[t.got[playerId].sp]?.n || 'A creature'} was written into your adventure save (heal up at a Rest House).`);
-  }
-  localStorage.setItem(appliedKey, String(applied));
-}
-
-// --- ui plumbing
-const SCREENS = ['waiting', 'picker', 'lobby', 'battleCard'];
-function show(id) { for (const s of SCREENS) $('#' + s).classList.toggle('hidden', s !== id); }
-function note(text) {
-  const el = $('#chatLog'); if (!el) return;
-  const div = document.createElement('div'); div.className = 'sys'; div.textContent = text;
-  el.appendChild(div); el.scrollTop = el.scrollHeight;
-}
-function slotDiv(m, cls = '', onclick = null) {
-  const d = document.createElement('div');
-  d.className = 'team-slot ' + cls;
-  const sp = SPECIES[m.sp];
-  d.innerHTML = `<img src="${monCanvas(m.sp, false, 2).toDataURL()}" width="64" height="64" alt="">
-    <small><b>${esc(m.nick || sp.n)}</b></small><small>Lv50 ${sp.t.join('/')}</small>`;
-  if (onclick) d.onclick = onclick;
-  return d;
-}
-
-// --- picker
-$('#useSaveBtn').onclick = () => {
-  const team = loadAdventureTeam();
-  if (!team) { $('#err').textContent = 'No adventure save found in this browser — grab a rental instead.'; return; }
-  joinedWith = 'save';
-  act({ t: 'hello', name: $('#nameInput').value, team });
-};
-$('#useRentalBtn').onclick = () => { joinedWith = 'rental'; act({ t: 'hello', name: $('#nameInput').value }); };
-
-// --- lobby actions
-$('#battleBtn').onclick = () => act({ t: 'battle' });
-$('#tradeBtn').onclick = () => act({ t: 'trade-open' });
-$('#tradeConfirm').onclick = () => act({ t: 'trade-confirm' });
-$('#tradeCancel').onclick = () => act({ t: 'trade-cancel' });
-$('#chatSend').onclick = () => {
-  const v = $('#chatInput').value.trim();
-  if (!v) return;
-  $('#chatInput').value = '';
-  act({ t: 'chat', text: v });
-};
-$('#chatInput').addEventListener('keydown', e => { if (e.key === 'Enter') $('#chatSend').click(); });
-
-// --- render everything from each state broadcast
-function render(s) {
-  if (s.status === 'waiting' || !s.view) {
-    $('#waitTitle').textContent = 'Waiting for a friend to join…';
-    show('waiting');
-    return;
-  }
-  const v = s.view;
-  const seated = s.seats.includes(s.you);
-  if (!seated) { $('#waitTitle').textContent = 'Room is full — you are spectating.'; show('waiting'); return; }
-
-  const me = v.info[s.you], other = v.players.find(p => p !== s.you), foe = v.info[other];
-  applyNewTrades(v);
-
-  if (!me) { show('picker'); return; }
-
-  if (v.phase === 'battle' && v.battle) { renderBattle(v, s.you, other); show('battleCard'); return; }
-
-  // lobby
-  show('lobby');
-  $('#myLabel').innerHTML = `${esc(me.name)} <span class="pill">you${me.rental ? ' · rental' : ' · adventure team'}</span>`;
-  $('#foeLabel').innerHTML = foe ? esc(foe.name) : 'Opponent <span class="pill">gearing up…</span>';
-  const mt = $('#myTeam'); mt.innerHTML = '';
-  me.team.forEach(m => mt.appendChild(slotDiv(m)));
-  const ft = $('#foeTeam'); ft.innerHTML = '';
-  (foe?.team || []).forEach(m => ft.appendChild(slotDiv(m)));
-
-  $('#battleBtn').disabled = !foe;
-  $('#tradeBtn').disabled = !foe;
-
-  const rb = $('#resultBanner');
-  if (v.lastResult) {
-    rb.classList.remove('hidden');
-    rb.textContent = v.lastResult.winner === s.you ? '🏆 You won the last battle! Rematch?'
-      : v.lastResult.winner ? `${v.lastResult.summary} Avenge it?` : v.lastResult.summary;
-  } else rb.classList.add('hidden');
-
-  // trade panel
-  const tc = $('#tradeCard');
-  if (v.trade && foe) {
-    tc.classList.remove('hidden');
-    const mySel = v.trade.sel[s.you], theirSel = v.trade.sel[other];
-    const meConf = !!v.trade.confirmed[s.you], themConf = !!v.trade.confirmed[other];
-    const tm = $('#tradeMine'); tm.innerHTML = '';
-    me.team.forEach((m, i) => tm.appendChild(slotDiv(m, mySel === i ? 'sel' : '', () => !meConf && act({ t: 'trade-select', index: i }))));
-    const tt = $('#tradeTheirs'); tt.innerHTML = '';
-    foe.team.forEach((m, i) => tt.appendChild(slotDiv(m, theirSel === i ? 'sel' : '')));
-    $('#tradeStatus').textContent =
-      (mySel == null ? 'Pick one of your creatures. ' : meConf ? 'You confirmed. ' : 'Press confirm when ready. ') +
-      (theirSel == null ? `${foe.name} is still picking.` : themConf ? `${foe.name} confirmed!` : `${foe.name} picked — waiting for their confirm.`);
-  } else tc.classList.add('hidden');
-
-  // chat (full redraw from state)
-  const cl = $('#chatLog'); cl.innerHTML = '';
-  for (const c of v.chat) {
-    const div = document.createElement('div');
-    div.innerHTML = `<b>${esc(c.from)}:</b> ${esc(c.text)}`;
-    cl.appendChild(div);
-  }
-  cl.scrollTop = cl.scrollHeight;
-}
-
-function hpRow(m) {
-  const pct = Math.max(0, Math.round(m.hp / m.stats.hp * 100));
-  const cls = pct > 50 ? 'ok' : pct > 20 ? 'warn' : 'bad';
-  return `<div class="hp-row">
-    <img src="${monCanvas(m.sp, false, 2).toDataURL()}" width="48" height="48" style="image-rendering:pixelated" alt="">
-    <div style="min-width:130px"><b>${esc(m.nick)}</b> <small>Lv${m.level}${m.status ? ' · ' + m.status.toUpperCase() : ''}</small></div>
-    <div class="p-hpbar"><div class="p-hpfill ${cls}" style="width:${pct}%"></div></div>
-    <small>${m.hp}/${m.stats.hp}</small></div>`;
-}
-
-function renderBattle(v, you, other) {
-  const b = v.battle;
-  const myKey = b.order[0] === you ? 'a' : 'b';
-  const mySide = b[myKey], foeSide = b[myKey === 'a' ? 'b' : 'a'];
-  const mine = mySide.team[mySide.active], theirs = foeSide.team[foeSide.active];
-  $('#battleTitle').textContent = `⚔ ${v.info[you].name} vs ${v.info[other]?.name || '???'}`;
-  $('#battleField').innerHTML =
-    `<p style="opacity:.7;font-size:.8rem">${esc(foeSide.name)}${b.locked?.[other] ? ' · <i>locked in</i>' : ''}</p>` + hpRow(theirs) +
-    `<p style="opacity:.7;font-size:.8rem;margin-top:8px">You</p>` + hpRow(mine);
-
-  const log = $('#battleLog'); log.innerHTML = '';
-  for (const line of b.log) { const d = document.createElement('div'); d.textContent = line; log.appendChild(d); }
-  log.scrollTop = log.scrollHeight;
-
-  const ctrl = $('#battleControls');
-  ctrl.innerHTML = '';
-  const mustSwitch = b.awaitSwitch.includes(you);
-  const iAmLocked = !!b.locked?.[you];
-
-  if (b.awaitSwitch.length && !mustSwitch) { ctrl.innerHTML = '<p class="locked-note">Waiting for the other trainer to switch…</p>'; return; }
-  if (iAmLocked) { ctrl.innerHTML = '<p class="locked-note">Locked in — waiting for the other trainer…</p>'; return; }
-
-  if (!mustSwitch) {
-    const mv = document.createElement('div'); mv.className = 'pvp-moves';
-    mine.moves.forEach((slot, i) => {
-      const m = MOVES[slot.id];
-      const btn = document.createElement('button');
-      btn.innerHTML = `${m.n}<small>${m.t} · ${m.cat === 'T' ? 'status' : 'pow ' + m.pow} · PP ${slot.pp}</small>`;
-      btn.disabled = slot.pp <= 0;
-      btn.onclick = () => act({ t: 'move', slot: i });
-      mv.appendChild(btn);
-    });
-    ctrl.appendChild(mv);
-  } else {
-    const p = document.createElement('p'); p.textContent = `${mine.nick} fainted! Choose your next creature:`; ctrl.appendChild(p);
-  }
-  const sw = document.createElement('div'); sw.className = 'pvp-switch';
-  mySide.team.forEach((m, i) => {
-    if (m.hp <= 0 || i === mySide.active) return;
-    const btn = document.createElement('button');
-    btn.innerHTML = `→ ${esc(m.nick)} <small>${m.hp}/${m.stats.hp}</small>`;
-    btn.onclick = () => act({ t: 'switch', to: i });
-    sw.appendChild(btn);
-  });
-  ctrl.appendChild(sw);
-}
-
-connect();
-</script>
+<script type="module" src="./assets/js/arena-client.js"></script>
 </body>
 </html>

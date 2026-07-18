@@ -1,121 +1,113 @@
 # 🏝 Shellfire Isles
 
-> **🎮 Play it right now — no install, no account:**
+> **🎮 Play right now — no install, no account:**
 > **https://curious-spark-605.higgsfield.gg/**
-> Open the link, send the invite link on that page to a friend, and battle/trade
-> live in any browser. The solo adventure is on the same site
-> (`assets/adventure.html`, linked from the top of the page).
+> Open it, send the invite link to a friend, and you're battling and trading in
+> any browser. The solo adventure lives on the same site (linked at the top).
 
-An **original** GBA-style monster-taming RPG — you join the story late-game with six
-badges already earned, heading into the **7th gym** — plus **Island Link**, an online
-trade & battle hub your friends can join from any browser (think "open a website,
-pick a team, battle live" — no install, no account, no AI needed on their side).
+An **original** GBA-style monster-taming RPG — you join the story with six
+badges, heading into the **7th gym** — plus the **Island Depot**, an online
+meeting place with head-to-head battles and a real trading post.
 
-> Everything here is original work: all creature designs, names, stats, maps,
-> dialogue, and pixel art (painted procedurally in code — there are zero image
-> assets). It is a love letter to the genre, not a copy of any existing game.
+> Everything is original work: all creature designs, names, stats, maps,
+> dialogue, and pixel art (painted procedurally in code — zero image assets).
+> A love letter to the genre, not a copy of any existing game.
 
-## Quick start
+## The Island Depot (multiplayer)
 
-```bash
-cd isles
-npm start          # → http://localhost:8420
-```
+Rooms hold up to **8 trainers**. Share your room link — friends just open it.
+Pick a name and a team: your **adventure save** (from the solo game on the same
+site) or an instant **rental team**.
 
-No dependencies to install — the server is plain Node (18+).
+- **⚔ Battles** — challenge anyone in the room, *pick your lead creature*,
+  then fight with simultaneous hidden move choices at flat level 50. Multiple
+  battles can run in the same room; anyone can **spectate**. Forfeit and
+  claim-win rules handle rage-quits.
+- **📦 The Trade Depot** — the heart of the trading post, and fully
+  *asynchronous*: list a creature with a **wish** ("any creature" or a specific
+  species). Your listing stays on the shelf even while you're offline. Anyone
+  can fulfill the wish with a matching creature — they receive yours instantly,
+  and your side waits until you come back and hit **Collect**.
+- **🌫 The Mist** — blind trades: offer a creature into the mist; when a
+  stranger's offering drifts in, they swap sight-unseen.
+- **🏆 Ranks** — per-room records: wins, losses, streaks and best streaks.
+- **💬 Chat + emotes**, arrival announcements, and a recent-battles feed.
+- **💾 Save sync** — if you joined with your adventure team, every trade,
+  Depot deal and Mist swap is written back into your adventure save (the new
+  arrival lands at 1 HP — take it to a Rest House).
+- **🌐 Global room** — one well-known public room (the "global room" button)
+  acts as a worldwide depot; private room codes are for friends.
 
-- **`/`** — landing page
-- **`/game.html`** — the single-player adventure (saves to your browser)
-- **`/hub`** — Island Link, the multiplayer trade & battle hub
+Room state is persistent: deposits, records and chat survive everyone leaving.
 
-## The adventure
+## The solo adventure
 
 You start in **Cinderport** with **6 of 8 badges** and a ready team of six:
 
-| Creature | Type | Field moves it knows |
+| Creature | Type | Field moves |
 |---|---|---|
-| **Torrentoise** (your ace) | Water | **Surf**, **Waterfall** |
+| **Torrentoise** (ace) | Water | **Surf**, **Waterfall** |
 | Galehawk | Flying/Normal | **Fly** |
 | Bramblade | Grass | **Cut** |
 | Boulderox | Rock/Ground | **Strength**, **Rock Smash** |
 | Voltlynx | Electric | **Flash** |
 | Cinderfang | Fire/Dark | — |
 
-All **seven field moves** work in the overworld: cut trees, fly between towns,
-surf open water, shove boulders, light up the pitch-black Granite Hollow, smash
-cracked rocks, and climb the Route 7 waterfall to a secret grove.
-
-What's left to do: beat **Leader Pyra** (Fire, gym 7) in Cinderport, cross
-Granite Hollow to Verdantia, beat **Leader Terra** (Ground, gym 8), then pass the
-Victory Gate and take the **Champion** fight. Along the way: wild encounters in
-tall grass / water / caves, catching with Capture Orbs, XP & level-ups, move
-learning, a shop, creature storage, and 16 original species to find.
+All seven field moves work in the overworld: cut trees, fly between towns,
+surf, shove boulders, light up Granite Hollow, smash rocks, and climb the
+Route 7 waterfall to a secret grove. Beat **Pyra** (Fire, gym 7), cross the
+cave to **Verdantia**, beat **Terra** (Ground, gym 8), then take the
+**Champion** fight. Wild encounters, catching, XP, move learning, a shop,
+storage, and 16 original species along the way.
 
 **Controls:** Arrows/WASD move · Enter/Z interact · Esc/X menu. Touch buttons
-appear on phones. Progress autosaves to `localStorage`.
+on phones. Autosaves to the browser.
 
-## Two ways to play with friends
+## Run it yourself
 
-**1. The hosted Arena (zero setup)** — https://curious-spark-605.higgsfield.gg/
-opens a 2-player room: share the invite link shown on the page, pick a name and
-a team (your adventure save from that same site, or a rental), then battle at
-level 50 and trade. Trades write into your adventure save on that site. Rooms
-are pairwise — for a group, open one room per pair. Sources for this build live
-in `arena/` and are assembled by `node build-deploy.mjs` (see
-`arena/deploy-info.json` for the update procedure).
+```bash
+cd isles
+npm start        # builds the bundle and serves it on http://localhost:8420
+```
 
-**2. Self-hosted Island Link (rooms up to 16)** — the `server.js` flavor below.
+Zero dependencies (Node 18+). The self-host kernel speaks the same protocol as
+the hosted platform and runs the **same** rules module and client, with rooms
+persisted to `isles/data/rooms.json`. Friends on your network open your LAN IP;
+for the internet, use any Node host or a tunnel (`npx localtunnel --port 8420`).
 
-## Island Link (play with friends, self-hosted)
-
-1. Start the server somewhere your friends can reach (see below).
-2. Open **`/hub`**, pick a name and a room code — the page gives you a share link
-   like `https://your-host/hub.html?room=TIDE42`.
-3. Friends open that link in any browser. They don't need the game or a save —
-   they can grab a **random rental team** and play immediately.
-4. In a room you can:
-   - **Battle** anyone live — the server referees turn-by-turn with the same
-     engine as the adventure; teams are auto-leveled to 50 for fairness.
-   - **Trade** creatures — pick, confirm on both sides, done. If you joined with
-     your adventure team, the traded creature is written **into your adventure
-     save**, so trades really matter.
-   - **Chat** with the room.
-
-### Hosting options
-
-- **Same network:** `npm start`, then friends open `http://<your-LAN-IP>:8420/hub`.
-- **Internet, zero config:** tunnel your local server with something like
-  `npx localtunnel --port 8420` (or ngrok, Tailscale Funnel, Cloudflare Tunnel)
-  and share the URL it prints.
-- **Free hosting:** deploy the `isles/` folder to any Node host (Render,
-  Railway, Fly.io, Glitch…). Start command `node server.js`; the server honors
-  `PORT`. No database, no build step.
-
-## Tech notes
-
-- Zero-dependency Node server (`server.js`): static files + a small JSON/SSE API.
-  Multiplayer uses Server-Sent Events + POST, so it works through almost any
-  proxy or host without websocket support.
-- The battle engine (`public/js/engine.js`) is shared verbatim between the
-  browser (adventure) and the server (PvP refereeing) — one implementation of
-  damage, stats, status, stages, switching, catching, and XP.
-- All sprites/tiles are generated at runtime by `public/js/art.js`.
-
-## File map
+## Architecture
 
 ```
 isles/
-  server.js            # static hosting + rooms/battles/trades API (SSE)
-  public/
-    index.html         # landing page
-    game.html          # adventure shell
-    hub.html           # Island Link shell
-    css/isles.css      # shared styles
-    js/data.js         # types, moves, species, items, trainers' data
-    js/engine.js       # battle engine (browser + server)
-    js/art.js          # procedural pixel art (creatures, tiles, people)
-    js/maps.js         # world maps, NPCs, encounters
-    js/game.js         # overworld engine, menus, saves
-    js/battle.js       # adventure battle UI
-    js/hub.js          # multiplayer client
+  public/              the solo adventure + shared modules (source of truth)
+    js/data.js         types, moves, 16 species, items, trainers
+    js/engine.js       battle engine — same code referees solo AND multiplayer
+    js/art.js          procedural pixel art (creatures, tiles, people)
+    js/maps.js         world maps, NPCs, encounters
+    js/game.js         overworld engine, menus, saves
+    js/battle.js       adventure battle UI
+  arena/
+    arena-logic.js     multiplayer rules module (kernel contract: setup /
+                       validateAction / applyAction / isGameOver / viewFor)
+    arena-client.js    Island Depot client (WebSocket, full-state rendering)
+    index.html         Depot page shell
+    deploy-info.json   hosted deployment id + update procedure
+  build-deploy.mjs     assembles dist-deploy/ (inlines data+engine into
+                       logic.js, ships the adventure under assets/) + zip
+  kernel-server.js     zero-dep self-host kernel: static files + RFC6455
+                       WebSockets + room storage, same protocol as the platform
+```
+
+The multiplayer server logic is a pure, sandbox-safe state machine: every
+action is validated server-side, hidden information (locked-in battle moves,
+Mist offerings) is masked per-player in `viewFor`, and clients re-render
+entirely from each full-state broadcast — no client-side trust anywhere.
+
+### Updating the hosted deployment
+
+```bash
+node isles/build-deploy.mjs        # refresh isles/shellfire-isles.zip
+git add -A && git commit && git push
+# then deploy_game with the game_id from arena/deploy-info.json and
+# source_game = the raw.githubusercontent.com URL of the zip on the branch
 ```

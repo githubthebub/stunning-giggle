@@ -1,7 +1,8 @@
 > **🆕 New in this repo: [Shellfire Isles](isles/README.md)** — an original
-> monster-taming RPG that starts at the 7th gym (water-tortoise ace on the team,
-> all 7 field moves ready) **plus a multiplayer trade & battle hub** friends can
-> join from any browser: `cd isles && npm start`, then share the `/hub` link.
+> monster-taming RPG (7th-gym start, all 7 field moves) plus the **Island
+> Depot**: online battles, a wish-based async Trade Depot, blind Mist Trades,
+> ranks and chat — friends join from any browser.
+> **Play it live: https://curious-spark-605.higgsfield.gg/**
 
 # 🔴 Pokémon Unova — Dream Journey
 

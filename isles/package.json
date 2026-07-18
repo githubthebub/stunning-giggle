@@ -1,10 +1,11 @@
 {
   "name": "shellfire-isles",
-  "version": "1.0.0",
-  "description": "Original monster-taming RPG (start at the 7th gym, all field moves) with an online trade & battle hub friends can join from any browser.",
+  "version": "2.0.0",
+  "description": "Original monster-taming RPG (start at the 7th gym, all field moves) with the Island Depot: online battles, wish-based async trading, and blind Mist Trades — friends join from any browser.",
   "type": "module",
   "scripts": {
-    "start": "node server.js"
+    "build": "node build-deploy.mjs",
+    "start": "node kernel-server.js"
   },
   "engines": { "node": ">=18" },
   "license": "MIT"
