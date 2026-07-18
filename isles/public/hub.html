@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Island Link — Trade &amp; Battle Hub</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="css/isles.css">
+</head>
+<body>
+<div class="hub">
+  <h1>🌐 ISLAND LINK</h1>
+  <p class="sub">Shellfire Isles trade &amp; battle hub — friends just open this page's link to play with you. No install, no account.</p>
+
+  <!-- join screen -->
+  <div id="joinCard" class="hub-card">
+    <h3>Join a room</h3>
+    <p style="font-size:.85rem;opacity:.8;margin-bottom:10px">Pick a name and a room code. Share the room link with friends — anyone who opens it lands in your room.</p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <input id="nameInput" maxlength="14" placeholder="Your name">
+      <input id="roomInput" maxlength="12" placeholder="Room code (e.g. TIDE42)">
+      <select id="teamSource">
+        <option value="save">Use my adventure team</option>
+        <option value="rental">Give me a rental team</option>
+      </select>
+      <button class="primary" id="joinBtn">Enter the Link</button>
+    </div>
+    <p id="joinErr" style="color:#c94a4a;font-size:.8rem;margin-top:8px"></p>
+  </div>
+
+  <!-- room screen -->
+  <div id="roomCard" class="hidden">
+    <div class="hub-card">
+      <h3>Room <span id="roomCode"></span></h3>
+      <div class="share-line">Share this link: <b id="shareUrl"></b> <button class="ghost" id="copyBtn">copy</button></div>
+      <p style="margin:10px 0 6px;font-size:.85rem">Trainers online:</p>
+      <div class="roster" id="roster"></div>
+    </div>
+
+    <div class="hub-card">
+      <h3>Your team <small id="teamNote" style="opacity:.6;font-weight:normal"></small></h3>
+      <div class="team-strip" id="myTeam"></div>
+    </div>
+
+    <div class="hub-card">
+      <h3>Chat</h3>
+      <div id="chatLog"></div>
+      <div style="display:flex;gap:8px">
+        <input id="chatInput" style="flex:1" maxlength="200" placeholder="Say something...">
+        <button class="primary" id="chatSend">Send</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- battle screen -->
+  <div id="battleCard" class="hub-card hidden">
+    <h3 id="battleTitle">Battle</h3>
+    <div id="battleField"></div>
+    <div class="log" id="battleLog"></div>
+    <div id="battleControls"></div>
+  </div>
+
+  <!-- trade screen -->
+  <div id="tradeCard" class="hub-card hidden">
+    <h3 id="tradeTitle">Trade</h3>
+    <p style="font-size:.85rem;opacity:.8">Each side picks one creature, then both confirm. Traded creatures go straight into your team (and your adventure save, if you're playing with one).</p>
+    <h4 style="margin:10px 0 4px">You offer:</h4>
+    <div class="team-strip" id="tradeMine"></div>
+    <h4 style="margin:10px 0 4px">They offer:</h4>
+    <div class="team-strip" id="tradeTheirs"></div>
+    <div style="margin-top:10px;display:flex;gap:8px">
+      <button class="primary" id="tradeConfirm">Confirm trade</button>
+      <button class="ghost" id="tradeCancel">Cancel</button>
+    </div>
+    <p id="tradeStatus" style="margin-top:8px;font-size:.85rem"></p>
+  </div>
+
+  <p style="opacity:.5;font-size:.72rem;margin-top:20px">
+    Battles are refereed by the server with teams auto-leveled to 50 for fairness.
+    Rental teams are random — reload to reroll before joining. <a href="index.html" style="color:#e8863c">← home</a>
+  </p>
+</div>
+<script type="module" src="js/hub.js"></script>
+</body>
+</html>

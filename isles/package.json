@@ -1,0 +1,11 @@
+{
+  "name": "shellfire-isles",
+  "version": "1.0.0",
+  "description": "Original monster-taming RPG (start at the 7th gym, all field moves) with an online trade & battle hub friends can join from any browser.",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": { "node": ">=18" },
+  "license": "MIT"
+}

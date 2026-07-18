@@ -1,3 +1,8 @@
+> **🆕 New in this repo: [Shellfire Isles](isles/README.md)** — an original
+> monster-taming RPG that starts at the 7th gym (water-tortoise ace on the team,
+> all 7 field moves ready) **plus a multiplayer trade & battle hub** friends can
+> join from any browser: `cd isles && npm start`, then share the `/hub` link.
+
 # 🔴 Pokémon Unova — Dream Journey
 
 A Pokémon **Black & White-style RPG** you play in the browser — walk the

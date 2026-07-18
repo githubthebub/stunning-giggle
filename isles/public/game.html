@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shellfire Isles — Adventure</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="css/isles.css">
+</head>
+<body>
+<div class="game-wrap">
+  <div class="screen">
+    <canvas id="world" width="720" height="480"></canvas>
+    <div id="toast"></div>
+    <div id="dialog"></div>
+    <div id="ask"><div class="ask-box"><div id="askText"></div><button id="askYes">YES</button><button id="askNo">NO</button></div></div>
+    <div id="menu"></div>
+    <div id="panel"></div>
+    <div id="battleRoot"></div>
+  </div>
+  <div class="pad">
+    <button data-pad="left">◀</button>
+    <button data-pad="up">▲</button>
+    <button data-pad="down">▼</button>
+    <button data-pad="right">▶</button>
+    <button data-pad="a">A</button>
+    <button data-pad="menu">☰</button>
+  </div>
+  <p class="help">Arrows/WASD move · ENTER interact · ESC menu · <a href="index.html" style="color:#e8863c">home</a> · <a href="hub.html" target="_blank" style="color:#3f74c9">Island Link ↗</a></p>
+</div>
+<script type="module" src="js/game.js"></script>
+</body>
+</html>
