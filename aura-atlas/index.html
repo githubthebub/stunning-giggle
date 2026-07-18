@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>AURA ATLAS — five cities, one massive vibe shift</title>
+<meta name="description" content="A free browser game about unlearning nice-guy brain. Five cities. Thirty-five choices. Money, ambition, wit, boundaries, mastery. How much aura can you hold?">
+<meta property="og:title" content="AURA ATLAS">
+<meta property="og:description" content="Five cities. Thirty-five choices. One massive vibe shift. Can you survive the Aunty Gauntlet?">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌏</text></svg>">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --bg2: #12121c;
+    --card: #16161f;
+    --card2: #1c1c28;
+    --line: #2a2a3a;
+    --text: #eeeef4;
+    --dim: #9a9ab0;
+    --faint: #62627a;
+    --accent: #f5c518;
+    --accent2: #ff6b9d;
+    --good: #4ade80;
+    --mid: #fbbf24;
+    --bad: #f87171;
+    --radius: 18px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.55;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: "";
+    position: fixed; inset: 0;
+    background:
+      radial-gradient(60vw 60vw at 85% -10%, color-mix(in srgb, var(--accent) 13%, transparent), transparent 70%),
+      radial-gradient(50vw 50vw at -10% 100%, color-mix(in srgb, var(--accent2) 10%, transparent), transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+    transition: opacity .6s;
+  }
+  #app { position: relative; z-index: 1; max-width: 600px; margin: 0 auto; padding: 18px 18px 60px; }
+
+  /* ---------- top bar ---------- */
+  #topbar {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 8px 2px 16px;
+    min-height: 48px;
+  }
+  #topbar .brand {
+    font-weight: 900; font-size: 14px; letter-spacing: .18em;
+    color: var(--dim); cursor: pointer; user-select: none;
+  }
+  #topbar .brand span { color: var(--accent); }
+  #auraChip {
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: 999px; padding: 6px 14px;
+    font-weight: 800; font-size: 14px; font-variant-numeric: tabular-nums;
+    display: none; align-items: center; gap: 7px;
+  }
+  #auraChip.show { display: inline-flex; }
+  #auraChip .lbl { font-size: 10px; letter-spacing: .14em; color: var(--faint); font-weight: 700; }
+  #auraChip.bump { animation: bump .45s ease; }
+  @keyframes bump { 30% { transform: scale(1.14); } }
+
+  /* ---------- generic ---------- */
+  .screen { animation: rise .45s cubic-bezier(.2,.7,.3,1) both; }
+  @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+
+  .kicker {
+    font-size: 11px; font-weight: 800; letter-spacing: .22em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 10px;
+  }
+  h1.display {
+    font-size: clamp(44px, 13vw, 76px);
+    font-weight: 900; letter-spacing: -.02em; line-height: .96;
+    margin: 6px 0 14px;
+  }
+  h1.display .alt { color: var(--accent); }
+  .sub { color: var(--dim); font-size: 17px; max-width: 46ch; }
+
+  .card {
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 22px;
+  }
+  .btn {
+    display: block; width: 100%;
+    background: var(--text); color: #0a0a0f;
+    border: none; border-radius: 14px;
+    font: inherit; font-weight: 800; font-size: 16px;
+    padding: 16px 22px; cursor: pointer;
+    transition: transform .12s, opacity .12s;
+    text-align: center;
+  }
+  .btn:hover { transform: translateY(-1px); }
+  .btn:active { transform: translateY(1px); }
+  .btn.accent { background: var(--accent); }
+  .btn.ghost {
+    background: transparent; color: var(--dim);
+    border: 1px solid var(--line);
+  }
+  .btn + .btn { margin-top: 10px; }
+  .btn:focus-visible, .choice:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .footnote { color: var(--faint); font-size: 12.5px; text-align: center; margin-top: 22px; }
+
+  /* ---------- title ---------- */
+  #titleArt { font-size: 46px; margin-bottom: 8px; letter-spacing: 6px; }
+  .tourline {
+    display: flex; gap: 8px; flex-wrap: wrap; margin: 22px 0 30px;
+  }
+  .tourline .stop {
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: 999px; padding: 6px 13px;
+    font-size: 13px; font-weight: 700; color: var(--dim);
+  }
+
+  /* ---------- quiz ---------- */
+  .qnum { color: var(--faint); font-size: 12px; font-weight: 800; letter-spacing: .18em; margin-bottom: 8px; }
+  .qtext { font-size: 22px; font-weight: 800; letter-spacing: -.01em; margin-bottom: 20px; line-height: 1.3; }
+
+  .choice {
+    display: flex; gap: 14px; align-items: flex-start;
+    width: 100%; text-align: left;
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: 14px; padding: 15px 16px; margin-bottom: 10px;
+    font: inherit; font-size: 15.5px; color: var(--text);
+    cursor: pointer; transition: border-color .15s, background .15s, transform .12s;
+  }
+  .choice:hover { border-color: var(--accent); transform: translateY(-1px); }
+  .choice .key {
+    flex: none; width: 26px; height: 26px; border-radius: 8px;
+    background: var(--card2); border: 1px solid var(--line);
+    display: grid; place-items: center;
+    font-size: 12px; font-weight: 800; color: var(--dim);
+    margin-top: 1px;
+  }
+  .choice.picked { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 9%, var(--card)); }
+  .choice.faded { opacity: .38; pointer-events: none; }
+  .choice:disabled { cursor: default; }
+  .choice.picked:disabled { cursor: default; }
+
+  /* ---------- archetype ---------- */
+  .arch-card {
+    background: linear-gradient(160deg, var(--card2), var(--card));
+    border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 30px 24px; text-align: center; margin-bottom: 16px;
+  }
+  .arch-emoji { font-size: 52px; }
+  .arch-name { font-size: 32px; font-weight: 900; letter-spacing: -.01em; margin: 10px 0 4px; }
+  .arch-tag { color: var(--accent); font-weight: 700; font-size: 14px; letter-spacing: .06em; margin-bottom: 14px; }
+  .arch-desc { color: var(--dim); font-size: 15.5px; max-width: 44ch; margin: 0 auto; }
+
+  /* ---------- map ---------- */
+  .city-row {
+    display: flex; align-items: center; gap: 16px;
+    width: 100%; text-align: left;
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 18px; margin-bottom: 12px;
+    font: inherit; color: var(--text); cursor: pointer;
+    transition: border-color .15s, transform .12s;
+  }
+  .city-row:hover:not(.locked) { border-color: var(--city, var(--accent)); transform: translateY(-1px); }
+  .city-row.locked { opacity: .42; cursor: default; }
+  .city-row .flag { font-size: 34px; flex: none; }
+  .city-row .info { flex: 1; min-width: 0; }
+  .city-row .cname { font-weight: 900; font-size: 19px; letter-spacing: -.01em; }
+  .city-row .ctag { color: var(--dim); font-size: 13.5px; }
+  .city-row .cstat { flex: none; text-align: right; font-size: 13px; font-weight: 800; color: var(--faint); }
+  .city-row .cstat .aura-earned { color: var(--good); }
+  .city-row.next { border-color: color-mix(in srgb, var(--city, var(--accent)) 55%, var(--line)); }
+
+  /* ---------- city intro ---------- */
+  .cityhead { text-align: center; margin: 14px 0 22px; }
+  .cityhead .bigflag { font-size: 64px; }
+  .cityhead h2 { font-size: clamp(36px, 10vw, 52px); font-weight: 900; letter-spacing: -.02em; line-height: 1; margin: 8px 0 2px; }
+  .cityhead .tagline { color: var(--city, var(--accent)); font-weight: 800; font-size: 17px; letter-spacing: .03em; }
+  .cityhead .chapter { color: var(--faint); font-size: 11px; font-weight: 800; letter-spacing: .22em; text-transform: uppercase; margin-bottom: 10px; }
+  .intro-card { font-size: 16.5px; color: var(--text); }
+
+  /* ---------- scenario ---------- */
+  .scen-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+  .scen-city { font-weight: 800; font-size: 13px; color: var(--dim); letter-spacing: .06em; }
+  .dots { display: flex; gap: 5px; }
+  .dots i { width: 7px; height: 7px; border-radius: 50%; background: var(--line); }
+  .dots i.done { background: var(--city, var(--accent)); }
+  .dots i.cur { background: var(--text); }
+  .boss-banner {
+    display: inline-block; background: color-mix(in srgb, var(--bad) 16%, transparent);
+    border: 1px solid color-mix(in srgb, var(--bad) 45%, transparent);
+    color: #fda4af; font-size: 11px; font-weight: 800; letter-spacing: .2em;
+    border-radius: 999px; padding: 4px 12px; margin-bottom: 10px;
+  }
+  .scen-title { font-size: 26px; font-weight: 900; letter-spacing: -.01em; margin-bottom: 12px; line-height: 1.15; }
+  .setup { font-size: 16.5px; margin-bottom: 22px; color: var(--text); }
+  .prompt-lbl { font-size: 11px; font-weight: 800; letter-spacing: .2em; color: var(--faint); text-transform: uppercase; margin-bottom: 10px; }
+
+  /* ---------- feedback ---------- */
+  #feedback { margin-top: 18px; }
+  .delta {
+    font-size: 34px; font-weight: 900; letter-spacing: -.01em;
+    font-variant-numeric: tabular-nums;
+    animation: pop .5s cubic-bezier(.2,.7,.3,1.4) both;
+  }
+  @keyframes pop { from { opacity: 0; transform: scale(.6); } }
+  .delta.good { color: var(--good); }
+  .delta.mid { color: var(--mid); }
+  .delta.bad { color: var(--bad); }
+  .delta small { font-size: 13px; font-weight: 800; letter-spacing: .18em; color: var(--faint); margin-left: 8px; }
+  .fb-text { margin: 12px 0 16px; font-size: 16px; }
+  .fieldnote {
+    background: var(--card2);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--city, var(--accent));
+    border-radius: 12px; padding: 16px 18px; margin-bottom: 18px;
+  }
+  .fieldnote .fn-head { font-size: 11px; font-weight: 800; letter-spacing: .2em; color: var(--faint); text-transform: uppercase; margin-bottom: 6px; }
+  .fieldnote .fn-principle { font-weight: 900; font-size: 16px; margin-bottom: 2px; }
+  .fieldnote .fn-source { color: var(--city, var(--accent)); font-size: 12.5px; font-weight: 700; margin-bottom: 8px; }
+  .fieldnote .fn-text { color: var(--dim); font-size: 14.5px; }
+
+  /* ---------- city complete / results ---------- */
+  .result-hero { text-align: center; padding: 10px 0 6px; }
+  .emoji-row { font-size: 22px; letter-spacing: 3px; margin: 12px 0; }
+  .big-aura { font-size: clamp(40px, 12vw, 62px); font-weight: 900; font-variant-numeric: tabular-nums; letter-spacing: -.02em; }
+  .big-aura.good { color: var(--good); } .big-aura.bad { color: var(--bad); }
+  .rank-name { font-size: clamp(30px, 9vw, 44px); font-weight: 900; letter-spacing: -.01em; line-height: 1.05; margin: 6px 0; }
+  .rank-desc { color: var(--dim); font-size: 15.5px; max-width: 46ch; margin: 10px auto 0; }
+  .breakdown { margin: 20px 0; }
+  .bd-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 11px 0; border-bottom: 1px solid var(--line);
+    font-size: 14.5px;
+  }
+  .bd-row:last-child { border-bottom: none; }
+  .bd-row .bd-flag { flex: none; font-size: 20px; }
+  .bd-row .bd-name { font-weight: 800; flex: none; width: 86px; }
+  .bd-row .bd-emojis { flex: 1; letter-spacing: 1.5px; font-size: 13px; overflow: hidden; white-space: nowrap; }
+  .bd-row .bd-aura { flex: none; font-weight: 800; font-variant-numeric: tabular-nums; }
+  .bd-aura.pos { color: var(--good); } .bd-aura.neg { color: var(--bad); }
+  .share-box {
+    background: var(--card2); border: 1px dashed var(--line); border-radius: 12px;
+    padding: 14px 16px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 12.5px; white-space: pre-wrap; color: var(--dim); margin-bottom: 12px;
+  }
+  .arc-line { color: var(--dim); font-size: 15px; font-style: italic; text-align: center; margin: 16px auto; max-width: 44ch; }
+
+  .divider { height: 26px; }
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="topbar">
+    <div class="brand" id="brandBtn">AURA <span>ATLAS</span></div>
+    <div id="auraChip"><span class="lbl">AURA</span><span id="auraVal">0</span></div>
+  </div>
+  <div id="screen"></div>
+</div>
+
+<script src="content.js"></script>
+<script>
+(function () {
+  "use strict";
+  const C = window.AURA_CONTENT;
+  const $screen = document.getElementById("screen");
+  const $chip = document.getElementById("auraChip");
+  const $auraVal = document.getElementById("auraVal");
+  const SAVE_KEY = "auraAtlas.v1";
+
+  /* ---------------- state ---------------- */
+  let S = null;
+  function freshState() {
+    return {
+      screen: "title",
+      quizIdx: 0, quizTally: {},
+      archetype: null,
+      cityIdx: 0,          // next city to play
+      scenIdx: 0,
+      phase: "map",        // map | intro | scen | fb | citydone | final
+      pickedChoice: null,
+      aura: 0,
+      picks: {},           // cityId -> [{ci, aura, rank}]
+      done: []             // completed city ids
+    };
+  }
+  function save() { try { localStorage.setItem(SAVE_KEY, JSON.stringify(S)); } catch (e) {} }
+  function load() { try { return JSON.parse(localStorage.getItem(SAVE_KEY)); } catch (e) { return null; } }
+  function hasSave() { const s = load(); return s && s.screen !== "title"; }
+
+  /* ---------------- helpers ---------------- */
+  function fmt(n) { return (n > 0 ? "+" : n < 0 ? "−" : "") + Math.abs(n).toLocaleString("en-US"); }
+  function el(html) { const d = document.createElement("div"); d.innerHTML = html; return d; }
+  function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
+  function setCityTheme(city) {
+    document.documentElement.style.setProperty("--city", city ? city.color : "var(--accent)");
+    document.documentElement.style.setProperty("--accent", city ? city.color : "#f5c518");
+    document.documentElement.style.setProperty("--accent2", city ? city.color2 : "#ff6b9d");
+  }
+  function updateChip(show) {
+    $chip.classList.toggle("show", !!show);
+    $auraVal.textContent = fmt(S ? S.aura : 0);
+    $auraVal.style.color = S && S.aura < 0 ? "var(--bad)" : "var(--good)";
+  }
+  function bumpChip() {
+    $chip.classList.remove("bump"); void $chip.offsetWidth; $chip.classList.add("bump");
+  }
+  function choiceRank(scen, ci) {
+    // rank 0 = best, 1 = mid, 2 = worst by aura value
+    const order = scen.choices.map((c, i) => [c.aura, i]).sort((a, b) => b[0] - a[0]).map(p => p[1]);
+    return order.indexOf(ci);
+  }
+  const RANK_EMOJI = ["\u{1F7E9}", "\u{1F7E8}", "\u{1F7E5}"]; // 🟩 🟨 🟥
+  function maxAura() {
+    return C.cities.reduce((t, city) => t + city.scenarios.reduce((s, sc) => s + Math.max(...sc.choices.map(c => c.aura)), 0), 0);
+  }
+  function cityAura(cityId) {
+    return (S.picks[cityId] || []).reduce((t, p) => t + p.aura, 0);
+  }
+  function finalTitle() {
+    const pct = Math.max(0, S.aura) / maxAura() * 100;
+    for (const t of C.titles) if (pct >= t.min) return t;
+    return C.titles[C.titles.length - 1];
+  }
+
+  /* ---------------- render root ---------------- */
+  function render() {
+    if (S.screen !== "title") save();
+    window.scrollTo(0, 0);
+    $screen.innerHTML = "";
+    const inGame = S.screen === "game";
+    updateChip(inGame || S.screen === "final");
+    if (S.screen === "title") renderTitle();
+    else if (S.screen === "quiz") renderQuiz();
+    else if (S.screen === "archetype") renderArchetype();
+    else if (S.screen === "game") renderGame();
+    else if (S.screen === "final") renderFinal();
+  }
+
+  /* ---------------- title ---------------- */
+  function renderTitle() {
+    setCityTheme(null);
+    const v = el(`
+      <div class="screen">
+        <div id="titleArt">\u{1F30F}✈️</div>
+        <div class="kicker">A game about unlearning nice-guy brain</div>
+        <h1 class="display">AURA<br><span class="alt">ATLAS</span></h1>
+        <p class="sub">${esc(C.meta.tagline)}</p>
+        <div class="tourline">
+          ${C.cities.map(c => `<span class="stop">${c.flag} ${esc(c.name)}</span>`).join("")}
+        </div>
+        <button class="btn accent" id="startBtn">Begin the tour</button>
+        ${hasSave() ? '<button class="btn ghost" id="contBtn">Continue your trip</button>' : ""}
+        <p class="footnote">Free forever · no login, no ads, no tracking · saves in your browser</p>
+      </div>`);
+    v.querySelector("#startBtn").onclick = () => { S = freshState(); S.screen = "quiz"; render(); };
+    const cont = v.querySelector("#contBtn");
+    if (cont) cont.onclick = () => { S = load(); render(); };
+    $screen.appendChild(v);
+  }
+
+  /* ---------------- quiz ---------------- */
+  function renderQuiz() {
+    setCityTheme(null);
+    const q = C.quiz[S.quizIdx];
+    const v = el(`
+      <div class="screen">
+        <div class="qnum">CUSTOMS · QUESTION ${S.quizIdx + 1} / ${C.quiz.length}</div>
+        <div class="qtext">${esc(q.q)}</div>
+        <div id="qChoices"></div>
+        <p class="footnote">Answer honestly. The atlas already knows.</p>
+      </div>`);
+    const wrap = v.querySelector("#qChoices");
+    q.options.forEach((opt, i) => {
+      const b = document.createElement("button");
+      b.className = "choice";
+      b.innerHTML = `<span class="key">${i + 1}</span><span>${esc(opt.text)}</span>`;
+      b.onclick = () => {
+        S.quizTally[opt.arch] = (S.quizTally[opt.arch] || 0) + 1;
+        S.quizIdx++;
+        if (S.quizIdx >= C.quiz.length) {
+          let best = null, bestN = -1;
+          for (const a of Object.keys(C.archetypes)) {
+            const n = S.quizTally[a] || 0;
+            if (n > bestN) { bestN = n; best = a; }
+          }
+          S.archetype = best;
+          S.screen = "archetype";
+        }
+        render();
+      };
+      wrap.appendChild(b);
+    });
+    $screen.appendChild(v);
+  }
+
+  /* ---------------- archetype reveal ---------------- */
+  function renderArchetype() {
+    const a = C.archetypes[S.archetype];
+    const v = el(`
+      <div class="screen">
+        <div class="kicker" style="text-align:center">Diagnosis complete</div>
+        <div class="arch-card">
+          <div class="arch-emoji">${a.emoji}</div>
+          <div class="arch-name">${esc(a.name)}</div>
+          <div class="arch-tag">${esc(a.tag)}</div>
+          <p class="arch-desc">${esc(a.desc)}</p>
+        </div>
+        <div class="card" style="margin-bottom:16px">
+          <p style="font-size:15px;color:var(--dim)">${esc(C.meta.mission)}</p>
+        </div>
+        <button class="btn accent" id="flyBtn">Fly to ${C.cities[0].flag} ${esc(C.cities[0].name)}</button>
+      </div>`);
+    v.querySelector("#flyBtn").onclick = () => { S.screen = "game"; S.phase = "intro"; render(); };
+    $screen.appendChild(v);
+  }
+
+  /* ---------------- game (map / intro / scenario / feedback / citydone) ---------------- */
+  function renderGame() {
+    const city = C.cities[S.cityIdx];
+    setCityTheme(city || null);
+    if (S.phase === "map") renderMap();
+    else if (S.phase === "intro") renderIntro(city);
+    else if (S.phase === "scen") renderScenario(city, false);
+    else if (S.phase === "fb") renderScenario(city, true);
+    else if (S.phase === "citydone") renderCityDone(city);
+  }
+
+  function renderMap() {
+    setCityTheme(null);
+    const v = el(`
+      <div class="screen">
+        <div class="kicker">The itinerary</div>
+        <h1 class="display" style="font-size:clamp(34px,9vw,50px)">World<br>Tour</h1>
+        <div class="divider"></div>
+        <div id="cityList"></div>
+      </div>`);
+    const list = v.querySelector("#cityList");
+    C.cities.forEach((c, i) => {
+      const done = S.done.includes(c.id);
+      const isNext = i === S.cityIdx && !done;
+      const locked = i > S.cityIdx;
+      const b = document.createElement("button");
+      b.className = "city-row" + (locked ? " locked" : "") + (isNext ? " next" : "");
+      b.style.setProperty("--city", c.color);
+      b.innerHTML = `
+        <span class="flag">${c.flag}</span>
+        <span class="info">
+          <div class="cname">${esc(c.name)}</div>
+          <div class="ctag">${esc(c.tagline)} · ${esc(c.sub)}</div>
+        </span>
+        <span class="cstat">${done ? `<span class="aura-earned">${fmt(cityAura(c.id))}</span><br>cleared` : locked ? "\u{1F512}" : "next →"}</span>`;
+      if (isNext) b.onclick = () => { S.phase = "intro"; render(); };
+      list.appendChild(b);
+    });
+    $screen.appendChild(v);
+  }
+
+  function renderIntro(city) {
+    const v = el(`
+      <div class="screen">
+        <div class="cityhead">
+          <div class="bigflag">${city.flag}</div>
+          <div class="chapter">Chapter ${S.cityIdx + 1} of ${C.cities.length}</div>
+          <h2>${esc(city.name)}</h2>
+          <div class="tagline">“${esc(city.tagline)}” · ${esc(city.sub)}</div>
+        </div>
+        <div class="card intro-card">${esc(city.intro)}</div>
+        <div class="divider"></div>
+        <button class="btn accent" id="enterBtn">Enter the city</button>
+      </div>`);
+    v.querySelector("#enterBtn").onclick = () => { S.phase = "scen"; S.scenIdx = 0; render(); };
+    $screen.appendChild(v);
+  }
+
+  function renderScenario(city, showFb) {
+    const scen = city.scenarios[S.scenIdx];
+    const isBoss = S.scenIdx === city.scenarios.length - 1;
+    const dots = city.scenarios.map((_, i) =>
+      `<i class="${i < S.scenIdx ? "done" : i === S.scenIdx ? "cur" : ""}"></i>`).join("");
+    const v = el(`
+      <div class="screen">
+        <div class="scen-top">
+          <span class="scen-city">${city.flag} ${esc(city.name).toUpperCase()}</span>
+          <span class="dots">${dots}</span>
+        </div>
+        ${isBoss ? '<div class="boss-banner">☠️ BOSS SCENARIO</div>' : ""}
+        <div class="scen-title">${esc(scen.title)}</div>
+        <p class="setup">${esc(scen.setup)}</p>
+        <div class="prompt-lbl">What do you do?</div>
+        <div id="choices"></div>
+        <div id="feedback"></div>
+      </div>`);
+    const wrap = v.querySelector("#choices");
+    scen.choices.forEach((ch, i) => {
+      const b = document.createElement("button");
+      b.className = "choice";
+      if (showFb) {
+        b.disabled = true;
+        b.classList.add(i === S.pickedChoice ? "picked" : "faded");
+      }
+      b.innerHTML = `<span class="key">${i + 1}</span><span>${esc(ch.text)}</span>`;
+      if (!showFb) b.onclick = () => pick(city, scen, i);
+      wrap.appendChild(b);
+    });
+    if (showFb) {
+      const ch = scen.choices[S.pickedChoice];
+      const rank = choiceRank(scen, S.pickedChoice);
+      const cls = rank === 0 ? "good" : rank === 1 ? "mid" : "bad";
+      const last = S.scenIdx === city.scenarios.length - 1;
+      const fb = el(`
+        <div class="screen">
+          <div class="delta ${cls}">${fmt(ch.aura)}<small>AURA</small></div>
+          <p class="fb-text">${esc(ch.feedback)}</p>
+          <div class="fieldnote">
+            <div class="fn-head">\u{1F4D2} Field note</div>
+            <div class="fn-principle">${esc(scen.fieldNote.principle)}</div>
+            <div class="fn-source">${esc(scen.fieldNote.source)}</div>
+            <div class="fn-text">${esc(scen.fieldNote.text)}</div>
+          </div>
+          <button class="btn" id="nextBtn">${last ? "Complete " + esc(city.name) : "Next →"}</button>
+        </div>`);
+      fb.querySelector("#nextBtn").onclick = () => {
+        S.pickedChoice = null;
+        if (last) { S.phase = "citydone"; }
+        else { S.scenIdx++; S.phase = "scen"; }
+        render();
+      };
+      v.querySelector("#feedback").appendChild(fb);
+    }
+    $screen.appendChild(v);
+  }
+
+  function pick(city, scen, ci) {
+    const rank = choiceRank(scen, ci);
+    if (!S.picks[city.id]) S.picks[city.id] = [];
+    S.picks[city.id][S.scenIdx] = { ci, aura: scen.choices[ci].aura, rank };
+    S.aura += scen.choices[ci].aura;
+    S.pickedChoice = ci;
+    S.phase = "fb";
+    render();
+    bumpChip();
+  }
+
+  function renderCityDone(city) {
+    if (!S.done.includes(city.id)) S.done.push(city.id);
+    const picks = S.picks[city.id] || [];
+    const earned = cityAura(city.id);
+    const emojis = picks.map(p => RANK_EMOJI[p.rank]).join("");
+    const lastCity = S.cityIdx === C.cities.length - 1;
+    const next = C.cities[S.cityIdx + 1];
+    const perfect = picks.every(p => p.rank === 0);
+    const line = perfect ? city.clearPerfect : earned >= 0 ? city.clearGood : city.clearRough;
+    const v = el(`
+      <div class="screen">
+        <div class="result-hero">
+          <div class="kicker">Chapter ${S.cityIdx + 1} cleared</div>
+          <div style="font-size:52px">${city.flag}</div>
+          <div class="rank-name">${esc(city.name)}</div>
+          <div class="emoji-row">${emojis}</div>
+          <div class="big-aura ${earned >= 0 ? "good" : "bad"}">${fmt(earned)}</div>
+          <p class="rank-desc">${esc(line)}</p>
+        </div>
+        <div class="divider"></div>
+        <button class="btn accent" id="goBtn">${lastCity ? "See your final aura" : `Fly to ${next.flag} ${esc(next.name)}`}</button>
+      </div>`);
+    v.querySelector("#goBtn").onclick = () => {
+      if (lastCity) { S.screen = "final"; }
+      else { S.cityIdx++; S.phase = "intro"; S.scenIdx = 0; }
+      render();
+    };
+    $screen.appendChild(v);
+  }
+
+  /* ---------------- final ---------------- */
+  function shareText() {
+    const t = finalTitle();
+    const rows = C.cities.map(c => {
+      const picks = S.picks[c.id] || [];
+      return `${c.flag} ${picks.map(p => RANK_EMOJI[p.rank]).join("")} ${fmt(cityAura(c.id))}`;
+    }).join("\n");
+    const url = (location.protocol === "file:") ? "aura atlas" : location.origin + location.pathname;
+    return `AURA ATLAS \u{1F30F} — ${t.name}\n${rows}\nTOTAL: ${fmt(S.aura)} aura\nCan you survive the Aunty Gauntlet?\n${url}`;
+  }
+
+  function renderFinal() {
+    setCityTheme(null);
+    const t = finalTitle();
+    const a = C.archetypes[S.archetype] || Object.values(C.archetypes)[0];
+    const v = el(`
+      <div class="screen">
+        <div class="result-hero">
+          <div class="kicker">Tour complete · final reading</div>
+          <div class="big-aura ${S.aura >= 0 ? "good" : "bad"}">${fmt(S.aura)}</div>
+          <div style="color:var(--faint);font-size:11px;font-weight:800;letter-spacing:.22em">AURA</div>
+          <div class="rank-name">${esc(t.name)}</div>
+          <p class="rank-desc">${esc(t.desc)}</p>
+        </div>
+        <p class="arc-line">“${esc(a.arc)}”</p>
+        <div class="card breakdown" id="bd"></div>
+        <div class="kicker">Pass the aura on</div>
+        <div class="share-box" id="shareBox"></div>
+        <button class="btn accent" id="copyBtn">Copy your result</button>
+        <button class="btn ghost" id="againBtn">Run it back</button>
+        <p class="footnote">${esc(C.meta.outro)}</p>
+      </div>`);
+    const bd = v.querySelector("#bd");
+    C.cities.forEach(c => {
+      const picks = S.picks[c.id] || [];
+      const earned = cityAura(c.id);
+      bd.appendChild(el(`
+        <div class="bd-row">
+          <span class="bd-flag">${c.flag}</span>
+          <span class="bd-name">${esc(c.name)}</span>
+          <span class="bd-emojis">${picks.map(p => RANK_EMOJI[p.rank]).join("")}</span>
+          <span class="bd-aura ${earned >= 0 ? "pos" : "neg"}">${fmt(earned)}</span>
+        </div>`).firstElementChild);
+    });
+    v.querySelector("#shareBox").textContent = shareText();
+    v.querySelector("#copyBtn").onclick = (e) => {
+      const txt = shareText();
+      const done = () => { e.target.textContent = "Copied ✓ — now go post it"; };
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(done, () => fallbackCopy(txt, done));
+      else fallbackCopy(txt, done);
+    };
+    v.querySelector("#againBtn").onclick = () => {
+      try { localStorage.removeItem(SAVE_KEY); } catch (err) {}
+      S = freshState(); render();
+    };
+    $screen.appendChild(v);
+  }
+  function fallbackCopy(txt, done) {
+    const ta = document.createElement("textarea");
+    ta.value = txt; document.body.appendChild(ta); ta.select();
+    try { document.execCommand("copy"); done(); } catch (e) {}
+    document.body.removeChild(ta);
+  }
+
+  /* ---------------- keyboard ---------------- */
+  document.addEventListener("keydown", (e) => {
+    if (e.key >= "1" && e.key <= "9") {
+      const btns = $screen.querySelectorAll(".choice:not(:disabled)");
+      const b = btns[Number(e.key) - 1];
+      if (b) { b.click(); return; }
+    }
+    if (e.key === "Enter") {
+      const b = $screen.querySelector(".btn.accent, #nextBtn");
+      if (b && document.activeElement.tagName !== "BUTTON") b.click();
+    }
+  });
+
+  document.getElementById("brandBtn").onclick = () => {
+    if (S && S.screen !== "title" && confirm("Back to the title screen? Your progress is saved.")) {
+      save();
+      S = freshState();
+      render();
+    }
+  };
+
+  /* ---------------- boot ---------------- */
+  S = freshState();
+  render();
+})();
+</script>
+</body>
+</html>
