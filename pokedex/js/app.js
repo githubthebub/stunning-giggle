@@ -23,6 +23,8 @@ const els = {
   btnScan: $('#btn-scan'),
   btnFlip: $('#btn-flip'),
   btnTorch: $('#btn-torch'),
+  btnCameraRetry: $('#btn-camera-retry'),
+  cameraSelect: $('#camera-select'),
   fileInput: $('#file-input'),
   search: $('#search'),
   btnSearch: $('#btn-search'),
@@ -99,19 +101,63 @@ function bindTabs() {
 
 /* ---------------- camera & scanning ---------------- */
 
-async function startCameraSafe() {
+const CAMERA_PREF_KEY = 'carddex.camera.v1';
+
+function friendlyCameraError(e) {
+  const name = (e && e.name) || '';
+  if (name === 'NotAllowedError' || name === 'SecurityError') {
+    return 'Camera access is blocked for this site. Click the camera/lock icon in your browser’s address bar, allow the camera, then press Enable camera.';
+  }
+  if (name === 'NotFoundError' || name === 'OverconstrainedError') {
+    return 'No camera found on this device — scan a photo instead, or search by name.';
+  }
+  if (name === 'NotReadableError' || name === 'AbortError') {
+    return 'The camera is busy in another app (Zoom, Teams, OBS…?). Close it, then press Enable camera.';
+  }
+  return (e && e.message) || 'Camera unavailable.';
+}
+
+async function startCameraSafe(deviceId = null) {
+  const preferred = deviceId || localStorage.getItem(CAMERA_PREF_KEY) || null;
   try {
-    await scanner.startCamera(els.video);
+    try {
+      await scanner.startCamera(els.video, undefined, preferred);
+    } catch (err) {
+      // A remembered camera may have been unplugged — fall back to any camera.
+      if (!preferred) throw err;
+      localStorage.removeItem(CAMERA_PREF_KEY);
+      await scanner.startCamera(els.video);
+    }
     cameraOn = true;
     els.cameraOff.hidden = true;
     els.video.hidden = false;
     updateTorchButton();
+    fillCameraPicker();
   } catch (e) {
     cameraOn = false;
     els.video.hidden = true;
     els.cameraOff.hidden = false;
-    els.cameraOffMsg.textContent = `📵 ${e && e.message ? e.message : 'Camera unavailable.'}`;
+    els.cameraOffMsg.textContent = `📵 ${friendlyCameraError(e)}`;
   }
+}
+
+/** Laptops often have several webcams — offer a picker when they do. */
+async function fillCameraPicker() {
+  const cams = await scanner.listCameras();
+  if (cams.length < 2) {
+    els.cameraSelect.hidden = true;
+    return;
+  }
+  const active = scanner.activeCameraId();
+  els.cameraSelect.innerHTML = '';
+  cams.forEach((cam, i) => {
+    const o = document.createElement('option');
+    o.value = cam.deviceId;
+    o.textContent = cam.label || `Camera ${i + 1}`;
+    if (cam.deviceId === active) o.selected = true;
+    els.cameraSelect.appendChild(o);
+  });
+  els.cameraSelect.hidden = false;
 }
 
 let torchOn = false;
@@ -132,11 +178,13 @@ function bindScan() {
   els.btnFlip.addEventListener('click', async () => {
     if (busy) return;
     try {
+      try { localStorage.removeItem(CAMERA_PREF_KEY); } catch { /* quota */ }
       await scanner.flipCamera(els.video);
       cameraOn = true;
       els.cameraOff.hidden = true;
       els.video.hidden = false;
       updateTorchButton();
+      fillCameraPicker();
     } catch {
       setStatus('Could not switch camera.', 'error');
     }
@@ -154,22 +202,56 @@ function bindScan() {
       torchBusy = false;
     }
   });
-  els.fileInput.addEventListener('change', async () => {
+  els.fileInput.addEventListener('change', () => {
     const file = els.fileInput.files && els.fileInput.files[0];
     els.fileInput.value = '';
-    if (!file || busy) return;
-    busy = true;
-    try {
-      const canvas = await scanner.fileToCanvas(file);
-      showFreeze(canvas);
-      await identifyFrom(canvas, 'photo');
-    } catch (e) {
-      setStatus(e && e.message ? e.message : 'Could not scan that photo.', 'error');
-    } finally {
-      hideFreeze();
-      busy = false;
-    }
+    scanFile(file);
   });
+  els.btnCameraRetry.addEventListener('click', () => {
+    els.cameraOffMsg.textContent = '🎥 Asking for the camera…';
+    startCameraSafe();
+  });
+  els.cameraSelect.addEventListener('change', () => {
+    const id = els.cameraSelect.value;
+    try { localStorage.setItem(CAMERA_PREF_KEY, id); } catch { /* quota */ }
+    startCameraSafe(id);
+  });
+
+  // Desktop niceties: drop a card image onto the viewfinder, or paste one.
+  els.cameraBox.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    els.cameraBox.classList.add('dropping');
+  });
+  els.cameraBox.addEventListener('dragleave', () => els.cameraBox.classList.remove('dropping'));
+  els.cameraBox.addEventListener('drop', (e) => {
+    e.preventDefault();
+    els.cameraBox.classList.remove('dropping');
+    const file = [...((e.dataTransfer && e.dataTransfer.files) || [])].find((f) => f.type.startsWith('image/'));
+    if (file) scanFile(file);
+  });
+  document.addEventListener('paste', (e) => {
+    const file = [...((e.clipboardData && e.clipboardData.files) || [])].find((f) => f.type.startsWith('image/'));
+    if (file) scanFile(file);
+  });
+}
+
+async function scanFile(file) {
+  if (!file || busy) return;
+  if (!species.length) {
+    setStatus('⚠ Pokédex database not loaded — check your connection and reload.', 'error');
+    return;
+  }
+  busy = true;
+  try {
+    const canvas = await scanner.fileToCanvas(file);
+    showFreeze(canvas);
+    await identifyFrom(canvas, 'photo');
+  } catch (e) {
+    setStatus(e && e.message ? e.message : 'Could not scan that photo.', 'error');
+  } finally {
+    hideFreeze();
+    busy = false;
+  }
 }
 
 async function onScan() {

@@ -38,7 +38,9 @@
           <div id="scanline" hidden></div>
           <div id="camera-off" hidden>
             <p id="camera-off-msg">Camera unavailable.</p>
-            <label class="btn btn-primary" for="file-input">🖼 Scan a photo instead</label>
+            <button id="btn-camera-retry" class="btn btn-primary">🎥 Enable camera</button>
+            <label class="btn btn-ghost" for="file-input">🖼 Scan a photo instead</label>
+            <p class="camera-off-hint">…or drag a card photo anywhere on this box, or paste one (Ctrl+V)</p>
           </div>
         </div>
 
@@ -52,6 +54,7 @@
           <button id="btn-flip" class="btn btn-ghost" title="Switch camera">🔄 Flip</button>
           <button id="btn-torch" class="btn btn-ghost" title="Toggle flashlight" hidden>🔦</button>
         </div>
+        <select id="camera-select" aria-label="Choose camera" hidden></select>
 
         <div id="search-row">
           <input id="search" list="species-names" placeholder="…or type a Pokémon’s name" autocomplete="off"

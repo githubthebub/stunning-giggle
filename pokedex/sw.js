@@ -6,7 +6,7 @@
  * scanned before identify fast and repeat visits don't re-download Tesseract.
  */
 
-const SHELL_CACHE = 'carddex-shell-v1';
+const SHELL_CACHE = 'carddex-shell-v2';
 const RUNTIME_CACHE = 'carddex-runtime-v1';
 
 const SHELL = [

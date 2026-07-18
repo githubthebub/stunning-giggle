@@ -15,19 +15,69 @@ export function currentFacing() {
   return facing;
 }
 
-export async function startCamera(video, requestedFacing = facing) {
+const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+
+export async function startCamera(video, requestedFacing = facing, deviceId = null) {
   stopCamera(video);
   if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
     throw new Error('Camera needs HTTPS (or localhost) and a browser with getUserMedia.');
   }
   facing = requestedFacing;
-  stream = await navigator.mediaDevices.getUserMedia({
-    audio: false,
-    video: { facingMode: facing, width: { ideal: 1920 }, height: { ideal: 1080 } },
-  });
+  // Constraint ladder: preferred device/facing at high res, then anything.
+  const attempts = deviceId
+    ? [
+        { audio: false, video: { deviceId: { exact: deviceId }, width: { ideal: 1920 }, height: { ideal: 1080 } } },
+        { audio: false, video: { deviceId: { exact: deviceId } } },
+        { audio: false, video: true },
+      ]
+    : [
+        { audio: false, video: { facingMode: facing, width: { ideal: 1920 }, height: { ideal: 1080 } } },
+        { audio: false, video: true },
+      ];
+  let lastErr = null;
+  for (const constraints of attempts) {
+    try {
+      stream = await navigator.mediaDevices.getUserMedia(constraints);
+      lastErr = null;
+      break;
+    } catch (e) {
+      lastErr = e;
+      // Blocked permission won't change by relaxing constraints.
+      if (e && (e.name === 'NotAllowedError' || e.name === 'SecurityError')) break;
+      // Busy camera (another app has it) is often transient — one retry.
+      if (e && e.name === 'NotReadableError') {
+        await wait(900);
+        try {
+          stream = await navigator.mediaDevices.getUserMedia(constraints);
+          lastErr = null;
+          break;
+        } catch (e2) {
+          lastErr = e2;
+        }
+      }
+    }
+  }
+  if (!stream) throw lastErr || new Error('Camera unavailable.');
   video.srcObject = stream;
   await video.play();
   return stream;
+}
+
+/** All video input devices — labels populate once permission is granted. */
+export async function listCameras() {
+  if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) return [];
+  try {
+    return (await navigator.mediaDevices.enumerateDevices()).filter((d) => d.kind === 'videoinput');
+  } catch {
+    return [];
+  }
+}
+
+/** The deviceId of the camera currently streaming, if any. */
+export function activeCameraId() {
+  const track = stream && stream.getVideoTracks()[0];
+  const settings = track && track.getSettings ? track.getSettings() : null;
+  return (settings && settings.deviceId) || null;
 }
 
 export function stopCamera(video) {

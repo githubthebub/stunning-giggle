@@ -727,3 +727,35 @@ body {
 }
 
 #btn-torch.active { border-color: #ffd23e; color: #ffd23e; }
+
+/* ============ camera picker, retry & drag-drop ============ */
+
+#camera-select {
+  align-self: center;
+  max-width: 85%;
+  border-radius: 10px;
+  border: 1px solid var(--screen-edge);
+  background: var(--screen-panel);
+  color: var(--ink);
+  padding: 8px 12px;
+  font-size: .84rem;
+  font-family: inherit;
+}
+
+.camera-off-hint {
+  font-size: .74rem;
+  color: var(--ink-dim);
+  max-width: 26ch;
+  line-height: 1.5;
+}
+
+#camera-off-msg {
+  font-size: .86rem;
+  line-height: 1.55;
+  max-width: 30ch;
+}
+
+#camera-box.dropping {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(63,193,255,.35), inset 0 0 30px rgba(63,193,255,.2);
+}
