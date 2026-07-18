@@ -205,6 +205,7 @@ def apply_layer(frame, layer, t, cam=None, dur=6.0):
             if len(cache) > 40:
                 cache.clear()
             cache[ck] = spr_r
+        nh, nw = spr_r.shape[:2]  # cached size wins: avoids off-by-one vs fresh math
         x0i, y0i = int(xs - nw / 2), int(ys - nh)  # anchor: bottom-center
         fx0, fy0 = max(0, x0i), max(0, y0i)
         fx1, fy1 = min(W, x0i + nw), min(H, y0i + nh)
@@ -237,6 +238,7 @@ def apply_layer(frame, layer, t, cam=None, dur=6.0):
                 spr_r = spr
             cache.clear()
             cache[nw] = spr_r
+        nh, nw = spr_r.shape[:2]
         x0i, y0i = int(xs), int(ys)
         fx0, fy0 = max(0, x0i), max(0, y0i)
         fx1, fy1 = min(W, x0i + nw), min(H, y0i + nh)
