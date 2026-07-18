@@ -59,8 +59,7 @@
   }
 
   async function bridgePrompt() {
-    const yes = await G.gui.confirm(null, { title: 'The white bridge stretches toward a friend\'s world. Cross over?', yes: 'Cross over', no: 'Not yet' });
-    if (yes) await open('crossover');
+    await G.link.friendMenu();
   }
 
   // ---------- Dream World save bridge (the Entree Forest pipeline) ----------

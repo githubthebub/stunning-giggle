@@ -308,10 +308,10 @@
         { x: 3, y: 1 }, { x: 6, y: 1 }, { x: 9, y: 1 }, { x: 12, y: 1 },
         { x: 15, y: 1 }, { x: 4, y: 2 }, { x: 11, y: 2 }, { x: 16, y: 2 },
       ],
-      signs: [{ x: 15, y: 10, text: 'ENTRALINK\nThe realm between Unova and dreams.\nEast/west bridges: a friend\'s world. The glowing Entree: Game Sync.' }],
+      signs: [{ x: 15, y: 10, text: 'ENTRALINK\nThe realm between Unova and dreams.\nEast/west bridges: battle & trade with friends. The glowing Entree: Game Sync.' }],
       npcs: [
         { id: 'fennel_aide', x: 5, y: 8, dir: 'right', body: '#8f6fd6', name: 'Fennel\'s Aide', type: 'talk',
-          lines: ['This is the Entralink — the heart of Unova!', 'Touch the glowing Entree tree to Game Sync: tuck in a Pokémon and explore the Dream World.', 'Pokémon you befriend there wake up in the Entree Forest just north — walk up and catch them! In this forest, a Poké Ball never fails.', 'And the white bridges? They lead to other players\' worlds. Go say hi!'] },
+          lines: ['This is the Entralink — the heart of Unova!', 'Touch the glowing Entree tree to Game Sync: tuck in a Pokémon and explore the Dream World.', 'Pokémon you befriend there wake up in the Entree Forest just north — walk up and catch them! In this forest, a Poké Ball never fails.', 'The white bridges reach other players\' worlds! Cross one to BATTLE a friend\'s team or SEND them a Pokémon — just swap codes or links. Go make a friend!'] },
       ],
     },
 

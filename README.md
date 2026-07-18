@@ -91,11 +91,26 @@ Inside the Entralink map:
   physically wake up here, dozing under the trees. Battle them and, just like
   the real Entree Forest, **a Poké Ball never fails** — they join your party
   keeping their **Dream World Hidden Ability**.
-- **The white bridges** (east/west) — walk across to **cross over to a
-  friend's world**: share a Dream Link code / URL so a friend can visit your
-  dream and receive a gift Pokémon, or connect **live, peer-to-peer over
-  WebRTC** to visit each other and trade in real time.
+- **The white bridges** (east/west) — **play with a friend, no server needed.**
+  Cross a bridge to:
+  - **⚔ Battle a friend's team** — they hand you a battle code (or a
+    `…#battle=` link); you fight their *actual* team. Send yours back for a
+    rematch.
+  - **🎁 Send / 📥 receive a Pokémon** — export one of your Pokémon to a code /
+    link; a friend opens it and it joins their game with its moves & Ability.
+  - **🌙 Visit dreams** — the Dream World crossover (share your dream, gift a
+    Pokémon).
+
+  Because it's all encoded into text, it works anywhere — paste a code, or open
+  a link like `<game-url>#battle=UNOVA-B1…`. No accounts, no server.
 - **The warp pads** — return exactly where you were standing in Unova.
+
+### Playing with a friend (how the codes work)
+Open the Entralink → walk onto a white bridge → **Show my battle link**. Copy
+the code or the link and send it to a friend. When they open it (or paste the
+code into their own bridge menu), they battle your team. Gifts work the same
+way with a Pokémon code. It's asynchronous — a snapshot you can re-share
+anytime — not a live connection, so there's nothing to host.
 
 The full BW pipeline works end-to-end: befriend in the Dream World → it leaves
 the Dream World and waits in the Entree Forest → guaranteed catch → it's in

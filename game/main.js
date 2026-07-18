@@ -104,6 +104,9 @@
     }
     function continueSave() { const p = G.save.load(); if (p) launch(p); }
     function launch(p) { overlay.remove(); startGame(p); }
+
+    // Opened via a friend's battle/gift link + an existing save → jump right in.
+    if (G.link.pendingFromHash() && hasSave) setTimeout(continueSave, 60);
   }
 
   async function startGame(player) {
@@ -114,6 +117,9 @@
     await G.gui.fade('in', 200);
     G.world.enter(player.map, player.x, player.y, player.dir);
     game.updateHud();
+    // A friend's battle/gift link the game was opened with?
+    const pending = G.link.pendingFromHash();
+    if (pending) { setTimeout(() => G.link.handlePending(pending), 500); return; }
     if (player.champion) {
       G.gui.toast('Welcome back, Champion! Open the menu (Esc) → Entralink to visit the realm of dreams.', { duration: 4200, kind: 'good' });
     } else if (player.party.length === 0) {
