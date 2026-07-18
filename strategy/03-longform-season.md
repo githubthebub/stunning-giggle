@@ -11,15 +11,16 @@ doesn't count), and where the story lives.
 bulk-bin budget — then give the entire physical collection away.**
 
 The budget is the show's constraint engine. Frame it with the cleaner
-headline number (graft from the judge panel): **complete the entire dex for
+headline number: **complete the entire dex for
 1/10,000th of what his one card sold for** (~$1,650 ceiling), with a stretch
 goal the season chases in public: *can the core be done for under $100?*
-Bulk lots run ~$20–30 per 1,000 cards; the real question — how many *unique
+Bulk lots are assumed at ~$20–30 per 1,000 cards (an assumption, not a verified
+price — Phase 0 price-checks it before Episode 1 scripts it); the real question — how many *unique
 species* a bulk-bin budget can reach — is genuinely unknown, which makes it
 tension, not a lie. The season is honest about its own arithmetic on camera.
 
-**Two counters run at all times** (this is the pivot-proofing, per the judge
-panel's one unanimous warning):
+**Two counters run at all times** (this is the pivot-proofing — the design's
+one non-negotiable):
 
 1. **The Dex: x/1025** — the quest counter (dies if the app ever dies).
 2. **Career catches + the Community Dex %** — cumulative counters that survive
@@ -44,12 +45,12 @@ counter is a hostage; a season with two is a story with a subplot.
 
 | # | Episode | Engine |
 |---|---|---|
-| 1 | **"I Built a Real-Life Pokédex. Now I'm Catching All 1,025 Pokémon From Physical Cards."** — 5-min build story (Dani-lineage devlog cold-open: phone camera + on-device OCR + real capture rates) fused into the quest premiere: the first $50 bulk lot, scanned live. | The mission statement. This is the video the dormant Starter Squad-era subscribers get pinged with, and the Related-Video target for every launch-week short. |
+| 1 | **"Catching All 1,025 Pokémon From Real, Physical Cards — on a Bulk-Bin Budget."** (title names the quest and the cards, never the software — per [05](05-legal-survival.md)) — 5-min build story (Dani-lineage devlog cold-open: phone camera + on-device OCR + real capture rates) fused into the quest premiere: the first $50 bulk lot, scanned live. | The mission statement. This is the video the dormant Starter Squad-era subscribers get pinged with, and the Related-Video target for every launch-week short. |
 | 2 | **"The $50 Bulk Lot: how much of a Pokédex does it actually buy?"** — full scan-a-thon; the answer (species coverage %) is a genuine unknown. Plant the glitch. | Curiosity + honest arithmetic. |
 | 3 | **"Yard Sales Only."** — a week of weekend hunts, ceremony for every find. | Constraint episode; family-audience gold. |
 | 4 | **"Fake Card Court: The Feature-Length Docket."** — every submitted fake, ruled on; one good fake fools the scanner and gets a mock retrial. | Compilation of the best-performing short format; comment-driven. |
 | 5 | **"Trades Only: I start with one Rattata."** — barter ladder, in person, no money. | Underdog engine; infinitely memeable. |
-| 6 | **"The Viewer Commons Drive."** — viewers' spare bulk fills dex gaps; every card named after its sender; first Death Report if a save is lost. | Twitch-Plays-Pokémon collective-quest energy, asynchronous. |
+| 6 | **"The Viewer Commons Drive."** — viewers' spare bulk fills dex gaps; every card named after its sender; first Death Report if a save is lost (only once past the ~5k-sub participation gate). | Twitch-Plays-Pokémon collective-quest energy, asynchronous. |
 | 7+ | **"The Impossible Last Cards."** — the species that barely exist in card form (promo-onlys, ancient Japanese exclusives). Investigate, hunt, negotiate. | Scarcity tension WITHOUT paying scalper prices is itself the content: what the show refuses to do is the thesis. |
 | Finale | **"The Give-Away."** — the completed physical binder is handed, on camera, to a priced-out kid (partner with a local school/library/charity). *"He sold his for $16.5 million. We gave ours away."* — said once, quietly, and never again. | The single best costly-signal act available at any budget. The peak-end of the entire season. |
 
@@ -61,14 +62,14 @@ fight the episode's actual team; the weirdest winning team (Von Restorff: featur
 the weird, not the strong) gets featured next episode, and a weekly leaderboard
 lives in the pinned thread.
 
-**Sequencing discipline (the judge panel's sharpest finding):** participation
+**Sequencing discipline (non-negotiable):** participation
 formats *amplify* an audience; they cannot *bootstrap* one. The battle links are
 a B-plot garnish from day one but never load-bearing until the audience exists
 (~5k engaged subs). No hook may ever depend on a participation number you can't
 guarantee. The main pipeline — scan, ceremony, verdict — must always be filmable
 alone at a kitchen table, exactly as entertaining at 200 views as at 2M.
 
-## Milestone unlocks (goal-gradient, graft from the judge panel)
+## Milestone unlocks (goal-gradient)
 
 Public, pre-announced, app-roadmap unlocks tied to subscriber milestones:
 - **2,500 subs:** Shiny-odds display in the scanner UI

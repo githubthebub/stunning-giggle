@@ -9,16 +9,18 @@ built on the working product already in this repository.*
 
 You asked for something that competes with and surpasses Logan Paul's Ripit.
 Here is the uncomfortable truth first: **you cannot out-Ripit Ripit.** He launched it
-by selling a Pokémon card for $16,492,000 on a livestream. He has 23.6M subscribers,
-Whatnot distribution, and $1,720-a-spot breaks. On the scoreboard he plays on —
-*dollars* — you lose before you upload.
+by selling a Pokémon card for $16,492,000 on a livestream. He has one of the largest
+audiences on YouTube, Whatnot distribution, and break spots reported at $1,720 a seat.
+On the scoreboard he plays on — *dollars* — you lose before you upload.
 
 So we change the scoreboard. This is the oldest trick in behavioural science and the
 best one: **when you cannot win the game, change the denominator.**
 
-Ripit monetizes one emotion: *lottery hope*. Pay $1,720, watch the wheel, pray for
-the hit. It is a slot machine wearing a Pikachu costume, launched into a market where
-kids and parents are already priced out — average card prices up 46% in a year,
+Ripit sells the moment of the rip: live break spots reported at $1,720 a seat,
+digital packs backed by graded cards, the hope of the big hit. (Whether the breaking
+business is entertainment or something closer to a lottery is a question ESPN and a
+California lawsuit are already asking about the industry — we never need to ask it
+ourselves.) And it launched into a market where kids and parents are already priced out — average card prices up 46% in a year,
 $60 boxes reselling at $400, actual brawls at Costco, an actual stabbing at a GameStop.
 The hobby's dominant feeling right now is not joy. It is exclusion.
 
@@ -33,13 +35,15 @@ that went through the washing machine. It does not care what the card is worth.
 
 That is the entire strategy in one contrast:
 
-> **His product charges $1,720 to open a pack of hope.
+> **His platform sells break spots reported at $1,720 a seat.
 > Yours makes a kid's 25¢ card do something magical, for free.**
 
-One is a casino. The other is a toy. You never have to say his name angrily,
-you never have to call anything a scam (see the legal file — he sends
-cease-and-desists to critics), and you never have to spend a dollar to make the
-point. The contrast does all the work, politely.
+One you pay to play; the other is a toy you give away. You never have to say his
+name angrily, and you never call anything a scam, a casino, or gambling (see the
+rules of engagement in [01-positioning.md](01-positioning.md) — he has already sent
+a cease-and-desist to one critical PokéTuber, so the contrast must always be built
+from verifiable facts, never characterizations). You never have to spend a dollar
+to make the point. The contrast does all the work, politely.
 
 ## The scoreboard we play on
 
@@ -52,6 +56,9 @@ Registered: 148 / 1025        Dex fund: $47.32
 (His one card: $16,492,000)
 ```
 
+(That third line is launch seasoning only — it sunsets with every other Logan Paul
+reference by month 3. The first two lines are permanent.)
+
 On this scoreboard, a $16M Illustrator and a 30-cent Rattata are worth exactly the
 same thing: one entry. Money doesn't transfer to this scoreboard. That is the point.
 
@@ -63,20 +70,22 @@ same thing: one entry. Money doesn't transfer to this scoreboard. That is the po
    One person, one phone, one table. CollX has 100M+ card scans and Skylanders did
    $3B+ — "point a camera at a thing and it comes alive" is a proven human appetite.
 2. **The Starter Squad heritage.** Your dormant audience affinity is *funny* Pokémon
-   content — and that audience demonstrably resurrects (Ep. 11 pulled ~1M views in
-   under 2 days after a 4-year gap). No scanner app and no card-opening channel can
+   content — and that audience appears to resurrect on contact (Ep. 11 reportedly
+   pulled ~1M views in under 2 days after a 4-year gap — a search-summary figure,
+   not fully verified; see [06](06-appendix-evidence.md)). No scanner app and no card-opening channel can
    copy a comedy voice. This becomes a persistent character: **the Dex itself, a
    sarcastic narrator** (introduced by video 3, and — crucially — Nintendo-proof IP).
 3. **The wound is open and nobody is dressing it.** The biggest PokéTubers sell
-   openings and market prices. Deep Pocket Monster's 0→2M run proved
+   openings and market prices. Deep Pocket Monster's rise (verified: 100K subs in
+   year one, $50K+/month; ~2M subs by 2026 reported but unconfirmed) showed
    community-over-commerce is the fastest-growing posture in the niche. The
    priced-out family is the largest unserved audience in the hobby, and Ripit's
    launch made the contrast topical *for you, for free*.
 
 ## What surpassing Logan Paul actually looks like
 
-Not his numbers — his *position*. He is the hobby's croupier. You become the hobby's
-toymaker. In 12 months the win condition is: **the default reply under every Ripit
+Not his numbers — his *position*. He sells the hobby's most expensive seconds; you
+give the same thrill away free. You become the hobby's toymaker. In 12 months the win condition is: **the default reply under every Ripit
 jackpot clip is someone linking your channel.** Davids don't outgrow Goliaths;
 they make the audience see the giant differently. (Ryan Trahan's penny series —
 constraint-as-format — added 2.4M subs in 30 days against MrBeast's money cannon
@@ -91,15 +100,16 @@ constraint is the show.)
 | [02-shorts-playbook.md](02-shorts-playbook.md) | The flagship short beat-by-beat, 8 repeatable formats, packaging + loop engineering |
 | [03-longform-season.md](03-longform-season.md) | Season 1: "The Bulk-Bin Dex" — episode arc, the Dex character, Entralink B-plot, finale |
 | [04-90-day-plan.md](04-90-day-plan.md) | Pre-launch checklist, calendar, cadence, KPIs, decision gates, product tweaks |
-| [05-legal-survival.md](05-legal-survival.md) | The Nintendo risk ladder, the ten rules, the pre-built pivot, COPPA, the C&D script |
+| [05-legal-survival.md](05-legal-survival.md) | The Nintendo risk ladder, metadata hygiene, the pre-built pivot, COPPA, Content ID, the C&D script |
 | [06-appendix-evidence.md](06-appendix-evidence.md) | Every load-bearing fact with its source, and what we could NOT verify |
 
 ## The Ten Commandments (the whole strategy, distilled)
 
 1. **Never attack the man; contrast the products.** Verified facts and thank-you
-   register only. He litigates against critics; contrast is defamation-proof.
-2. **Sunset him anyway.** Logan Paul references are launch fuel, demoted to a
-   pinned-comment garnish by month 3. The formats must work with him deleted.
+   register only. He has already sent a cease-and-desist over one critical video;
+   contrast built on verifiable facts is defamation-proof.
+2. **Sunset him anyway.** Logan Paul references are launch fuel: demoted to pinned
+   comments by week 8, gone entirely by month 3. The formats must work with him deleted.
 3. **The trick, not the game, is the show.** Videos show *your physical cards* and
    the app's UI — the lowest rung on Nintendo's enforcement ladder. The full RPG
    stays a supporting asset, never the channel's face.
@@ -108,9 +118,10 @@ constraint is the show.)
    shield (money is a documented Nintendo escalation trigger).
 5. **Never pitch press.** Press is the other documented trigger. If press comes,
    fine; never invite it toward the *app* — point it at the *quest*.
-6. **Keep the trademark out of the metadata.** "Pokédex" lives inside videos as
-   commentary, never in the channel name, handle, or thumbnails. Series title:
-   **The People's Dex**.
+6. **Keep the trademark out of the metadata.** No Nintendo mark in the channel
+   name or handle, and the app is never called "Pokédex" in titles or thumbnails —
+   packaging says "the dex." (Nominative references to the cards themselves,
+   e.g. "Pokémon cards," are fine.) Series title: **The People's Dex**.
 7. **Build the escape hatch before you need it.** Original-creature asset pack,
    foreshadowed in-lore ("the Dex is glitching"), shipped as a scheduled season
    beat — so a takedown wounds the season instead of deleting it.

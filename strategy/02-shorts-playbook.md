@@ -19,16 +19,17 @@ compete. The two signals that matter most: **viewed-vs-swiped ≥75%** (the firs
 | 0:10–0:13 | Throw #2. Three shakes… CLICK. Confetti, chiptune fanfare, counter ticks: **Registered: 1/1025.** |
 | 0:13–0:15 | Hard cut to the battered card on the table — then the *next* card slides in and the VO starts the next hook mid-sentence before a hard cut to black. |
 
-**Loop engineering (upgrade from the judge panel):** don't just frame-match the
+**Loop engineering:** don't just frame-match the
 ending — **loop into the hook**. End every short by *starting* the next scan
 mid-sentence, then hard-cut so the replay lands on frame one. The rewatch then
 replays the hook itself, pushing APV past 100% — the strongest ranking signal.
 
-**Pinned comment (every short):** curiosity gap + link:
-*"Your card works too. Even fakes — the scanner roasts those. Watch me scan an
-entire $50 bulk lot →"* + native **Related Video** link to the current long-form
-episode. (Related Video is the highest-leverage native funnel tool; re-point it
-weekly at the newest episode so it never goes stale.)
+**Pinned comment (every short):** curiosity gap + link, templated per episode:
+*"Your card works too. Even fakes — the scanner roasts those. This week:
+[current episode's hook] →"* + native **Related Video** link to the current
+long-form episode. (Related Video is the highest-leverage native funnel tool;
+re-point it — and the comment text — weekly so the funnel never promises stale
+content. Until Episode 1 exists, point both at the channel trailer + Discord.)
 
 ## The Eight Formats (rotate to fight novelty decay)
 
@@ -40,7 +41,7 @@ Rotation matters: the scan-trick alone fatigues. Each format re-skins the same
 - **Why:** direct inversion of grading culture — the dex literally cannot see
   condition, so the "worthless" card gets the identical ceremony as a slab.
   Endowment effect: viewers re-value the beat-up cards they already own.
-- **Titles:** "This card survived a house fire. The Pokédex doesn't care." /
+- **Titles:** "This card survived a house fire. The dex doesn't care." /
   "My dog ate half this Eevee. Still counts." / "PSA would grade this a 1.
   The dex grades it CAUGHT."
 
@@ -57,12 +58,12 @@ Rotation matters: the scan-trick alone fatigues. Each format re-skins the same
 - **Hook:** price sticker first, always. A 25¢ yard-sale sticker in macro.
 - **Why:** Trahan's constraint-as-format. Anchoring: the famous dollar figures
   make 25 cents a headline. The anti-scalper emotional core.
-- **Titles:** "25¢ yard-sale card gets the full Pokédex ceremony" /
+- **Titles:** "25¢ yard-sale card gets the full dex ceremony" /
   "$16,492,000 card and this 25¢ card get the same dex entry" (sunset the LP
   framing by month 3 per the rules of engagement)
 
 ### 4. The Shiny Lottery (Day-N streak — capped)
-- **Hook:** *"Day 31 of scanning cards until the Pokédex gives me a shiny (1/64)."*
+- **Hook:** *"Day 31 of scanning cards until the dex gives me a shiny (1/64)."*
 - **Why:** purest variable-ratio loop on the platform, and the RNG is provably
   real. Day-N serialization manufactures return viewers.
 - **Discipline:** cap streaks at ~45 days per season and pre-bank episodes
@@ -78,7 +79,7 @@ Rotation matters: the scan-trick alone fatigues. Each format re-skins the same
   the submission queue. Start with your own childhood binder; move to
   viewer-submitted binder *photos* (digital submissions first — no mail
   logistics, no minors-mailing-property problem).
-- **Graft (from the judge panel):** name each registered Pokémon after the viewer
+- **Stakes upgrade:** name each registered Pokémon after the viewer
   who submitted it. Later (~5k subs), permadeath "Death Reports" mourn losses
   in-character — endowment + loss aversion at maximum power, held back until the
   audience exists.
@@ -106,7 +107,7 @@ Rotation matters: the scan-trick alone fatigues. Each format re-skins the same
 - **Titles:** "How my scanner reads a card my dog chewed" / "The math that
   decides if the ball breaks open"
 
-### 8. You Commented, I Coded (graft from the judge panel)
+### 8. You Commented, I Coded
 - **Hook:** cold-open on a screenshot of a real comment. *"You asked for
   flashlight mode. Built it in 48 hours."*
 - **Why:** the cheapest IKEA-effect engine available: commenting becomes a free
@@ -125,10 +126,14 @@ Rotation matters: the scan-trick alone fatigues. Each format re-skins the same
   Burned in, always. The HUD is the season's silent narrator.
 - **5th-grade scripting, ~15–30s lengths.** Sub-30s needs near-100% retention;
   don't pad.
-- **Metadata hygiene:** "Pokédex"/"Pokémon" never in the channel name or handle
-  (see [05-legal-survival.md](05-legal-survival.md)). In-video speech is fine.
-- **Every short gets:** the Related Video link (current episode), the pinned
-  curiosity-gap comment, and a Discord/email pointer in the description.
+- **Metadata hygiene:** no Nintendo mark in the channel name or handle, and the
+  app is never called "Pokédex" in titles or thumbnails — packaging says "the
+  dex." Nominative references to the cards ("Pokémon cards") in titles are fine;
+  full trademarks in *spoken* commentary inside videos are fine
+  (see [05-legal-survival.md](05-legal-survival.md)).
+- **Every short gets:** the Related Video link (current episode — or trailer +
+  Discord before Episode 1 exists), the pinned curiosity-gap comment, and a
+  Discord/email pointer in the description.
 
 ## Cadence
 

@@ -19,9 +19,10 @@ Nobody has connected that appetite to the physical cards people already own.
 Your Card Dex is precisely that connector.
 
 **The gap.** The PokéTuber top table (PokeRev ~3.3M, UnlistedLeaf ~2.75M,
-Leonhart ~2.3M, RealBreakingNate ~2M) is overwhelmingly *opening* content —
-new product, market value, hits. The one breakout of the era, Deep Pocket
-Monster (0→~2M subs in five years, $50K+/mo), won explicitly on
+Leonhart ~2.3M, RealBreakingNate ~2M — third-party counts, directional) is
+overwhelmingly *opening* content — new product, market value, hits. The one
+breakout of the era, Deep Pocket Monster (verified: 100K subs in year one,
+$50K+/mo; ~2M by 2026 reported but unconfirmed), won explicitly on
 "community over commerce" challenge/story formats. The lane marked
 *"for the people who can't afford the hobby anymore"* is empty.
 
@@ -30,23 +31,26 @@ Monster (0→~2M subs in five years, $50K+/mo), won explicitly on
 What we know, verified (sources in [06-appendix-evidence.md](06-appendix-evidence.md)):
 
 - Announced **Feb 15–16, 2026**, live around the Goldin auction of his PSA 10
-  Pikachu Illustrator — sold for **$16,492,000** with premium (bought 2021 for
-  ~$5.275M). The auction stream doubled as the launch ad.
+  Pikachu Illustrator — sold for **$16,492,000** with premium (acquired in a 2021
+  trade valued at ~$5.275M). The auction stream doubled as the launch ad.
 - The product: **rip digital packs backed by physical graded cards** (ship, vault,
   or instant sell-back) + **live breaks on Whatnot** with buy-ins reported at
   **$1,720 a spot**. Described in coverage as a subscription vault/marketplace.
   Logan Paul is Co-Founder and CMO.
 - The launch marketing beat: **he pulled a ~$45K Typhlosion on his own platform**
-  — the founder hitting jackpots on his own inventory, while viewers buy breaks
-  chasing the same moment.
-- The context he can't shake: launched while Liquid Marketplace investors (who
-  held tokens of *that same Pikachu card*) remained uncompensated; CryptoZoo
-  comparisons are constant in community coverage (the class action was dismissed
-  as "puffery" — he is legally cleared; reputationally, Kotaku's phrase was
-  *"credibility in the Pokémon community is non-existent"*).
-- The industry backdrop: box breaking itself is under live legal fire — a July
-  2025 suit alleges randomized breaks violate California's lottery ban; ESPN has
-  asked openly whether breaking is gambling.
+  — his own biggest pull, used as launch marketing. (One analyst's read: viewers
+  watch the founder's hits, then buy breaks chasing the same moment.)
+- The context he can't shake: launched amid the Liquid Marketplace investor
+  overhang — token holders of *that same Pikachu card* — and a reported OSC
+  investigation; CryptoZoo comparisons are constant in community coverage (the
+  class action was dismissed with prejudice as "puffery" — he is legally cleared;
+  reputationally, Kotaku's reported phrase was *"credibility in the Pokémon
+  community is non-existent"* — verify the primary article before ever quoting
+  it on camera).
+- The industry backdrop: box breaking itself is under live legal fire — a
+  lawsuit alleges randomized breaks violate California's lottery ban; ESPN has
+  asked openly whether breaking is gambling. (These are *their* framings, on the
+  record — the channel never makes the accusation itself.)
 - **The warning shot: he sent a cease-and-desist to PokéTuber RattlePokemon over
   a critical Ripit video.** This is why the strategy never argues, never accuses,
   never diagnoses. It only *contrasts*.
@@ -62,8 +66,8 @@ What we know, verified (sources in [06-appendix-evidence.md](06-appendix-evidenc
 3. **Anchoring, not attacking.** His public numbers ($16,492,000; $1,720) are
    borrowed as *anchors* that make your numbers (25¢, $0) into headlines.
    An anchor is only useful while it's famous — which is why:
-4. **The sunset clause.** LP/Ripit references headline hooks in weeks 1–6,
-   move to pinned comments by week 8, and by **month 3 the channel never says
+4. **The sunset clause.** LP/Ripit references headline hooks only in the first
+   four weeks of uploads, move to pinned comments by week 8, and by **month 3 the channel never says
    his name** — the formats must already stand alone. A channel whose identity
    is a callout curdles into clout-chasing, and the 20–28-year-old lapsed
    Starter Squad viewer is the demographic most allergic to it.
@@ -104,7 +108,7 @@ point is not spending.
 | Mechanism | Where it operates |
 |---|---|
 | **Axis change / reframing** | The spine: value re-denominated from price to registration. His only advantage (money) doesn't transfer to the new scoreboard. |
-| **Variable-ratio reinforcement** | Every catch: real capture rates, shake checks, balls that burst open, 1/64 shinies. The last 5 seconds of every short are a genuine, unscriptable slot-pull — *with no money at stake*, which is the ethical and positioning difference from Ripit. |
+| **Variable-ratio reinforcement** | Every catch: real capture rates, shake checks, balls that burst open, 1/64 shinies. The last 5 seconds of every short are a genuine, unscriptable random reveal — *with no money at stake*, the crucial positioning difference from paid breaks. |
 | **Costly signaling — inverted** | He signals with expenditure; you signal with labor and forgone profit: built solo, given away free, never monetized. The refusal to take money IS the credibility. |
 | **Endowment effect** | The ceremony retroactively raises the felt value of cards families already own — the direct emotional counter to being priced out. |
 | **IKEA effect** | Viewers who install the PWA and scan their own binder co-build their collection — converting viewers → users → evangelists. |

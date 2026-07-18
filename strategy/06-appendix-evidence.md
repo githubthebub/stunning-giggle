@@ -21,9 +21,7 @@ directional, not gospel.
 | C&D sent to PokéTuber RattlePokemon over a critical Ripit video | https://www.youtube.com/watch?v=Y3whx5-_FpQ ; https://www.youtube.com/watch?v=DMqqBlY5lxE |
 | Box-breaking industry under legal pressure: CA lottery-law suit vs Whatnot/Fanatics Live; ESPN gambling question | https://www.gamblingnews.com/news/sports-card-breaking-boom-faces-increasing-legal-pressure/ ; https://www.espn.com/mlb/story/_/id/49098946/could-box-breaking-considered-gambling-lottery |
 | CryptoZoo class action dismissed with prejudice Oct 2025 ("puffery"); $2.3M buyback conditioned on not suing | https://www.tmz.com/2025/10/30/logan-paul-judge-reaffirms-cryptozoo-lawsuit/ ; https://www.tubefilter.com/2025/11/06/logan-paul-cryptozoo-lawsuit-dismissed/ |
-| Kotaku: his "credibility in the Pokemon community is non-existent" | Kotaku, March 2026 (via research pass) |
 | "Collects in silence" — his stated current posture on cards | https://www.unilad.com/celebrity/news/logan-paul-silent-collecting-pokemon-15-million-record-732511-20260401 |
-| Prime sales down 42% YoY; Refresco $68M suit | https://www.tubefilter.com (2025-07-22) ; Food Dive (via research pass) |
 
 **Hedges:** Ripit's fees/odds/subscription pricing, GMV, user counts beyond a
 10k-waitlist claim — unverified (site partially unfetchable). No other Ripit
@@ -33,7 +31,12 @@ appears settled but terms are unverified — which is why the strategy's rule is
 prejudice; legally cleared" verbatim if CryptoZoo ever comes up. "Collects in
 silence" is a single-source quote — treat "he's absent from card content" as
 his *current* posture, not a permanent fact; the formats must survive his return
-(they do — that's the sunset clause).
+(they do — that's the sunset clause). Two widely-repeated claims surfaced only
+via search summaries without a captured primary URL: Kotaku's March 2026
+"credibility in the Pokémon community is non-existent" line, and Prime's
+42%-YoY sales decline / Refresco $68M suit — **verify the primary articles
+before ever using either on camera.** His subscriber counts are third-party
+tracker figures; the strategy deliberately avoids citing a number.
 
 ## The card economy
 
@@ -63,7 +66,13 @@ assumption as promising, not proven. Gen 5 remakes remain rumor as of Jul 2026.
 | Uranium: 1.5M downloads → links pulled after Nintendo DMCA in ~9 days | https://kotaku.com/pokemon-uranium-creators-pull-game-after-1-5-million-do-1785258831 |
 | Prism C&D days before release | https://en.wikipedia.org/wiki/Pok%C3%A9mon_Prism |
 | Relic Castle DMCA'd for hosting links, not files | https://kotaku.com/pokemon-fan-games-relic-castle-shutdown-dmca-reason-1851359618 |
-| PointCrow: video strikes incl. videos with no modded content | https://www.pcgamer.com/aggressive-nintendo-copyright-claims-on-youtube-push-breath-of-the-wild-multiplayer-modders-into-taking-down-mod/ |
+| PointCrow: 28 copyright flags → 2 strikes; some struck videos contained no modded content | https://www.pcgamer.com/aggressive-nintendo-copyright-claims-on-youtube-push-breath-of-the-wild-multiplayer-modders-into-taking-down-mod/ |
+| AM2R DMCA'd 2016; dev later hired by Moon Studios (the fan-project → career precedent) | https://www.vice.com/en/article/how-a-metroid-fan-turned-a-threatening-legal-letter-into-a-job-making-games/ |
+| Nintendo mass Game Jolt takedown (~379+ fan games); notice cited ad revenue on infringing pages | https://www.nintendolife.com/news/2021/01/nintendo_issues_mass_dmca_takedown_379_fan-made_games_forcibly_removed |
+| Pokémon Showdown: names/sprites, no world/ROM, donation-averse — untouched since 2011 | https://en.wikipedia.org/wiki/Pok%C3%A9mon_Showdown |
+| PokeMMO survives by never distributing Nintendo assets (users supply their own ROMs) | https://support.pokemmo.com/knowledgebase/article/installing-the-game |
+| Pokémon Essentials dev kit DMCA'd 2018 (shipped official tilesets/art) | https://www.pokecommunity.com/threads/was-the-essentials-wiki-taken-down.412947/ |
+| Pokémon Infinite Fusion: free, no crowdfunding, low press footprint — still updating 2025 | https://bulbapedia.bulbagarden.net/wiki/Pokemon_Infinite_Fusion |
 | ToastedShoes Palworld-Pokémon mod video DMCA'd in hours; original-creature re-release untouched | https://gamerant.com/palworld-pokemon-mod-dmca-takedowns-nintendo-copyright/ ; https://screenrant.com/palworld-pokemon-mod-back-legally-distinct-copyright-infringement/ |
 | PokéNational Geographic terminated 2026 via strikes — original animation, no downloads | https://www.nintendolife.com/news/2026/04/i-cant-fight-this-popular-pokemon-youtube-channel-is-no-more-after-nintendos-copyright-strikes |
 | McGowan (ex-TPC CLO): press + money are the triggers; "no one likes suing fans" | https://aftermath.site/pokemon-lawyer-cease-desist-fan-project-pikachu-movie/ |

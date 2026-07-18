@@ -9,7 +9,7 @@ we architect around enforcement reality.
 
 | Rung | Activity | Precedent |
 |---|---|---|
-| 1 | **Videos about/showing a fan game** | Mostly tolerated at scale (Radical Red/Infinite Fusion coverage is ubiquitous and monetized) — but strike-able at will: PointCrow (Zelda mod videos, 2 strikes), ToastedShoes (Palworld-Pokémon mod video DMCA'd in hours), Pokémon FPS dev (videos themselves claimed), and **PokéNational Geographic — terminated in 2026 via successive strikes for 100% original Blender animation with no download at all.** |
+| 1 | **Videos about/showing a fan game** | Mostly tolerated at scale (Radical Red/Infinite Fusion coverage remains widespread and monetized, with no documented systematic wave against it) — but strike-able at will: PointCrow (Zelda mod videos, 2 strikes), ToastedShoes (Palworld-Pokémon mod video DMCA'd in hours), Pokémon FPS dev (videos themselves claimed), and **PokéNational Geographic — terminated in 2026 via successive strikes for 100% original Blender animation with no download at all.** |
 | 2 | **Hosting/distributing the game or assets** | Pokémon Uranium (1.5M downloads → DMCA in 9 days), Pokémon Prism (C&D days before release), Pokémon Essentials (dev kit killed), **Relic Castle (killed for hosting LINKS, not files)**. This repo ships official artwork via PokéAPI = this rung. |
 | 3 | **Popularity/press** | Ex-TPC Chief Legal Officer Don McGowan, on the record: press coverage is what puts a project on legal's desk — *"the worst thing on earth is when your 'fan' project gets press."* |
 | 4 | **Monetization** | The documented engagement trigger: Nintendo's mass Game Jolt takedown cited ad revenue; McGowan said they'd wait to see if a Kickstarter funded, then engage. |
@@ -25,11 +25,10 @@ no press.**
 ## Our posture, by rung
 
 - **The channel films rung 1 only:** your physical cards + the app's UI +
-  commentary. The full RPG is never the channel's face (that was the
-  fatal flaw of the losing "Catch Rate" concept — a complete distributed
+  commentary. The full RPG is never the channel's face: a complete distributed
   Pokémon RPG is the exact object class with a 100% documented kill rate at
   scale, and "I rebuilt Pokémon in the browser" is the most press-magnetic
-  headline in this niche. Don't make it. Don't title it. Ever.).
+  headline in this niche. Don't make that video. Don't title it. Ever.
 - **Rung 2 exposure is this repo itself** (PokéAPI official artwork). Accepted
   as a WHEN-not-IF: mitigation is the pivot pack + local caching + the
   audience banked off-platform. The app stays exactly as it is otherwise:
@@ -45,15 +44,17 @@ no press.**
 
 ## Metadata hygiene
 
-- Channel name/handle: **no "Pokémon", no "Pokédex."** (The winning concept's
-  own name — "The People's Pokédex" — fails this test; the fix: channel brand
-  is yours, on-screen series title is **The People's Dex**.)
+- Channel name/handle: **no "Pokémon", no "Pokédex."** (Even the obvious series
+  name "The People's Pokédex" fails this test as a *channel* name; the fix:
+  channel brand is yours, on-screen series title is **The People's Dex**.)
 - "The Pokédex Nintendo never shipped" is spoken *inside* videos as commentary
   — never in titles, thumbnails, or descriptions where it reads as
   trademark-confusing packaging.
 - Unaffiliated-fan-project disclaimer: app footer, repo, every description.
 - Titles name the *cards* and the *quest*, not the software: "25¢ card, full
-  ceremony" not "my Pokémon fan game."
+  ceremony" not "my Pokémon fan game." Nominative references to the cards
+  ("Pokémon cards") in titles are fine; naming the app "Pokédex" in packaging
+  is not — packaging calls it "the dex."
 
 ## The pre-built pivot (the escape hatch, built before the fire)
 
