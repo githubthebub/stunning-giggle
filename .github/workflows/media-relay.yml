@@ -18,14 +18,19 @@ jobs:
           mkdir -p /tmp/relay
           cd /tmp/relay
           python3 "$GITHUB_WORKSPACE/.github/workflows/relay_fetch.py" "$GITHUB_WORKSPACE/contest/assets/manifest.json"
-      - name: Publish as temporary release asset
+      - name: Push assets to orphan branch
+        run: |
+          cd "$GITHUB_WORKSPACE"
+          git config user.name "media-relay"
+          git config user.email "relay@localhost"
+          git checkout --orphan media-relay-assets
+          git rm -rf --quiet . || true
+          cp /tmp/relay/files/* .
+          git add -A
+          git commit -m "relay assets (temporary transfer branch)"
+          git push -f origin media-relay-assets
+      - name: Clean up old release relay
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          cd /tmp/relay
           gh release delete media-relay --cleanup-tag -y -R "$GITHUB_REPOSITORY" || true
-          sleep 3
-          gh release create media-relay assets.zip --prerelease \
-            --title "media relay (temporary)" \
-            --notes "Temporary transfer of AI-generated contest assets into the build environment. Safe to delete." \
-            -R "$GITHUB_REPOSITORY" --target "$GITHUB_SHA"
