@@ -34,11 +34,12 @@ You are not "launching a game." You are giving your channel a *machine* that con
 
 ## 3. Ship it (15 minutes, today)
 
-Hosting is **GitHub Pages** — free, HTTPS, no maintenance. This repo already auto-deploys.
+Hosting is **GitHub Pages** — free, HTTPS, no maintenance. This repo already auto-deploys; there's just a one-time unlock because the Pages environment only trusts the branch that first deployed it.
 
-1. Merge this branch (or push it — the Pages workflow is wired to deploy it).
-2. Your game is live at: `https://githubthebub.github.io/stunning-giggle/aura-atlas/`
-3. Play it start to finish on your **phone** (that's where 90% of players will be).
+1. **One-time unlock (10 seconds):** repo **Settings → Environments → github-pages → Deployment branches and tags** → add `claude/diaspora-psychology-game-anb6qi` (or set it to "All branches"). *Alternative: merge this branch into `claude/pokemon-dreamworld-jcu1u5`, which is already allowlisted — no settings change needed.*
+2. **Deploy:** Actions tab → "Deploy to GitHub Pages" → **Re-run** the failed run (or push any commit to this branch).
+3. Your game is live at: `https://githubthebub.github.io/stunning-giggle/aura-atlas/`
+4. Play it start to finish on your **phone** (that's where 90% of players will be).
 4. Optional but recommended: mirror it on **itch.io** (free) — zip the `aura-atlas` folder, upload as an HTML game, set price to $0. itch.io has built-in discovery traffic for exactly this kind of game.
 5. Optional, the *only* money you might ever spend: a domain (~$10/year). Something like `auraatlas.game` or `playauraatlas.com`. Point it at GitHub Pages in repo Settings → Pages. Do this only after the game proves itself.
 
