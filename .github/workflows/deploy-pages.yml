@@ -1,0 +1,36 @@
+name: Deploy to GitHub Pages
+
+# The whole repo is a static site: the RPG at /, the Dream World at
+# /dreamworld.html, and the Card Dex at /pokedex/. Pages serves it over
+# HTTPS, which is exactly what the Card Dex camera needs on phones.
+#
+# One-time setup: in the repo's Settings → Pages, set Source to
+# "GitHub Actions" (the default GITHUB_TOKEN cannot enable Pages itself).
+on:
+  push:
+    branches: [claude/pokemon-dreamworld-jcu1u5]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+      - id: deployment
+        uses: actions/deploy-pages@v4

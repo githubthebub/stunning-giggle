@@ -19,6 +19,9 @@ npm start        # serves on http://127.0.0.1:4173
 
 Open the printed URL. Progress saves automatically to your browser.
 
+- **RPG:** `http://127.0.0.1:4173/`
+- **Card Dex** (scan your real trading cards): `http://127.0.0.1:4173/pokedex/`
+
 - **Move:** Arrow keys / WASD  ·  **Interact / Confirm:** Z / Space / Enter  ·
   **Cancel:** X  ·  **Menu:** Esc  ·  on-screen touch controls on mobile.
 
@@ -100,6 +103,58 @@ your game with its Hidden Ability.
 
 The Dream World is also playable on its own at **`/dreamworld.html`**.
 
+## 📇 Card Dex — scan your real Pokémon cards
+
+Open **`/pokedex/`** and hold a real Pokémon trading card up to your camera —
+the Card Dex reads the card's name right in your browser (Tesseract.js OCR,
+no server, no API key), looks the Pokémon up on [PokéAPI](https://pokeapi.co),
+and shows a full Pokédex entry: official artwork, types, dex flavor text,
+base stats, height/weight, even its cry. Then **throw a ball** and try to
+catch it into your collection — saved in your browser, with catch dates and
+duplicate counts, working toward all **1025** species.
+
+### 🌐 Play it anywhere
+
+The repo ships a GitHub Actions workflow that publishes everything to
+**GitHub Pages** on every push to the default branch. One-time setup: in the
+repo's **Settings → Pages**, set **Source** to **"GitHub Actions"** — then
+play at `https://<owner>.github.io/<repo>/pokedex/` (and the RPG at the site
+root). Pages serves over **HTTPS, so the camera works on your phone** — no
+local server needed. The Card Dex is also a **PWA**: open it on your phone,
+"Add to Home Screen", and it launches full-screen like a real Pokédex, with
+the app shell, sprites, and OCR engine cached for instant repeat scans.
+
+### 🎮 Catching is a real game
+
+- Every species uses its **real capture rate** from the games — a Caterpie
+  is nearly a sure thing, Mewtwo will fight the ball.
+- Throws run classic **shake checks**: the ball drops, wobbles up to three
+  times… and can **burst open**. Each escape raises your odds a little
+  (a pity ramp), so nothing is unwinnable.
+- **Ball tiers unlock as your career catch count grows**: Poké Ball from the
+  start, Great Ball at 10, Ultra Ball at 25, and the never-miss Master Ball
+  at 60. Live catch odds are shown on every ball.
+- **✨ Shinies!** Every wild encounter has a 1/64 shiny chance — shiny
+  artwork, a golden banner, and a permanent sparkle in your dex.
+- Chiptune-style **sound effects** (WebAudio, no assets) and confetti for
+  new registrations.
+
+### 🔍 Four ways in
+
+- **📷 Scan** — live camera with a card-shaped guide (needs `localhost` or
+  HTTPS for camera access), plus a 🔦 flashlight toggle on phones that
+  support it. The scanner reads the name strip first, then the whole card,
+  and fuzzy-matches against every species — misreads like "Chorizard",
+  glued suffixes like "Charizardex", split names like "Mr. / Mime", and the
+  "Evolves from …" trap are all handled.
+- **🖼 Photo** — no camera? Scan a photo of the card instead (on phones this
+  opens the camera app).
+- **🔎 Search** — or just type a name with autocomplete.
+- **📕 Pokédex** — your caught collection: progress bar, sprite grid,
+  ×N duplicate badges, shiny sparkles, first-caught dates, and Release.
+
+If a scan is ambiguous you get "did you mean?" chips instead of a wrong catch.
+
 ## 🎨 Notes
 
 - **Sprites:** cute procedural monster art renders instantly, then transparently
@@ -133,6 +188,18 @@ game/               # the RPG
   entralink.js      # the portal into the Dream World
   main.js           # boot, title, scene manager, game loop
 js/                 # the Dream World (data, sprites, minigame, garden, crossover, …)
+pokedex/            # Card Dex — point your camera at a real card, catch it
+  index.html        # the Pokédex device UI
+  pokedex.css       # red-shell Pokédex styling
+  manifest.webmanifest, sw.js, icon.svg   # PWA: installable + offline cache
+  js/scanner.js     # camera, torch, frame capture, preprocessing, Tesseract OCR
+  js/matcher.js     # OCR noise → species name fuzzy matching
+  js/game.js        # catch mechanics: capture rates, shake checks, balls, shinies
+  js/sfx.js         # WebAudio chiptune sound effects
+  js/api.js         # PokéAPI client (species list, entries)
+  js/storage.js     # the caught collection (localStorage)
+  js/app.js         # scan / entry / throw / collection UI
+.github/workflows/  # deploy-pages.yml — publishes the site to GitHub Pages
 ```
 
 Sweet dreams, Champion. 🌙

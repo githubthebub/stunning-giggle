@@ -43,17 +43,34 @@ const server = http.createServer((req, res) => {
       return res.end('Bad request');
     }
 
-    fs.stat(filePath, (err, stat) => {
-      if (err || !stat.isFile()) {
-        res.writeHead(404, { 'Content-Type': 'text/plain' });
-        return res.end('404 Not Found');
-      }
-      const ext = path.extname(filePath).toLowerCase();
+    const send = (fileToSend) => {
+      const ext = path.extname(fileToSend).toLowerCase();
       res.writeHead(200, {
         'Content-Type': MIME[ext] || 'application/octet-stream',
         'Cache-Control': 'no-cache',
       });
-      fs.createReadStream(filePath).pipe(res);
+      fs.createReadStream(fileToSend).pipe(res);
+    };
+    const notFound = () => {
+      res.writeHead(404, { 'Content-Type': 'text/plain' });
+      res.end('404 Not Found');
+    };
+
+    fs.stat(filePath, (err, stat) => {
+      if (!err && stat.isDirectory()) {
+        // Serve <dir>/index.html; redirect first so relative URLs resolve.
+        if (!urlPath.endsWith('/')) {
+          res.writeHead(301, { Location: urlPath + '/' });
+          return res.end();
+        }
+        const indexPath = path.join(filePath, 'index.html');
+        return fs.stat(indexPath, (err2, stat2) => {
+          if (err2 || !stat2.isFile()) return notFound();
+          send(indexPath);
+        });
+      }
+      if (err || !stat.isFile()) return notFound();
+      send(filePath);
     });
   } catch (e) {
     res.writeHead(500);
@@ -63,5 +80,6 @@ const server = http.createServer((req, res) => {
 
 server.listen(PORT, HOST, () => {
   console.log('\n  ✨  Pokémon Dream World is running');
-  console.log(`  ➜  http://${HOST}:${PORT}\n`);
+  console.log(`  ➜  RPG:      http://${HOST}:${PORT}`);
+  console.log(`  ➜  Card Dex: http://${HOST}:${PORT}/pokedex/\n`);
 });
