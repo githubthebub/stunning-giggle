@@ -246,6 +246,26 @@ def theme_title(dur, seed=0):
     return S.reverb(x, 0.32, decay=2.4, seed=seed + 8, tilt=3200)
 
 
+def theme_after(dur, seed=0):
+    """After the slam: relief that trembles. Sparse felt piano fragments with
+    long gaps, a barely-there pad, everything swimming in reverb."""
+    bpm = 48
+    frag1 = [(0.0, 1.5, D4), (1.5, 0.5, F4), (2.0, 2.5, A4)]
+    frag2 = [(0.0, 1.0, E4), (1.0, 3.0, D4)]
+    notes = []
+    t = 2.0
+    g = np.random.default_rng(seed)
+    k = 0
+    while t * (60.0 / bpm) < dur - 6:
+        frag = frag1 if k % 2 == 0 else frag2
+        notes += [(st + t, nd, m + (12 if g.random() < 0.25 else 0)) for st, nd, m in frag]
+        t += g.uniform(6, 10)
+        k += 1
+    lead = _seq(notes, S.piano, dur, bpm=bpm, vel=0.42, seed=seed + 1)
+    pads = _chord_pads([(0, 999, [D4 - 24, A4 - 12])], dur, bpm, vel=0.3, cutoff=480, seed=seed + 2)
+    return S.reverb(lead + pads, 0.5, decay=3.6, seed=seed + 3, tilt=2400)
+
+
 def sting_dread(dur=4.0, seed=0):
     n = int(dur * S.SR)
     buf = np.zeros((n, 2), dtype=np.float32)
@@ -275,6 +295,7 @@ def _wrap(fn):
 CUES = {
     'silence': silence,
     'theme_title': _wrap(theme_title),
+    'theme_after': _wrap(theme_after),
     'theme_legend': _wrap(theme_legend),
     'theme_village': _wrap(theme_village),
     'theme_duty': _wrap(theme_duty),

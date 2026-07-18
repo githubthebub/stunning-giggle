@@ -113,6 +113,11 @@ def compile_timeline():
                         at = cursor
                 subs.append({'at': round(at, 2), 'dur': round(d, 2), 'text': text, 'speaker': spk})
                 cursor = at + d + 0.18
+            KEY_LINES = ('the light. go', 'i do.')
+            joined = ' '.join(ev['text'].lower() for ev in subs)
+            if any(k in joined for k in KEY_LINES):
+                dur = round(dur + 1.2, 2)
+                sh['camera'] = 'push_in'
             shots.append({
                 'scene': n, 'idx': i, 'template': tpl,
                 'desc': sh.get('description', ''), 'camera': sh.get('camera', 'hold'),
@@ -196,6 +201,43 @@ def compile_timeline():
         else:
             continue
         break
+    # ---- emotional pass ----
+    slam_abs = None
+    sc8_end = None
+    for sc in scenes:
+        if sc['n'] == 8:
+            sc8_end = sc['end']
+            for sh in sc['shots']:
+                if sh.get('fx_special'):
+                    slam_abs = sh['start'] + max(0.4, min(1.2, sh['dur'] * 0.25))
+    def _cut_window(spans_in, w0, w1):
+        out = []
+        for s in spans_in:
+            if s[1] <= w0 or s[0] >= w1:
+                out.append(s)
+                continue
+            if s[0] < w0:
+                out.append((s[0], w0, s[2]))
+            if s[1] > w1:
+                out.append((w1, s[1], s[2]))
+        return out
+    if slam_abs is not None:
+        w0 = slam_abs - 42.0
+        spans = _cut_window(spans, w0, sc8_end)
+        spans.append((slam_abs + 0.2, slam_abs + 4.8, 'sting_wonder'))
+        spans.append((slam_abs + 4.2, sc8_end + 2.0, 'theme_after'))
+        beds.append((w0, slam_abs - 16.0, 'heartbeat', 0.5))
+        beds.append((slam_abs - 16.0, slam_abs - 0.3, 'heartbeat', 0.95))
+        shots_fx.append((slam_abs - 1.2, 'silence_drop', 1.0))
+    for sc in scenes:
+        if sc['n'] != 7:
+            continue
+        for sh in sc['shots']:
+            joined = ' '.join(ev['text'].lower() for ev in sh['subs'])
+            if 'the light' in joined and 'go' in joined:
+                spans = _cut_window(spans, sh['start'] - 8.0, sc['end'])
+                break
+    spans.sort()
     total = t_abs
     tl = {'title': beat.get('episode_title', 'SALTGLASS'), 'total': round(total, 2),
           'scenes': scenes, 'music_spans': spans, 'beds': beds, 'oneshots': shots_fx}
