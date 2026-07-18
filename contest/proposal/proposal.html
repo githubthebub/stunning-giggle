@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>THE RIVER REMEMBERS — Feature Film Proposal</title>
+<style>
+  @font-face { font-family:"Cormorant"; src:url("fonts/Cormorant.ttf"); }
+  @font-face { font-family:"Marcellus"; src:url("fonts/Marcellus.ttf"); }
+  @font-face { font-family:"Inter"; src:url("fonts/Inter.ttf"); }
+  @font-face { font-family:"NotoJP"; src:url("fonts/NotoSansJP-Regular.ttf"); }
+  @font-face { font-family:"NotoSerifJP"; src:url("fonts/NotoSerifJP.ttf"); }
+  @font-face { font-family:"NotoDeva"; src:url("fonts/NotoSansDevanagari.ttf"); }
+  @font-face { font-family:"NotoTamil"; src:url("fonts/NotoSansTamil.ttf"); }
+
+  :root{
+    --indigo:#141a35; --indigo2:#1e2749; --gold:#c9a24b; --gold2:#e8c97a;
+    --verm:#b3402e; --cream:#f7f2e9; --teal:#2a8f8a; --ink:#22242e; --grey:#6d6f7a;
+  }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html,body{ background:#fff; }
+  body{ font-family:"Inter","NotoJP","NotoDeva","NotoTamil",sans-serif; color:var(--ink); font-size:10.5pt; line-height:1.55; }
+  @page { size: A4; margin: 0; }
+  .page{ width:210mm; height:296mm; page-break-after:always; position:relative; overflow:hidden; background:var(--cream); }
+  .page.dark{ background:var(--indigo); color:#e9e6dd; }
+
+  /* ---------- COVER ---------- */
+  .cover{ background:#0d1128; color:#f4efe4; }
+  .cover .art{ position:absolute; inset:0; }
+  .cover .art img{ width:100%; height:100%; object-fit:cover; object-position:center 20%; opacity:.92; }
+  .cover .scrim{ position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(13,17,40,.55) 0%, rgba(13,17,40,0) 22%, rgba(13,17,40,0) 46%, rgba(13,17,40,.86) 78%, #0d1128 96%); }
+  .cover .top{ position:absolute; top:11mm; left:0; right:0; text-align:center; letter-spacing:.32em; font-size:8pt; color:#e8dfc8; text-transform:uppercase; }
+  .cover .block{ position:absolute; left:0; right:0; bottom:12mm; text-align:center; padding:0 18mm; }
+  .cover h1{ font-family:"Cormorant",serif; font-weight:600; font-size:46pt; letter-spacing:.06em; color:#fff;
+    text-shadow:0 2px 24px rgba(0,0,0,.55); margin-bottom:1mm; }
+  .cover .jp{ font-family:"NotoSerifJP",serif; font-size:14pt; letter-spacing:.5em; color:var(--gold2); margin-bottom:.5mm; }
+  .cover .hi{ font-family:"NotoDeva"; font-size:10pt; color:#d8cfae; margin-bottom:6mm; }
+  .cover .rule{ width:42mm; height:1px; background:linear-gradient(90deg,transparent,var(--gold),transparent); margin:4mm auto; }
+  .cover .logline{ font-family:"Cormorant",serif; font-style:italic; font-size:13.5pt; line-height:1.5; color:#f1ead4; max-width:150mm; margin:0 auto 5mm; }
+  .cover .meta{ font-size:8pt; letter-spacing:.18em; text-transform:uppercase; color:#bfb589; }
+
+  /* ---------- COMMON ---------- */
+  .pad{ padding:16mm 17mm 18mm; }
+  .kicker{ font-size:8pt; letter-spacing:.3em; text-transform:uppercase; color:var(--verm); margin-bottom:2mm; }
+  .dark .kicker{ color:var(--gold2); }
+  h2{ font-family:"Cormorant",serif; font-weight:600; font-size:24pt; line-height:1.1; margin-bottom:1.5mm; }
+  h2 .jp{ font-family:"NotoSerifJP",serif; font-size:11pt; color:var(--grey); letter-spacing:.3em; margin-left:4mm; }
+  .dark h2 .jp{ color:#9aa0b8; }
+  .lede{ font-family:"Cormorant",serif; font-size:13pt; font-style:italic; color:#454a5e; margin-bottom:5mm; }
+  .dark .lede{ color:#c8cadb; }
+  .rule{ height:1px; background:linear-gradient(90deg,var(--gold),transparent); margin:4mm 0 6mm; }
+  p{ margin-bottom:3mm; text-align:justify; }
+  .cols{ column-count:2; column-gap:8mm; }
+  .footer{ position:absolute; bottom:7mm; left:17mm; right:17mm; display:flex; justify-content:space-between;
+    font-size:7pt; letter-spacing:.2em; text-transform:uppercase; color:#9a9483; }
+  .dark .footer{ color:#767d9a; }
+  .imgcap{ font-size:7.5pt; color:var(--grey); letter-spacing:.06em; margin-top:1.5mm; }
+  .dark .imgcap{ color:#9aa0b8; }
+  .art-full{ width:100%; border-radius:2mm; box-shadow:0 3mm 8mm rgba(20,26,53,.18); }
+  .tag{ display:inline-block; border:1px solid var(--gold); color:#8a7430; border-radius:999px; padding:.5mm 3mm; font-size:7.5pt; letter-spacing:.12em; text-transform:uppercase; margin:0 1mm 1mm 0; }
+  .dark .tag{ color:var(--gold2); }
+
+  table.deity{ width:100%; border-collapse:collapse; font-size:9pt; margin:3mm 0; }
+  table.deity th{ font-size:7.5pt; letter-spacing:.18em; text-transform:uppercase; color:#8a7430; text-align:left; padding:1.5mm 2mm; border-bottom:1.2px solid var(--gold); }
+  table.deity td{ padding:1.6mm 2mm; border-bottom:.5px solid #d9d2c0; }
+  table.deity td.jp{ font-family:"NotoJP"; }
+  table.deity td.dv{ font-family:"NotoDeva"; }
+
+  .factbox{ background:#fff; border:1px solid #e2dbc6; border-left:3px solid var(--gold); border-radius:1.5mm; padding:4mm 5mm; margin:4mm 0; font-size:9.5pt; }
+  .factbox b{ color:var(--verm); }
+
+  /* character pages */
+  .char-head{ display:flex; align-items:baseline; gap:5mm; }
+  .char-head .name{ font-family:"Cormorant",serif; font-size:26pt; font-weight:600; }
+  .char-head .role{ font-family:"Cormorant",serif; font-style:italic; font-size:12pt; color:var(--verm); }
+  .profile{ display:flex; gap:6mm; margin-top:4mm; }
+  .profile .l{ flex:1.35; } .profile .r{ flex:1; }
+  ul.dossier{ list-style:none; font-size:9.3pt; }
+  ul.dossier li{ padding:1.4mm 0; border-bottom:.5px solid #ddd6c2; }
+  ul.dossier b{ display:inline-block; min-width:24mm; color:#8a7430; font-weight:600; font-size:8pt; letter-spacing:.08em; text-transform:uppercase; }
+
+  .beat{ margin-bottom:4mm; }
+  .beat h3{ font-family:"Cormorant",serif; font-size:14.5pt; color:var(--indigo); margin-bottom:1mm; }
+  .dark .beat h3{ color:var(--gold2); }
+  .beat .n{ color:var(--verm); font-family:"Cormorant",serif; font-style:italic; margin-right:2mm; }
+
+  .board-grid{ display:grid; grid-template-columns:1fr; gap:4mm; }
+  .board-grid .cell img{ width:100%; height:70mm; object-fit:cover; border-radius:1.5mm; box-shadow:0 2mm 6mm rgba(20,26,53,.25); }
+  .wingrid{ display:grid; grid-template-columns:1fr 1fr; gap:3mm; margin-top:4mm; }
+  .wingrid .win{ margin:0; font-size:8.6pt; padding:3mm 4mm; }
+
+  .swatches{ display:flex; gap:2mm; margin:2mm 0 4mm; }
+  .sw{ flex:1; height:9mm; border-radius:1mm; position:relative; }
+  .sw span{ position:absolute; bottom:-4.2mm; left:0; font-size:6.5pt; color:var(--grey); letter-spacing:.05em; }
+  .dark .sw span{ color:#9aa0b8; }
+
+  .music-line{ display:flex; align-items:center; gap:3mm; margin:2mm 0; font-size:9.3pt; }
+  .music-line .dot{ width:2.6mm; height:2.6mm; border-radius:50%; background:var(--gold); flex:none; }
+
+  .win{ background:rgba(201,162,75,.08); border:1px solid rgba(201,162,75,.45); border-radius:2mm; padding:4mm 5mm; margin-bottom:3mm; }
+  .win b{ color:var(--gold2); }
+</style>
+</head>
+<body>
+
+<!-- ================= PAGE 1 · COVER ================= -->
+<div class="page cover">
+  <div class="art"><img src="img/keyvisual.jpg"></div>
+  <div class="scrim"></div>
+  <div class="top">An Original Anime Feature Film · India × Japan</div>
+  <div class="block">
+    <h1>THE RIVER REMEMBERS</h1>
+    <div class="jp">河は憶えている</div>
+    <div class="hi" style="font-family:'NotoDeva'">नदी को याद है &nbsp;·&nbsp; <span style="font-family:'NotoTamil'">நதிக்கு நினைவிருக்கிறது</span></div>
+    <div class="rule"></div>
+    <div class="logline">When a grieving veena prodigy in Chennai and a reluctant shrine heir in Enoshima
+      strike the same note 6,000&nbsp;kilometres apart, they wake a fading goddess with two names —
+      <b>Saraswati</b> in India, <b>Benzaiten</b> in Japan — and have one festival night to finish
+      the song she has carried between their countries for 1,300 years.</div>
+    <div class="meta">Feature Film · ≈110 min · 2D Hand-drawn · Submission: Proposal + Concept Teaser (Video)</div>
+  </div>
+</div>
+
+<!-- ================= PAGE 2 · SYNOPSIS ================= -->
+<div class="page">
+  <div class="pad">
+    <div class="kicker">Synopsis · 梗概</div>
+    <h2>One song, two shores<span class="jp">あらすじ</span></h2>
+    <div class="lede">A goddess is a song the world keeps singing. When the world stops — she vanishes.</div>
+    <div class="rule"></div>
+    <div class="cols">
+      <p><b>Meera Iyer</b>, seventeen, was Chennai's brightest young veena prodigy — until her
+      grandmother and guru died mid-lesson, and the music stopped with her. Now she edits lo-fi
+      beats at 2&nbsp;a.m., built around one secret sample: her grandmother's last recording.</p>
+      <p>Six thousand kilometres away, on the island of Enoshima, <b>Kaito Amamiya</b> practises
+      the biwa only because someone must — he is the reluctant heir to a tiny shrine of Benzaiten,
+      and what he truly loves is field recording: the sound of places no one listens to.</p>
+      <p>One night his recording of the shrine at dawn meets her grandmother's veena inside a
+      2&nbsp;a.m. mix — and the two sounds <b>resonate</b>. In both countries at once, a goddess
+      wakes: <b>Saras</b> — Saraswati to Meera, Benzaiten to Kaito — the goddess of music, rivers
+      and knowledge who crossed the sea with the sutras 1,300 years ago, and who has been fading
+      ever since the world stopped listening.</p>
+      <p>Worse — something has been feeding on the forgetting. <b>Mauna, the Silence</b>, is
+      swallowing sound itself: a drumbeat here, a temple bell there. Saras will be next.</p>
+      <p>A girl who won't play, a boy who never wanted to, and a goddess who is forgetting her own
+      name have one festival season to compose the <b>Bridge Raga</b> — a single melody built from
+      the notes their two musics share — and perform it where her invisible river once flowed.
+      They cannot even speak each other's language. But music doesn't ask.</p>
+      <p>On <b>Vasant Panchami</b>, at the meeting of three rivers, they will teach the silence
+      to listen.</p>
+    </div>
+    <div class="factbox">
+      <b>Format.</b> Theatrical feature, ≈110 minutes · 2D hand-drawn with digital compositing ·
+      Dual-language conceit (Tamil/English × Japanese; the leads can only truly "speak" through music) ·
+      Audience: the worldwide theatrical anime audience of music-driven, mythology-rooted films — and
+      both home markets at once. Series expansion possible (12 × 24 min).
+    </div>
+    <div class="footer"><span>The River Remembers · Proposal</span><span>02</span></div>
+  </div>
+</div>
+
+<!-- ================= PAGE 3 · THE REAL BRIDGE ================= -->
+<div class="page dark">
+  <div class="pad">
+    <div class="kicker">Why India × Japan · この物語の必然</div>
+    <h2 style="color:#fff">The gods already made this crossing</h2>
+    <div class="lede">The film's fantasy is real history: in the 8th century, Hindu deities sailed
+      to Japan inside Buddhist sutras — and stayed.</div>
+    <div class="rule"></div>
+    <div class="cols" style="column-count:2;">
+      <p>Every Japanese child knows Benzaiten, goddess of music and water, enshrined on islands like
+      Enoshima. Few remember she is <b>Saraswati</b>, who crossed from India with the sutras and the
+      lutes. She is not the only traveller:</p>
+      <table class="deity">
+        <tr><th>India</th><th></th><th>Japan</th></tr>
+        <tr><td class="dv">Saraswati सरस्वती</td><td>→</td><td class="jp">Benzaiten 弁才天</td></tr>
+        <tr><td class="dv">Lakshmi लक्ष्मी</td><td>→</td><td class="jp">Kichijōten 吉祥天</td></tr>
+        <tr><td class="dv">Ganesha गणेश</td><td>→</td><td class="jp">Kangiten 歓喜天</td></tr>
+        <tr><td class="dv">Yama यम</td><td>→</td><td class="jp">Enma 閻魔</td></tr>
+        <tr><td class="dv">Brahma ब्रह्मा</td><td>→</td><td class="jp">Bonten 梵天</td></tr>
+      </table>
+      <p>Our premise simply takes this literally: <b>the goddess has lived stretched between two
+      shores for thirteen centuries.</b> In India her river — the Saraswati — vanished millennia
+      ago; myth says it still flows unseen, joining the Ganga and Yamuna at Triveni Sangam. In
+      Japan her islands still ring with bells. A goddess split between a river no one can see and
+      bells no one hears.</p>
+      <p>Even the villain is bilingual by accident of history: <i>silence</i> is
+      <b>mauna</b> (मौन) in Sanskrit and <b>muon</b> (無音) in Japanese. Two cultures,
+      one enemy, almost one word.</p>
+      <p>Her iconography carries the film's music: Saraswati holds the <b>veena</b>; Benzaiten holds
+      the <b>biwa</b>. Two lutes, one goddess — a duet waiting 1,300 years to be played. And both
+      musical worlds meet on <b>pentatonic ground</b>: raga Hamsadhvani ("the swan's cry" — the swan
+      is her mount) on the Indian shore, the miyako-bushi scale on the Japanese shore.</p>
+      <p><b>Cross-culture is not this film's costume. It is the premise, the villain, the music,
+      and the ending.</b></p>
+    </div>
+    <img class="art-full" src="img/card_title.jpg" style="margin-top:4mm">
+    <div class="imgcap">Title treatment — the river of light between a swan and a dragon.</div>
+    <div class="footer"><span>The River Remembers · Proposal</span><span>03</span></div>
+  </div>
+</div>
+
+<!-- ================= PAGE 4 · MEERA ================= -->
+<div class="page">
+  <div class="pad">
+    <div class="kicker">Character · キャラクター 01</div>
+    <div class="char-head"><span class="name">MEERA IYER</span><span class="role">17 · Chennai — "the girl who edits what she cannot play"</span></div>
+    <img class="art-full" style="margin-top:4mm" src="img/meera_sheet.jpg">
+    <div class="imgcap">Character sheet — main design. Teal kurti over jeans; her grandmother's swan-headed Saraswati veena; headphones worn like armour.</div>
+    <div class="profile">
+      <div class="l">
+        <p>A Carnatic prodigy who stopped playing the day her grandmother-guru died mid-lesson.
+        Grief made her precise and sarcastic; music became something she <i>edits</i> instead of
+        something she <i>plays</i>. Her 2&nbsp;a.m. lo-fi tracks are secretly built on one sample —
+        her grandmother's last recording — looped so it never has to end.</p>
+        <p><b>Arc.</b> From editing the past to playing the present: Meera's journey is learning
+        that a tradition is not a recording to preserve but a river to step into. The film's
+        emotional climax is not the goddess's rescue — it is Meera improvising, live,
+        past the point where her grandmother's lesson was cut short.</p>
+      </div>
+      <div class="r">
+        <ul class="dossier">
+          <li><b>Instrument</b> Saraswati veena (heirloom, swan-head scroll)</li>
+          <li><b>Skill</b> Carnatic ragas; beat-making; absolute pitch</li>
+          <li><b>Flaw</b> Perfectionism as armour; won't improvise</li>
+          <li><b>Detail</b> Tunes the veena nightly — without playing it</li>
+          <li><b>Languages</b> Tamil, English; zero Japanese</li>
+          <li><b>VA direction</b> Dry wit over a wound</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer"><span>The River Remembers · Proposal</span><span>04</span></div>
+  </div>
+</div>
+
+<!-- ================= PAGE 5 · KAITO ================= -->
+<div class="page">
+  <div class="pad">
+    <div class="kicker">Character · キャラクター 02</div>
+    <div class="char-head"><span class="name">KAITO AMAMIYA</span><span class="role">17 · Enoshima — "the boy who records what no one hears"</span></div>
+    <img class="art-full" style="margin-top:4mm" src="img/kaito_sheet.jpg">
+    <div class="imgcap">Character sheet — main design. Shrine-attendant whites and asagi-blue hakama over sneakers; field recorder in hand, biwa on back.</div>
+    <div class="profile">
+      <div class="l">
+        <p>Heir to a tiny Benzaiten shrine, Kaito practises the biwa the way you take out the
+        rubbish: dutifully, on Tuesdays. His real devotion is field recording — he believes places
+        have voices, and his archive has names like <i>"#47: the vending machine that hums in E."</i>
+        One dawn he uploads the sound of the shrine before anyone wakes. Meera finds it.</p>
+        <p><b>Arc.</b> From performing duty to meaning it: Kaito wants to leave for a sound-engineering
+        school in Tokyo, and the film lets that wish stay true — what changes is that he finally
+        <i>hears</i> what his family has been keeping alive. The boy who archives sounds becomes the
+        first person in decades to give the goddess a new one.</p>
+      </div>
+      <div class="r">
+        <ul class="dossier">
+          <li><b>Instrument</b> Old lacquered biwa (shrine heirloom)</li>
+          <li><b>Skill</b> Field recording; mixing; patience</li>
+          <li><b>Flaw</b> Politeness as distance; never says "I want"</li>
+          <li><b>Detail</b> Bows to rooms after recording them</li>
+          <li><b>Languages</b> Japanese; textbook English fragments</li>
+          <li><b>VA direction</b> Quiet, wry; thaws by degrees</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer"><span>The River Remembers · Proposal</span><span>05</span></div>
+  </div>
+</div>
+
+<!-- ================= PAGE 6 · SARAS & MAUNA ================= -->
+<div class="page">
+  <div class="pad">
+    <div class="kicker">Character · キャラクター 03 &amp; 04</div>
+    <div class="char-head"><span class="name">SARAS</span><span class="role">the goddess with two names</span></div>
+    <img class="art-full" style="margin-top:3mm" src="img/saras_sheet.jpg">
+    <div class="imgcap">Saraswati / Benzaiten as she survives today: a girl-shaped remainder. Sari drape × kimono sleeves; swan and dragon; edges dissolving into notes.</div>
+    <div class="profile" style="margin-top:3mm">
+      <div class="l">
+        <p>Imperious, funny, secretly terrified. She remembers the veena's fingering but not her
+        mother-river's name; she speaks in a tumble of Tamil, Japanese and Sanskrit and acts as the
+        leads' translator — when she is strong enough. She strengthens only when her two shores
+        <i>sound together</i>. Little Tsugumi's strawberry-candy offering makes her cry.</p>
+      </div>
+      <div class="r">
+        <p><b>MAUNA</b> (मौन / 無音) — the Silence. Not a villain: an accumulation. Every unplayed
+        record, every language dying, every lesson cut short, pooled into an elegant faceless figure
+        whose face is a single white disc — <i>a whole rest, waiting</i>. It cannot be destroyed,
+        only answered: the final chord of the film includes its rests. In the last shot, it is
+        sitting in the audience.</p>
+      </div>
+    </div>
+    <img class="art-full" src="img/board_mauna.jpg" style="width:72%; display:block; margin:0 auto;">
+    <div class="imgcap" style="text-align:center">Concept board — Mauna in the abandoned concert hall: melancholy, not horror.</div>
+    <div class="footer"><span>The River Remembers · Proposal</span><span>06</span></div>
+  </div>
+</div>
+
+<!-- ================= PAGE 7 · STORY ================= -->
+<div class="page dark">
+  <div class="pad">
+    <div class="kicker">Story · 物語構成</div>
+    <h2 style="color:#fff">Three acts, one raga</h2>
+    <div class="rule"></div>
+    <div class="cols">
+      <div class="beat"><h3><span class="n">Act I</span>Two Notes</h3>
+        <p>A dried riverbed in Rajasthan; wind where a river sang. Chennai: Meera's 2&nbsp;a.m. mixes.
+        Enoshima: Kaito's dawn recording. The sounds meet in her headphones and <b>resonate</b> — and a
+        goddess wakes in both places at once, flickering like a signal split between two receivers.
+        She conscripts them, cackling and translating: <i>"You made me remember my hands. Now help
+        me remember the rest."</i></p></div>
+      <div class="beat"><h3><span class="n">Act II</span>Learning to Listen</h3>
+        <p>Saras strengthens only when her two shores sound together — so they practise across time
+        zones, phone propped on a water tank, a shrine bell as a metronome. Meera must <i>play</i>
+        (not edit); Kaito must <i>mean it</i> (not perform). Meanwhile the Silence spreads: a Chennai
+        kutcheri goes mute mid-beat; a Kamakura festival stops ringing. An India–Japan friendship
+        festival brings Meera's school ensemble to Enoshima — the meeting is a comedy of bows and
+        namastes with no shared language. On the shrine steps, their first true duet makes Saras
+        solid enough to touch. Then Mauna swallows the festival's sound entirely — and Saras with
+        it, mid-laugh.</p></div>
+      <div class="beat"><h3><span class="n">Act III</span>The Bridge Raga</h3>
+        <p>The only place thin enough to reach her: <b>Triveni Sangam</b>, where the invisible river
+        joins the visible two — on <b>Vasant Panchami</b>, Saraswati's own festival day. On the
+        confluence at dusk, veena and biwa play the Bridge Raga into absolute silence: the film's
+        sound drops to nothing, and we watch two teenagers play what we cannot hear. The turn is not
+        defeating silence but <b>including</b> it — the rests become part of the music, Mauna takes
+        its seat as the audience it always was, and the invisible river ignites with light. Saras
+        returns — not as she was, but as what they made: one goddess, two names, one song.</p></div>
+      <div class="beat"><h3><span class="n">Coda</span></h3>
+        <p>Neither of them speaks the other's language yet. They don't need to. Over the credits:
+        the "Two Shores" arrangement — her beats, his field recordings, both lutes.</p></div>
+    </div>
+    <div class="footer"><span>The River Remembers · Proposal</span><span>07</span></div>
+  </div>
+</div>
+
+<!-- ================= PAGE 8 · IMAGE BOARD I ================= -->
+<div class="page dark">
+  <div class="pad">
+    <div class="kicker">Image Boards · イメージボード I</div>
+    <h2 style="color:#fff">The world before the song</h2>
+    <div class="board-grid" style="margin-top:4mm">
+      <div class="cell"><img src="img/still_s1_riverbed.jpg">
+        <div class="imgcap">PROLOGUE — the dried Saraswati. "Long ago, a river sang here."</div></div>
+      <div class="cell"><img src="img/still_s4_strings.jpg">
+        <div class="imgcap">RESONANCE — her grandmother's veena answers a sound from 6,000 km away.</div></div>
+      <div class="cell"><img src="img/still_s6_silence.jpg">
+        <div class="imgcap">MAUNA — the Silence takes a Chennai festival mid-drumbeat; colour drains, petals freeze.</div></div>
+    </div>
+    <div class="footer"><span>The River Remembers · Proposal</span><span>08</span></div>
+  </div>
+</div>
+
+<!-- ================= PAGE 9 · IMAGE BOARD II ================= -->
+<div class="page dark">
+  <div class="pad">
+    <div class="kicker">Image Boards · イメージボード II</div>
+    <h2 style="color:#fff">Two shores, meeting</h2>
+    <div class="board-grid" style="margin-top:4mm">
+      <div class="cell"><img src="img/still_s2_meera.jpg">
+        <div class="imgcap">CHENNAI — golden hour on the rooftop: the first note Meera plays in a year.</div></div>
+      <div class="cell"><img src="img/still_s3_kaito.jpg">
+        <div class="imgcap">ENOSHIMA — blue hour at the shrine: Kaito's one dutiful note, ringing longer than it should.</div></div>
+      <div class="cell"><img src="img/still_s7_meeting.jpg">
+        <div class="imgcap">THE MEETING — namaste, bow, repeat; Saras, invisible to everyone else, in tears laughing.</div></div>
+    </div>
+    <div class="footer"><span>The River Remembers · Proposal</span><span>09</span></div>
+  </div>
+</div>
+
+<!-- ================= PAGE 10 · MUSIC ================= -->
+<div class="page">
+  <div class="pad">
+    <div class="kicker">Music &amp; Sound Design · 音楽設計</div>
+    <h2>The score is the plot<span class="jp">音楽＝物語</span></h2>
+    <div class="lede">A film about listening must be composed, not just scored. Three sound-worlds, one bridge.</div>
+    <div class="rule"></div>
+    <div class="cols">
+      <p><b>The Bridge Raga.</b> The Indian shore sings raga <b>Hamsadhvani</b> — "the cry of the
+      swan", the swan being Saraswati's own mount. The Japanese shore answers in the
+      <b>miyako-bushi</b> scale of festival flutes and biwa songs. Both are pentatonic; the score
+      builds its central melody on the tones the two scales share, then teaches each side to borrow
+      the other's colours — the film's thesis in musical form. The duet the entire story tunes
+      toward is <b>veena × biwa</b>: two descendants of one iconography, separated for thirteen
+      centuries.</p>
+      <p><b>Three layers.</b></p>
+      <div class="music-line"><span class="dot"></span><span><b>Classical:</b> veena, biwa, tanpura, mridangam, taiko, nadaswaram, shakuhachi — played straight, with respect.</span></div>
+      <div class="music-line"><span class="dot"></span><span><b>Contemporary:</b> Meera's lo-fi beats and Kaito's field recordings — the kids' own languages, sampled into the score itself.</span></div>
+      <div class="music-line"><span class="dot"></span><span><b>Silence:</b> composed rests. Mauna's scenes remove sound layer by layer — the audience learns to dread, then to hear, quiet.</span></div>
+      <p><b>The set pieces.</b> A time-zone practice montage cut to a shared metronome; the shrine-steps
+      first duet where Saras becomes touchable; the festival massacre where a full matsuri is muted
+      in four seconds; and a finale performed <i>into</i> absolute silence — the theatre itself goes
+      quiet with the characters, and the music returns note by note, rests included.</p>
+      <p><b>Model.</b> A Carnatic-fusion palette in the spirit of India's great film composers
+      meeting the intimate electronic scoring tradition of modern Japanese animation — one score,
+      commissioned as a genuine India–Japan collaboration, with songs recorded in Tamil, Japanese
+      and Sanskrit.</p>
+    </div>
+    <div class="factbox"><b>Sound-first direction.</b> Key scenes are boarded to playback, not scored
+    after picture — the animation breathes with the raga's tala cycles and the biwa's silences,
+    in the tradition of the best music-driven anime.</div>
+    <div class="footer"><span>The River Remembers · Proposal</span><span>10</span></div>
+  </div>
+</div>
+
+<!-- ================= PAGE 11 · VISUAL STYLE ================= -->
+<div class="page">
+  <div class="pad">
+    <div class="kicker">Visual Direction · 美術設計</div>
+    <h2>Two palettes, one light<span class="jp">色彩設計</span></h2>
+    <div class="rule"></div>
+    <div class="swatches">
+      <div class="sw" style="background:#e0a63a"><span>turmeric</span></div>
+      <div class="sw" style="background:#b3402e"><span>vermilion</span></div>
+      <div class="sw" style="background:#2a8f8a"><span>sea-green</span></div>
+      <div class="sw" style="background:#d98b7e"><span>dusty rose</span></div>
+      <div class="sw" style="background:#1e2749"><span>indigo</span></div>
+      <div class="sw" style="background:#7fb6c9"><span>asagi</span></div>
+      <div class="sw" style="background:#c9cdd4"><span>moon silver</span></div>
+      <div class="sw" style="background:#caa24b"><span>river gold</span></div>
+    </div>
+    <div class="cols" style="margin-top:6mm">
+      <p><b>India in warmth, Japan in coolness — and the goddess in the gold both share.</b>
+      Chennai plays in turmeric, vermilion and sea-green with kolam geometry in its light; Enoshima
+      in indigo, asagi and moon silver with seigaiha waves in its clouds. Sound is visible:
+      music moves through both worlds as ink-in-water ripples — gold for the veena, indigo for the
+      biwa — so that when the two colours braid, the audience <i>sees</i> the duet. Mauna is the
+      absence of all of it: desaturation, stillness, one white disc.</p>
+      <p><b>Craft lineage.</b> Direction that trusts small gestures and diegetic sound, in the
+      lineage of Naoko Yamada; painted skies and light that make geography romantic, in the lineage
+      of Makoto Shinkai; musical sequences that melt realism when the raga takes over, in the
+      lineage of Masaaki Yuasa. Hand-drawn 2D characters over painterly watercolour-gouache
+      backgrounds; effects animation (ripples, river-light, pearls) as traditional 2D with digital
+      compositing.</p>
+      <p><b>Why anime.</b> Only animation can show sound as a living thing, age a goddess between
+      frames, and hold a 40-second silent close-up of two teenagers playing instruments we cannot
+      hear — and make it the loudest moment of the year.</p>
+      <p><b>Series potential.</b> The deity table on page 3 is a map: every migrated god is an
+      episode. <i>The River Remembers</i> opens a two-country mythology with room for a 12-episode
+      expansion (working title: <i>The Gods Who Crossed the Sea</i>).</p>
+    </div>
+    <img class="art-full" src="img/still_s5_saras.jpg" style="margin-top:2mm">
+    <div class="imgcap">SARAS MATERIALIZES — gold and indigo answering each other; the ghost instruments she can no longer hold.</div>
+    <div class="footer"><span>The River Remembers · Proposal</span><span>11</span></div>
+  </div>
+</div>
+
+<!-- ================= PAGE 12 · CLIMAX + WHY IT WINS ================= -->
+<div class="page dark">
+  <div class="pad">
+    <div class="kicker">Finale · そして submission notes</div>
+    <h2 style="color:#fff">Teach the silence to listen</h2>
+    <div class="board-grid" style="margin-top:4mm">
+      <div class="cell"><img src="img/still_s8_duet.jpg" style="height:62mm">
+        <div class="imgcap">THE DUET — swan of gold, dragon of indigo: the Bridge Raga pushes back the storm of pearls.</div></div>
+      <div class="cell"><img src="img/still_s9_sangam.jpg" style="height:62mm">
+        <div class="imgcap">VASANT PANCHAMI AT TRIVENI SANGAM — the invisible river ignites; one goddess, two names, one song.</div></div>
+    </div>
+    <div class="wingrid">
+      <div class="win"><b>Rooted, not costumed.</b> Real shared history (Saraswati→Benzaiten), real
+      geography (the lost river, Enoshima), real music theory — depth for both audiences, no tourism.</div>
+      <div class="win"><b>Two home markets, one heart.</b> A Chennai heroine and an Enoshima hero with
+      equal weight; a language barrier that becomes the film's romance of listening.</div>
+      <div class="win"><b>Song-driven set pieces</b> built for theatrical sound — including a finale
+      that dares total silence in a packed cinema.</div>
+      <div class="win"><b>Expandable mythology.</b> One film — and a map of sequels already drawn by
+      history itself.</div>
+    </div>
+    <p style="font-size:8pt; color:#9aa0b8; margin-top:3mm">
+      <b>Accompanying video.</b> A ≈2-minute concept teaser (16:9, 1080p, stereo, English narration
+      with English subtitles) accompanies this proposal, visualizing nine key shots of the film with
+      the narration of Saras. All visuals are AI-assisted concept art produced for this submission.
+      <br><b>Rights.</b> All characters, story, designs and artwork are original to this proposal.
+      Mythological figures and traditional musical forms are public cultural heritage, treated with
+      research and respect. No third-party footage, music, or IP is used.
+    </p>
+    <div class="footer"><span>The River Remembers · Proposal</span><span>12</span></div>
+  </div>
+</div>
+
+</body>
+</html>
