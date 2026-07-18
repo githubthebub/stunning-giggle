@@ -332,7 +332,7 @@
   /* ---------------- render root ---------------- */
   function render() {
     if (S.screen !== "title") save();
-    window.scrollTo(0, 0);
+    if (!(S.screen === "game" && S.phase === "fb")) window.scrollTo(0, 0);
     $screen.innerHTML = "";
     const inGame = S.screen === "game";
     updateChip(inGame || S.screen === "final");
@@ -533,6 +533,10 @@
         render();
       };
       v.querySelector("#feedback").appendChild(fb);
+      setTimeout(() => {
+        const f = document.getElementById("feedback");
+        if (f) f.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 80);
     }
     $screen.appendChild(v);
   }
