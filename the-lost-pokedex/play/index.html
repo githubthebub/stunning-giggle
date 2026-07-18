@@ -1,0 +1,626 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Lost Pokédex — Playable</title>
+<style>
+  :root{
+    --desk:#0b0a08; --lamp:rgba(255,196,120,.10);
+    --shell1:#a32629; --shell2:#63161a; --shell-edge:#3f0e11;
+    --glass:#0e130e; --phos:#cfe6c2; --phos-dim:#6f8a68; --phos-faint:#3c4d39;
+    --alert:#ff5c47; --gold:#e8c15a; --lock:#9fe07a;
+    --mono:ui-monospace,"SF Mono","Cascadia Mono","Roboto Mono",Menlo,Consolas,monospace;
+    --serif:"Charter","Iowan Old Style",Georgia,"Times New Roman",serif;
+  }
+  html,body{height:100%}
+  body{
+    margin:0; background:var(--desk); color:var(--phos); font-family:var(--mono);
+    background-image:radial-gradient(1100px 700px at 18% -10%, var(--lamp), transparent 60%);
+    display:flex; flex-direction:column; align-items:center; min-height:100vh;
+  }
+  #room{width:100%; max-width:860px; padding:28px 14px 40px; box-sizing:border-box; display:flex; flex-direction:column; align-items:center; gap:14px}
+  /* ---------- device shell ---------- */
+  #device{
+    width:100%; max-width:760px; border-radius:22px; padding:14px 14px 12px; box-sizing:border-box;
+    background:linear-gradient(160deg,var(--shell1),var(--shell2) 70%);
+    box-shadow:0 0 0 1px var(--shell-edge), 0 24px 60px rgba(0,0,0,.65), inset 0 1px 0 rgba(255,255,255,.14), inset 0 -3px 8px rgba(0,0,0,.4);
+  }
+  #topbar{display:flex; align-items:center; gap:12px; padding:2px 6px 10px; color:#f3d9c9; font-size:11px; letter-spacing:.14em; text-transform:uppercase}
+  #led{width:10px;height:10px;border-radius:50%;background:#3a0d0f;box-shadow:inset 0 1px 2px rgba(0,0,0,.7)}
+  #led.on{background:#7ee0ff;box-shadow:0 0 10px #7ee0ffcc, inset 0 0 3px #fff}
+  #topbar .sp{flex:1}
+  #tclock,#tleft{font-variant-numeric:tabular-nums}
+  #tleft.low{color:#ffb199}
+  /* ---------- screen ---------- */
+  #screenwrap{position:relative; border-radius:12px; overflow:hidden; background:var(--glass);
+    box-shadow:inset 0 0 0 2px #000, inset 0 10px 40px rgba(0,0,0,.85), inset 0 0 90px rgba(20,60,20,.25);
+    min-height:440px; display:flex}
+  #screen{position:relative; flex:1; padding:22px 24px; font-size:14px; line-height:1.65;
+    text-shadow:0 0 6px rgba(180,255,170,.28); overflow-y:auto; max-height:66vh; scrollbar-width:thin; scrollbar-color:var(--phos-faint) transparent}
+  #screen.dead{visibility:hidden}
+  #fx{position:absolute; inset:0; pointer-events:none; border-radius:12px;
+    background:repeating-linear-gradient(0deg, rgba(0,0,0,.22) 0 1px, transparent 1px 3px),
+               radial-gradient(120% 90% at 50% 45%, transparent 55%, rgba(0,0,0,.5));
+    mix-blend-mode:multiply}
+  @keyframes flick{0%,100%{opacity:1}50%{opacity:.93}}
+  #fx.alive{animation:flick 4s steps(2) infinite}
+  #collapse{position:absolute; inset:0; background:#dfffe0; transform:scaleY(0); pointer-events:none}
+  #collapse.go{animation:crt .45s ease-in forwards}
+  @keyframes crt{0%{transform:scaleY(1);opacity:1}60%{transform:scaleY(.006);opacity:1}100%{transform:scaleY(.006) scaleX(0);opacity:0}}
+  @media (prefers-reduced-motion:reduce){ #fx.alive{animation:none} #collapse.go{animation:none;opacity:0} }
+  /* ---------- controls ---------- */
+  #controls{display:flex; gap:10px; align-items:center; padding:12px 6px 2px}
+  .key{font-family:var(--mono); font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:#ffe9dc;
+    background:linear-gradient(#5a1417,#3c0d10); border:1px solid #2a080a; border-radius:8px; padding:9px 16px; cursor:pointer;
+    box-shadow:0 3px 0 #240608, inset 0 1px 0 rgba(255,255,255,.12)}
+  .key:active{transform:translateY(2px); box-shadow:0 1px 0 #240608}
+  .key:focus-visible{outline:2px solid var(--gold); outline-offset:2px}
+  .key[disabled]{opacity:.45; cursor:default}
+  #controls .sp{flex:1}
+  #hint{color:#d9a28f; font-size:10px; letter-spacing:.12em; text-transform:uppercase}
+  /* ---------- screen content ---------- */
+  section{display:none} section.here{display:block}
+  .sys{color:var(--phos-dim); font-size:11px; letter-spacing:.18em; text-transform:uppercase}
+  .rule{border:0; border-top:1px solid var(--phos-faint); margin:14px 0}
+  .blink{animation:bl 1.1s steps(2) infinite}
+  @keyframes bl{50%{opacity:0}}
+  @media (prefers-reduced-motion:reduce){.blink{animation:none}}
+  h1.boot{font-size:14px; font-weight:400; margin:0}
+  .menu{list-style:none; margin:18px 0 0; padding:0; display:flex; flex-direction:column; gap:6px}
+  .menu button, .rowbtn{
+    width:100%; text-align:left; font-family:var(--mono); font-size:14px; color:var(--phos);
+    background:transparent; border:1px solid transparent; border-radius:4px; padding:9px 12px; cursor:pointer; text-shadow:inherit}
+  .menu button:hover,.rowbtn:hover{background:rgba(160,230,150,.07)}
+  .menu button:focus-visible,.rowbtn:focus-visible,#theory:focus-visible,.tune:focus-visible{outline:1px solid var(--gold); outline-offset:2px}
+  .menu .tag{color:var(--phos-dim); font-size:11px; margin-left:10px}
+  .alert{color:var(--alert)} .gold{color:var(--gold)} .lockc{color:var(--lock)}
+  /* index */
+  #list{max-height:44vh; overflow-y:auto; margin-top:12px; border:1px solid var(--phos-faint); border-radius:4px; scrollbar-width:thin; scrollbar-color:var(--phos-faint) transparent}
+  .row{display:flex; gap:14px; padding:6px 12px; font-size:12.5px; color:var(--phos-dim); border-bottom:1px dotted #26301f; font-variant-numeric:tabular-nums}
+  .row:last-child{border-bottom:0}
+  .rowbtn{display:flex; gap:14px; padding:8px 12px; font-size:12.5px; border-bottom:1px dotted #26301f; border-radius:0; font-variant-numeric:tabular-nums}
+  .row .n,.rowbtn .n{width:4ch; flex:none}
+  .row .nm,.rowbtn .nm{width:11ch; flex:none; letter-spacing:.08em}
+  .row .st{flex:1; text-align:right}
+  .rowbtn .st{flex:1; text-align:right}
+  .divider{padding:10px 12px; font-size:10px; letter-spacing:.2em; color:var(--alert); text-transform:uppercase; border-top:1px solid var(--phos-faint); border-bottom:1px dotted #26301f; background:rgba(255,92,71,.05)}
+  /* restore / tuner */
+  .entryhead{display:flex; justify-content:space-between; align-items:baseline; gap:10px; flex-wrap:wrap}
+  .blocks{margin-top:14px; display:flex; flex-direction:column; gap:16px}
+  .blk{font-family:var(--serif); font-size:17px; line-height:1.75; color:#e9dfc8; text-shadow:none; min-height:1.6em; overflow-wrap:break-word}
+  .blk.pending{color:var(--phos-faint); font-family:var(--mono); font-size:13px}
+  .blk.active{filter:blur(0px)}
+  .blk.done{color:#efe6d2}
+  #tunebay{margin-top:20px; border-top:1px solid var(--phos-faint); padding-top:14px}
+  #tunelbl{display:flex; justify-content:space-between; font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:var(--phos-dim)}
+  .tune{width:100%; margin:12px 0 4px; accent-color:var(--gold); cursor:ew-resize}
+  #lockbar{height:4px; background:#1d2618; border-radius:2px; overflow:hidden}
+  #lockfill{height:100%; width:0%; background:var(--lock)}
+  #tunemsg{font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--phos-dim); margin-top:8px; min-height:1.2em}
+  /* restored card */
+  .card{margin-top:26px; text-align:center}
+  .card .big{font-size:18px; letter-spacing:.28em; color:var(--gold); text-transform:uppercase}
+  /* photo */
+  #photobox{display:flex; flex-direction:column; align-items:center; gap:12px; margin-top:14px}
+  #photo{width:min(100%,432px); image-rendering:pixelated; border:1px solid var(--phos-faint); border-radius:2px; background:#000; aspect-ratio:4/3}
+  .meter{font-variant-numeric:tabular-nums}
+  /* notes / theory */
+  .note{font-family:var(--serif); font-size:16.5px; line-height:1.8; color:#e9dfc8; text-shadow:none; max-width:56ch}
+  #theory{width:100%; box-sizing:border-box; background:#0a0f0a; color:var(--phos); border:1px solid var(--phos-faint); border-radius:4px; font-family:var(--mono); font-size:13px; padding:10px; min-height:64px; resize:vertical}
+  /* pikachu */
+  #pbar{height:10px; border:1px solid var(--phos-faint); border-radius:2px; margin:14px 0 6px; overflow:hidden}
+  #pfill{height:100%; width:93%; background:var(--alert)}
+  #pflash{position:absolute; inset:0; display:none; align-items:center; justify-content:center; background:#dfffe0; color:#111; font-family:var(--serif); font-size:22px; font-style:italic}
+  /* off screen */
+  #scr-off{text-align:center; padding-top:120px}
+  #legal{color:#5e564c; font-size:10.5px; letter-spacing:.06em; text-align:center; max-width:60ch; line-height:1.7; margin:2px 0 0}
+  @media (max-width:560px){ #screen{padding:16px 14px; font-size:13px} .blk{font-size:15.5px} #scr-off{padding-top:80px} .row .nm,.rowbtn .nm{width:9ch} }
+</style>
+
+<div id="room">
+  <div id="device" aria-label="A damaged first-generation Pokédex">
+    <div id="topbar">
+      <span id="led"></span><span>Trainer&nbsp;ID&nbsp;000</span>
+      <span class="sp"></span>
+      <span id="tclock" title="The clock does not tick.">20:14</span>
+      <span aria-hidden="true">·</span>
+      <span id="tleft" title="Time until the device sleeps">--:--</span>
+    </div>
+    <div id="screenwrap">
+      <div id="screen" role="region" aria-live="polite">
+
+        <section id="scr-off" class="here">
+          <p class="sys">no signal</p>
+          <p style="color:var(--phos-faint); margin-top:60px">the screen holds a faint reflection<br>that isn't quite yours</p>
+          <p class="sys blink" style="margin-top:60px">▸ press power</p>
+        </section>
+
+        <section id="scr-boot"><h1 class="boot" id="bootlines"></h1></section>
+
+        <section id="scr-menu">
+          <p class="sys">main index — 14 minutes. spend them well.</p>
+          <ul class="menu">
+            <li><button data-go="index">ENTRY INDEX <span class="tag" id="c-count">corrupted 150 / 151</span></button></li>
+            <li><button data-go="photo">TRAINER ID PHOTO <span class="tag meter" id="c-photo">0.0% restored</span></button></li>
+            <li><button data-go="notes">M.'S NOTES <span class="tag">+ leave a theory</span></button></li>
+          </ul>
+          <hr class="rule">
+          <p class="sys">clock frozen · checksum fail (ignored) · next wake 20:00</p>
+        </section>
+
+        <section id="scr-index">
+          <p class="sys">entry index — signal detected on marked rows</p>
+          <div id="list"></div>
+        </section>
+
+        <section id="scr-restore">
+          <div class="entryhead">
+            <span class="sys" id="r-title">entry —</span>
+            <span class="sys" id="r-prog">block 1 / 4</span>
+          </div>
+          <div class="blocks" id="blocks"></div>
+          <div id="tunebay">
+            <div id="tunelbl"><span>signal tuner</span><span>drag until the words hold still</span></div>
+            <input class="tune" id="tune" type="range" min="0" max="100" step="0.1" value="50" aria-label="Signal tuner">
+            <div id="lockbar"><div id="lockfill"></div></div>
+            <p id="tunemsg">searching…</p>
+          </div>
+          <div class="card" id="donecard" style="display:none">
+            <p class="big" id="donetext">entry restored</p>
+            <p class="sys" id="donesub" style="margin-top:10px"></p>
+          </div>
+        </section>
+
+        <section id="scr-photo">
+          <p class="sys">trainer id photo — restoring by entry</p>
+          <div id="photobox">
+            <canvas id="photo" width="96" height="72" aria-label="A water-damaged photograph, mostly static"></canvas>
+            <p class="sys meter" id="photocap"></p>
+          </div>
+        </section>
+
+        <section id="scr-notes">
+          <p class="sys">m.'s notes — taped inside the box lid</p>
+          <p class="note" style="margin-top:14px">Whoever finds this after me: the dex wakes at 8:00 PM and dies at 8:14.
+          Restore what you can. Read entry 105 first — I think it wants that one read first.</p>
+          <p class="note">One more thing I haven't told the channel yet. The manifest says 151 entries.
+          Below the manifest there are two more. Numbered <b>354</b> and <b>425</b>.
+          This device is twenty years old. Those numbers shouldn't mean anything yet.</p>
+          <hr class="rule">
+          <p class="sys">whose pokédex is this? wrong answers only:</p>
+          <textarea id="theory" maxlength="280" placeholder="type a theory. it stays on this device."></textarea>
+          <p style="margin-top:8px"><button class="key" id="logbtn">Log theory</button>
+          <span class="sys" id="logmsg" style="margin-left:10px"></span></p>
+        </section>
+
+        <section id="scr-pika">
+          <p class="sys">entry 025 — pikachu</p>
+          <p style="margin-top:14px">FILE SIZE: <span class="alert">44.1 MB</span><br>
+          <span class="sys">every other entry on this device is a few kilobytes of text.<br>text doesn't weigh this much. audio does.</span></p>
+          <div id="pbar"><div id="pfill"></div></div>
+          <p class="sys meter" id="ppct">restoration in progress — 93.0%</p>
+          <p style="margin-top:18px"><button class="key" id="playbtn">Attempt playback</button></p>
+          <p class="sys" id="pmsg" style="margin-top:14px; min-height:2.6em"></p>
+        </section>
+
+      </div>
+      <div id="pflash">…we did it, buddy…</div>
+      <div id="fx"></div>
+      <div id="collapse"></div>
+    </div>
+    <div id="controls">
+      <button class="key" id="power">Power</button>
+      <button class="key" id="back" disabled>Back</button>
+      <button class="key" id="mute" aria-pressed="false">Sound: on</button>
+      <span class="sp"></span><span id="hint">14 min per night</span>
+    </div>
+  </div>
+  <p id="legal">A playable chapter of “The Lost Pokédex,” an unofficial, non-commercial work of fan fiction.
+  Pokémon © Nintendo / Creatures Inc. / GAME FREAK inc. — not affiliated with or endorsed by the rights holders.
+  Original story, art and code; no official assets used. Your progress and theories stay in this browser.</p>
+</div>
+
+<script>
+(function(){
+"use strict";
+var $ = function(id){ return document.getElementById(id); };
+var reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* ---------------- persistence ---------------- */
+function load(){ try{ return JSON.parse(localStorage.getItem("lostdex")||"{}"); }catch(e){ return {}; } }
+function save(){ try{ localStorage.setItem("lostdex", JSON.stringify({restored:Array.from(restored), theory:$("theory").value})); }catch(e){} }
+var saved = load();
+var restored = new Set(saved.restored||[]);
+if(saved.theory) $("theory").value = saved.theory;
+
+/* ---------------- entry data ---------------- */
+var GLYPHS = "█▓▒░@#%&◆·:;+";
+var ENTRIES = {
+  105:{ name:"CUBONE", anomalous:false, blocks:[
+    "Entry 105. Cubone. Caught— no. Met. October ninth, north of Lavender. Everyone in that town said the same thing: it wears its mother's skull, it cries at the moon, it will not evolve. It is broken. People kept using that word.",
+    "It took me three weeks to learn the truth. The skull isn't hers. It's borrowed — pulled from the ruins after the raid scattered every den on the hill. My Cubone never saw its mother die. It saw her driven off. A dead mother you can grieve. A missing one you have to keep waiting for.",
+    "And it would not evolve. Not in eleven battles. Not at the Plateau. The machine says evolution is triggered by experience. It isn't. It is triggered by letting go. My Cubone was not broken. It was faithful.",
+    "October thirtieth. Update to entry. Today, in the burned den line north of the tower, we found her. It set the skull down in the ash, face up, the way you'd return something you'd borrowed. The official dex will tell you what a Pokémon is. It will never tell you who one is. That's what this dex is for."
+  ]},
+  354:{ name:"BANETTE", anomalous:true, blocks:[
+    "Entry 354. The machine refuses this number, so I am writing it below the manifest. A doll that became a Pokémon over its grudge from being junked — that's what the official text will say, when there is an official text. Mine finished the search. It found her house. It watched the window for a month.",
+    "She's grown now. There's a child in the house — hers. My Banette goes to the window every night. Not for the grudge. It checked the grudge years ago, the way you check a coat pocket. Empty. It watches the new toys instead. Counts them. Notes which ones the child cries without.",
+    "The night a stuffed Growlithe fell behind the radiator, the family swears no door opened. The toy was back on the pillow by morning. The grudge died. The love didn't. It isn't haunting the house. It's standing guard over the toybox."
+  ]},
+  425:{ name:"DRIFLOON", anomalous:true, blocks:[
+    "Entry 425. Also below the manifest. Also refused. They will say: any child who mistakes it for a balloon and holds on can wind up vanishing. Mine waited at the same corner for nine years. I watched it refuse a hundred hands. Rich kids. Loud kids. Kids with somewhere to be.",
+    "It only ever offered the string to one kind — the ones who waited at that corner every day, and nobody ever came back for. It doesn't take children. It takes the ones already left behind. Somewhere better.",
+    "The official line will call that vanishing. This entry is to put the correct word on the record. Found."
+  ]}
+};
+var ORDER = [105,354,425];
+
+/* ---------------- audio ---------------- */
+var AC=null, noiseGain=null, muted=false;
+function audio(){
+  if(muted) return null;
+  if(!AC){
+    try{
+      AC = new (window.AudioContext||window.webkitAudioContext)();
+      var len=AC.sampleRate*1.2, buf=AC.createBuffer(1,len,AC.sampleRate), d=buf.getChannelData(0);
+      for(var i=0;i<len;i++) d[i]=Math.random()*2-1;
+      var src=AC.createBufferSource(); src.buffer=buf; src.loop=true;
+      noiseGain=AC.createGain(); noiseGain.gain.value=0;
+      var f=AC.createBiquadFilter(); f.type="bandpass"; f.frequency.value=1400; f.Q.value=.6;
+      src.connect(f); f.connect(noiseGain); noiseGain.connect(AC.destination); src.start();
+    }catch(e){ return null; }
+  }
+  if(AC.state==="suspended") AC.resume();
+  return AC;
+}
+function beep(freq,dur,type,vol,when){
+  var ac=audio(); if(!ac) return;
+  var o=ac.createOscillator(), g=ac.createGain(), t=ac.currentTime+(when||0);
+  o.type=type||"square"; o.frequency.value=freq;
+  g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(vol||.08,t+.01);
+  g.gain.exponentialRampToValueAtTime(0.0001,t+(dur||.12));
+  o.connect(g); g.connect(ac.destination); o.start(t); o.stop(t+(dur||.12)+.05);
+}
+function chime(){ beep(392,.12,"square",.06,0); beep(523,.12,"square",.06,.13); beep(784,.22,"square",.07,.26); }
+function jingle(){ beep(523,.1,"triangle",.09,0); beep(659,.1,"triangle",.09,.11); beep(784,.1,"triangle",.09,.22); beep(1047,.3,"triangle",.1,.33); }
+function setStatic(v){ if(noiseGain&&!muted) noiseGain.gain.value=v; }
+
+/* ---------------- screen manager ---------------- */
+var current="off", history=[];
+function show(id,push){
+  if(push!==false && current!=="off" && current!=="boot") history.push(current);
+  var secs=document.querySelectorAll("#screen section");
+  for(var i=0;i<secs.length;i++) secs[i].classList.remove("here");
+  $("scr-"+id).classList.add("here");
+  current=id;
+  $("back").disabled = (id==="off"||id==="boot"||id==="menu");
+  $("screen").scrollTop=0;
+  if(id!=="restore") setStatic(0);
+}
+$("back").addEventListener("click",function(){
+  beep(300,.05,"square",.05);
+  if(current==="restore") stopTuner();
+  var target=history.pop()||"menu";
+  if(target==="index") buildIndex();
+  if(target==="photo") photoLoop(true);
+  show(target,false);
+});
+document.addEventListener("keydown",function(e){
+  if(e.key==="Escape" && !$("back").disabled) $("back").click();
+});
+
+/* ---------------- power / boot / timer ---------------- */
+var deadline=0, timerInt=null, on=false;
+function fmt(ms){ var s=Math.max(0,Math.ceil(ms/1000)); return String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0"); }
+function powerOn(){
+  on=true; $("led").classList.add("on"); $("fx").classList.add("alive"); $("screen").classList.remove("dead");
+  chime(); history=[]; show("boot",false);
+  var lines=[
+    "POKEDEX v1.04",
+    "PROPERTY OF INDIGO LEAGUE",
+    "CHECKSUM....FAIL (IGNORED)",
+    "TRAINER ID: 000",
+    "ENTRIES: 151 — CORRUPTED: "+(151-manifestRestored()),
+    "CLOCK: 20:14 — [ 20 YEARS AGO / TODAY ]",
+    "BATTERY: REPLACED. (THANK YOU.)"
+  ];
+  var el=$("bootlines"); el.textContent="";
+  var li=0;
+  (function next(){
+    if(!on) return;
+    if(li<lines.length){ el.textContent+=lines[li]+"\n"; el.style.whiteSpace="pre"; beep(700+li*40,.03,"square",.03); li++; setTimeout(next, reduced?60:340); }
+    else setTimeout(function(){ if(on){ refreshCounters(); show("menu",false); } }, reduced?100:600);
+  })();
+  deadline=Date.now()+14*60*1000;
+  timerInt=setInterval(function(){
+    var left=deadline-Date.now();
+    $("tleft").textContent=fmt(left);
+    $("tleft").classList.toggle("low", left<60000);
+    if(left<=0) powerOff(true);
+  },250);
+  $("tleft").textContent="14:00";
+}
+function powerOff(fromTimer){
+  on=false; clearInterval(timerInt); stopTuner(); setStatic(0);
+  $("led").classList.remove("on"); $("fx").classList.remove("alive");
+  $("tleft").textContent="--:--";
+  var c=$("collapse");
+  if(!reduced){ c.classList.remove("go"); void c.offsetWidth; c.classList.add("go"); beep(1200,.3,"sawtooth",.05); beep(90,.4,"sine",.08,.1); }
+  $("screen").classList.add("dead");
+  setTimeout(function(){ $("screen").classList.remove("dead"); c.classList.remove("go"); history=[]; show("off",false); }, reduced?50:500);
+}
+$("power").addEventListener("click",function(){ on ? powerOff(false) : powerOn(); });
+$("mute").addEventListener("click",function(){
+  muted=!muted; if(muted) setStatic(0);
+  $("mute").textContent="Sound: "+(muted?"off":"on");
+  $("mute").setAttribute("aria-pressed", String(muted));
+});
+
+/* ---------------- counters ---------------- */
+function manifestRestored(){ return restored.has(105)?1:0; }
+function refreshCounters(){
+  $("c-count").textContent="corrupted "+(151-manifestRestored())+" / 151"+(restored.size>manifestRestored()?" · overflow +"+(restored.size-manifestRestored()):"");
+  $("c-photo").textContent=(restored.size*0.7).toFixed(1)+"% restored";
+}
+
+/* ---------------- entry index ---------------- */
+var NAMES={1:"BULBASAUR",4:"CHARMANDER",7:"SQUIRTLE",16:"PIDGEY",25:"PIKACHU",92:"GASTLY",105:"CUBONE",131:"LAPRAS",143:"SNORLAX",149:"DRAGONITE",150:"MEWTWO",151:"MEW"};
+function pad(n){ return String(n).padStart(3,"0"); }
+function buildIndex(){
+  var list=$("list"); list.textContent="";
+  function corruptName(n){ var base=NAMES[n]||""; if(!base){ var L=5+((n*7)%5), s=""; for(var i=0;i<L;i++) s+=GLYPHS[(n*31+i*17)%GLYPHS.length]; return s; } return base; }
+  for(var n=1;n<=151;n++){
+    if(n===25){
+      var b=document.createElement("button"); b.className="rowbtn"; b.dataset.pika="1";
+      b.innerHTML='<span class="n">025</span><span class="nm">PIKACHU</span><span class="st alert">44.1 MB · locked</span>';
+      list.appendChild(b); continue;
+    }
+    if(ENTRIES[n]){
+      var b2=document.createElement("button"); b2.className="rowbtn"; b2.dataset.entry=n;
+      var done=restored.has(n);
+      b2.innerHTML='<span class="n">'+pad(n)+'</span><span class="nm">'+ENTRIES[n].name+'</span><span class="st '+(done?"gold":"lockc")+'">'+(done?"restored ◆":"signal ▸ restorable")+"</span>";
+      list.appendChild(b2); continue;
+    }
+    var r=document.createElement("div"); r.className="row";
+    r.innerHTML='<span class="n">'+pad(n)+'</span><span class="nm">'+corruptName(n)+'</span><span class="st">corrupted</span>';
+    list.appendChild(r);
+  }
+  var d=document.createElement("div"); d.className="divider"; d.textContent="▼ below manifest — entries not in any registry";
+  list.appendChild(d);
+  [354,425].forEach(function(n){
+    var b=document.createElement("button"); b.className="rowbtn"; b.dataset.entry=n;
+    var done=restored.has(n);
+    b.innerHTML='<span class="n">'+pad(n)+'</span><span class="nm">'+ENTRIES[n].name+'</span><span class="st '+(done?"gold":"lockc")+'">'+(done?"restored ◆":"signal ▸ anomalous")+"</span>";
+    list.appendChild(b);
+  });
+  list.onclick=function(e){
+    var t=e.target.closest("button"); if(!t) return;
+    beep(500,.05,"square",.05);
+    if(t.dataset.pika){ show("pika"); resetPika(); return; }
+    openEntry(Number(t.dataset.entry));
+  };
+}
+
+/* ---------------- restoration tuner ---------------- */
+var tuner={ active:false, entry:0, idx:0, target:50, dist:100, since:0, raf:0, last:0, typing:false };
+function scramble(text,p){
+  var out="";
+  for(var i=0;i<text.length;i++){
+    var c=text[i];
+    out += (c!==" " && Math.random()<p) ? GLYPHS[(Math.random()*GLYPHS.length)|0] : c;
+  }
+  return out;
+}
+function openEntry(id){
+  var E=ENTRIES[id]; if(!E) return;
+  show("restore");
+  $("r-title").textContent="entry "+pad(id)+" — "+E.name+(E.anomalous?" · below manifest":"");
+  $("donecard").style.display="none"; $("tunebay").style.display="";
+  var bl=$("blocks"); bl.textContent="";
+  E.blocks.forEach(function(txt,i){
+    var p=document.createElement("p"); p.className="blk"; p.id="blk"+i;
+    if(restored.has(id)){ p.textContent=txt; p.classList.add("done"); }
+    else p.textContent="";
+    bl.appendChild(p);
+  });
+  if(restored.has(id)){
+    $("tunebay").style.display="none";
+    $("r-prog").textContent="restored · re-reading";
+    showDoneCard(id,false);
+    return;
+  }
+  tuner.entry=id; tuner.idx=0; tuner.typing=false;
+  startBlock();
+}
+function startBlock(){
+  var E=ENTRIES[tuner.entry];
+  $("r-prog").textContent="block "+(tuner.idx+1)+" / "+E.blocks.length;
+  for(var i=0;i<E.blocks.length;i++){
+    var p=$("blk"+i);
+    if(i<tuner.idx){ p.className="blk done"; p.textContent=E.blocks[i]; }
+    else if(i===tuner.idx){ p.className="blk active"; }
+    else { p.className="blk pending"; p.textContent="[ block "+(i+1)+" — awaiting signal ]"; }
+  }
+  do{ tuner.target=8+Math.random()*84; }while(Math.abs(tuner.target-50)<10);
+  var t=$("tune"); t.value=50; t.disabled=false;
+  tuner.dist=Math.abs(50-tuner.target); tuner.since=0;
+  $("tunemsg").textContent="searching…";
+  tuner.active=true; tuner.last=0;
+  cancelAnimationFrame(tuner.raf);
+  tuner.raf=requestAnimationFrame(tick);
+}
+function stopTuner(){ tuner.active=false; cancelAnimationFrame(tuner.raf); setStatic(0); }
+$("tune").addEventListener("input",function(){
+  if(!tuner.active) return;
+  tuner.dist=Math.abs(Number(this.value)-tuner.target);
+});
+function tick(ts){
+  if(!tuner.active) return;
+  var E=ENTRIES[tuner.entry], txt=E.blocks[tuner.idx], p=$("blk"+tuner.idx);
+  var d=tuner.dist;
+  setStatic(Math.min(.05, d*0.0011));
+  if(!tuner.last || ts-tuner.last>(reduced?160:75)){
+    tuner.last=ts;
+    var noise=Math.min(.92, d/42);
+    p.textContent=scramble(txt,noise);
+    p.style.filter="blur("+Math.min(3,d*0.045)+"px)";
+    p.style.opacity=String(1-Math.min(.45,d*0.004));
+  }
+  if(d<=4){
+    if(!tuner.since) tuner.since=ts;
+    var prog=Math.min(1,(ts-tuner.since)/(reduced?400:1300));
+    $("lockfill").style.width=(prog*100)+"%";
+    $("tunemsg").textContent="signal found — hold…"; $("tunemsg").className="lockc";
+    if(prog>=1){ lockBlock(); return; }
+  } else {
+    tuner.since=0; $("lockfill").style.width="0%";
+    $("tunemsg").className="";
+    $("tunemsg").textContent = d<12 ? "close. the static is thinning." : (d<30 ? "something under the noise…" : "searching…");
+  }
+  tuner.raf=requestAnimationFrame(tick);
+}
+function lockBlock(){
+  tuner.active=false; cancelAnimationFrame(tuner.raf); setStatic(0);
+  beep(880,.08,"triangle",.08); beep(1320,.12,"triangle",.08,.09);
+  var E=ENTRIES[tuner.entry], txt=E.blocks[tuner.idx], p=$("blk"+tuner.idx);
+  p.style.filter=""; p.style.opacity="";
+  $("tune").disabled=true; $("lockfill").style.width="100%";
+  $("tunemsg").textContent="locked — decoding"; $("tunemsg").className="lockc";
+  var i=0, step=Math.max(1,Math.round(txt.length/(reduced?8:90)));
+  tuner.typing=true;
+  var iv=setInterval(function(){
+    if(current!=="restore"||!on){ clearInterval(iv); return; }
+    i=Math.min(txt.length,i+step);
+    p.textContent=txt.slice(0,i);
+    if(i>=txt.length){
+      clearInterval(iv); tuner.typing=false; p.className="blk done";
+      tuner.idx++;
+      if(tuner.idx<E.blocks.length) setTimeout(startBlock, reduced?150:650);
+      else finishEntry();
+    }
+  }, reduced?30:26);
+}
+function finishEntry(){
+  restored.add(tuner.entry); save(); refreshCounters(); jingle();
+  showDoneCard(tuner.entry,true);
+}
+function showDoneCard(id,fresh){
+  var E=ENTRIES[id];
+  $("tunebay").style.display="none";
+  $("donecard").style.display="";
+  $("donetext").textContent = E.anomalous ? "entry restored. anomalous. not counted." : "entry restored. "+manifestRestored()+" of 151.";
+  $("donesub").textContent = fresh
+    ? "the trainer id photo has repaired "+(restored.size*0.7).toFixed(1)+"% of itself. go look."
+    : "the device keeps this one warm. it likes being read.";
+}
+
+/* ---------------- photo ---------------- */
+var pc=$("photo").getContext("2d"), base=null, noiseInt=null;
+function buildBase(){
+  var off=document.createElement("canvas"); off.width=96; off.height=72;
+  var g=off.getContext("2d");
+  for(var y=0;y<48;y++){ var t=y/48;
+    g.fillStyle="rgb("+Math.round(38+t*120)+","+Math.round(46+t*60)+","+Math.round(80-t*28)+")";
+    g.fillRect(0,y,96,1);
+  }
+  g.fillStyle="rgba(255,190,110,.8)"; g.fillRect(70,36,12,8); g.fillStyle="rgba(255,220,160,.9)"; g.fillRect(72,38,8,4);
+  g.fillStyle="#141b2a";
+  [[52,12],[58,16],[66,10],[74,20],[62,24],[80,14],[46,20]].forEach(function(b){
+    g.fillRect(b[0],b[1],3,1); g.fillRect(b[0]-1,b[1]-1,1,1); g.fillRect(b[0]+3,b[1]-1,1,1);
+  });
+  g.fillStyle="#1d2b1a"; g.fillRect(0,48,96,24);
+  g.fillStyle="#243620";
+  for(var x=0;x<96;x++){ var h=Math.round(3*Math.sin(x/9)+4); g.fillRect(x,48,1,h); }
+  g.fillStyle="#101410";
+  g.fillRect(20,30,6,18);
+  g.fillRect(18,34,2,8); g.fillRect(26,34,2,8);
+  g.fillRect(21,48,2,8); g.fillRect(24,48,2,8);
+  g.fillRect(20,24,7,7);
+  g.fillStyle="#c9302c"; g.fillRect(19,21,9,3); g.fillRect(21,19,5,2);
+  g.fillStyle="#e8e4da"; g.fillRect(19,24,9,2);
+  g.fillStyle="rgba(255,200,140,.35)"; g.fillRect(27,30,1,18);
+  base=off;
+}
+function revealRects(){
+  var n=restored.size, r=[];
+  if(n>=1) r.push([14,14,20,16]);
+  if(n>=2) r.push([0,0,48,72]);
+  if(n>=3) r.push([0,0,96,72]);
+  return r;
+}
+var FACE=[19,26,9,6];
+function inRect(x,y,R){ return x>=R[0]&&x<R[0]+R[2]&&y>=R[1]&&y<R[1]+R[3]; }
+function drawPhoto(){
+  if(!base) buildBase();
+  pc.drawImage(base,0,0);
+  var rects=revealRects();
+  for(var y=0;y<72;y+=2){
+    for(var x=0;x<96;x+=2){
+      var shown=false;
+      for(var i=0;i<rects.length;i++) if(inRect(x,y,rects[i])){ shown=true; break; }
+      if(shown && inRect(x,y,FACE)) shown=false;
+      if(!shown){
+        var v=(Math.random()*70+15)|0;
+        pc.fillStyle="rgb("+v+","+v+","+v+")";
+        pc.fillRect(x,y,2,2);
+      }
+    }
+  }
+  var pct=(restored.size*0.7).toFixed(1);
+  $("photocap").textContent = restored.size===0
+    ? "0.0% restored — restore an entry first"
+    : pct+"% restored · facial region: unrecoverable before entry 151";
+}
+function photoLoop(start){
+  clearInterval(noiseInt);
+  if(start){ drawPhoto(); if(!reduced) noiseInt=setInterval(drawPhoto,140); }
+}
+
+/* ---------------- entry 25 ---------------- */
+var pikaBusy=false;
+function resetPika(){ pikaBusy=false; $("pfill").style.width="93%"; $("ppct").textContent="restoration in progress — 93.0%"; $("pmsg").textContent=""; $("playbtn").disabled=false; }
+$("playbtn").addEventListener("click",function(){
+  if(pikaBusy) return; pikaBusy=true; $("playbtn").disabled=true;
+  var p=93.0, ac=audio();
+  setStatic(.04);
+  var iv=setInterval(function(){
+    if(current!=="pika"||!on){ clearInterval(iv); setStatic(0); return; }
+    p=Math.min(93.4,p+0.02);
+    $("pfill").style.width=p+"%"; $("ppct").textContent="restoration in progress — "+p.toFixed(1)+"%";
+    if(Math.random()<.3) beep(200+Math.random()*900,.03,"sawtooth",.02);
+    if(p>=93.4){
+      clearInterval(iv); setStatic(0);
+      var fl=$("pflash");
+      if(!reduced){ fl.style.display="flex"; beep(1568,.2,"triangle",.1); setTimeout(function(){ fl.style.display="none"; },380); }
+      setTimeout(function(){
+        $("pmsg").innerHTML='SIGNAL LOST.<br>one frame survived. a voice, young, mid-laugh.<br><span class="alert">full playback restores next episode. the channel hears it the moment m. does.</span>';
+        beep(120,.5,"sine",.07);
+      }, reduced?100:430);
+    }
+  },50);
+});
+
+/* ---------------- menu + nav wiring ---------------- */
+$("scr-menu").addEventListener("click",function(e){
+  var b=e.target.closest("button[data-go]"); if(!b) return;
+  beep(500,.05,"square",.05);
+  var go=b.dataset.go;
+  if(go==="index") buildIndex();
+  if(go==="photo") photoLoop(true);
+  show(go);
+});
+var obs=new MutationObserver(function(){ if(current!=="photo") photoLoop(false); });
+obs.observe($("screen"),{subtree:true,attributes:true,attributeFilter:["class"]});
+
+$("logbtn").addEventListener("click",function(){
+  save(); beep(880,.08,"triangle",.07);
+  $("logmsg").textContent="theory logged. wrong answers only.";
+  setTimeout(function(){ $("logmsg").textContent=""; },2600);
+});
+
+refreshCounters();
+})();
+</script>
+
+</html>
