@@ -1,5 +1,11 @@
 # 🏝 Shellfire Isles
 
+> **🎮 Play it right now — no install, no account:**
+> **https://curious-spark-605.higgsfield.gg/**
+> Open the link, send the invite link on that page to a friend, and battle/trade
+> live in any browser. The solo adventure is on the same site
+> (`assets/adventure.html`, linked from the top of the page).
+
 An **original** GBA-style monster-taming RPG — you join the story late-game with six
 badges already earned, heading into the **7th gym** — plus **Island Link**, an online
 trade & battle hub your friends can join from any browser (think "open a website,
@@ -48,7 +54,19 @@ learning, a shop, creature storage, and 16 original species to find.
 **Controls:** Arrows/WASD move · Enter/Z interact · Esc/X menu. Touch buttons
 appear on phones. Progress autosaves to `localStorage`.
 
-## Island Link (play with friends)
+## Two ways to play with friends
+
+**1. The hosted Arena (zero setup)** — https://curious-spark-605.higgsfield.gg/
+opens a 2-player room: share the invite link shown on the page, pick a name and
+a team (your adventure save from that same site, or a rental), then battle at
+level 50 and trade. Trades write into your adventure save on that site. Rooms
+are pairwise — for a group, open one room per pair. Sources for this build live
+in `arena/` and are assembled by `node build-deploy.mjs` (see
+`arena/deploy-info.json` for the update procedure).
+
+**2. Self-hosted Island Link (rooms up to 16)** — the `server.js` flavor below.
+
+## Island Link (play with friends, self-hosted)
 
 1. Start the server somewhere your friends can reach (see below).
 2. Open **`/hub`**, pick a name and a room code — the page gives you a share link

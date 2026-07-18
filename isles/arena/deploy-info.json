@@ -1,0 +1,7 @@
+{
+  "platform": "higgsfield games (rules-module kernel)",
+  "live_url": "https://curious-spark-605.higgsfield.gg/",
+  "game_id": "f80f075c-cbb6-4c4b-b90c-ec276da95b35",
+  "mode": "rules",
+  "note": "To update the live game: node isles/build-deploy.mjs, commit+push the new isles/shellfire-isles.zip, then call deploy_game again passing back this game_id (never omit it, or a second game with a new URL is created) with source_game pointing at the raw.githubusercontent.com URL of the zip on the pushed branch."
+}
