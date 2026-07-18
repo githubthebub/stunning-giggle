@@ -3,7 +3,7 @@
  */
 
 import { getSpeciesList, getEntry, prettify } from './api.js';
-import { matchFromOcr, normalizeName, similarity, prepareSpecies } from './matcher.js';
+import { matchFromOcr, normalizeName, similarity, prepareSpecies, STRONG_SCORE, CONFIRM_SCORE } from './matcher.js';
 import { BALLS, ballById, catchProbability, rollCatch, rollShiny, breakoutText } from './game.js';
 import { sfx } from './sfx.js';
 import * as store from './storage.js';
@@ -267,7 +267,21 @@ async function onScan() {
   busy = true;
   els.btnScan.classList.add('busy');
   try {
-    const frame = scanner.captureFrame(els.video);
+    // Burst-capture and keep the sharpest frame — webcams are constantly
+    // refocusing, and one blurry frame is the #1 reason OCR fails.
+    setStatus('📸 Hold steady…');
+    const frames = await scanner.captureBurst(els.video, 5, 130);
+    const g = guideRect(frames[0].width, frames[0].height);
+    const nameStrip = { x: g.x, y: g.y, w: g.w, h: g.h * 0.24 };
+    let frame = frames[0];
+    let bestSharp = -1;
+    for (const f of frames) {
+      const s = scanner.sharpness(f, nameStrip);
+      if (s > bestSharp) {
+        bestSharp = s;
+        frame = f;
+      }
+    }
     showFreeze(frame);
     await identifyFrom(frame, 'camera');
   } catch (e) {
@@ -292,46 +306,109 @@ function guideRect(w, h) {
   return { x: (w - gw) / 2, y: (h - gh) / 2, w: gw, h: gh };
 }
 
-function regionsFor(canvas, mode) {
+/**
+ * OCR attack plan: several passes over different crops and preprocessing
+ * styles, cheapest-and-likeliest first, stopping as soon as a match is
+ * strong. The binary (Otsu) passes crack holo-foil and light-on-dark name
+ * plates that plain grayscale can't read.
+ */
+function passesFor(canvas, mode) {
   const w = canvas.width;
   const h = canvas.height;
   if (mode === 'camera') {
     const g = guideRect(w, h);
+    const strip = (from, to) => ({ x: g.x, y: g.y + g.h * from, w: g.w, h: g.h * (to - from) });
     return [
-      // The name lives in the card's top strip — try that first, sharper.
-      { rect: { x: g.x, y: g.y, w: g.w, h: g.h * 0.24 }, targetW: 1300, boost: 0.04 },
-      { rect: g, targetW: 1000, boost: 0 },
+      { rect: strip(0, 0.24), targetW: 1400, mode: 'contrast', psm: '6', boost: 0.04, minConf: 25 },
+      { rect: strip(0, 0.24), targetW: 1400, mode: 'binary', psm: '6', boost: 0.04, minConf: 25 },
+      { rect: strip(0, 0.45), targetW: 1300, mode: 'contrast', psm: '6', boost: 0.03, minConf: 28 },
+      { rect: g, targetW: 1100, mode: 'contrast', psm: '3', boost: 0, minConf: 32 },
     ];
   }
+  const top = (f) => ({ x: 0, y: 0, w, h: h * f });
   return [
-    { rect: { x: 0, y: 0, w, h: h * 0.32 }, targetW: 1300, boost: 0.04 },
-    { rect: { x: 0, y: 0, w, h }, targetW: 1100, boost: 0 },
+    { rect: top(0.3), targetW: 1400, mode: 'contrast', psm: '6', boost: 0.04, minConf: 25 },
+    { rect: top(0.3), targetW: 1400, mode: 'binary', psm: '6', boost: 0.04, minConf: 25 },
+    { rect: { x: 0, y: 0, w, h }, targetW: 1200, mode: 'contrast', psm: '3', boost: 0, minConf: 32 },
   ];
 }
 
+let failStreak = 0;
+
 async function identifyFrom(sourceCanvas, mode) {
   hideSuggestions();
-  setStatus('🔎 Warming up the scanner…');
+  const passes = passesFor(sourceCanvas, mode);
   const collected = [];
   let match = { best: null, alternates: [] };
 
-  for (const region of regionsFor(sourceCanvas, mode)) {
-    const prepped = scanner.preprocess(sourceCanvas, region.rect, region.targetW);
-    const words = await scanner.ocr(prepped, (pct) => setStatus(`🔎 Reading card… ${pct}%`));
-    collected.push(...words.map((x) => ({ ...x, boost: region.boost })));
+  for (let i = 0; i < passes.length; i++) {
+    const p = passes[i];
+    setStatus(`🔎 Reading card… pass ${i + 1}/${passes.length}`);
+    const prepped = scanner.preprocess(sourceCanvas, p.rect, p.targetW, p.mode);
+    const words = await scanner.ocr(prepped, {
+      psm: p.psm,
+      minConf: p.minConf,
+      onProgress: (pct) => setStatus(`🔎 Reading card… pass ${i + 1}/${passes.length} (${pct}%)`),
+    });
+    collected.push(...words.map((x) => ({ ...x, boost: p.boost })));
     match = matchFromOcr(collected, species);
-    if (match.best) break; // confident after the name strip → skip the slow full pass
+    if (match.best && match.best.score >= STRONG_SCORE) break;
   }
 
-  if (match.best) {
+  presentMatch(match);
+}
+
+function presentMatch(match) {
+  const best = match.best || match.alternates[0] || null;
+  if (match.best && match.best.score >= STRONG_SCORE) {
+    failStreak = 0;
     setStatus(`✨ ${prettify(match.best.name)} identified!`);
-    await openEntry(match.best.id);
+    openEntry(match.best.id);
+  } else if (best && best.score >= CONFIRM_SCORE) {
+    // Decent guess but not certain — never auto-catch the wrong Pokémon:
+    // ask "Kingdra… or not Kingdra?"
+    showConfirm(best, match.alternates);
   } else if (match.alternates.length) {
-    setStatus('Hmm, not quite sure — did you mean:');
-    showSuggestions(match.alternates.slice(0, 3));
+    failStreak++;
+    setStatus('Best guesses — tap the right one:');
+    showSuggestions(match.alternates.slice(0, 4));
   } else {
-    setStatus("Couldn't read the card — fill the frame, avoid glare, keep the name sharp.", 'error');
+    failStreak++;
+    setStatus(failStreak >= 2
+      ? "Still unreadable — webcams blur up close. Try 🖼 Photo, or drag/paste a picture of the card (phone photos work great)."
+      : "Couldn't read the card — fill the frame, avoid glare, hold steady.", 'error');
   }
+}
+
+function showConfirm(best, alternates) {
+  els.suggestions.innerHTML = '';
+  setStatus(`🤔 Pretty sure that's…`);
+
+  const yes = document.createElement('button');
+  yes.className = 'chip chip-primary';
+  yes.textContent = `✔ ${prettify(best.name)} — open it`;
+  yes.addEventListener('click', () => {
+    failStreak = 0;
+    hideSuggestions();
+    openEntry(best.id);
+  });
+
+  const no = document.createElement('button');
+  no.className = 'chip';
+  no.textContent = `✖ Not ${prettify(best.name)}`;
+  no.addEventListener('click', () => {
+    const others = alternates.filter((a) => a.id !== best.id).slice(0, 4);
+    if (others.length) {
+      setStatus('Which one, then?');
+      showSuggestions(others);
+    } else {
+      hideSuggestions();
+      setStatus('Try again — closer, steady, no glare. Or type the name below.', 'error');
+    }
+  });
+
+  els.suggestions.append(yes, no);
+  els.suggestions.hidden = false;
 }
 
 function showFreeze(canvas) {

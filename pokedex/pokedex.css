@@ -759,3 +759,11 @@ body {
   border-color: var(--accent);
   box-shadow: 0 0 0 3px rgba(63,193,255,.35), inset 0 0 30px rgba(63,193,255,.2);
 }
+
+.chip-primary {
+  background: var(--accent);
+  color: #04222f;
+  font-weight: 700;
+  border-color: var(--accent);
+}
+.chip-primary:hover { filter: brightness(1.1); background: var(--accent); }

@@ -118,6 +118,47 @@ export function captureFrame(video) {
   return c;
 }
 
+/** Grab several frames over ~0.6 s so we can pick the sharpest one —
+ *  webcams (especially laptop ones) blur constantly while refocusing. */
+export async function captureBurst(video, n = 5, gapMs = 130) {
+  const frames = [];
+  for (let i = 0; i < n; i++) {
+    frames.push(captureFrame(video));
+    if (i < n - 1) await wait(gapMs);
+  }
+  return frames;
+}
+
+/** Focus score for a region: variance of the Laplacian (higher = sharper). */
+export function sharpness(source, rect) {
+  const w = 200;
+  const scale = w / Math.max(1, rect.w);
+  const c = document.createElement('canvas');
+  c.width = w;
+  c.height = Math.max(8, Math.round(rect.h * scale));
+  const ctx = c.getContext('2d', { willReadFrequently: true });
+  ctx.drawImage(source, rect.x, rect.y, rect.w, rect.h, 0, 0, c.width, c.height);
+  const { data } = ctx.getImageData(0, 0, c.width, c.height);
+  const g = new Float32Array(c.width * c.height);
+  for (let i = 0, p = 0; i < data.length; i += 4, p++) {
+    g[p] = (data[i] * 299 + data[i + 1] * 587 + data[i + 2] * 114) / 1000;
+  }
+  let sum = 0;
+  let sum2 = 0;
+  let count = 0;
+  for (let y = 1; y < c.height - 1; y++) {
+    for (let x = 1; x < c.width - 1; x++) {
+      const i = y * c.width + x;
+      const lap = -4 * g[i] + g[i - 1] + g[i + 1] + g[i - c.width] + g[i + c.width];
+      sum += lap;
+      sum2 += lap * lap;
+      count++;
+    }
+  }
+  const mean = sum / count;
+  return sum2 / count - mean * mean;
+}
+
 /** Decode an uploaded/taken photo onto a canvas, downscaled if huge. */
 export function fileToCanvas(file, maxDim = 1800) {
   return new Promise((resolve, reject) => {
@@ -140,18 +181,45 @@ export function fileToCanvas(file, maxDim = 1800) {
   });
 }
 
+/** Otsu's threshold from a 256-bin luminance histogram. */
+function otsuThreshold(hist, total) {
+  let sumAll = 0;
+  for (let i = 0; i < 256; i++) sumAll += i * hist[i];
+  let sumB = 0;
+  let wB = 0;
+  let best = 127;
+  let maxVar = -1;
+  for (let t = 0; t < 256; t++) {
+    wB += hist[t];
+    if (!wB) continue;
+    const wF = total - wB;
+    if (!wF) break;
+    sumB += t * hist[t];
+    const mB = sumB / wB;
+    const mF = (sumAll - sumB) / wF;
+    const v = wB * wF * (mB - mF) * (mB - mF);
+    if (v > maxVar) {
+      maxVar = v;
+      best = t;
+    }
+  }
+  return best;
+}
+
 /**
  * Crop a region out of a source canvas, upscale it to ~targetW wide, and
- * boost it for OCR: grayscale + a 5%–95% percentile contrast stretch, which
- * handles the glossy, dim, or holo-foil lighting cards tend to get shot in.
+ * boost it for OCR. mode 'contrast': grayscale + 5%–95% percentile contrast
+ * stretch (handles glossy/dim lighting). mode 'binary': Otsu-thresholded
+ * black & white, auto-inverted for light-text-on-dark cards — this cuts
+ * straight through holo-foil backgrounds that defeat plain grayscale.
  */
-export function preprocess(source, rect, targetW = 1200) {
+export function preprocess(source, rect, targetW = 1200, mode = 'contrast') {
   const sx = Math.max(0, Math.round(rect.x));
   const sy = Math.max(0, Math.round(rect.y));
   const sw = Math.max(1, Math.min(source.width - sx, Math.round(rect.w)));
   const sh = Math.max(1, Math.min(source.height - sy, Math.round(rect.h)));
 
-  const scale = Math.min(3, Math.max(1, targetW / sw));
+  const scale = Math.min(3.5, Math.max(1, targetW / sw));
   const c = document.createElement('canvas');
   c.width = Math.round(sw * scale);
   c.height = Math.round(sh * scale);
@@ -169,6 +237,24 @@ export function preprocess(source, rect, targetW = 1200) {
     hist[lum]++;
   }
   const total = d.length / 4;
+
+  if (mode === 'binary') {
+    const t = otsuThreshold(hist, total);
+    let dark = 0;
+    for (let i = 0; i < d.length; i += 4) if (d[i] <= t) dark++;
+    // Text is the minority class: if most pixels land "dark", the card has
+    // light text on a dark plate — flip so the text ends up black.
+    const invert = dark > total * 0.5;
+    for (let i = 0; i < d.length; i += 4) {
+      const isInk = invert ? d[i] > t : d[i] <= t;
+      const v = isInk ? 0 : 255;
+      d[i] = d[i + 1] = d[i + 2] = v;
+      d[i + 3] = 255;
+    }
+    ctx.putImageData(img, 0, 0);
+    return c;
+  }
+
   const percentile = (q) => {
     let acc = 0;
     for (let v = 0; v < 256; v++) {
@@ -227,14 +313,17 @@ async function getWorker() {
 /**
  * OCR a canvas. Returns words as [{ text, conf, y0 }] where y0 is the word's
  * top edge as a 0–1 fraction of the region height.
+ * opts: { onProgress, psm ('6' block / '7' line / '3' auto), minConf }.
  */
-export async function ocr(canvas, onProgress) {
+export async function ocr(canvas, opts = {}) {
+  const { onProgress = null, psm = '6', minConf = 30 } = opts;
   const worker = await getWorker();
-  progressCb = onProgress || null;
+  await worker.setParameters({ tessedit_pageseg_mode: String(psm) });
+  progressCb = onProgress;
   try {
     const { data } = await worker.recognize(canvas);
     let words = (data.words || [])
-      .filter((w) => (w.confidence ?? 0) >= 35 && w.text && w.text.trim())
+      .filter((w) => (w.confidence ?? 0) >= minConf && w.text && w.text.trim())
       .map((w) => ({
         text: w.text,
         conf: w.confidence,

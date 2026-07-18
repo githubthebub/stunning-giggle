@@ -8,8 +8,10 @@
  * known card vocabulary, and fuzzy-match the rest against every species name.
  */
 
-export const ACCEPT_SCORE = 0.74; // auto-accept a match at or above this
-export const SUGGEST_SCORE = 0.55; // below ACCEPT but above this → "did you mean?"
+export const STRONG_SCORE = 0.9; // open the entry without asking
+export const ACCEPT_SCORE = 0.74; // confident match
+export const CONFIRM_SCORE = 0.6; // below STRONG but ≥ this → "Is it X?" confirm step
+export const SUGGEST_SCORE = 0.55; // above this → offered as a "did you mean?" chip
 
 // Words that appear on nearly every card and must never be treated as a name.
 const NOISE_WORDS = new Set([
@@ -103,6 +105,7 @@ export function extractCandidates(words) {
     const stem = t.norm.replace(/(vmax|vstar|ex|gx|v)$/, '');
     if (stem !== t.norm && stem.length >= 4) push(stem, weight);
     if (i + 1 < toks.length) push(t.norm + toks[i + 1].norm, weight);
+    if (i + 2 < toks.length) push(t.norm + toks[i + 1].norm + toks[i + 2].norm, weight);
   }
   return [...cands.values()];
 }
@@ -122,9 +125,16 @@ export function matchFromOcr(words, species) {
     let best = 0;
     let via = null;
     for (const c of cands) {
-      // Skip hopeless length mismatches before paying for Levenshtein.
-      if (Math.abs(c.norm.length - s.norm.length) / Math.max(c.norm.length, s.norm.length) > 0.5) continue;
-      const sc = similarity(c.norm, s.norm) + c.weight;
+      let sc;
+      if (s.norm.length >= 5 && c.norm.length > s.norm.length && c.norm.includes(s.norm)) {
+        // The name is buried inside glued OCR text ("kingdragx220hp") —
+        // Levenshtein on the whole string would miss it entirely.
+        sc = 0.92 + c.weight;
+      } else if (Math.abs(c.norm.length - s.norm.length) / Math.max(c.norm.length, s.norm.length) > 0.5) {
+        continue; // hopeless length mismatch — skip the Levenshtein cost
+      } else {
+        sc = similarity(c.norm, s.norm) + c.weight;
+      }
       if (sc > best) {
         best = sc;
         via = c.norm;
