@@ -21,6 +21,8 @@ Open the printed URL. Progress saves automatically to your browser.
 
 - **RPG:** `http://127.0.0.1:4173/`
 - **Card Dex** (scan your real trading cards): `http://127.0.0.1:4173/pokedex/`
+- **🎬 FeatherCut video editor** (zero-install, zero-storage — see
+  [`editor/README.md`](editor/README.md)): `http://127.0.0.1:4173/editor/`
 
 - **Move:** Arrow keys / WASD  ·  **Interact / Confirm:** Z / Space / Enter  ·
   **Cancel:** X  ·  **Menu:** Esc  ·  on-screen touch controls on mobile.
