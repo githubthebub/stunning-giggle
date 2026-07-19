@@ -6,12 +6,27 @@ take (almost) **no storage and no idle RAM** from your laptop.
 
 ## ▶️ Open it
 
+**Play it right from the repo — nothing to clone or install:**
+
+### 👉 https://githubthebub.github.io/stunning-giggle/editor/
+
+That's the live GitHub Pages copy. It's served over HTTPS (which the export
+feature needs), works on desktop Chrome / Edge / Firefox, and — like the local
+copy — never uploads your footage anywhere.
+
+Prefer to run it yourself?
+
 ```bash
 npm start        # then open http://127.0.0.1:4173/editor/
 ```
 
-…or just open `editor/index.html` straight in Chrome / Edge / Firefox — it's a
-single self-contained file with zero dependencies.
+…or just open `editor/index.html` straight in a browser — it's a single
+self-contained file with zero dependencies.
+
+> **Maintainer note:** the live link works once GitHub Pages is enabled for the
+> repo — in **Settings → Pages**, set **Source** to **GitHub Actions** (a
+> one-time click; the token can't enable Pages on its own). The included
+> workflow then publishes the whole site, including `/editor/`, on every push.
 
 ## Why it doesn't eat your laptop
 

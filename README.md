@@ -24,6 +24,15 @@ Open the printed URL. Progress saves automatically to your browser.
 - **🎬 FeatherCut video editor** (zero-install, zero-storage — see
   [`editor/README.md`](editor/README.md)): `http://127.0.0.1:4173/editor/`
 
+### 🌐 Play in the browser (no install)
+
+Once GitHub Pages is enabled (**Settings → Pages → Source: GitHub Actions**),
+the whole thing is live over HTTPS — no clone, no `npm`:
+
+- **Game:** https://githubthebub.github.io/stunning-giggle/
+- **Card Dex:** https://githubthebub.github.io/stunning-giggle/pokedex/
+- **🎬 Video editor:** https://githubthebub.github.io/stunning-giggle/editor/
+
 - **Move:** Arrow keys / WASD  ·  **Interact / Confirm:** Z / Space / Enter  ·
   **Cancel:** X  ·  **Menu:** Esc  ·  on-screen touch controls on mobile.
 
