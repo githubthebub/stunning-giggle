@@ -24,14 +24,17 @@
   function buildDOM(cfg) {
     root = el('div', { class: 'battle-scene' });
     const field = el('div', { class: 'battle-field' });
+    field.appendChild(el('div', { class: 'battle-sky' }));
     const foeArea = el('div', { class: 'foe-area' });
     foeBar = makeBar('foe');
     foeSprite = el('div', { class: 'foe-sprite' });
-    foeArea.appendChild(foeBar.box); foeArea.appendChild(foeSprite);
+    foeArea.appendChild(foeBar.box);
+    foeArea.appendChild(el('div', { class: 'plat foe-plat' }, foeSprite));
     const plyArea = el('div', { class: 'ply-area' });
     plyBar = makeBar('ply');
     plySprite = el('div', { class: 'ply-sprite' });
-    plyArea.appendChild(plySprite); plyArea.appendChild(plyBar.box);
+    plyArea.appendChild(el('div', { class: 'plat ply-plat' }, plySprite));
+    plyArea.appendChild(plyBar.box);
     field.appendChild(foeArea); field.appendChild(plyArea);
     msgBox = el('div', { class: 'battle-msg' });
     root.appendChild(field); root.appendChild(msgBox);

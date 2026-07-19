@@ -185,7 +185,7 @@
     busy = true;
     G.party.seeDex(P(), foe.species);
     const res = await G.game.startBattle({ kind: 'wild', foeParty: [foe] });
-    afterBattle(res);
+    await afterBattle(res);
     busy = false;
   }
 
@@ -298,7 +298,7 @@
       G.game.updateHud && G.game.updateHud();
       G.save.save(p);
     } else {
-      afterBattle(res);
+      await afterBattle(res);
     }
   }
 
@@ -309,7 +309,7 @@
     await G.gui.fade('in', 500);
   }
 
-  function afterBattle(res) {
+  async function afterBattle(res) {
     const p = P();
     if (!res) return;
     if (res.result === 'caught' && res.caught) {
@@ -317,20 +317,26 @@
       G.gui.toast((res.caught.nickname || res.caught.species) + ' joined your ' + (where === 'party' ? 'party' : 'PC') + '!', { kind: 'good' });
       G.game.updateHud && G.game.updateHud();
     } else if (res.result === 'lose') {
-      whiteout();
+      await whiteout();
     }
     G.save.save(p);
   }
 
   async function whiteout() {
-    const p = P();
-    await G.gui.dialogue(['You have no Pokémon left to fight...', 'You scurry back to safety.']);
-    await G.gui.fade('out', 400);
-    G.party.healParty(p.party);
-    const h = p.lastHeal || { map: 'nuvema', x: 9, y: 11 };
-    enter(h.map, h.x, h.y, 'down');
-    await G.gui.fade('in', 400);
-    G.game.updateHud && G.game.updateHud();
+    busy = true; // lock the world for the whole faint sequence
+    try {
+      const p = P();
+      await G.gui.dialogue(['You have no Pokémon left to fight...', 'You scurry back to safety.']);
+      await G.gui.fade('out', 400);
+      G.party.healParty(p.party);
+      const h = p.lastHeal || { map: 'nuvema', x: 9, y: 11 };
+      enter(h.map, h.x, h.y, 'down'); // enter() resets busy/moving; re-lock below
+      busy = true;
+      await G.gui.fade('in', 400);
+      G.party.healParty(p.party); // ensure a full, status-free team
+      G.game.updateHud && G.game.updateHud();
+      G.save.save(p);
+    } finally { busy = false; }
   }
 
   async function flyTo(mapId) {
@@ -372,7 +378,8 @@
       for (let x = x0 - 1; x <= x0 + VIEW_W + 1; x++) {
         const ch = G.maps.charAt(map, x, y);
         const tile = G.tiles.get(ch);
-        tile.draw(ctx, x * TS - camX, y * TS - camY, TS, animClock);
+        const nb = { x: x, y: y, u: G.maps.charAt(map, x, y - 1), d: G.maps.charAt(map, x, y + 1), l: G.maps.charAt(map, x - 1, y), r: G.maps.charAt(map, x + 1, y) };
+        tile.draw(ctx, x * TS - camX, y * TS - camY, TS, animClock, nb);
       }
     }
     // entities sorted by y
