@@ -1,0 +1,248 @@
+{
+  "id": "burnout",
+  "topic": "burnout",
+  "title": "Running on empty",
+  "description": "A branching walk through what's actually draining you, ending in one small boundary or block of rest you can protect this week.",
+  "estMinutes": 8,
+  "startNodeId": "n1",
+  "nodes": [
+    {
+      "id": "n1",
+      "type": "prompt",
+      "text": "Let's be straight with each other. If you're here, something has been running you down for a while now, and you've probably been pushing through it instead of looking at it. Pushing through takes real effort. So does this. Give me a few honest minutes and we'll find one thing you can actually change.",
+      "next": "n2"
+    },
+    {
+      "id": "n2",
+      "type": "reflection",
+      "text": "Name it plainly. What's been draining you lately? Don't tidy it up or make it reasonable. Just the raw list.",
+      "capture": {
+        "field": "burnout_reflection_1",
+        "placeholder": "The work, the people who need things, the constant low hum of dread..."
+      },
+      "next": "n3"
+    },
+    {
+      "id": "n3",
+      "type": "choice",
+      "text": "When you notice how wiped out you are, what's the story you tell yourself about it?",
+      "options": [
+        {
+          "id": "n3_self",
+          "label": "I should be able to handle this. I'm being soft.",
+          "next": "n4",
+          "effects": {
+            "patternTags": [
+              "self_criticism"
+            ]
+          }
+        },
+        {
+          "id": "n3_load",
+          "label": "There's just too much on me right now.",
+          "next": "n4"
+        },
+        {
+          "id": "n3_nostop",
+          "label": "Honestly? I never slow down long enough to think about it.",
+          "next": "n4"
+        }
+      ]
+    },
+    {
+      "id": "n4",
+      "type": "reframe",
+      "text": "Read this slowly. Exhaustion is not a character flaw. You cannot out-discipline a load that's genuinely too heavy, and failing to is not weakness, it's physics. The tiredness isn't the enemy to beat. It's information about a load that needs to change. So let's stop arguing with the tiredness and look at the load.",
+      "next": "n5"
+    },
+    {
+      "id": "n5",
+      "type": "choice",
+      "text": "Be honest about what's actually filling your plate. Which of these lands hardest?",
+      "options": [
+        {
+          "id": "n5_overcommit",
+          "label": "I keep saying yes to things I don't have room for.",
+          "next": "a1",
+          "effects": {
+            "patternTags": [
+              "overcommitment",
+              "people_pleasing"
+            ]
+          }
+        },
+        {
+          "id": "n5_perfect",
+          "label": "Nothing feels finished unless it's flawless.",
+          "next": "b1",
+          "effects": {
+            "patternTags": [
+              "perfectionism"
+            ]
+          }
+        },
+        {
+          "id": "n5_control",
+          "label": "If I don't do it myself, it won't get done right.",
+          "next": "c1",
+          "effects": {
+            "patternTags": [
+              "need_for_control"
+            ]
+          }
+        },
+        {
+          "id": "n5_nochoice",
+          "label": "None of that. It's all genuinely non-negotiable.",
+          "next": "d1"
+        }
+      ]
+    },
+    {
+      "id": "a1",
+      "type": "reframe",
+      "text": "There it is. Every yes you hand out is a quiet no to your own rest, you're just not around to hear it. Saying yes to be liked, or to dodge the flicker of someone's disappointment, feels generous. But a version of you running on fumes isn't much good to any of them. This isn't about becoming cold. It's about making your yes mean something again.",
+      "next": "a2"
+    },
+    {
+      "id": "a2",
+      "type": "choice",
+      "text": "Picture telling one person, 'I can't take this on right now.' What actually stops you?",
+      "options": [
+        {
+          "id": "a2_letdown",
+          "label": "They'd be let down. They might think less of me.",
+          "next": "a3",
+          "effects": {
+            "patternTags": [
+              "people_pleasing"
+            ]
+          }
+        },
+        {
+          "id": "a2_nothing",
+          "label": "Honestly... probably nothing bad.",
+          "next": "act_boundary"
+        }
+      ]
+    },
+    {
+      "id": "a3",
+      "type": "reframe",
+      "text": "Sit with the gap between disappointing someone and harming them. A person being briefly let down is not an emergency. It's the ordinary friction of being someone with limits. Right now you're the only one treating your limits as optional. Let one other person meet the real you: the one who can't actually do everything.",
+      "next": "act_boundary"
+    },
+    {
+      "id": "b1",
+      "type": "reframe",
+      "text": "Perfectionism dresses up as high standards, but look at what it actually costs you. The last twenty percent of polish eats most of your energy, and most of the time nobody notices it but you. 'Flawless' isn't a standard, it's a finish line you keep moving so you never let yourself cross it. That's not devotion to quality. It's a tax on your rest, and you've been paying it for a while.",
+      "next": "b2"
+    },
+    {
+      "id": "b2",
+      "type": "reflection",
+      "text": "Pick one thing on your plate where 'good enough' would genuinely be fine, where done beats perfect. Name it, and name what 'good enough' would actually look like.",
+      "capture": {
+        "field": "burnout_reflection_2",
+        "placeholder": "The update email. Good enough is three honest sentences, not a polished essay."
+      },
+      "next": "act_goodenough"
+    },
+    {
+      "id": "c1",
+      "type": "reframe",
+      "text": "'It won't get done right.' Let's be precise, because precision is kind here. Usually that means 'it won't be done the way I'd do it.' Both can be true, but only one is a real problem. Being the only person who can carry something isn't a badge of honor. It's a bottleneck, and the bottleneck is you, running down.",
+      "next": "c2"
+    },
+    {
+      "id": "c2",
+      "type": "choice",
+      "text": "Take one thing on your list. Could someone else actually carry it, even if they did it differently than you would?",
+      "options": [
+        {
+          "id": "c2_yes",
+          "label": "Yes, but I'd have to let go of how it gets done.",
+          "next": "act_delegate",
+          "effects": {
+            "patternTags": [
+              "need_for_control"
+            ]
+          }
+        },
+        {
+          "id": "c2_no",
+          "label": "No. Truly, only I can do this one.",
+          "next": "c3"
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "type": "reframe",
+      "text": "Maybe. But push on it once more, because you can take it. Is it that only you can, or that only you trust yourself to? From the inside those feel identical, and they are not the same thing. You don't have to hand off everything. You just have to loosen your grip on one thing enough to breathe.",
+      "next": "act_delegate"
+    },
+    {
+      "id": "d1",
+      "type": "reframe",
+      "text": "I'm going to push back gently, because you deserve honesty more than easy agreement. 'It's all non-negotiable' is rarely all true. It's usually a few things that genuinely can't move, wrapped in a lot of things you've quietly decided can't move. The trap is treating the whole pile as fixed, because then you never have to make a hard choice. So let's separate the pile.",
+      "next": "d2"
+    },
+    {
+      "id": "d2",
+      "type": "reflection",
+      "text": "List what is truly, actually non-negotiable this week, the things with real consequences if they slip. Then look at everything that didn't make that list. What's sitting underneath the cut line that you just assumed you had to carry?",
+      "capture": {
+        "field": "burnout_reflection_3",
+        "placeholder": "Non-negotiable: rent, the deadline Friday, the kids. Everything else I just assumed..."
+      },
+      "next": "d3"
+    },
+    {
+      "id": "d3",
+      "type": "prompt",
+      "text": "Here's what 'no choice' keeps hiding from you: even when the load truly can't shrink, recovery is still a lever you control. Rest isn't the reward you get for finishing. It's what makes finishing possible in the first place. And you don't have to hold all of this alone. A trusted friend, a family member, or a mental-health professional can help you carry what feels immovable. Reaching out isn't quitting. It's how people last.",
+      "next": "act_rest"
+    },
+    {
+      "id": "act_boundary",
+      "type": "action",
+      "text": "One boundary you actually hold teaches you more than a hundred you only rehearse in your head. Here's the move.",
+      "action": {
+        "title": "Decline or renegotiate one commitment",
+        "description": "In the next 48 hours, pick one thing on your plate and give a real 'no,' 'not now,' or a smaller yes, out loud, to an actual person. Just one. Then notice that the sky stays up.",
+        "suggestQuestId": null
+      }
+    },
+    {
+      "id": "act_goodenough",
+      "type": "action",
+      "text": "You don't need to lower your standards everywhere. You just need to prove to yourself, once, that done can beat perfect.",
+      "action": {
+        "title": "Ship one thing at 'good enough'",
+        "description": "Take the task you named and finish it at eighty percent. Send it, submit it, or close it without the final polishing pass. Let 'done' be today's win, and watch what actually happens next.",
+        "suggestQuestId": null
+      }
+    },
+    {
+      "id": "act_delegate",
+      "type": "action",
+      "text": "Loosening your grip on one thing will not make everything collapse. The only way to know that is to test it.",
+      "action": {
+        "title": "Hand off one task, and don't correct it",
+        "description": "Give one thing on your list to someone else this week. Tell them the outcome you need, not every step to get there. Then let them do it their way, and sit on your hands instead of redoing it.",
+        "suggestQuestId": null
+      }
+    },
+    {
+      "id": "act_rest",
+      "type": "action",
+      "text": "You can't pour from empty, and somewhere you already know it. So protect one real block of recovery, on purpose.",
+      "action": {
+        "title": "Guard one block of real rest",
+        "description": "Put one genuine block of rest on your calendar this week, an hour, an evening, a slow morning, and defend it like a meeting you can't miss. Don't let scrolling stand in for rest. And if the weight still feels immovable, tell one trusted person or a mental-health professional what you're carrying.",
+        "suggestQuestId": null
+      }
+    }
+  ]
+}

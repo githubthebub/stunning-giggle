@@ -1,0 +1,22 @@
+{
+  "comment": "Isolated TS config for unit-testing/type-checking the PURE (no React Native) core: engines, schemas, content loader. The full app uses tsconfig.json.",
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "lib": ["ES2020"],
+    "strict": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "types": ["node", "jest"],
+    "noEmit": true
+  },
+  "include": [
+    "src/features/**/*",
+    "src/data/**/*",
+    "src/config/**/*",
+    "__tests__/**/*"
+  ]
+}

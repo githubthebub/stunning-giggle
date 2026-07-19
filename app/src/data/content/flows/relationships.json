@@ -1,0 +1,231 @@
+{
+  "id": "relationships",
+  "topic": "relationships",
+  "title": "The conversation you're avoiding",
+  "description": "A branching, honest walk through the relationship conversation you keep rehearsing but never having, and one small way to finally open it.",
+  "estMinutes": 8,
+  "startNodeId": "n1",
+  "nodes": [
+    {
+      "id": "n1",
+      "type": "prompt",
+      "text": "There's a conversation you keep having in your head and never out loud. You've rehearsed it in the shower, drafted it while you couldn't sleep, and then said 'not now' one more time. Here's the thing about the conversation you're avoiding: the avoiding is its own message. They can feel the distance even if they can't name it. So let's stop rehearsing and figure out what's actually going on. Honest answers only — nobody sees this but you.",
+      "next": "n2"
+    },
+    {
+      "id": "n2",
+      "type": "choice",
+      "text": "Think of the specific person and the specific tension. Which of these is closest to the truth?",
+      "options": [
+        {
+          "id": "n2a",
+          "label": "I keep swallowing it to keep the peace.",
+          "next": "n3",
+          "effects": {
+            "patternTags": [
+              "people_pleasing"
+            ],
+            "note": "silencing a need to protect the other person's comfort"
+          }
+        },
+        {
+          "id": "n2b",
+          "label": "I've gone quiet — more distance, fewer words, hoping it sorts itself out.",
+          "next": "n5",
+          "effects": {
+            "patternTags": [
+              "avoidance"
+            ],
+            "note": "withdrawing instead of addressing it"
+          }
+        },
+        {
+          "id": "n2c",
+          "label": "I've replayed the whole argument in my head — I already know exactly how it'll go.",
+          "next": "n7",
+          "effects": {
+            "patternTags": [
+              "need_for_control"
+            ],
+            "note": "pre-scripting the exchange to control the outcome"
+          }
+        }
+      ]
+    },
+    {
+      "id": "n3",
+      "type": "prompt",
+      "text": "Okay. So you keep choosing their comfort over your own honesty, and calling it 'keeping the peace.' But let's be precise about what you're actually keeping: not peace — quiet. Peace is when something's resolved. Quiet is when it's just buried, still ticking. And the resentment you're swallowing doesn't disappear; it leaks out sideways — in the tone, the short answers, the slow pulling-back. Let's get the real thing out on the table.",
+      "next": "n4"
+    },
+    {
+      "id": "n4",
+      "type": "reflection",
+      "text": "Finish this honestly: 'I keep quiet about ___ because I'm afraid that if I said it, they would ___.' Give me the unpolished version — the one you'd only say to someone you fully trust.",
+      "capture": {
+        "field": "relationships_kept_quiet",
+        "placeholder": "What you swallow, and what you fear they'd do."
+      },
+      "next": "n9"
+    },
+    {
+      "id": "n5",
+      "type": "prompt",
+      "text": "So you've gone quiet and you're hoping it sorts itself out. Let's be straight: distance isn't a strategy, it's a stall. Things left alone in a relationship don't heal — they harden. And 'hoping it blows over' usually means hoping they'll read your mind, notice you're upset, and fix it without you ever having to be the one who says the hard thing. That's a lot to ask of someone you're not talking to.",
+      "next": "n6"
+    },
+    {
+      "id": "n6",
+      "type": "reflection",
+      "text": "Be specific: what exactly have you gone quiet about? And what are you secretly hoping they'll figure out and do — without you having to ask?",
+      "capture": {
+        "field": "relationships_gone_quiet",
+        "placeholder": "The thing you've withdrawn over, and what you wish they'd just know."
+      },
+      "next": "n9"
+    },
+    {
+      "id": "n7",
+      "type": "prompt",
+      "text": "So you've run the whole scene already — what you'll say, what they'll fire back, how it ends. And on that private stage, you know exactly who they are and exactly how it goes. Here's the trap: you've been arguing with a character you wrote. You've cast them, given them their lines, and lost the fight before it happened. But that person in your head isn't the real one — and the script is doing your avoiding for you.",
+      "next": "n8"
+    },
+    {
+      "id": "n8",
+      "type": "reflection",
+      "text": "Write down the line you're most sure they'll say when you bring this up. Then, next to it, one honest word: how sure are you, really — a fact you've heard them say, or a story you're bracing for?",
+      "capture": {
+        "field": "relationships_scripted_line",
+        "placeholder": "Their imagined reply — and whether it's evidence or fear."
+      },
+      "next": "n9"
+    },
+    {
+      "id": "n9",
+      "type": "reframe",
+      "text": "Here's the reframe, and it's the whole game: you've been having this conversation with a version of them that lives in your head. And that version is always a little colder, a little more dismissive, a little less on your side than the real person might be — because fear writes a worse ending than reality usually delivers. You are mind-reading, and then reacting to the story as if it already happened. The only way to find out who they actually are in this conversation is to actually have it. Let's find what's really stopping you.",
+      "next": "n10"
+    },
+    {
+      "id": "n10",
+      "type": "choice",
+      "text": "When you imagine finally saying it out loud, what tightens first?",
+      "options": [
+        {
+          "id": "n10a",
+          "label": "It'll blow up — they'll get defensive and it'll turn into a fight.",
+          "next": "n11",
+          "effects": {
+            "patternTags": [
+              "need_for_control"
+            ],
+            "note": "equates any conflict with disaster"
+          }
+        },
+        {
+          "id": "n10b",
+          "label": "They'll pull away, and I'll have made everything worse.",
+          "next": "n12",
+          "effects": {
+            "patternTags": [
+              "people_pleasing"
+            ],
+            "note": "managing their reaction before it happens"
+          }
+        },
+        {
+          "id": "n10c",
+          "label": "That I'm overreacting — most people wouldn't even be bothered by this.",
+          "next": "n13",
+          "effects": {
+            "patternTags": [
+              "self_criticism",
+              "comparison"
+            ],
+            "note": "dismisses own need by measuring against imagined others"
+          }
+        }
+      ]
+    },
+    {
+      "id": "n11",
+      "type": "reframe",
+      "text": "Notice you've decided the conversation equals a fight — like there's no version where two people who care about each other disagree and stay standing. Conflict isn't the failure. The failure is the silent, drawn-out version you're already living in, where nothing gets said and the distance does the fighting for you. A hard conversation isn't the opposite of a good relationship. Avoiding every hard conversation is how good ones quietly die.",
+      "next": "n14"
+    },
+    {
+      "id": "n12",
+      "type": "reframe",
+      "text": "Look at what you just did: you're managing their reaction before they've even had one. You've appointed yourself in charge of their feelings, which sounds generous but is actually a way of staying in control — and of never having to risk hearing what they really think. Here's the harder truth: if this relationship can't survive you naming one honest need, that's information you need, not a disaster to prevent. You can't protect a connection by hiding from it.",
+      "next": "n14"
+    },
+    {
+      "id": "n13",
+      "type": "reframe",
+      "text": "Stop and read that back. You're deciding your own feeling is invalid by measuring it against some imaginary average person who 'wouldn't be bothered.' But that person isn't in your relationship — you are. 'Overreacting' is just the word we use to talk ourselves out of a need before anyone else even gets the chance to. Your reaction is information about what matters to you. It doesn't need to be the biggest problem in the world to be worth one honest sentence.",
+      "next": "n14"
+    },
+    {
+      "id": "n14",
+      "type": "reflection",
+      "text": "Underneath every complaint is a need. Not 'they always do X' — but what you're actually longing for. Finish this: 'What I really need here is to feel ___.' One word or two. Respected? Chosen? Trusted? Wanted? Get under the story to the need.",
+      "capture": {
+        "field": "relationships_real_need",
+        "placeholder": "The need under the complaint — say it plainly."
+      },
+      "next": "n15"
+    },
+    {
+      "id": "n15",
+      "type": "choice",
+      "text": "You've named it. Now — honestly, where are you?",
+      "options": [
+        {
+          "id": "n15a",
+          "label": "I'm ready. I just need to actually open my mouth.",
+          "next": "n16"
+        },
+        {
+          "id": "n15b",
+          "label": "I want to, but I don't know how to start it without it going sideways.",
+          "next": "n17"
+        },
+        {
+          "id": "n15c",
+          "label": "It's heavy — this has been building for a long time.",
+          "next": "n18"
+        }
+      ]
+    },
+    {
+      "id": "n16",
+      "type": "action",
+      "text": "Then don't let this be one more rehearsal you felt good about and never used. The distance between the version in your head and the real one closes the second you speak. Keep it to one clean sentence — a feeling and a need, not a case for the prosecution.",
+      "action": {
+        "title": "Say one honest sentence this week.",
+        "description": "Go to them this week and say one true thing, in this shape: 'When ___ happens, I feel ___, and what I really need is ___.' Use the need you just named. No essay, no list of past crimes, no rehearsed monologue — just one honest sentence, and then let them respond. Say it while the clarity is still warm.",
+        "suggestQuestId": null
+      }
+    },
+    {
+      "id": "n17",
+      "type": "action",
+      "text": "Good — wanting to start it well is fair, as long as 'preparing' doesn't quietly become another month of not doing it. You don't need the perfect words. You need a door that opens instead of a case that attacks. So open with an invitation, not an accusation.",
+      "action": {
+        "title": "Ask for the conversation before you have it.",
+        "description": "This week, send one low-pressure opener: 'There's something on my mind about us that I've been sitting on. Can we find twenty minutes to talk — no big deal, I just don't want to keep it in?' That's it. You're not solving it in the text; you're just opening the door so it happens on purpose instead of exploding by accident. Softens the start, keeps you honest.",
+        "suggestQuestId": null
+      }
+    },
+    {
+      "id": "n18",
+      "type": "action",
+      "text": "Okay — when something's been building for a long time, the answer isn't to unload all of it at once and hope they can catch it. It's to shrink the first move until it's actually doable. You don't have to resolve years in one sitting. You have to say one honest thing and start the thaw. And if this one is heavy and tangled — really weighing on you — that's worth talking through with someone you trust, or a mental-health professional. You weren't meant to carry the whole of it alone.",
+      "action": {
+        "title": "Name one small piece out loud.",
+        "description": "Pick the single smallest true thing you could say — not the whole history, just one honest piece: 'I've been feeling distant from you lately, and I miss us.' Say that one line this week. It doesn't fix everything and it isn't supposed to; it just reopens a door that's been shut for a while. If the weight of it is a lot to hold, tell one trusted person what you're carrying before you carry it any further.",
+        "suggestQuestId": null
+      }
+    }
+  ]
+}
