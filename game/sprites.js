@@ -97,6 +97,7 @@
   }
 
   // Draw a top-down trainer/NPC directly on a canvas ctx (tile-sized).
+  // Original chunky pixel-art overworld character (16px grid, integer pixels).
   function drawCharacter(ctx, px, py, ts, opts) {
     opts = opts || {};
     const dir = opts.dir || 'down';
@@ -104,32 +105,22 @@
     const hair = opts.hair || '#3a2b20';
     const skin = opts.skin || '#f2c79b';
     const step = opts.step || 0;
-    const cx = px + ts / 2;
-    const headR = ts * 0.22;
-    const headY = py + ts * 0.34;
-    // shadow
-    ctx.fillStyle = 'rgba(0,0,0,0.18)';
-    ctx.beginPath(); ctx.ellipse(cx, py + ts * 0.9, ts * 0.28, ts * 0.1, 0, 0, Math.PI * 2); ctx.fill();
-    // body
-    ctx.fillStyle = body;
-    roundRect(ctx, cx - ts * 0.2, py + ts * 0.5, ts * 0.4, ts * 0.34, ts * 0.08); ctx.fill();
-    // legs (little step animation)
-    ctx.fillStyle = shade(body, -40);
-    const off = step === 1 ? ts * 0.04 : step === 2 ? -ts * 0.04 : 0;
-    ctx.fillRect(cx - ts * 0.16, py + ts * 0.82, ts * 0.12, ts * 0.12 + off);
-    ctx.fillRect(cx + ts * 0.04, py + ts * 0.82, ts * 0.12, ts * 0.12 - off);
-    // head
-    ctx.fillStyle = skin; ctx.beginPath(); ctx.arc(cx, headY, headR, 0, Math.PI * 2); ctx.fill();
-    // hair
-    ctx.fillStyle = hair;
-    ctx.beginPath(); ctx.arc(cx, headY - headR * 0.25, headR, Math.PI, 2 * Math.PI); ctx.fill();
-    ctx.fillRect(cx - headR, headY - headR * 0.25, headR * 2, headR * 0.5);
-    // face direction (eyes)
+    const k = ts / 16; const ox = Math.round(px), oy = Math.round(py);
+    const bodyD = shade(body, -34), bodyL = shade(body, 22), hairL = shade(hair, 26), skinD = shade(skin, -28);
+    const P = (a, b, w, h, col) => { ctx.fillStyle = col; ctx.fillRect(ox + Math.round(a * k), oy + Math.round(b * k), Math.max(1, Math.round(w * k)), Math.max(1, Math.round(h * k))); };
+    P(4, 14.5, 8, 1.5, 'rgba(0,0,0,0.22)');          // shadow
+    const lo = step === 1 ? 1 : step === 2 ? -1 : 0;   // legs (walk bob)
+    P(5, 12, 2, 3 + lo, bodyD); P(9, 12, 2, 3 - lo, bodyD);
+    P(4, 8, 8, 5, body); P(4, 8, 8, 1, bodyL);         // torso
+    P(3, 8, 1, 4, bodyD); P(12, 8, 1, 4, bodyD);       // arms
+    P(6, 12.5, 3, 1.5, skinD);                         // hands hint
+    P(5, 2, 6, 6, skin); P(5, 7, 6, 1, skinD);         // head
+    if (dir === 'up') { P(4, 1, 8, 4, hair); P(4, 1, 8, 1, hairL); }
+    else { P(4, 1, 8, 3, hair); P(4, 1, 1, 5, hair); P(11, 1, 1, 5, hair); P(4, 1, 8, 1, hairL); }
     ctx.fillStyle = '#2a2530';
-    if (dir === 'down') { dot(ctx, cx - headR * 0.4, headY + headR * 0.15, ts * 0.03); dot(ctx, cx + headR * 0.4, headY + headR * 0.15, ts * 0.03); }
-    else if (dir === 'up') { /* back of head, no eyes */ }
-    else if (dir === 'left') { dot(ctx, cx - headR * 0.5, headY + headR * 0.1, ts * 0.03); }
-    else { dot(ctx, cx + headR * 0.5, headY + headR * 0.1, ts * 0.03); }
+    if (dir === 'down') { P(6, 5, 1, 2, '#2a2530'); P(9, 5, 1, 2, '#2a2530'); }
+    else if (dir === 'left') { P(5, 5, 1, 2, '#2a2530'); }
+    else if (dir === 'right') { P(10, 5, 1, 2, '#2a2530'); }
   }
   function dot(ctx, x, y, r) { ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill(); }
   function roundRect(ctx, x, y, w, h, r) {

@@ -33,12 +33,12 @@
 
   function boot() {
     const canvas = document.getElementById('game-canvas');
-    const RS = 2; // render the world at 2x for crisp, smooth art
+    const RS = 2; // 2x backing for crisp pixel art (drawn on integer coords)
     canvas.width = G.world.VIEW_W * G.world.TS * RS;
     canvas.height = G.world.VIEW_H * G.world.TS * RS;
     const ctx = canvas.getContext('2d');
     ctx.scale(RS, RS);
-    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingEnabled = false; // crisp pixels
     game.ctx = ctx;
 
     G.input.init();

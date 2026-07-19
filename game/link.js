@@ -155,7 +155,8 @@
     return new Promise((resolve) => {
       const box = el('textarea', { class: 'link-code', readonly: 'readonly', rows: '4' });
       box.value = code;
-      const link = gameUrl() + '#' + (/UNOVA-B/.test(code) ? 'battle=' : 'gift=') + code;
+      const frag = /UNOVA-B/.test(code) ? 'battle=' : /UNOVA-G/.test(code) ? 'gts=' : /UNOVA-H/.test(code) ? 'receipt=' : 'gift=';
+      const link = gameUrl() + '#' + frag + code;
       const panel = el('div', { class: 'link-panel' }, [
         el('div', { class: 'link-title' }, title),
         blurb ? el('div', { class: 'link-blurb' }, blurb) : null,
@@ -251,6 +252,108 @@
     await showCode('🔗 Your battle link', myTeamCode(), 'Send this to a friend. They open it to battle YOUR current team of ' + P().party.length + '. (It\'s a snapshot — update it anytime.)');
   }
 
+  // ================= GTS (deposit a Pokémon, request a species) =================
+  function removeMon(uid) {
+    const p = P();
+    let i = p.party.findIndex((m) => m.uid === uid);
+    if (i >= 0) return p.party.splice(i, 1)[0];
+    const box = p.boxes[0] || [];
+    i = box.findIndex((m) => m.uid === uid);
+    if (i >= 0) return box.splice(i, 1)[0];
+    return null;
+  }
+  function myGtsTicket() {
+    const g = P().gts; if (!g) return null;
+    const T = tables(); const w = bw();
+    w.u8(1); w.str(P().name || 'a Trainer'); w.str(g.want); packMonBytes(w, g.mon, T);
+    return 'UNOVA-G2.' + b64urlEnc(w.bytes());
+  }
+  function parseTicket(code) {
+    const s = stripPrefix(code, ['UNOVA-G2.']); if (!s) throw new Error('not a GTS ticket');
+    const T = tables(); const r = br(b64urlDec(s.body)); r.u8();
+    const from = r.str(); const want = r.str(); const mon = unpackMonRecord(r, T);
+    return { from, want, mon };
+  }
+  function makeReceipt(mon) { const T = tables(); const w = bw(); w.u8(1); w.str(P().name || 'a Trainer'); packMonBytes(w, mon, T); return 'UNOVA-H2.' + b64urlEnc(w.bytes()); }
+  function parseReceipt(code) { const s = stripPrefix(code, ['UNOVA-H2.']); if (!s) throw new Error('not a GTS receipt'); const T = tables(); const r = br(b64urlDec(s.body)); r.u8(); const from = r.str(); const mon = unpackMonRecord(r, T); return { from, mon }; }
+
+  async function gtsDeposit() {
+    const p = P();
+    if (p.gts) { await G.gui.dialogue(['You already have ' + G.party.displayName(p.gts.mon) + ' on the GTS, seeking a ' + p.gts.want + '.', 'Show its ticket, collect a trade, or withdraw it first.']); return; }
+    const roster = p.party.map((m, i) => ({ m, from: 'party', i })).filter(() => p.party.length > 1).concat((p.boxes[0] || []).map((m, i) => ({ m, from: 'box', i })));
+    if (!roster.length) { await G.gui.dialogue(['You need more than one Pokémon before you can deposit one.']); return; }
+    const pick = await G.gui.choice(roster.map((r, idx) => ({ label: (r.m.shiny ? '✦ ' : '') + G.party.displayName(r.m), value: idx, hint: 'Lv' + r.m.level + (r.from === 'box' ? ' (PC)' : '') })).concat([{ label: '‹ Cancel', value: -1 }]), { title: 'Deposit which Pokémon?', layerClass: 'bag-menu', cancelValue: -1 });
+    if (pick == null || pick < 0) return;
+    const chosen = roster[pick].m;
+    const names = Object.values(G.SPECIES).map((s) => s.name).sort();
+    const want = await G.gui.choice(names.map((n) => ({ label: n, value: n, hint: (G.species(n).types || []).join('/') })).concat([{ label: '‹ Cancel', value: null }]), { title: 'Request which Pokémon in return?', layerClass: 'bag-menu', cancelValue: null });
+    if (!want) return;
+    const mon = removeMon(chosen.uid); if (!mon) return;
+    p.gts = { mon, want };
+    G.save.save(p); G.game.updateHud && G.game.updateHud();
+    if (G.audio) G.audio.play('coin');
+    await showCode('🌐 GTS Ticket', myGtsTicket(), 'You deposited ' + G.party.displayName(mon) + ' and want a ' + want + '. Send this ticket to a friend. When they fulfill it, they send back a receipt — collect it here to receive your ' + want + '.');
+  }
+  async function gtsWithdraw() {
+    const p = P();
+    if (!p.gts) { await G.gui.dialogue(['You have nothing deposited on the GTS.']); return; }
+    if (p.party.length >= 6) { await G.gui.dialogue(['Make room in your party first (it\'s full).']); return; }
+    p.party.push(p.gts.mon); const nm = G.party.displayName(p.gts.mon); p.gts = null;
+    G.save.save(p); G.game.updateHud && G.game.updateHud();
+    await G.gui.dialogue(['You withdrew ' + nm + ' from the GTS.']);
+  }
+  async function gtsFulfill(codeMaybe) {
+    const p = P();
+    const raw = codeMaybe || await askCode('🌐 Fulfill a GTS trade', 'Paste a friend\'s UNOVA-G2 ticket');
+    if (!raw) return;
+    let t; try { t = parseTicket(raw); } catch (e) { await G.gui.dialogue(['That isn\'t a valid GTS ticket.']); return; }
+    await G.gui.dialogue([(t.from || 'A Trainer') + ' offers ' + (t.mon.n || t.mon.s) + ' (Lv ' + t.mon.l + ')', 'and is looking for a ' + t.want + '.']);
+    const roster = p.party.map((m, i) => ({ m, from: 'party' })).filter(() => p.party.length > 1).concat((p.boxes[0] || []).map((m) => ({ m, from: 'box' })));
+    const matches = roster.filter((r) => r.m.species === t.want);
+    if (!matches.length) { await G.gui.dialogue(['You don\'t have a ' + t.want + ' to spare for this trade.']); return; }
+    const pick = await G.gui.choice(matches.map((r, idx) => ({ label: (r.m.shiny ? '✦ ' : '') + G.party.displayName(r.m), value: idx, hint: 'Lv' + r.m.level })).concat([{ label: '‹ Cancel', value: -1 }]), { title: 'Trade away which ' + t.want + '?', layerClass: 'bag-menu', cancelValue: -1 });
+    if (pick == null || pick < 0) return;
+    const give = removeMon(matches[pick].m.uid); if (!give) return;
+    const got = hydrate(t.mon); got.from = 'gts'; got.fromTrainer = t.from || 'a friend';
+    G.party.addToParty(p, got);
+    if (G.audio) G.audio.play('catchgood');
+    G.save.save(p); G.game.updateHud && G.game.updateHud();
+    await G.gui.dialogue(['You traded ' + G.party.displayName(give) + ' and received ' + G.party.displayName(got) + ' from ' + (t.from || 'your friend') + '!']);
+    await showCode('🌐 GTS Receipt', makeReceipt(give), 'Send this receipt back to ' + (t.from || 'your friend') + ' so they receive your ' + give.species + '.');
+  }
+  async function gtsCollect(codeMaybe) {
+    const p = P();
+    const raw = codeMaybe || await askCode('🌐 Collect your GTS trade', 'Paste the UNOVA-H2 receipt your friend sent back');
+    if (!raw) return;
+    let rc; try { rc = parseReceipt(raw); } catch (e) { await G.gui.dialogue(['That isn\'t a valid GTS receipt.']); return; }
+    const got = hydrate(rc.mon); got.from = 'gts'; got.fromTrainer = rc.from || 'a friend';
+    G.party.addToParty(p, got);
+    if (p.gts) p.gts = null; // your deposited Pokémon completed its trade
+    if (G.audio) G.audio.play('catchgood');
+    G.save.save(p); G.game.updateHud && G.game.updateHud();
+    await G.gui.dialogue(['Your GTS trade completed!', (rc.from || 'Your friend') + ' sent you ' + G.party.displayName(got) + ' (Lv ' + got.level + ', ' + got.ability + ')!']);
+  }
+  async function gtsMenu() {
+    while (true) {
+      const p = P();
+      const status = p.gts ? (G.party.displayName(p.gts.mon) + ' → wants ' + p.gts.want) : 'empty';
+      const v = await G.gui.choice([
+        { label: '⬆ Deposit a Pokémon', value: 'dep' },
+        { label: '🎫 Show my GTS ticket', value: 'ticket', disabled: !p.gts },
+        { label: '⬇ Withdraw my deposit', value: 'wd', disabled: !p.gts },
+        { label: '🤝 Fulfill a friend\'s ticket', value: 'ful' },
+        { label: '📩 Collect my trade (receipt)', value: 'col' },
+        { label: '‹ Back', value: null },
+      ], { title: 'GTS  ·  ' + status, cancelValue: null });
+      if (v == null) return;
+      if (v === 'dep') await gtsDeposit();
+      else if (v === 'ticket') { if (p.gts) await showCode('🌐 GTS Ticket', myGtsTicket(), 'Seeking a ' + p.gts.want + ' for your ' + G.party.displayName(p.gts.mon) + '.'); }
+      else if (v === 'wd') await gtsWithdraw();
+      else if (v === 'ful') await gtsFulfill();
+      else if (v === 'col') await gtsCollect();
+    }
+  }
+
   // Friend hub, opened from the Entralink white bridge.
   async function friendMenu() {
     while (true) {
@@ -259,6 +362,7 @@
         { label: '🔗 Show my battle link', value: 'mylink' },
         { label: '🎁 Send a Pokémon', value: 'send' },
         { label: '📥 Receive a Pokémon', value: 'recv' },
+        { label: '🌐 GTS — Global Trade Station', value: 'gts' },
         { label: '🌙 Visit dreams (Dream World)', value: 'dream' },
         { label: '‹ Back', value: null },
       ], { title: 'The bridge to a friend\'s world', cancelValue: null });
@@ -267,6 +371,7 @@
       else if (v === 'mylink') await myLink();
       else if (v === 'send') await sendPokemon();
       else if (v === 'recv') await receiveGift();
+      else if (v === 'gts') await gtsMenu();
       else if (v === 'dream') { await G.entralink.open('crossover'); }
     }
   }
@@ -278,13 +383,19 @@
     if (m) return { kind: 'battle', code: decodeURIComponent(m[1]) };
     m = /[#&]gift=([^&]+)/.exec(h);
     if (m) return { kind: 'gift', code: decodeURIComponent(m[1]) };
+    m = /[#&]gts=([^&]+)/.exec(h);
+    if (m) return { kind: 'gts', code: decodeURIComponent(m[1]) };
+    m = /[#&]receipt=([^&]+)/.exec(h);
+    if (m) return { kind: 'receipt', code: decodeURIComponent(m[1]) };
     return null;
   }
   async function handlePending(pending) {
     try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {}
     if (pending.kind === 'battle') await battleFriend(pending.code);
     else if (pending.kind === 'gift') await receiveGift(pending.code);
+    else if (pending.kind === 'gts') await gtsFulfill(pending.code);
+    else if (pending.kind === 'receipt') await gtsCollect(pending.code);
   }
 
-  G.link = { myTeamCode, monGiftCode, friendMenu, battleFriend, sendPokemon, receiveGift, myLink, pendingFromHash, handlePending };
+  G.link = { myTeamCode, monGiftCode, friendMenu, gtsMenu, battleFriend, sendPokemon, receiveGift, myLink, gtsDeposit, gtsFulfill, gtsCollect, myGtsTicket, parseTicket, makeReceipt, parseReceipt, pendingFromHash, handlePending };
 })();

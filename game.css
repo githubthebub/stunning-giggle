@@ -31,7 +31,7 @@ button { font-family: inherit; cursor: pointer; }
   border: 3px solid #35508c; border-radius: 10px; overflow: hidden; background: #12131a;
   box-shadow: 0 10px 40px rgba(0,0,0,.5);
 }
-#game-canvas { width: 100%; height: 100%; display: block; image-rendering: auto; }
+#game-canvas { width: 100%; height: 100%; display: block; image-rendering: pixelated; image-rendering: crisp-edges; }
 
 /* Touch controls */
 #touch-controls { width: min(94vw, 720px); display: flex; align-items: center; justify-content: space-between; padding: 0 4px; }
