@@ -154,6 +154,7 @@
     <option value="30">30 fps</option>
     <option value="60">60 fps</option>
   </select>
+  <select id="sel-fmt" title="Export format"></select>
   <button id="btn-help" class="ghost">❔ Zero-storage?</button>
   <div class="spacer"></div>
   <button id="btn-export" class="primary">⬇ Export video</button>
@@ -188,6 +189,8 @@
 
 <footer id="tl-area">
   <div id="tl-toolbar">
+    <button id="btn-undo" title="Undo (Ctrl+Z)">↶ Undo</button>
+    <button id="btn-redo" title="Redo (Ctrl+Shift+Z)">↷ Redo</button>
     <button id="btn-split">✂ Split at playhead</button>
     <button id="btn-del">🗑 Delete selected</button>
     <label style="display:flex;align-items:center;gap:6px;color:var(--dim);font-size:12px">
@@ -245,6 +248,40 @@ function toast(msg) {
   el.classList.add('show');
   clearTimeout(toastTimer);
   toastTimer = setTimeout(() => el.classList.remove('show'), 2600);
+}
+
+/* ---------- Undo / redo (media files themselves are not part of history) ---------- */
+const undoStack = [], redoStack = [];
+const snapshot = () => JSON.stringify({ clips: state.clips, texts: state.texts, music: state.music });
+function pushSnap(s) {
+  undoStack.push(s);
+  if (undoStack.length > 100) undoStack.shift();
+  redoStack.length = 0;
+  updateHistoryUI();
+}
+const pushUndo = () => pushSnap(snapshot());
+function restore(s) {
+  const d = JSON.parse(s);
+  state.clips = d.clips; state.texts = d.texts; state.music = d.music;
+  state.sel = null;
+  setT(state.T); // clamps + re-activates so audio/video stay consistent
+  refresh();
+}
+function undo() {
+  if (!undoStack.length) { toast('Nothing to undo'); return; }
+  redoStack.push(snapshot());
+  restore(undoStack.pop());
+  updateHistoryUI();
+}
+function redo() {
+  if (!redoStack.length) { toast('Nothing to redo'); return; }
+  undoStack.push(snapshot());
+  restore(redoStack.pop());
+  updateHistoryUI();
+}
+function updateHistoryUI() {
+  $('#btn-undo').disabled = !undoStack.length || state.exporting;
+  $('#btn-redo').disabled = !redoStack.length || state.exporting;
 }
 
 const state = {
@@ -326,11 +363,20 @@ function syncMusic() {
   const m = mediaById(mu.mediaId);
   if (!m) return;
   const local = state.T - mu.startAt;
-  const want = state.playing && local >= 0 && local < m.duration;
+  m.el.loop = !!mu.loop;
+  const want = state.playing && local >= 0 && (mu.loop || local < m.duration);
   if (want) {
-    if (Math.abs(m.el.currentTime - local) > 0.3) m.el.currentTime = Math.max(0, local);
+    const target = mu.loop ? local % m.duration : local;
+    if (Math.abs(m.el.currentTime - target) > 0.3) m.el.currentTime = Math.max(0, target);
     if (m.el.paused) m.el.play().catch(() => {});
-    if (m.gain) m.gain.gain.value = mu.volume;
+    if (m.gain) {
+      let g = mu.volume;
+      const fi = mu.fadeIn || 0, fo = mu.fadeOut || 0;
+      if (fi > 0 && local < fi) g *= local / fi;
+      const remain = total() - state.T; // fade against the end of the movie
+      if (fo > 0 && remain < fo) g *= Math.max(0, remain / fo);
+      m.gain.gain.value = g;
+    }
   } else if (!m.el.paused) {
     m.el.pause();
   }
@@ -423,24 +469,27 @@ async function importFiles(files) {
 }
 function addToTimeline(m) {
   if (m.type === 'audio') { setMusic(m); return; }
+  pushUndo();
   const c = {
     id: uid(), mediaId: m.id,
     in: 0, out: m.type === 'image' ? 4 : m.duration,
-    speed: 1, volume: 1, fadeIn: 0, fadeOut: 0,
-    bright: 1, contrast: 1, sat: 1, gray: 0,
+    speed: 1, volume: 1, fadeIn: 0, fadeOut: 0, xfade: 0, fit: 'contain',
+    bright: 1, contrast: 1, sat: 1, gray: 0, hue: 0, sepia: 0,
   };
   state.clips.push(c);
   select({ kind: 'clip', id: c.id });
   refresh();
 }
 function setMusic(m) {
-  state.music = { mediaId: m.id, startAt: 0, volume: 0.6 };
+  pushUndo();
+  state.music = { mediaId: m.id, startAt: 0, volume: 0.6, loop: false, fadeIn: 0, fadeOut: 0 };
   select({ kind: 'music', id: m.id });
   refresh();
 }
 function removeMedia(m) {
   const used = state.clips.some((c) => c.mediaId === m.id) || (state.music && state.music.mediaId === m.id);
   if (used && !confirm(`"${m.name}" is used on the timeline. Remove it and its clips?`)) return;
+  pushUndo();
   state.clips = state.clips.filter((c) => c.mediaId !== m.id);
   if (state.music && state.music.mediaId === m.id) state.music = null;
   state.media = state.media.filter((x) => x !== m);
@@ -482,6 +531,18 @@ function activate(pos, playing) {
   } else {
     pauseAllVideos();
   }
+  // when paused inside a cross-fade, park the previous clip's element at the
+  // cut point so the blended frame previews correctly (playthrough leaves it
+  // there naturally).
+  const prev = state.clips[pos.i - 1];
+  const fx = Math.min(c.xfade || 0, clipDur(c));
+  if (prev && fx > 0 && pos.local < fx && !playing) {
+    const pm = mediaById(prev.mediaId);
+    if (pm && pm.type === 'video' && pm.el !== m.el && Math.abs(pm.el.currentTime - prev.out) > 0.15) {
+      pm.el.currentTime = prev.out;
+      evOnce(pm.el, 'seeked', 2000).then(setDirty);
+    }
+  }
   setDirty();
 }
 function maybePrefetchNext(pos) {
@@ -511,6 +572,16 @@ function stopPlayback() {
   syncMusic();
   updateGains();
   updateTransport();
+}
+function snapT(t) {
+  // magnet the playhead to clip boundaries when scrubbing (8 px tolerance)
+  const tol = 8 / state.pxs;
+  let best = t, bd = tol;
+  for (let i = 0; i <= state.clips.length; i++) {
+    const d = Math.abs(t - clipStart(i));
+    if (d < bd) { bd = d; best = clipStart(i); }
+  }
+  return best;
 }
 function setT(t, opts) {
   state.T = clamp(t, 0, total());
@@ -560,7 +631,25 @@ function tick(now) {
 
 /* ============================== Drawing ============================== */
 function filterString(c) {
-  return `brightness(${c.bright}) contrast(${c.contrast}) saturate(${c.sat}) grayscale(${c.gray ? 1 : 0})`;
+  let f = `brightness(${c.bright}) contrast(${c.contrast}) saturate(${c.sat}) grayscale(${c.gray ? 1 : 0})`;
+  if (c.sepia) f += ` sepia(${c.sepia})`;
+  if (c.hue) f += ` hue-rotate(${c.hue}deg)`;
+  return f;
+}
+function drawClipFrame(c, alpha) {
+  const m = mediaById(c.mediaId);
+  if (!m) return;
+  const iw = m.type === 'video' ? m.el.videoWidth : m.w;
+  const ih = m.type === 'video' ? m.el.videoHeight : m.h;
+  if (!iw || !ih) return;
+  const W = state.W, H = state.H;
+  const s = c.fit === 'cover' ? Math.max(W / iw, H / ih) : Math.min(W / iw, H / ih);
+  const dw = iw * s, dh = ih * s;
+  ctx.globalAlpha = alpha;
+  if (supportsFilter) ctx.filter = filterString(c);
+  try { ctx.drawImage(m.el, (W - dw) / 2, (H - dh) / 2, dw, dh); } catch (e) {}
+  if (supportsFilter) ctx.filter = 'none';
+  ctx.globalAlpha = 1;
 }
 function fadeOverlay(c, local) {
   let o = 0;
@@ -585,21 +674,21 @@ function draw() {
   }
   const m = mediaById(c.mediaId);
   if (m) {
-    const iw = m.type === 'video' ? m.el.videoWidth : m.w;
-    const ih = m.type === 'video' ? m.el.videoHeight : m.h;
-    if (iw && ih) {
-      const s = Math.min(W / iw, H / ih);
-      const dw = iw * s, dh = ih * s;
-      if (supportsFilter) ctx.filter = filterString(c);
-      try { ctx.drawImage(m.el, (W - dw) / 2, (H - dh) / 2, dw, dh); } catch (e) {}
-      if (supportsFilter) ctx.filter = 'none';
-      const ov = fadeOverlay(c, pos.local);
-      if (ov > 0) {
-        ctx.globalAlpha = ov;
-        ctx.fillStyle = '#000';
-        ctx.fillRect(0, 0, W, H);
-        ctx.globalAlpha = 1;
-      }
+    drawClipFrame(c, 1);
+    // cross-fade: during the first xfade seconds, blend the previous clip's
+    // final frame on top (its element sits parked at the cut point).
+    const prev = state.clips[pos.i - 1];
+    const fx = Math.min(c.xfade || 0, clipDur(c)); // can't dissolve longer than the clip
+    if (prev && fx > 0 && pos.local < fx) {
+      const pm = mediaById(prev.mediaId);
+      if (pm && pm.el !== m.el) drawClipFrame(prev, 1 - pos.local / fx);
+    }
+    const ov = fadeOverlay(c, pos.local);
+    if (ov > 0) {
+      ctx.globalAlpha = ov;
+      ctx.fillStyle = '#000';
+      ctx.fillRect(0, 0, W, H);
+      ctx.globalAlpha = 1;
     }
   }
   for (const tx of state.texts) {
@@ -608,6 +697,13 @@ function draw() {
 }
 function drawText(tx) {
   const W = state.W, H = state.H;
+  const f = tx.fade || 0;
+  // Only ramp the fade during playback/export; a paused preview shows the
+  // title at full opacity so it stays visible while you edit it (otherwise a
+  // title added at the playhead would render at alpha 0 and look invisible).
+  if (f > 0 && state.playing) {
+    ctx.globalAlpha = clamp(Math.min((state.T - tx.start) / f, (tx.start + tx.dur - state.T) / f, 1), 0, 1);
+  }
   const size = tx.size * (H / 720);
   ctx.font = `${tx.bold ? 700 : 400} ${size}px system-ui, sans-serif`;
   ctx.textAlign = tx.posX === 'left' ? 'left' : tx.posX === 'right' ? 'right' : 'center';
@@ -630,18 +726,28 @@ function drawText(tx) {
     ctx.fillStyle = tx.color;
     ctx.fillText(lines[i], x, y);
   }
+  ctx.globalAlpha = 1;
 }
 
 /* ============================== Export ============================== */
 let recorder = null, exportCancelled = false;
-function pickMime() {
-  const opts = ['video/webm;codecs=vp9,opus', 'video/webm;codecs=vp8,opus', 'video/webm'];
-  return opts.find((t) => window.MediaRecorder && MediaRecorder.isTypeSupported(t)) || '';
+// MP4 (H.264/AAC) records in newer Chrome/Edge and plays everywhere, including
+// iPhones; WebM is the universal MediaRecorder fallback.
+const FORMATS = {
+  mp4: { ext: 'mp4', mimes: ['video/mp4;codecs=avc1.640028,mp4a.40.2', 'video/mp4;codecs=avc1.42E01E,mp4a.40.2', 'video/mp4'] },
+  webm: { ext: 'webm', mimes: ['video/webm;codecs=vp9,opus', 'video/webm;codecs=vp8,opus', 'video/webm'] },
+};
+function supportedMime(fmt) {
+  if (!window.MediaRecorder || !MediaRecorder.isTypeSupported) return '';
+  return FORMATS[fmt].mimes.find((t) => MediaRecorder.isTypeSupported(t)) || '';
 }
 async function doExport() {
   if (state.exporting) { finishExport(true); return; }
   if (!state.clips.length) { toast('Nothing to export — the timeline is empty'); return; }
-  if (!canvas.captureStream || !window.MediaRecorder || !pickMime()) {
+  const fmt = FORMATS[$('#sel-fmt').value] ? $('#sel-fmt').value : 'webm';
+  const mime = supportedMime(fmt);
+  const ext = FORMATS[fmt].ext;
+  if (!canvas.captureStream || !mime) {
     toast('Export needs Chrome, Edge or Firefox'); return;
   }
   ensureAudio();
@@ -650,8 +756,8 @@ async function doExport() {
   if (window.showSaveFilePicker) {
     try {
       handle = await window.showSaveFilePicker({
-        suggestedName: 'feathercut.webm',
-        types: [{ description: 'WebM video', accept: { 'video/webm': ['.webm'] } }],
+        suggestedName: `feathercut.${ext}`,
+        types: [{ description: `${ext.toUpperCase()} video`, accept: { [`video/${ext}`]: [`.${ext}`] } }],
       });
       writable = await handle.createWritable();
     } catch (e) {
@@ -671,7 +777,7 @@ async function doExport() {
   const chunks = [];
   let writeQueue = Promise.resolve();
   recorder = new MediaRecorder(stream, {
-    mimeType: pickMime(),
+    mimeType: mime,
     videoBitsPerSecond: state.H >= 1080 ? 12e6 : 8e6,
     audioBitsPerSecond: 192000,
   });
@@ -686,10 +792,10 @@ async function doExport() {
       if (exportCancelled) { try { await writable.abort(); } catch (e) {} toast('Export cancelled'); }
       else { await writable.close(); toast(`Saved ${handle.name} ✔`); }
     } else if (!exportCancelled) {
-      const blob = new Blob(chunks, { type: 'video/webm' });
+      const blob = new Blob(chunks, { type: `video/${ext}` });
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
-      a.download = 'feathercut.webm';
+      a.download = `feathercut.${ext}`;
       a.click();
       setTimeout(() => URL.revokeObjectURL(a.href), 10000);
       toast('Export downloaded ✔');
@@ -716,8 +822,9 @@ function finishExport(cancelled) {
 function exportUI(on) {
   $('#btn-export').textContent = on ? '■ Cancel export' : '⬇ Export video';
   $('#export-progress').style.display = on ? 'block' : 'none';
-  ['#btn-import', '#btn-title', '#btn-music', '#btn-split', '#btn-del', '#sel-res', '#sel-fps']
+  ['#btn-import', '#btn-title', '#btn-music', '#btn-split', '#btn-del', '#sel-res', '#sel-fps', '#sel-fmt']
     .forEach((s) => { $(s).disabled = on; });
+  updateHistoryUI();
 }
 
 /* ============================== Editing ops ============================== */
@@ -730,16 +837,18 @@ function splitAtPlayhead() {
   if (!c) { toast('Nothing under the playhead'); return; }
   const d = clipDur(c);
   if (pos.local < 0.1 || d - pos.local < 0.1) { toast('Move the playhead into the middle of a clip'); return; }
+  pushUndo();
   const m = mediaById(c.mediaId);
   const mid = m.type === 'image' ? c.in + pos.local : c.in + pos.local * c.speed;
   const a = { ...c, id: uid(), out: mid, fadeOut: 0 };
-  const b = { ...c, id: uid(), in: mid, fadeIn: 0 };
+  const b = { ...c, id: uid(), in: mid, fadeIn: 0, xfade: 0 };
   state.clips.splice(pos.i, 1, a, b);
   select({ kind: 'clip', id: b.id });
   refresh();
 }
 function deleteSelected() {
   if (!state.sel) { toast('Select a clip, title or the music first'); return; }
+  pushUndo();
   if (state.sel.kind === 'clip') state.clips = state.clips.filter((c) => c.id !== state.sel.id);
   else if (state.sel.kind === 'text') state.texts = state.texts.filter((t) => t.id !== state.sel.id);
   else if (state.sel.kind === 'music') state.music = null;
@@ -753,8 +862,9 @@ function select(sel) {
   renderInspector();
 }
 function addTitle() {
+  pushUndo();
   const t = {
-    id: uid(), text: 'Your title', start: state.T, dur: 4,
+    id: uid(), text: 'Your title', start: state.T, dur: 4, fade: 0.3,
     size: 64, color: '#ffffff', posX: 'center', posY: 'middle', bold: true, outline: true,
   };
   state.texts.push(t);
@@ -851,8 +961,9 @@ function renderTimeline() {
     if (m) {
       const div = document.createElement('div');
       div.className = 'clip mclip' + (state.sel && state.sel.kind === 'music' ? ' sel' : '');
+      const len = state.music.loop ? Math.max(m.duration, total() - state.music.startAt) : m.duration;
       div.style.left = state.music.startAt * state.pxs + 'px';
-      div.style.width = Math.max(10, m.duration * state.pxs) + 'px';
+      div.style.width = Math.max(10, len * state.pxs) + 'px';
       div.dataset.music = '1';
       const lb = document.createElement('span');
       lb.className = 'clabel';
@@ -911,24 +1022,25 @@ tlInner.addEventListener('pointerdown', (e) => {
   const clipEl = e.target.closest('.clip');
   const x = e.clientX - tlInner.getBoundingClientRect().left;
   if (!clipEl) {
-    setT(x / state.pxs);
+    setT(snapT(x / state.pxs));
     drag = { kind: 'scrub' };
     tlInner.setPointerCapture(e.pointerId);
     return;
   }
+  const snap = snapshot(); // pre-drag state; pushed on pointerup only if something changed
   if (clipEl.dataset.tid) {
     const t = state.texts.find((t) => t.id === clipEl.dataset.tid);
     select({ kind: 'text', id: t.id });
-    drag = { kind: 'text', t, startX: x, orig: t.start, moved: false };
+    drag = { kind: 'text', t, startX: x, orig: t.start, moved: false, snap };
   } else if (clipEl.dataset.music) {
     select({ kind: 'music', id: state.music.mediaId });
-    drag = { kind: 'music', startX: x, orig: state.music.startAt, moved: false };
+    drag = { kind: 'music', startX: x, orig: state.music.startAt, moved: false, snap };
   } else {
     const c = state.clips.find((c) => c.id === clipEl.dataset.id);
     select({ kind: 'clip', id: c.id });
     const h = e.target.dataset && e.target.dataset.h;
-    if (h) drag = { kind: 'trim', c, side: h, startX: x, origIn: c.in, origOut: c.out };
-    else drag = { kind: 'move', c, el: clipEl, startX: x, moved: false };
+    if (h) drag = { kind: 'trim', c, side: h, startX: x, origIn: c.in, origOut: c.out, snap };
+    else drag = { kind: 'move', c, el: clipEl, startX: x, moved: false, snap };
   }
   tlInner.setPointerCapture(e.pointerId);
 });
@@ -937,7 +1049,7 @@ tlInner.addEventListener('pointermove', (e) => {
   const x = e.clientX - tlInner.getBoundingClientRect().left;
   const dt = (x - (drag.startX ?? 0)) / state.pxs;
   if (drag.kind === 'scrub') {
-    setT(x / state.pxs, { silent: true });
+    setT(snapT(x / state.pxs), { silent: true });
   } else if (drag.kind === 'trim') {
     const c = drag.c, m = mediaById(c.mediaId);
     const isImg = m.type === 'image';
@@ -991,6 +1103,7 @@ tlInner.addEventListener('pointerup', (e) => {
     const from = state.clips.indexOf(drag.c);
     let to = drag.dropIdx ?? from;
     if (from !== -1 && to !== from) {
+      pushSnap(drag.snap);
       state.clips.splice(from, 1);
       if (to > from) to--;
       state.clips.splice(to, 0, drag.c);
@@ -998,15 +1111,17 @@ tlInner.addEventListener('pointerup', (e) => {
     }
     refresh();
   } else if (drag.kind === 'trim') {
+    if (drag.c.in !== drag.origIn || drag.c.out !== drag.origOut) pushSnap(drag.snap);
     renderInspector();
   } else if ((drag.kind === 'text' || drag.kind === 'music') && drag.moved) {
+    pushSnap(drag.snap);
     renderInspector();
   }
   drag = null;
 });
 ruler.addEventListener('pointerdown', (e) => {
   const x = e.clientX - tlInner.getBoundingClientRect().left;
-  setT(x / state.pxs);
+  setT(snapT(x / state.pxs));
   drag = { kind: 'scrub' };
   tlInner.setPointerCapture(e.pointerId);
 });
@@ -1023,6 +1138,7 @@ function row(labelText, control, valueText) {
     v.textContent = valueText;
     l.appendChild(v);
   }
+  if (control.setAttribute) control.setAttribute('aria-label', labelText);
   r.append(l, control);
   return r;
 }
@@ -1030,9 +1146,25 @@ function slider(value, min, max, step, oninput) {
   const s = document.createElement('input');
   s.type = 'range';
   s.min = min; s.max = max; s.step = step; s.value = value;
+  let snap = null; // one undo entry per grab, not per pixel of slider travel
+  s.addEventListener('pointerdown', () => { snap = snapshot(); });
+  s.addEventListener('change', () => { if (snap) { pushSnap(snap); snap = null; } });
   s.addEventListener('input', () => oninput(parseFloat(s.value)));
   return s;
 }
+function undoable(el) {
+  let snap = null;
+  el.addEventListener('focus', () => { snap = snapshot(); });
+  el.addEventListener('change', () => { if (snap) { pushSnap(snap); snap = null; } });
+  return el;
+}
+const LOOKS = {
+  Warm: { bright: 1.05, contrast: 1.05, sat: 1.15, gray: 0, hue: -8, sepia: 0.18 },
+  Cool: { bright: 1, contrast: 1.08, sat: 1.05, gray: 0, hue: 12, sepia: 0 },
+  Vintage: { bright: 1.05, contrast: 0.92, sat: 0.75, gray: 0, hue: -5, sepia: 0.35 },
+  Noir: { bright: 1.02, contrast: 1.25, sat: 1, gray: 1, hue: 0, sepia: 0 },
+  Punch: { bright: 1, contrast: 1.2, sat: 1.35, gray: 0, hue: 0, sepia: 0 },
+};
 function renderInspector() {
   const body = $('#props-body');
   body.innerHTML = '';
@@ -1058,32 +1190,50 @@ function renderInspector() {
         c.out = c.in + clamp(parseFloat(d.value) || 4, 0.2, 3600);
         setDirty(); renderTimeline();
       });
-      body.appendChild(row('Duration (s)', d));
+      body.appendChild(row('Duration (s)', undoable(d)));
     }
     body.appendChild(row('Fade in (s)', slider(c.fadeIn, 0, 3, 0.1, upd((v) => { c.fadeIn = v; })), null));
     body.appendChild(row('Fade out (s)', slider(c.fadeOut, 0, 3, 0.1, upd((v) => { c.fadeOut = v; })), null));
+    if (state.clips.indexOf(c) > 0) {
+      body.appendChild(row('Cross-fade from previous (s)',
+        slider(c.xfade || 0, 0, Math.min(2, clipDur(c)), 0.1, upd((v) => { c.xfade = v; }))));
+    }
     if (supportsFilter) {
+      const looks = document.createElement('div');
+      looks.className = 'btnrow';
+      for (const [name, vals] of Object.entries(LOOKS)) {
+        const b = document.createElement('button');
+        b.textContent = name;
+        b.onclick = () => { pushUndo(); Object.assign(c, vals); setDirty(); renderInspector(); };
+        looks.appendChild(b);
+      }
+      body.appendChild(row('Looks', looks));
       body.appendChild(row('Brightness', slider(c.bright, 0, 2, 0.05, upd((v) => { c.bright = v; }))));
       body.appendChild(row('Contrast', slider(c.contrast, 0, 2, 0.05, upd((v) => { c.contrast = v; }))));
       body.appendChild(row('Saturation', slider(c.sat, 0, 2, 0.05, upd((v) => { c.sat = v; }))));
       const g = document.createElement('input');
       g.type = 'checkbox'; g.checked = !!c.gray;
-      g.addEventListener('change', () => { c.gray = g.checked ? 1 : 0; setDirty(); });
+      g.addEventListener('change', () => { pushUndo(); c.gray = g.checked ? 1 : 0; setDirty(); });
       body.appendChild(row('Black & white', g));
     }
     const btns = document.createElement('div');
     btns.className = 'btnrow';
+    const fit = document.createElement('button');
+    fit.textContent = c.fit === 'cover' ? 'Fill frame ✔' : 'Fill frame';
+    fit.title = 'Crop to fill the frame instead of letterboxing';
+    fit.onclick = () => { pushUndo(); c.fit = c.fit === 'cover' ? 'contain' : 'cover'; setDirty(); renderInspector(); };
     const reset = document.createElement('button');
     reset.textContent = 'Reset look';
     reset.onclick = () => {
-      Object.assign(c, { bright: 1, contrast: 1, sat: 1, gray: 0, fadeIn: 0, fadeOut: 0 });
+      pushUndo();
+      Object.assign(c, { bright: 1, contrast: 1, sat: 1, gray: 0, hue: 0, sepia: 0, fadeIn: 0, fadeOut: 0 });
       setDirty(); renderInspector();
     };
     const del = document.createElement('button');
     del.textContent = 'Delete clip';
     del.className = 'danger';
     del.onclick = deleteSelected;
-    btns.append(reset, del);
+    btns.append(fit, reset, del);
     body.appendChild(btns);
   } else if (sel && sel.kind === 'text') {
     const t = state.texts.find((t) => t.id === sel.id);
@@ -1091,20 +1241,20 @@ function renderInspector() {
     const ta = document.createElement('textarea');
     ta.value = t.text;
     ta.addEventListener('input', () => { t.text = ta.value; setDirty(); renderTimeline(); });
-    body.appendChild(row('Text', ta));
+    body.appendChild(row('Text', undoable(ta)));
     const st = document.createElement('input');
     st.type = 'number'; st.min = 0; st.step = 0.5; st.value = t.start.toFixed(1);
     st.addEventListener('input', () => { t.start = Math.max(0, parseFloat(st.value) || 0); setDirty(); renderTimeline(); });
-    body.appendChild(row('Starts at (s)', st));
+    body.appendChild(row('Starts at (s)', undoable(st)));
     const du = document.createElement('input');
     du.type = 'number'; du.min = 0.5; du.step = 0.5; du.value = t.dur.toFixed(1);
     du.addEventListener('input', () => { t.dur = Math.max(0.5, parseFloat(du.value) || 4); setDirty(); renderTimeline(); });
-    body.appendChild(row('Duration (s)', du));
+    body.appendChild(row('Duration (s)', undoable(du)));
     body.appendChild(row('Size', slider(t.size, 16, 200, 2, upd((v) => { t.size = v; }))));
     const col = document.createElement('input');
     col.type = 'color'; col.value = t.color;
     col.addEventListener('input', () => { t.color = col.value; setDirty(); });
-    body.appendChild(row('Color', col));
+    body.appendChild(row('Color', undoable(col)));
     const grid = document.createElement('div');
     grid.className = 'posgrid';
     for (const py of ['top', 'middle', 'bottom']) {
@@ -1112,7 +1262,7 @@ function renderInspector() {
         const b = document.createElement('button');
         b.textContent = '·';
         if (t.posX === px && t.posY === py) b.classList.add('on');
-        b.onclick = () => { t.posX = px; t.posY = py; setDirty(); renderInspector(); };
+        b.onclick = () => { pushUndo(); t.posX = px; t.posY = py; setDirty(); renderInspector(); };
         grid.appendChild(b);
       }
     }
@@ -1121,15 +1271,19 @@ function renderInspector() {
     flags.className = 'btnrow';
     const bold = document.createElement('button');
     bold.textContent = t.bold ? 'Bold ✔' : 'Bold';
-    bold.onclick = () => { t.bold = !t.bold; setDirty(); renderInspector(); };
+    bold.onclick = () => { pushUndo(); t.bold = !t.bold; setDirty(); renderInspector(); };
     const out = document.createElement('button');
     out.textContent = t.outline ? 'Outline ✔' : 'Outline';
-    out.onclick = () => { t.outline = !t.outline; setDirty(); renderInspector(); };
+    out.onclick = () => { pushUndo(); t.outline = !t.outline; setDirty(); renderInspector(); };
+    const fadeBtn = document.createElement('button');
+    fadeBtn.textContent = (t.fade || 0) > 0 ? 'Fade ✔' : 'Fade';
+    fadeBtn.title = 'Fade the title in and out';
+    fadeBtn.onclick = () => { pushUndo(); t.fade = (t.fade || 0) > 0 ? 0 : 0.3; setDirty(); renderInspector(); };
     const del = document.createElement('button');
     del.textContent = 'Delete';
     del.className = 'danger';
     del.onclick = deleteSelected;
-    flags.append(bold, out, del);
+    flags.append(bold, out, fadeBtn, del);
     body.appendChild(row('Style', flags));
   } else if (sel && sel.kind === 'music' && state.music) {
     const m = mediaById(state.music.mediaId);
@@ -1140,8 +1294,14 @@ function renderInspector() {
     const st = document.createElement('input');
     st.type = 'number'; st.min = 0; st.step = 0.5; st.value = state.music.startAt.toFixed(1);
     st.addEventListener('input', () => { state.music.startAt = Math.max(0, parseFloat(st.value) || 0); renderTimeline(); });
-    body.appendChild(row('Starts at (s)', st));
+    body.appendChild(row('Starts at (s)', undoable(st)));
     body.appendChild(row('Volume', slider(state.music.volume, 0, 1.5, 0.05, (v) => { state.music.volume = v; })));
+    body.appendChild(row('Fade in (s)', slider(state.music.fadeIn || 0, 0, 5, 0.1, (v) => { state.music.fadeIn = v; })));
+    body.appendChild(row('Fade out at end (s)', slider(state.music.fadeOut || 0, 0, 5, 0.1, (v) => { state.music.fadeOut = v; })));
+    const loop = document.createElement('input');
+    loop.type = 'checkbox'; loop.checked = !!state.music.loop;
+    loop.addEventListener('change', () => { pushUndo(); state.music.loop = loop.checked; renderTimeline(); });
+    body.appendChild(row('Loop until the end', loop));
     const del = document.createElement('button');
     del.textContent = 'Remove music';
     del.className = 'danger';
@@ -1154,6 +1314,7 @@ function renderInspector() {
         Space — play/pause<br />
         S — split at playhead<br />
         Delete — remove selected<br />
+        Ctrl+Z / Ctrl+Shift+Z — undo / redo<br />
         ←/→ — step 0.1 s (Shift: 1 s)<br />
         Home/End — jump to start/end</div>
       <div class="tip">Drag clip edges to trim. Drag a clip left/right to reorder. Drag on the ruler to scrub.</div>`;
@@ -1187,6 +1348,8 @@ $('#btn-home').onclick = () => { if (!state.exporting) setT(0); };
 $('#btn-end').onclick = () => { if (!state.exporting) setT(total()); };
 $('#btn-split').onclick = splitAtPlayhead;
 $('#btn-del').onclick = deleteSelected;
+$('#btn-undo').onclick = undo;
+$('#btn-redo').onclick = redo;
 $('#btn-export').onclick = doExport;
 $('#btn-help').onclick = () => $('#help').showModal();
 $('#zoom').addEventListener('input', (e) => {
@@ -1204,6 +1367,13 @@ $('#sel-fps').addEventListener('change', (e) => { state.fps = parseInt(e.target.
 document.addEventListener('keydown', (e) => {
   const tag = (e.target.tagName || '').toLowerCase();
   if (tag === 'input' || tag === 'textarea' || tag === 'select' || state.exporting) return;
+  if ((e.ctrlKey || e.metaKey) && (e.key === 'z' || e.key === 'Z')) {
+    e.preventDefault();
+    if (e.shiftKey) redo(); else undo();
+    return;
+  }
+  if ((e.ctrlKey || e.metaKey) && (e.key === 'y' || e.key === 'Y')) { e.preventDefault(); redo(); return; }
+  if (e.ctrlKey || e.metaKey) return; // don't hijack browser shortcuts like Ctrl+S
   if (e.code === 'Space') { e.preventDefault(); state.playing ? stopPlayback() : play(); }
   else if (e.key === 's' || e.key === 'S') splitAtPlayhead();
   else if (e.key === 'Delete' || e.key === 'Backspace') { e.preventDefault(); deleteSelected(); }
@@ -1236,9 +1406,19 @@ window.addEventListener('beforeunload', (e) => {
 });
 window.addEventListener('resize', () => { renderTimeline(); setDirty(); });
 
+(function initFormats() {
+  const sel = $('#sel-fmt');
+  const avail = Object.keys(FORMATS).filter((f) => supportedMime(f));
+  const list = avail.length ? avail : ['webm'];
+  sel.innerHTML = list
+    .map((f) => `<option value="${f}">${f === 'mp4' ? 'MP4' : 'WebM'}</option>`)
+    .join('');
+  sel.value = list.includes('mp4') ? 'mp4' : list[0]; // MP4 plays everywhere — prefer it
+})();
 renderBin();
 renderTimeline();
 renderInspector();
+updateHistoryUI();
 requestAnimationFrame(tick);
 </script>
 </body>

@@ -47,19 +47,25 @@ self-contained file with zero dependencies.
 ## What it can do
 
 - Multi-clip timeline: trim by dragging edges, ✂ split at the playhead,
-  drag to reorder, delete
-- Per-clip **speed** (0.25×–4×), **volume**, **fade in/out**
-- Color controls: brightness / contrast / saturation / black-&-white
-- 🔤 **Title overlays** (size, color, position, bold, outline)
-- 🎵 **Music track** with its own start offset and volume
-- Photos as clips (set any duration)
-- Export to **WebM video** at 720p / 1080p / vertical 1080×1920, 30 or 60 fps
-- Keyboard: `Space` play · `S` split · `Delete` remove · `←/→` step · `Home/End`
+  drag to reorder, delete — with **undo/redo** (`Ctrl+Z` / `Ctrl+Shift+Z`)
+- **Cross-fade transitions** between clips, plus per-clip fade in/out to black
+- Per-clip **speed** (0.25×–4×), **volume**, and **Fill frame** (crop vs letterbox)
+- One-click **Looks** (Warm / Cool / Vintage / Noir / Punch) plus manual
+  brightness / contrast / saturation / black-&-white
+- 🔤 **Title overlays** (size, color, position, bold, outline, fade in/out)
+- 🎵 **Music track** with start offset, volume, fade in, fade out at the end,
+  and loop-to-fit
+- Photos as clips (set any duration); playhead snaps to cuts while scrubbing
+- Export to **MP4** (in browsers that support recording it — plays everywhere,
+  including iPhones) or **WebM**, at 720p / 1080p / vertical 1080×1920,
+  30 or 60 fps
+- Keyboard: `Space` play · `S` split · `Delete` remove · `Ctrl+Z` undo ·
+  `←/→` step · `Home/End`
 
 > Export runs in real time (a 2-minute edit takes 2 minutes) and needs
-> Chrome, Edge or Firefox. WebM plays everywhere modern and uploads fine to
-> YouTube/Drive; if you specifically need `.mp4`, run the export through a free
-> converter or share the WebM directly.
+> Chrome, Edge or Firefox. If the MP4 option doesn't appear, your browser
+> can't record MP4 — the WebM it makes instead still uploads fine to
+> YouTube/Drive.
 
 ## If you truly need Adobe Premiere Pro itself
 
