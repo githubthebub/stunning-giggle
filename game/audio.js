@@ -43,14 +43,33 @@
   };
   function play(name) { if (SFX[name]) try { SFX[name](); } catch (e) {} }
 
-  // --- music: loop a simple bassline+arp per track ---
+  // --- music: melodic 16-step loops per track (0 = rest) ---
+  const N = {
+    _: 0,
+    C3: 130.81, D3: 146.83, E3: 164.81, F3: 174.61, G3: 196.0, A3: 220.0, B3: 246.94, Bb3: 233.08,
+    C4: 261.63, D4: 293.66, E4: 329.63, F4: 349.23, G4: 392.0, A4: 440.0, B4: 493.88, Bb4: 466.16,
+    C5: 523.25, D5: 587.33, E5: 659.25, F5: 698.46, G5: 783.99, A5: 880.0, B5: 987.77,
+  };
+  const _ = 0;
   const TRACKS = {
-    town:   { tempo: 300, bass: [131, 131, 165, 196], arp: [523, 659, 784, 659] },
-    route:  { tempo: 260, bass: [147, 110, 147, 175], arp: [587, 740, 880, 740] },
-    battle: { tempo: 200, bass: [110, 110, 98, 98], arp: [440, 554, 659, 554] },
-    league: { tempo: 220, bass: [98, 98, 110, 123], arp: [392, 494, 587, 494] },
-    victory:{ tempo: 240, bass: [131, 165, 196, 262], arp: [523, 659, 784, 1047] },
-    entralink: { tempo: 340, bass: [82, 98, 73, 110], arp: [330, 392, 494, 392] },
+    town: { tempo: 360, wave: 'triangle', bassWave: 'sine',
+      bass: [N.C3, _, N.G3, _, N.A3, _, N.E3, _, N.F3, _, N.C3, _, N.F3, _, N.G3, _],
+      mel:  [N.E4, N.G4, N.C5, _, N.B4, N.G4, _, N.A4, N.G4, N.E4, N.A4, _, N.F4, N.A4, N.G4, _] },
+    route: { tempo: 320, wave: 'triangle', bassWave: 'sine',
+      bass: [N.G3, _, N.D3, _, N.E3, _, N.B3, _, N.C4, _, N.G3, _, N.C4, _, N.D4, _],
+      mel:  [N.G4, N.B4, N.D5, N.B4, N.E5, _, N.B4, N.G4, N.C5, N.E5, N.D5, N.B4, N.C5, N.D5, _, _] },
+    battle: { tempo: 240, wave: 'square', bassWave: 'sine',
+      bass: [N.A3, N.A3, _, N.A3, N.F3, N.F3, _, N.F3, N.G3, N.G3, _, N.G3, N.E3, _, N.E3, _],
+      mel:  [N.A4, N.C5, N.E5, N.C5, N.F4, N.A4, N.C5, N.A4, N.G4, N.B4, N.D5, N.B4, N.E5, N.D5, N.C5, _] },
+    league: { tempo: 260, wave: 'square', bassWave: 'sine',
+      bass: [N.D3, _, N.A3, _, N.Bb3, _, N.F3, _, N.G3, _, N.D3, _, N.A3, _, N.C4, _],
+      mel:  [N.D5, N.A4, N.F5, N.A4, N.Bb4, N.D5, N.F5, _, N.G4, N.Bb4, N.D5, N.C5, N.A4, _, N.A4, _] },
+    victory: { tempo: 200, wave: 'square', bassWave: 'triangle',
+      bass: [N.C3, N.C3, N.G3, N.G3, N.C4, _, N.G3, _, N.F3, N.F3, N.C4, _, N.G3, _, _, _],
+      mel:  [N.C5, N.C5, N.C5, N.E5, N.G5, _, N.E5, N.G5, N.C5, _, N.E5, N.G5, N.C5, _, _, _] },
+    entralink: { tempo: 440, wave: 'sine', bassWave: 'sine',
+      bass: [N.A3, _, _, _, N.F3, _, _, _, N.G3, _, _, _, N.E3, _, _, _],
+      mel:  [N.E4, _, N.A4, _, _, N.C5, _, N.B4, N.A4, _, N.E5, _, _, N.C5, _, _] },
   };
   function startMusic(name) {
     if (currentTrack === name) return;
@@ -58,18 +77,22 @@
     const c = ac(); if (!c) { currentTrack = name; return; }
     currentTrack = name;
     const tk = TRACKS[name] || TRACKS.town;
-    musicGain = c.createGain(); musicGain.gain.value = 0.5; musicGain.connect(c.destination);
+    musicGain = c.createGain(); musicGain.gain.value = 0.34; musicGain.connect(c.destination);
     let step = 0;
-    const interval = tk.tempo;
+    const dur = tk.tempo / 1000;
     musicTimer = setInterval(() => {
       if (!enabled || !musicGain) return;
       const b = tk.bass[step % tk.bass.length];
-      const a = tk.arp[step % tk.arp.length];
-      tone(b, interval / 1000 * 0.9, 'triangle', 0.05, 0, musicGain);
-      tone(a, interval / 1000 * 0.5, 'square', 0.03, 0, musicGain);
-      if (step % 2 === 0) tone(a * 2, interval / 1000 * 0.3, 'square', 0.02, interval / 2000, musicGain);
+      const m = tk.mel[step % tk.mel.length];
+      if (b) tone(b, dur * 1.6, tk.bassWave, 0.05, 0, musicGain);
+      if (m) {
+        tone(m, dur * 0.7, tk.wave, 0.045, 0, musicGain);
+        tone(m * 2, dur * 0.35, 'sine', 0.014, 0, musicGain); // soft shimmer octave
+      }
+      // gentle pad chord at the top of each bar
+      if (step % 8 === 0 && b) { tone(b, dur * 6, 'sine', 0.02, 0, musicGain); tone(b * 1.5, dur * 6, 'sine', 0.014, 0, musicGain); }
       step++;
-    }, interval);
+    }, tk.tempo);
   }
   function stopMusic() { if (musicTimer) { clearInterval(musicTimer); musicTimer = null; } if (musicGain) { try { musicGain.disconnect(); } catch (e) {} musicGain = null; } currentTrack = null; }
   function setEnabled(v) { enabled = !!v; if (!v) stopMusic(); }

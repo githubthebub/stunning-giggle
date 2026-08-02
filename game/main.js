@@ -33,10 +33,12 @@
 
   function boot() {
     const canvas = document.getElementById('game-canvas');
-    canvas.width = G.world.VIEW_W * G.world.TS;
-    canvas.height = G.world.VIEW_H * G.world.TS;
+    const RS = 2; // 2x backing for crisp pixel art (drawn on integer coords)
+    canvas.width = G.world.VIEW_W * G.world.TS * RS;
+    canvas.height = G.world.VIEW_H * G.world.TS * RS;
     const ctx = canvas.getContext('2d');
-    ctx.imageSmoothingEnabled = false;
+    ctx.scale(RS, RS);
+    ctx.imageSmoothingEnabled = false; // crisp pixels
     game.ctx = ctx;
 
     G.input.init();
@@ -69,7 +71,7 @@
     game.scene = 'title';
     if (G.audio) G.audio.startMusic('town');
     const hasSave = G.save.hasSave();
-    const nameInput = el('input', { class: 'title-name', type: 'text', maxlength: 12, placeholder: 'Name (e.g. Hilbert)', value: 'Hilbert' });
+    const nameInput = el('input', { class: 'title-name', type: 'text', maxlength: 12, placeholder: 'Your name (e.g. Hilbert)', value: '', autocomplete: 'off', autocorrect: 'off', spellcheck: 'false' });
     const menu = el('div', { class: 'title-menu' });
     const btns = [];
     if (hasSave) btns.push(el('button', { class: 'title-btn primary', onclick: () => continueSave() }, '▶ Continue'));

@@ -100,10 +100,15 @@ button { font-family: inherit; cursor: pointer; }
 
 /* Battle scene */
 .battle-layer { display: flex; align-items: center; justify-content: center; background: rgba(5,8,18,.4); }
-.battle-scene { width: min(96vw, 760px); aspect-ratio: 4/3; max-height: 88vh; background: linear-gradient(#bfe0ff 0%, #dff0ff 55%, #cfe8b8 55%, #a9d488 100%); border: 3px solid #35508c; border-radius: 12px; position: relative; overflow: hidden; box-shadow: 0 12px 40px rgba(0,0,0,.6); }
+.battle-scene { width: min(96vw, 760px); aspect-ratio: 4/3; max-height: 88vh; background: linear-gradient(#a9d4ff 0%, #cfe9ff 52%, #bfe39a 52%, #97c96f 100%); border: 3px solid #35508c; border-radius: 12px; position: relative; overflow: hidden; box-shadow: 0 12px 40px rgba(0,0,0,.6); }
+.battle-scene::after { content: ''; position: absolute; inset: 0; pointer-events: none; box-shadow: inset 0 0 60px rgba(20,30,60,.25); border-radius: 10px; }
 .battle-field { position: absolute; inset: 0; }
-.foe-area { position: absolute; top: 8%; right: 4%; display: flex; flex-direction: column; align-items: flex-end; }
-.ply-area { position: absolute; bottom: 20%; left: 4%; display: flex; flex-direction: column; align-items: flex-start; }
+.battle-sky { position: absolute; top: 0; left: 0; right: 0; height: 52%; background: radial-gradient(120% 80% at 70% 0%, rgba(255,255,255,.5), transparent 60%); }
+.foe-area { position: absolute; top: 8%; right: 4%; display: flex; flex-direction: column; align-items: flex-end; z-index: 2; }
+.ply-area { position: absolute; bottom: 20%; left: 4%; display: flex; flex-direction: column; align-items: flex-start; z-index: 2; }
+.plat { position: relative; display: flex; justify-content: center; }
+.plat::before { content: ''; position: absolute; left: 50%; transform: translateX(-50%); bottom: 4px; width: 78%; height: 20px; border-radius: 50%; background: radial-gradient(ellipse at center, rgba(60,120,60,.35), rgba(60,120,60,0) 70%); }
+.foe-plat::before { background: radial-gradient(ellipse at center, rgba(70,130,70,.32), rgba(70,130,70,0) 70%); }
 .foe-sprite, .ply-sprite { position: relative; }
 .foe-sprite { margin-right: 6%; }
 .ply-sprite { margin-left: 6%; }
@@ -229,3 +234,11 @@ button { font-family: inherit; cursor: pointer; }
   box-shadow: 0 4px 14px rgba(0,0,0,.45);
 }
 #carddex-link:hover { filter: brightness(1.12); }
+#editor-link {
+  position: fixed; top: 50px; right: 10px; z-index: 400;
+  background: linear-gradient(160deg, #4f8cff, #7c5cff);
+  color: #eef2ff; text-decoration: none; font-weight: 700; font-size: 13px;
+  border: 2px solid #2a3f7a; border-radius: 999px; padding: 7px 14px;
+  box-shadow: 0 4px 14px rgba(0,0,0,.45);
+}
+#editor-link:hover { filter: brightness(1.12); }
