@@ -122,6 +122,8 @@
     // A friend's battle/gift link the game was opened with?
     const pending = G.link.pendingFromHash();
     if (pending) { setTimeout(() => G.link.handlePending(pending), 500); return; }
+    // A completed global GTS trade waiting for pickup?
+    if (player.gts && player.gts.netId) setTimeout(() => { G.link.gtsCheck({ quiet: true }).catch(() => {}); }, 2200);
     if (player.champion) {
       G.gui.toast('Welcome back, Champion! Open the menu (Esc) → Entralink to visit the realm of dreams.', { duration: 4200, kind: 'good' });
     } else if (player.party.length === 0) {

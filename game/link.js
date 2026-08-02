@@ -292,34 +292,98 @@
     p.gts = { mon, want };
     G.save.save(p); G.game.updateHud && G.game.updateHud();
     if (G.audio) G.audio.play('coin');
-    await showCode('🌐 GTS Ticket', myGtsTicket(), 'You deposited ' + G.party.displayName(mon) + ' and want a ' + want + '. Send this ticket to a friend. When they fulfill it, they send back a receipt — collect it here to receive your ' + want + '.');
+    const ticket = myGtsTicket();
+    // Try to list it on the GLOBAL trade board so any player can fulfill it.
+    let listed = false;
+    try { p.gts.netId = await G.gtsnet.deposit(ticket); G.save.save(p); listed = true; } catch (e) {}
+    await showCode('🌐 GTS Ticket', ticket, listed
+      ? 'You deposited ' + G.party.displayName(mon) + ' seeking a ' + want + '. It\'s LIVE on the global GTS — any trainer can fulfill it! Come back and "Check my global trade" to collect. (You can also send this ticket straight to a friend.)'
+      : 'You deposited ' + G.party.displayName(mon) + ' and want a ' + want + '. Send this ticket to a friend. When they fulfill it, they send back a receipt — collect it here to receive your ' + want + '.');
   }
   async function gtsWithdraw() {
     const p = P();
     if (!p.gts) { await G.gui.dialogue(['You have nothing deposited on the GTS.']); return; }
     if (p.party.length >= 6) { await G.gui.dialogue(['Make room in your party first (it\'s full).']); return; }
+    const netId = p.gts.netId;
     p.party.push(p.gts.mon); const nm = G.party.displayName(p.gts.mon); p.gts = null;
     G.save.save(p); G.game.updateHud && G.game.updateHud();
+    if (netId) { try { await G.gtsnet.withdraw(netId); } catch (e) {} }
     await G.gui.dialogue(['You withdrew ' + nm + ' from the GTS.']);
   }
-  async function gtsFulfill(codeMaybe) {
+  async function gtsFulfill(codeMaybe, opts) {
+    opts = opts || {};
     const p = P();
     const raw = codeMaybe || await askCode('🌐 Fulfill a GTS trade', 'Paste a friend\'s UNOVA-G2 ticket');
-    if (!raw) return;
-    let t; try { t = parseTicket(raw); } catch (e) { await G.gui.dialogue(['That isn\'t a valid GTS ticket.']); return; }
+    if (!raw) return null;
+    let t; try { t = parseTicket(raw); } catch (e) { await G.gui.dialogue(['That isn\'t a valid GTS ticket.']); return null; }
     await G.gui.dialogue([(t.from || 'A Trainer') + ' offers ' + (t.mon.n || t.mon.s) + ' (Lv ' + t.mon.l + ')', 'and is looking for a ' + t.want + '.']);
     const roster = p.party.map((m, i) => ({ m, from: 'party' })).filter(() => p.party.length > 1).concat((p.boxes[0] || []).map((m) => ({ m, from: 'box' })));
     const matches = roster.filter((r) => r.m.species === t.want);
-    if (!matches.length) { await G.gui.dialogue(['You don\'t have a ' + t.want + ' to spare for this trade.']); return; }
+    if (!matches.length) { await G.gui.dialogue(['You don\'t have a ' + t.want + ' to spare for this trade.']); return null; }
     const pick = await G.gui.choice(matches.map((r, idx) => ({ label: (r.m.shiny ? '✦ ' : '') + G.party.displayName(r.m), value: idx, hint: 'Lv' + r.m.level })).concat([{ label: '‹ Cancel', value: -1 }]), { title: 'Trade away which ' + t.want + '?', layerClass: 'bag-menu', cancelValue: -1 });
-    if (pick == null || pick < 0) return;
-    const give = removeMon(matches[pick].m.uid); if (!give) return;
+    if (pick == null || pick < 0) return null;
+    const give = removeMon(matches[pick].m.uid); if (!give) return null;
     const got = hydrate(t.mon); got.from = 'gts'; got.fromTrainer = t.from || 'a friend';
     G.party.addToParty(p, got);
     if (G.audio) G.audio.play('catchgood');
     G.save.save(p); G.game.updateHud && G.game.updateHud();
     await G.gui.dialogue(['You traded ' + G.party.displayName(give) + ' and received ' + G.party.displayName(got) + ' from ' + (t.from || 'your friend') + '!']);
-    await showCode('🌐 GTS Receipt', makeReceipt(give), 'Send this receipt back to ' + (t.from || 'your friend') + ' so they receive your ' + give.species + '.');
+    const receipt = makeReceipt(give);
+    if (!opts.skipReceiptUi) await showCode('🌐 GTS Receipt', receipt, 'Send this receipt back to ' + (t.from || 'your friend') + ' so they receive your ' + give.species + '.');
+    return receipt;
+  }
+
+  // ---- global trade board (backed by G.gtsnet) ----
+  async function gtsBrowse() {
+    const p = P();
+    G.gui.toast('Contacting the global GTS…', {});
+    let list;
+    try { list = await G.gtsnet.listOpen(); }
+    catch (e) {
+      await G.gui.dialogue([
+        'The global GTS can\'t be reached from here.',
+        'It works on the public site: githubthebub.github.io/stunning-giggle',
+        'You can still trade instantly with ticket codes — Deposit, then send the code to a friend.',
+      ]);
+      return;
+    }
+    const mine = p.gts && p.gts.netId;
+    const open = [];
+    for (const e of list) {
+      if (e.id === mine) continue;
+      try { open.push({ e, t: parseTicket(e.ticket) }); } catch (err) {}
+    }
+    if (!open.length) { await G.gui.dialogue(['No open trades on the global GTS right now.', 'Deposit a Pokémon — some trainer out there may fulfill it!']); return; }
+    const pick = await G.gui.choice(open.map((x, i) => ({
+      label: (x.t.mon.sh ? '✦ ' : '') + (x.t.mon.n || x.t.mon.s) + '  Lv' + x.t.mon.l,
+      value: i, hint: 'wants ' + x.t.want + ' · ' + (x.t.from || '???'),
+    })).concat([{ label: '‹ Back', value: -1 }]), { title: '🌍 Global GTS — ' + open.length + ' open trade' + (open.length > 1 ? 's' : ''), layerClass: 'bag-menu', cancelValue: -1 });
+    if (pick == null || pick < 0) return;
+    const chosen = open[pick];
+    const receipt = await gtsFulfill(chosen.e.ticket, { skipReceiptUi: true });
+    if (!receipt) return;
+    try { await G.gtsnet.fulfill(chosen.e.id, receipt); G.gui.toast('Receipt delivered via the GTS ✔', { kind: 'good' }); }
+    catch (e) {
+      await showCode('🌐 GTS Receipt (deliver manually)', receipt,
+        'The GTS couldn\'t store your receipt (' + (e && e.message === 'trade gone' ? 'someone beat you to this trade' : 'network hiccup') + '). Send this code to ' + (chosen.t.from || 'the trainer') + ' directly so they still get your Pokémon.');
+    }
+  }
+  async function gtsCheck(opts) {
+    opts = opts || {};
+    const p = P();
+    if (!p.gts || !p.gts.netId) { if (!opts.quiet) await G.gui.dialogue(['You have no trade listed on the global GTS.']); return false; }
+    let t;
+    try { t = await G.gtsnet.check(p.gts.netId); }
+    catch (e) { if (!opts.quiet) await G.gui.dialogue(['The global GTS can\'t be reached right now. Try again in a bit.']); return false; }
+    if (t && t.st === 'done' && t.r) {
+      const id = p.gts.netId;
+      await gtsCollect(t.r); // adds the mon, clears p.gts, celebrates
+      try { await G.gtsnet.claim(id); } catch (e) {}
+      return true;
+    }
+    if (!t) { if (!opts.quiet) await G.gui.dialogue(['Your listing is no longer on the global GTS (it may have expired).', 'Withdraw your Pokémon to get it back, or deposit again to relist.']); return false; }
+    if (!opts.quiet) await G.gui.dialogue(['No trainer has taken your trade yet.', G.party.displayName(p.gts.mon) + ' is still listed, seeking a ' + p.gts.want + '.']);
+    return false;
   }
   async function gtsCollect(codeMaybe) {
     const p = P();
@@ -336,9 +400,11 @@
   async function gtsMenu() {
     while (true) {
       const p = P();
-      const status = p.gts ? (G.party.displayName(p.gts.mon) + ' → wants ' + p.gts.want) : 'empty';
+      const status = p.gts ? (G.party.displayName(p.gts.mon) + ' → wants ' + p.gts.want + (p.gts.netId ? ' · listed 🌍' : '')) : 'empty';
       const v = await G.gui.choice([
+        { label: '🌍 Browse global trades', value: 'browse' },
         { label: '⬆ Deposit a Pokémon', value: 'dep' },
+        { label: '🔍 Check my global trade', value: 'chk', disabled: !(p.gts && p.gts.netId) },
         { label: '🎫 Show my GTS ticket', value: 'ticket', disabled: !p.gts },
         { label: '⬇ Withdraw my deposit', value: 'wd', disabled: !p.gts },
         { label: '🤝 Fulfill a friend\'s ticket', value: 'ful' },
@@ -346,7 +412,9 @@
         { label: '‹ Back', value: null },
       ], { title: 'GTS  ·  ' + status, cancelValue: null });
       if (v == null) return;
-      if (v === 'dep') await gtsDeposit();
+      if (v === 'browse') await gtsBrowse();
+      else if (v === 'dep') await gtsDeposit();
+      else if (v === 'chk') await gtsCheck();
       else if (v === 'ticket') { if (p.gts) await showCode('🌐 GTS Ticket', myGtsTicket(), 'Seeking a ' + p.gts.want + ' for your ' + G.party.displayName(p.gts.mon) + '.'); }
       else if (v === 'wd') await gtsWithdraw();
       else if (v === 'ful') await gtsFulfill();
@@ -397,5 +465,5 @@
     else if (pending.kind === 'receipt') await gtsCollect(pending.code);
   }
 
-  G.link = { myTeamCode, monGiftCode, friendMenu, gtsMenu, battleFriend, sendPokemon, receiveGift, myLink, gtsDeposit, gtsFulfill, gtsCollect, myGtsTicket, parseTicket, makeReceipt, parseReceipt, pendingFromHash, handlePending };
+  G.link = { myTeamCode, monGiftCode, friendMenu, gtsMenu, battleFriend, sendPokemon, receiveGift, myLink, gtsDeposit, gtsFulfill, gtsCollect, gtsBrowse, gtsCheck, myGtsTicket, parseTicket, makeReceipt, parseReceipt, pendingFromHash, handlePending };
 })();

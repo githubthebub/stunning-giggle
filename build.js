@@ -12,7 +12,7 @@ const read = (p) => fs.readFileSync(path.join(ROOT, p), 'utf8');
 const GAME_JS = [
   'game/spritedata.js', 'game/data.js', 'game/party.js', 'game/battle.js', 'game/tiles.js',
   'game/sprites.js', 'game/maps.js', 'game/audio.js', 'game/gameui.js', 'game/save.js',
-  'game/input.js', 'game/world.js', 'game/battlescene.js', 'game/menu.js', 'game/entralink.js', 'game/link.js', 'game/main.js',
+  'game/input.js', 'game/world.js', 'game/battlescene.js', 'game/menu.js', 'game/entralink.js', 'game/gtsnet.js', 'game/link.js', 'game/main.js',
 ];
 const DREAM_JS = [
   'js/data.js', 'js/sprites.js', 'js/state.js', 'js/ui.js', 'js/audio.js', 'js/minigame.js',

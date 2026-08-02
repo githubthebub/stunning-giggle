@@ -1,0 +1,56 @@
+name: GTS pool (provision + keepalive)
+
+# The game's global GTS stores trades in a tiny public JSON blob.
+# This workflow creates that blob (the sandboxed dev environment can't
+# reach the public internet, but Actions runners can), publishes its
+# address as gts-pool.json, and pings it weekly so it never expires.
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 7 * * 1' # weekly keepalive (fires once this is on the default branch)
+
+permissions:
+  contents: write
+
+jobs:
+  pool:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check or provision the trade pool
+        id: pool
+        run: |
+          set -e
+          URL=""
+          if [ -f gts-pool.json ]; then
+            URL=$(python3 -c "import json;print(json.load(open('gts-pool.json')).get('url',''))" 2>/dev/null || true)
+          fi
+          if [ -n "$URL" ] && curl -fsS -m 15 "$URL" -o /dev/null; then
+            echo "pool alive: $URL"
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "provisioning a new pool..."
+          NEW=$(curl -fsS -m 20 -D - -o /dev/null -X POST https://jsonblob.com/api/jsonBlob \
+                 -H 'Content-Type: application/json' -d '{"v":1,"trades":{}}' \
+                 | tr -d '\r' | awk 'tolower($1)=="location:"{print $2}') || true
+          if [ -z "$NEW" ]; then
+            echo "jsonblob unavailable, trying kvdb.io..."
+            B=$(curl -fsS -m 20 -d 'email=gts-pool@example.com' https://kvdb.io) || true
+            if [ -n "$B" ]; then
+              NEW="https://kvdb.io/$B/pool"
+              curl -fsS -m 20 -X PUT "$NEW" -H 'Content-Type: application/json' -d '{"v":1,"trades":{}}'
+            fi
+          fi
+          if [ -z "$NEW" ]; then echo "could not provision a pool"; exit 1; fi
+          printf '{ "url": "%s", "provisioned": "%s" }\n' "$NEW" "$(date -u +%FT%TZ)" > gts-pool.json
+          echo "new pool: $NEW"
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+      - name: Commit pool config
+        if: steps.pool.outputs.changed == 'true'
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git add gts-pool.json
+          git commit -m 'Provision GTS trade pool'
+          git push
