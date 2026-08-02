@@ -81,5 +81,6 @@ const server = http.createServer((req, res) => {
 server.listen(PORT, HOST, () => {
   console.log('\n  ✨  Pokémon Dream World is running');
   console.log(`  ➜  RPG:      http://${HOST}:${PORT}`);
-  console.log(`  ➜  Card Dex: http://${HOST}:${PORT}/pokedex/\n`);
+  console.log(`  ➜  Card Dex: http://${HOST}:${PORT}/pokedex/`);
+  console.log(`  ➜  Editor:   http://${HOST}:${PORT}/editor/\n`);
 });
