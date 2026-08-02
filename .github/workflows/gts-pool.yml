@@ -37,6 +37,7 @@ jobs:
           NEW=$(curl -fsS -m 20 -D - -o /dev/null -X POST https://jsonblob.com/api/jsonBlob \
                  -H 'Content-Type: application/json' -d '{"v":1,"trades":{}}' \
                  | tr -d '\r' | awk 'tolower($1)=="location:"{print $2}') || true
+          case "$NEW" in /*) NEW="https://jsonblob.com$NEW";; esac # Location may be relative
           if [ -z "$NEW" ]; then
             echo "jsonblob unavailable, trying kvdb.io..."
             B=$(curl -fsS -m 20 -d 'email=gts-pool@example.com' https://kvdb.io) || true
