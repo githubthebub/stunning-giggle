@@ -6,6 +6,9 @@ name: GTS pool (provision + keepalive)
 # address as gts-pool.json, and pings it weekly so it never expires.
 on:
   workflow_dispatch:
+  push:
+    branches: [claude/pokemon-dreamworld-jcu1u5]
+    paths: ['.github/workflows/gts-pool.yml'] # provisioning runs when this file changes
   schedule:
     - cron: '0 7 * * 1' # weekly keepalive (fires once this is on the default branch)
 
