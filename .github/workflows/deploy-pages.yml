@@ -1,21 +1,23 @@
 name: Deploy to GitHub Pages
 
 # The whole repo is a static site: the RPG at /, the Dream World at
-# /dreamworld.html, the Card Dex at /pokedex/, and the FeatherCut video
-# editor at /editor/. Pages serves it over HTTPS, which the Card Dex
-# camera and the editor's File System Access export both require.
+# /dreamworld.html, the Card Dex at /pokedex/, Aura Atlas at /aura-atlas/,
+# and the FeatherCut video editor at /editor/. Pages serves it over HTTPS,
+# which the Card Dex camera and the editor's File System Access export
+# both require.
 #
 # One-time setup: in the repo's Settings → Pages, set Source to
 # "GitHub Actions" (the default GITHUB_TOKEN cannot enable Pages itself).
 #
-# Deploys run from the default branch and from the editor's feature
-# branch; the most recent push wins. Because the feature branch is a
-# superset (game + editor), deploying it serves everything.
+# Deploys run from the default branch and from the feature branches
+# below; the most recent push wins. Because the feature branches are
+# supersets of the default branch, deploying any of them serves everything.
 on:
   push:
     branches:
       - claude/pokemon-dreamworld-jcu1u5
       - claude/premier-pro-storage-ram-jxrznh
+      - claude/diaspora-psychology-game-anb6qi
   workflow_dispatch:
 
 permissions:

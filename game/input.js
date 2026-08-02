@@ -42,12 +42,21 @@
   function isHeld(btn) { return !!held[btn]; }
   function setEnabled(v) { enabled = v; if (!v) { Object.keys(held).forEach((k) => held[k] = false); dirStack.length = 0; } }
 
+  // Don't hijack keys while the player is typing in a text field
+  // (trainer name, nickname, paste-a-code box, etc.).
+  function typingInField(e) {
+    const t = e.target;
+    return t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable);
+  }
+
   function init() {
     window.addEventListener('keydown', (e) => {
+      if (typingInField(e)) return;
       const btn = KEYMAP[e.code];
       if (btn) { e.preventDefault(); press(btn); }
     });
     window.addEventListener('keyup', (e) => {
+      if (typingInField(e)) return;
       const btn = KEYMAP[e.code];
       if (btn) { e.preventDefault(); release(btn); }
     });

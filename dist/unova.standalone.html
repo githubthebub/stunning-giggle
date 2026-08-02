@@ -101,10 +101,15 @@ button { font-family: inherit; cursor: pointer; }
 
 /* Battle scene */
 .battle-layer { display: flex; align-items: center; justify-content: center; background: rgba(5,8,18,.4); }
-.battle-scene { width: min(96vw, 760px); aspect-ratio: 4/3; max-height: 88vh; background: linear-gradient(#bfe0ff 0%, #dff0ff 55%, #cfe8b8 55%, #a9d488 100%); border: 3px solid #35508c; border-radius: 12px; position: relative; overflow: hidden; box-shadow: 0 12px 40px rgba(0,0,0,.6); }
+.battle-scene { width: min(96vw, 760px); aspect-ratio: 4/3; max-height: 88vh; background: linear-gradient(#a9d4ff 0%, #cfe9ff 52%, #bfe39a 52%, #97c96f 100%); border: 3px solid #35508c; border-radius: 12px; position: relative; overflow: hidden; box-shadow: 0 12px 40px rgba(0,0,0,.6); }
+.battle-scene::after { content: ''; position: absolute; inset: 0; pointer-events: none; box-shadow: inset 0 0 60px rgba(20,30,60,.25); border-radius: 10px; }
 .battle-field { position: absolute; inset: 0; }
-.foe-area { position: absolute; top: 8%; right: 4%; display: flex; flex-direction: column; align-items: flex-end; }
-.ply-area { position: absolute; bottom: 20%; left: 4%; display: flex; flex-direction: column; align-items: flex-start; }
+.battle-sky { position: absolute; top: 0; left: 0; right: 0; height: 52%; background: radial-gradient(120% 80% at 70% 0%, rgba(255,255,255,.5), transparent 60%); }
+.foe-area { position: absolute; top: 8%; right: 4%; display: flex; flex-direction: column; align-items: flex-end; z-index: 2; }
+.ply-area { position: absolute; bottom: 20%; left: 4%; display: flex; flex-direction: column; align-items: flex-start; z-index: 2; }
+.plat { position: relative; display: flex; justify-content: center; }
+.plat::before { content: ''; position: absolute; left: 50%; transform: translateX(-50%); bottom: 4px; width: 78%; height: 20px; border-radius: 50%; background: radial-gradient(ellipse at center, rgba(60,120,60,.35), rgba(60,120,60,0) 70%); }
+.foe-plat::before { background: radial-gradient(ellipse at center, rgba(70,130,70,.32), rgba(70,130,70,0) 70%); }
 .foe-sprite, .ply-sprite { position: relative; }
 .foe-sprite { margin-right: 6%; }
 .ply-sprite { margin-left: 6%; }
@@ -1136,106 +1141,143 @@ window.SPRITE_DATA = { front: {"1":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUg
   G.battle = { create, doTurn, forceSwitch, active, firstHealthy, anyHealthy, tryCatch, stageMul, damage, entryEvents, typeEff: G.typeEff };
 })(typeof window !== 'undefined' ? window : globalThis);
 </script>
-<script>/* tiles.js — tile definitions (collision / terrain / HM obstacles) and their
- * procedural drawing. Warps, signs and NPCs are defined in map data instead. */
+<script>/* tiles.js — original chunky pixel-art tiles (top-down RPG style), drawn on a
+ * 16px integer grid for a crisp retro look. All art here is hand-drawn shapes,
+ * not copied from any game. meta: solid, terrain. draw(c,x,y,s,time,nb) */
 (function () {
   'use strict';
   const G = (window.G = window.G || {});
-
-  // meta: solid (blocks walking), terrain: 'grass'|'water'|'waterfall'|'cut'|
-  // 'boulder'|'ledge'|null. draw(ctx, px, py, ts, time)
   const T = {};
   function def(ch, meta, draw) { T[ch] = Object.assign({ ch, solid: false, terrain: null }, meta, { draw }); }
+  function H(x, y) { let h = (x * 73856093) ^ (y * 19349663); h = (h ^ (h >>> 13)) >>> 0; return h; }
+  const isWater = (c) => c === 'W' || c === '~' || c === 'F';
+  const isRoof = (c) => c === 'r';
+  const isBuild = (c) => c === 'r' || c === 'H' || c === 'D' || c === 'g' || c === 'n';
 
-  const rr = (ctx, x, y, w, h, r) => G.sprites.roundRect(ctx, x, y, w, h, r);
+  // pixel-art bitmap renderer: rows of chars -> colored 1px cells
+  function art(c, x, y, rows, pal) {
+    for (let j = 0; j < rows.length; j++) { const row = rows[j]; for (let i = 0; i < row.length; i++) { const col = pal[row[i]]; if (col) { c.fillStyle = col; c.fillRect(x + i, y + j, 1, 1); } } }
+  }
+  const R = (c, x, y, w, h, col) => { c.fillStyle = col; c.fillRect(x, y, w, h); };
 
-  // --- ground / walkable ---
-  def('.', {}, (c, x, y, s) => { c.fillStyle = '#7dc36a'; c.fillRect(x, y, s, s); speckle(c, x, y, s, '#72b861'); });
-  def('P', {}, (c, x, y, s) => { c.fillStyle = '#e6d3a0'; c.fillRect(x, y, s, s); speckle(c, x, y, s, '#dcc78f'); });
-  def('f', {}, (c, x, y, s) => { c.fillStyle = '#7dc36a'; c.fillRect(x, y, s, s); flower(c, x, y, s); });
-  def('d', {}, (c, x, y, s) => { c.fillStyle = '#e8cf95'; c.fillRect(x, y, s, s); speckle(c, x, y, s, '#dcc084'); });
-  def('%', {}, (c, x, y, s) => { c.fillStyle = '#dcc088'; c.fillRect(x, y, s, s); });
-  def('C', {}, (c, x, y, s) => { c.fillStyle = '#6b6472'; c.fillRect(x, y, s, s); speckle(c, x, y, s, '#615a68'); });
-  def('G', {}, (c, x, y, s) => { c.fillStyle = '#cdd6e6'; c.fillRect(x, y, s, s); c.strokeStyle = '#b7c2d6'; c.lineWidth = 1; c.strokeRect(x + .5, y + .5, s - 1, s - 1); });
-  def('M', {}, (c, x, y, s) => { c.fillStyle = '#f0e6d2'; c.fillRect(x, y, s, s); c.strokeStyle = '#e2d4ba'; c.strokeRect(x + .5, y + .5, s - 1, s - 1); });
-  def('=', {}, (c, x, y, s) => { c.fillStyle = '#c69a63'; c.fillRect(x, y, s, s); c.fillStyle = '#b3854f'; for (let i = 0; i < s; i += 6) c.fillRect(x, y + i, s, 2); });
+  // ---------- ground bases ----------
+  const GA = '#79c05a', GB = '#6fb650', GH = '#8bd06a', GD = '#5fa244';
+  function grass(c, x, y, s, nb) {
+    R(c, x, y, s, s, GA);
+    const h = H(nb ? nb.x : x, nb ? nb.y : y);
+    // subtle dither
+    c.fillStyle = GB; for (let j = 0; j < s; j += 2) for (let i = ((j / 2) % 2 ? 0 : 1); i < s; i += 4) c.fillRect(x + i, y + j, 1, 1);
+    // a couple of blades / specks, deterministic
+    c.fillStyle = GD; c.fillRect(x + (h % 12) + 1, y + (h % 10) + 2, 1, 2);
+    c.fillStyle = GH; c.fillRect(x + ((h >> 3) % 12) + 2, y + ((h >> 2) % 11) + 1, 1, 1);
+    if (h & 4) { c.fillStyle = GD; const bx = x + 3 + (h % 8); c.fillRect(bx, y + 11, 1, 3); c.fillRect(bx + 1, y + 12, 1, 2); c.fillRect(bx + 2, y + 11, 1, 3); }
+  }
+  function sand(c, x, y, s, nb) { R(c, x, y, s, s, '#e6d296'); const h = H(nb ? nb.x : x, nb ? nb.y : y); c.fillStyle = '#dcc487'; for (let j = 1; j < s; j += 3) for (let i = ((j) % 2 ? 0 : 2); i < s; i += 4) c.fillRect(x + i, y + j, 1, 1); c.fillStyle = '#cbb076'; c.fillRect(x + (h % 12) + 1, y + (h % 12) + 1, 2, 1); }
+  function cave(c, x, y, s, nb) { R(c, x, y, s, s, '#565165'); const h = H(nb ? nb.x : x, nb ? nb.y : y); c.fillStyle = '#4a4658'; for (let j = 0; j < s; j += 3) for (let i = ((j / 3) % 2 ? 1 : 3); i < s; i += 4) c.fillRect(x + i, y + j, 1, 1); c.fillStyle = '#655f76'; c.fillRect(x + (h % 12), y + (h % 12), 2, 2); }
 
-  // --- encounter terrain ---
-  def(',', { terrain: 'grass' }, (c, x, y, s) => { c.fillStyle = '#5aa653'; c.fillRect(x, y, s, s); blades(c, x, y, s, '#4a9146'); });
-  def('q', { terrain: 'grass' }, (c, x, y, s) => { c.fillStyle = '#d8b877'; c.fillRect(x, y, s, s); blades(c, x, y, s, '#c8a862'); });
-  def('c', { terrain: 'grass' }, (c, x, y, s) => { c.fillStyle = '#5a5462'; c.fillRect(x, y, s, s); speckle(c, x, y, s, '#4d4753'); });
+  def('.', {}, grass);
+  def('f', {}, (c, x, y, s, t, nb) => { grass(c, x, y, s, nb); const h = H(nb.x, nb.y); const cols = ['#ff6f8b', '#ffd24a', '#c98bff', '#66c8ff']; for (let i = 0; i < 2; i++) { const fx = x + 3 + ((h >> (i * 4)) % 9), fy = y + 3 + ((h >> (i * 3 + 1)) % 9), col = cols[(h >> i) % 4]; c.fillStyle = col; c.fillRect(fx, fy - 1, 1, 1); c.fillRect(fx - 1, fy, 3, 1); c.fillRect(fx, fy + 1, 1, 1); c.fillStyle = '#fff2a8'; c.fillRect(fx, fy, 1, 1); } });
+  function path(c, x, y, s, nb) {
+    R(c, x, y, s, s, '#e2cd94'); c.fillStyle = '#d6bf84'; for (let j = 1; j < s; j += 3) for (let i = ((j) % 2 ? 1 : 3); i < s; i += 4) c.fillRect(x + i, y + j, 1, 1);
+    c.fillStyle = '#c2a86e';
+    if (nb.u !== 'P' && nb.u !== 'D') c.fillRect(x, y, s, 1); if (nb.d !== 'P' && nb.d !== 'D') c.fillRect(x, y + s - 1, s, 1);
+    if (nb.l !== 'P' && nb.l !== 'D') c.fillRect(x, y, 1, s); if (nb.r !== 'P' && nb.r !== 'D') c.fillRect(x + s - 1, y, 1, s);
+  }
+  def('P', {}, path);
+  def('d', {}, sand); def('%', {}, (c, x, y, s, t, nb) => sand(c, x, y, s, nb)); def('C', {}, cave);
+  def('=', {}, (c, x, y, s) => { R(c, x, y, s, s, '#c69a5f'); c.fillStyle = '#a87b45'; for (let i = 1; i < s; i += 3) c.fillRect(x, y + i, s, 1); R(c, x, y, s, 1, '#8a6338'); R(c, x, y + s - 1, s, 1, '#8a6338'); });
+  def('G', {}, (c, x, y, s, t, nb) => { const lt = (nb.x + nb.y) % 2 === 0; R(c, x, y, s, s, lt ? '#d6def0' : '#c4cfe6'); c.fillStyle = 'rgba(255,255,255,.3)'; c.fillRect(x, y, s, 1); c.fillStyle = 'rgba(120,140,180,.4)'; c.fillRect(x, y + s - 1, s, 1); c.fillRect(x + s - 1, y, 1, s); });
+  def('M', {}, (c, x, y, s, t, nb) => { R(c, x, y, s, s, '#e8d0a6'); c.fillStyle = '#cdb488'; for (let i = ((nb.y % 2) ? 0 : 4); i < s; i += 6) c.fillRect(x, y + i, s, 1); });
 
-  // --- solid scenery ---
-  def('#', { solid: true }, (c, x, y, s) => { c.fillStyle = '#7dc36a'; c.fillRect(x, y, s, s); tree(c, x, y, s, '#2f8f4e', '#256f3d'); });
-  def('T', { solid: true, terrain: 'cut' }, (c, x, y, s) => { c.fillStyle = '#7dc36a'; c.fillRect(x, y, s, s); tree(c, x, y, s, '#3aa85e', '#2c8347'); c.fillStyle = '#f4d23c'; c.font = (s * 0.3) + 'px sans-serif'; });
-  def('R', { solid: true }, (c, x, y, s) => { c.fillStyle = '#9a8f7d'; c.fillRect(x, y, s, s); c.fillStyle = '#847a68'; c.fillRect(x, y, s, s * 0.4); c.strokeStyle = '#6f6558'; c.strokeRect(x + .5, y + .5, s - 1, s - 1); });
-  def('B', { solid: true, terrain: 'boulder' }, (c, x, y, s) => { c.fillStyle = '#e8cf95'; c.fillRect(x, y, s, s); c.fillStyle = '#9a8c74'; c.beginPath(); c.arc(x + s / 2, y + s / 2, s * 0.34, 0, 7); c.fill(); c.fillStyle = '#b0a488'; c.beginPath(); c.arc(x + s * 0.42, y + s * 0.42, s * 0.12, 0, 7); c.fill(); });
-  def('H', { solid: true }, (c, x, y, s) => { c.fillStyle = '#d9d2c4'; c.fillRect(x, y, s, s); c.strokeStyle = '#b8ae9c'; c.strokeRect(x + .5, y + .5, s - 1, s - 1); });
-  def('r', { solid: true }, (c, x, y, s) => { c.fillStyle = '#c9556a'; c.fillRect(x, y, s, s); c.fillStyle = '#b3435a'; c.fillRect(x, y, s, s * 0.5); });
-  def('g', { solid: true }, (c, x, y, s) => { c.fillStyle = '#8fa0bd'; c.fillRect(x, y, s, s); c.strokeStyle = '#7688a6'; c.strokeRect(x + .5, y + .5, s - 1, s - 1); });
-  def('n', { solid: true }, (c, x, y, s) => { c.fillStyle = '#b98a5a'; c.fillRect(x, y, s, s); c.fillStyle = '#a5794c'; c.fillRect(x, y + s * 0.6, s, s * 0.4); });
-  def(' ', { solid: true }, (c, x, y, s) => { c.fillStyle = '#12131a'; c.fillRect(x, y, s, s); });
-
-  // --- water / waterfall ---
-  const drawWater = (c, x, y, s, time) => {
-    c.fillStyle = '#4d90d5'; c.fillRect(x, y, s, s);
-    c.strokeStyle = 'rgba(255,255,255,0.35)'; c.lineWidth = 2;
-    const off = Math.sin((time || 0) / 400 + (x + y) * 0.05) * 2;
-    c.beginPath(); c.moveTo(x + 2, y + s * 0.35 + off); c.lineTo(x + s - 2, y + s * 0.35 + off); c.stroke();
-    c.beginPath(); c.moveTo(x + 2, y + s * 0.7 - off); c.lineTo(x + s - 2, y + s * 0.7 - off); c.stroke();
-  };
-  def('W', { solid: true, terrain: 'water' }, drawWater);
-  def('~', { solid: true, terrain: 'water' }, drawWater);
-  def('F', { solid: true, terrain: 'waterfall' }, (c, x, y, s, time) => {
-    c.fillStyle = '#6fb0e6'; c.fillRect(x, y, s, s);
-    c.strokeStyle = 'rgba(255,255,255,0.7)'; c.lineWidth = 2;
-    const o = ((time || 0) / 60) % s;
-    for (let i = -s; i < s; i += 6) { c.beginPath(); c.moveTo(x + 3, y + ((i + o) % s + s) % s); c.lineTo(x + 3, y + ((i + o) % s + s) % s + 3); c.stroke(); }
-    for (let gx = 6; gx < s; gx += 7) for (let i = -s; i < s; i += 8) { c.beginPath(); c.moveTo(x + gx, y + ((i + o) % s + s) % s); c.lineTo(x + gx, y + ((i + o) % s + s) % s + 3); c.stroke(); }
+  // ---------- encounter grass / cave grass ----------
+  def(',', { terrain: 'grass' }, (c, x, y, s, t, nb) => {
+    R(c, x, y, s, s, GA);
+    // clumps of tall grass with outline
+    const clump = (cx, cy) => { R(c, x + cx - 1, y + cy - 4, 4, 5, '#2c6626'); R(c, x + cx, y + cy - 4, 2, 5, '#4a9c3e'); R(c, x + cx, y + cy - 4, 1, 3, '#63b850'); };
+    clump(3, 14); clump(8, 15); clump(12, 13);
+    R(c, x, y + s - 1, s, 1, '#3c8232');
   });
+  def('q', { terrain: 'grass' }, (c, x, y, s, t, nb) => { sand(c, x, y, s, nb); const clump = (cx, cy) => { R(c, x + cx - 1, y + cy - 4, 4, 5, '#a88a4a'); R(c, x + cx, y + cy - 4, 2, 5, '#c8a860'); }; clump(4, 14); clump(10, 15); });
+  def('c', { terrain: 'grass' }, (c, x, y, s, t, nb) => { cave(c, x, y, s, nb); const clump = (cx, cy) => { R(c, x + cx - 1, y + cy - 4, 4, 5, '#33513f'); R(c, x + cx, y + cy - 4, 2, 5, '#4d7a5c'); }; clump(4, 14); clump(10, 15); });
 
-  // --- doors / signs / ledges (walkability handled here; warps in map data) ---
-  def('D', {}, (c, x, y, s) => { c.fillStyle = '#d9d2c4'; c.fillRect(x, y, s, s); c.fillStyle = '#5a4632'; rr(c, x + s * 0.22, y + s * 0.15, s * 0.56, s * 0.85, s * 0.06); c.fill(); c.fillStyle = '#c9a24a'; c.beginPath(); c.arc(x + s * 0.66, y + s * 0.58, s * 0.05, 0, 7); c.fill(); });
-  def('^', {}, (c, x, y, s) => { c.fillStyle = '#9a8f7d'; c.fillRect(x, y, s, s); c.fillStyle = '#7a7062'; c.beginPath(); c.moveTo(x + s / 2, y + s * 0.2); c.lineTo(x + s * 0.8, y + s * 0.7); c.lineTo(x + s * 0.2, y + s * 0.7); c.closePath(); c.fill(); });
-  def('S', { solid: true, terrain: 'sign' }, (c, x, y, s) => { c.fillStyle = '#7dc36a'; c.fillRect(x, y, s, s); c.fillStyle = '#8a6a3f'; c.fillRect(x + s * 0.42, y + s * 0.5, s * 0.16, s * 0.4); c.fillStyle = '#c79a5a'; rr(c, x + s * 0.2, y + s * 0.2, s * 0.6, s * 0.42, 3); c.fill(); c.fillStyle = '#5a4632'; c.fillRect(x + s * 0.28, y + s * 0.3, s * 0.44, 2); c.fillRect(x + s * 0.28, y + s * 0.4, s * 0.34, 2); });
-  def('L', { terrain: 'ledge' }, (c, x, y, s) => { c.fillStyle = '#7dc36a'; c.fillRect(x, y, s, s); c.fillStyle = '#5f9e4f'; c.fillRect(x, y + s * 0.7, s, s * 0.3); c.fillStyle = '#4d8a40'; c.fillRect(x, y + s * 0.7, s, 3); });
+  // ---------- tree (original chunky canopy with outline) ----------
+  function tree(c, x, y, s, nb, leaf, leafD, leafH) {
+    grass(c, x, y, s, nb);
+    R(c, x + 3, y + 14, 10, 1, 'rgba(0,0,0,0.13)'); // shadow
+    R(c, x + 6, y + 9, 4, 5, '#5a3a20'); R(c, x + 6, y + 9, 2, 5, '#77502e'); // trunk
+    // canopy rows: [xstart,width] per y, y from 0..10
+    const rows = [[6, 4], [4, 8], [3, 10], [2, 12], [2, 12], [1, 14], [1, 14], [2, 12], [3, 10], [4, 8], [6, 4]];
+    const OUT = '#1c5e24';
+    rows.forEach((rw, j) => { R(c, x + rw[0] - 1, y + j, rw[1] + 2, 1, OUT); });          // outline halo
+    rows.forEach((rw, j) => { R(c, x + rw[0], y + j, rw[1], 1, leaf); });                  // leaf fill
+    // shading (bottom-right) + highlight (top-left)
+    c.fillStyle = leafD; for (let j = 6; j < 11; j++) { const rw = rows[j]; R(c, x + rw[0] + rw[1] - 3, y + j, 3, 1, leafD); }
+    c.fillStyle = leafH; R(c, x + 4, y + 2, 3, 1, leafH); R(c, x + 3, y + 3, 2, 1, leafH); R(c, x + 5, y + 1, 2, 1, leafH);
+    // a few darker leaf speckles for texture
+    c.fillStyle = leafD; R(c, x + 8, y + 4, 1, 1, leafD); R(c, x + 6, y + 6, 1, 1, leafD); R(c, x + 10, y + 7, 1, 1, leafD);
+  }
+  def('#', { solid: true }, (c, x, y, s, t, nb) => tree(c, x, y, s, nb, '#3fa048', '#2c7d38', '#5fbf5e'));
+  def('T', { solid: true, terrain: 'cut' }, (c, x, y, s, t, nb) => { tree(c, x, y, s, nb, '#66c85a', '#4aa048', '#8ce07e'); R(c, x + 7, y + 6, 2, 4, '#f4d23c'); R(c, x + 6, y + 7, 4, 1, '#f4d23c'); });
 
-  // --- Entralink tiles ---
-  def('e', {}, (c, x, y, s) => { c.fillStyle = '#463f6e'; c.fillRect(x, y, s, s); speckle(c, x, y, s, '#3d3760'); });
-  def('E', {}, (c, x, y, s) => { c.fillStyle = '#575081'; c.fillRect(x, y, s, s); speckle(c, x, y, s, '#4c466f'); });
-  def('k', {}, (c, x, y, s) => { c.fillStyle = '#355261'; c.fillRect(x, y, s, s); blades(c, x, y, s, '#457587'); });
-  def('o', { solid: true }, (c, x, y, s) => {
-    c.fillStyle = '#241f38'; c.fillRect(x, y, s, s);
-    c.fillStyle = '#181426'; c.fillRect(x + s * 0.44, y + s * 0.55, s * 0.12, s * 0.35);
-    c.fillStyle = '#2f2950'; c.beginPath(); c.arc(x + s / 2, y + s * 0.42, s * 0.36, 0, 7); c.fill();
-    c.fillStyle = '#3a3462'; c.beginPath(); c.arc(x + s * 0.42, y + s * 0.36, s * 0.26, 0, 7); c.fill();
-  });
-  def('Y', { solid: true, terrain: 'entree' }, (c, x, y, s, time) => {
-    c.fillStyle = '#463f6e'; c.fillRect(x, y, s, s);
-    const pulse = 0.75 + 0.25 * Math.sin((time || 0) / 500);
-    c.fillStyle = 'rgba(180,220,255,' + (0.25 * pulse) + ')'; c.beginPath(); c.arc(x + s / 2, y + s / 2, s * 0.55, 0, 7); c.fill();
-    c.fillStyle = '#b9d2ea'; c.fillRect(x + s * 0.44, y + s * 0.6, s * 0.12, s * 0.35);
-    c.fillStyle = '#cfe6ff'; c.beginPath(); c.arc(x + s / 2, y + s * 0.4, s * 0.34, 0, 7); c.fill();
-    c.fillStyle = '#e8f4ff'; c.beginPath(); c.arc(x + s * 0.42, y + s * 0.34, s * 0.2, 0, 7); c.fill();
-  });
-  def('b', {}, (c, x, y, s) => {
-    c.fillStyle = '#e8ecf6'; c.fillRect(x, y, s, s);
-    c.fillStyle = '#c9d2e6'; for (let i = 2; i < s; i += 5) c.fillRect(x, y + i, s, 1);
-    c.fillStyle = '#aab6d0'; c.fillRect(x, y, s, 2); c.fillRect(x, y + s - 2, s, 2);
-  });
-  def('v', {}, (c, x, y, s, time) => {
-    c.fillStyle = '#463f6e'; c.fillRect(x, y, s, s);
-    const p = 0.5 + 0.5 * Math.sin((time || 0) / 300);
-    c.fillStyle = 'rgba(120,240,255,' + (0.15 + 0.15 * p) + ')'; c.beginPath(); c.arc(x + s / 2, y + s / 2, s * 0.3, 0, 7); c.fill();
-    c.strokeStyle = 'rgba(120,240,255,' + (0.5 + 0.4 * p) + ')'; c.lineWidth = 2;
-    c.beginPath(); c.arc(x + s / 2, y + s / 2, s * 0.32, 0, 7); c.stroke();
-  });
+  // ---------- rocks / boulders ----------
+  def('R', { solid: true }, (c, x, y, s) => { R(c, x, y, s, s, '#7c7060'); art(c, x, y, ['oooooooooooooooo', 'ohhhhhhhhhhhhhho', 'ohhhhhhhhhhhhhho', 'ommmmmmmmmmmmmmo', 'ommmmmmmmmmmmmmo', 'ommmmmmmddddddmo', 'ommmmmmmddddddmo', 'ommdddddddddddmo', 'ommdddddddddddmo', 'ommmmmmmmdddddmo', 'ommmmmmmmdddddmo', 'ommmdddddddddomo', 'ommmdddddddddomo', 'ommmmmmmmmmmmmmo', 'ommmmmmmmmmmmmmo', 'oooooooooooooooo'], { o: '#5a5044', h: '#98907e', m: '#847a68', d: '#6b6254' }); });
+  def('B', { solid: true, terrain: 'boulder' }, (c, x, y, s, t, nb) => { sand(c, x, y, s, nb); R(c, x + 3, y + 13, 10, 1, 'rgba(0,0,0,0.14)'); art(c, x + 2, y + 2, ['  oooooo  ', ' ohhhhhho ', 'ohhhhmmmmo', 'ohhhmmmmdo', 'ohhmmmmddo', 'ommmmmdddo', 'ommmmddddo', 'ommmdddddo', ' odddddddo', '  oooooo  '], { o: '#5a5044', h: '#c2b498', m: '#a89a80', d: '#8a7c64' }); });
 
-  // helpers
-  function speckle(c, x, y, s, col) { c.fillStyle = col; for (let i = 0; i < 4; i++) { const rx = x + (((x * 7 + i * 53) % s)), ry = y + (((y * 11 + i * 31) % s)); c.fillRect(rx, ry, 2, 2); } }
-  function blades(c, x, y, s, col) { c.strokeStyle = col; c.lineWidth = 1.5; for (let i = 0; i < 5; i++) { const bx = x + 3 + i * (s / 5); c.beginPath(); c.moveTo(bx, y + s - 2); c.lineTo(bx - 1, y + s * 0.5); c.stroke(); c.beginPath(); c.moveTo(bx + 2, y + s - 2); c.lineTo(bx + 3, y + s * 0.55); c.stroke(); } }
-  function flower(c, x, y, s) { const cols = ['#f77', '#fd7', '#f9f', '#7cf']; for (let i = 0; i < 2; i++) { const fx = x + 5 + i * (s * 0.5), fy = y + 6 + (i % 2) * (s * 0.4); c.fillStyle = cols[(x + y + i) % cols.length]; c.beginPath(); c.arc(fx, fy, 2.5, 0, 7); c.fill(); c.fillStyle = '#fe4'; c.fillRect(fx - 1, fy - 1, 2, 2); } }
-  function tree(c, x, y, s, top, bot) { c.fillStyle = '#6a4a2a'; c.fillRect(x + s * 0.44, y + s * 0.55, s * 0.12, s * 0.35); c.fillStyle = bot; c.beginPath(); c.arc(x + s / 2, y + s * 0.42, s * 0.36, 0, 7); c.fill(); c.fillStyle = top; c.beginPath(); c.arc(x + s * 0.42, y + s * 0.36, s * 0.28, 0, 7); c.fill(); }
+  // ---------- buildings ----------
+  def('r', { solid: true }, (c, x, y, s, t, nb) => {
+    const top = !isRoof(nb.u);
+    R(c, x, y, s, s, '#df6b4c'); // roof base
+    c.fillStyle = '#b8503a'; for (let j = (top ? 3 : 1); j < s; j += 3) c.fillRect(x, y + j, s, 1); // shingle lines
+    c.fillStyle = '#c25a40'; for (let j = (top ? 4 : 2); j < s; j += 3) for (let i = ((j / 3) % 2 ? 0 : 2); i < s; i += 4) c.fillRect(x + i, y + j, 1, 1);
+    if (top) { R(c, x, y, s, 2, '#f0906c'); R(c, x - 0, y - 1, s, 1, '#f8d6ac'); } // ridge + highlight
+    if (!isRoof(nb.l)) R(c, x, y, 1, s, '#a8462f'); if (!isRoof(nb.r)) R(c, x + s - 1, y, 1, s, '#a8462f');
+    if (!isRoof(nb.d) && !isBuild(nb.d)) { R(c, x, y + s - 2, s, 2, '#ead9b0'); R(c, x, y + s, s, 1, 'rgba(0,0,0,.18)'); } // eave
+  });
+  def('H', { solid: true }, (c, x, y, s, t, nb) => {
+    R(c, x, y, s, s, '#efe3c2'); c.fillStyle = '#e0d2ac'; for (let j = 2; j < s; j += 4) c.fillRect(x, y + j, s, 1);
+    if (((nb.x + nb.y) % 2 === 0) && nb.l !== 'D' && nb.r !== 'D') {
+      art(c, x + 4, y + 3, ['ooooooo', 'obbwwbo', 'obbwwbo', 'owwbbwo', 'owwbbwo', 'ooooooo'], { o: '#8a7350', b: '#4f93c0', w: '#9fd0ef' });
+    }
+    if (!isBuild(nb.d)) { R(c, x, y + s - 1, s, 1, '#c9b98f'); R(c, x, y + s, s, 1, 'rgba(0,0,0,.16)'); }
+    R(c, x, y, 1, s, '#e0d2ac');
+  });
+  def('D', {}, (c, x, y, s) => {
+    R(c, x, y, s, s, '#efe3c2');
+    art(c, x + 3, y + 2, ['oooooooooo', 'oWWWWWWWWo', 'oWppppppWo', 'oWppppppWo', 'oWppppppWo', 'oWWWWWWWWo', 'oWppppppWo', 'oWppKppppWo'.slice(0, 10), 'oWppppppWo', 'oWWWWWWWWo'], { o: '#5f3c20', W: '#8a5a34', p: '#6f4526', K: '#f2c94c' });
+    R(c, x + 10, y + 9, 1, 1, '#f2c94c'); // knob
+    R(c, x + 2, y + s - 1, s - 4, 1, '#b8a684'); // step
+  });
+  def('g', { solid: true }, (c, x, y, s, t, nb) => { R(c, x, y, s, s, '#7f93bd'); R(c, x, y, s, 1, '#98a9cc'); R(c, x, y + s - 1, s, 1, '#63769c'); c.fillStyle = '#8fa1c6'; for (let j = 2; j < s; j += 4) for (let i = 2; i < s; i += 4) c.fillRect(x + i, y + j, 2, 2); });
+  def('n', { solid: true }, (c, x, y, s) => { R(c, x, y, s, s, '#b98a5a'); R(c, x, y, s, 6, '#caa06e'); R(c, x, y + 6, s, 1, '#8a6340'); });
+  def(' ', { solid: true }, (c, x, y, s) => R(c, x, y, s, s, '#0e1018'));
+
+  // ---------- water / waterfall ----------
+  function water(c, x, y, s, time, nb) {
+    R(c, x, y, s, s, '#3f92d6');
+    const off = Math.floor((time || 0) / 500 + (nb ? (nb.x + nb.y) : 0));
+    c.fillStyle = '#5aa6e6'; for (let j = 0; j < s; j += 4) c.fillRect(x, y + j, s, 2);
+    c.fillStyle = '#a8dcff';
+    for (let j = 1; j < s; j += 4) { const sx = ((off + j) % 4) * 3; c.fillRect(x + sx, y + j, 2, 1); c.fillRect(x + sx + 7, y + j, 3, 1); }
+    if (nb) { c.fillStyle = '#bfe6ff'; if (!isWater(nb.u)) c.fillRect(x, y, s, 1); if (!isWater(nb.l)) c.fillRect(x, y, 1, s); if (!isWater(nb.r)) c.fillRect(x + s - 1, y, 1, s); if (!isWater(nb.d)) c.fillRect(x, y + s - 1, s, 1); }
+  }
+  def('W', { solid: true, terrain: 'water' }, water);
+  def('~', { solid: true, terrain: 'water' }, water);
+  def('F', { solid: true, terrain: 'waterfall' }, (c, x, y, s, time, nb) => { water(c, x, y, s, time, nb); const o = Math.floor((time || 0) / 40) % s; c.fillStyle = '#eaf6ff'; for (let gx = 1; gx < s; gx += 4) for (let i = -s; i < s; i += 6) { const yy = y + (((i + o) % s + s) % s); c.fillRect(x + gx, yy, 1, 3); } });
+
+  // ---------- signs / ledges / stairs ----------
+  def('S', { solid: true, terrain: 'sign' }, (c, x, y, s, t, nb) => { grass(c, x, y, s, nb); R(c, x + 7, y + 9, 2, 6, '#6b4526'); art(c, x + 2, y + 2, ['oooooooooooo', 'owwwwwwwwwwo', 'owddwddwddwo', 'owwwwwwwwwwo', 'owddwddddwo '.slice(0, 12), 'owwwwwwwwwwo', 'oooooooooooo'], { o: '#5f3c20', w: '#caa165', d: '#7a5330' }); });
+  def('L', { terrain: 'ledge' }, (c, x, y, s, t, nb) => { grass(c, x, y, s, nb); R(c, x, y + 10, s, 6, '#4d8a40'); R(c, x, y + 10, s, 1, '#3c7233'); c.fillStyle = '#5fa050'; for (let i = 1; i < s; i += 4) c.fillRect(x + i, y + 12, 2, 1); });
+  def('^', {}, (c, x, y, s) => { R(c, x, y, s, s, '#9a8f7d'); c.fillStyle = '#7a7062'; c.fillRect(x + 6, y + 3, 4, 2); c.fillRect(x + 4, y + 6, 8, 2); c.fillRect(x + 2, y + 9, 12, 2); });
+
+  // ---------- Entralink (mystical) ----------
+  const eBase = (c, x, y, s, col) => { R(c, x, y, s, s, col); c.fillStyle = 'rgba(255,255,255,.04)'; for (let j = 0; j < s; j += 2) for (let i = ((j / 2) % 2 ? 0 : 1); i < s; i += 4) c.fillRect(x + i, y + j, 1, 1); };
+  def('e', {}, (c, x, y, s, t, nb) => { eBase(c, x, y, s, '#463f6e'); const h = H(nb.x, nb.y); if (h & 3) { c.fillStyle = 'rgba(180,200,255,.18)'; c.fillRect(x + (h % 14), y + (h % 14), 1, 1); } });
+  def('E', {}, (c, x, y, s) => eBase(c, x, y, s, '#524a7a'));
+  def('k', { terrain: 'grass' }, (c, x, y, s, t, nb) => { eBase(c, x, y, s, '#3a5261'); const clump = (cx) => { R(c, x + cx - 1, y + 10, 4, 5, '#274654'); R(c, x + cx, y + 10, 2, 5, '#3f6f80'); }; clump(4); clump(10); });
+  def('o', { solid: true }, (c, x, y, s) => { R(c, x, y, s, s, '#221d38'); const rows = [[6, 4], [4, 8], [3, 10], [3, 10], [4, 8], [6, 4]]; rows.forEach((rw, j) => R(c, x + rw[0], y + 3 + j, rw[1], 1, '#332c58')); });
+  def('Y', { solid: true, terrain: 'entree' }, (c, x, y, s, time) => { eBase(c, x, y, s, '#463f6e'); const p = 0.6 + 0.4 * Math.sin((time || 0) / 480); c.fillStyle = 'rgba(180,220,255,' + (0.3 * p) + ')'; c.fillRect(x + 1, y + 1, s - 2, s - 2); R(c, x + 7, y + 9, 2, 6, '#a8c4e0'); const rows = [[6, 4], [4, 8], [3, 10], [3, 10], [4, 8], [6, 4]]; rows.forEach((rw, j) => R(c, x + rw[0], y + 2 + j, rw[1], 1, '#cfe6ff')); R(c, x + 5, y + 3, 3, 1, '#eef7ff'); });
+  def('b', {}, (c, x, y, s) => { R(c, x, y, s, s, '#eef1fa'); c.fillStyle = '#d2dbef'; for (let i = 1; i < s; i += 3) c.fillRect(x, y + i, s, 1); R(c, x, y, s, 1, '#b7c2dc'); R(c, x, y + s - 1, s, 1, '#b7c2dc'); });
+  def('v', {}, (c, x, y, s, time) => { eBase(c, x, y, s, '#463f6e'); const p = 0.5 + 0.5 * Math.sin((time || 0) / 320); c.fillStyle = 'rgba(120,240,255,' + (0.3 + 0.3 * p) + ')'; const rows = [[5, 6], [3, 10], [3, 10], [5, 6]]; rows.forEach((rw, j) => R(c, x + rw[0], y + 6 + j, rw[1], 1, 'rgba(120,240,255,' + (0.3 + 0.3 * p) + ')')); });
 
   G.tiles = { get: (ch) => T[ch] || T[' '], all: T };
 })();
@@ -1339,6 +1381,7 @@ window.SPRITE_DATA = { front: {"1":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUg
   }
 
   // Draw a top-down trainer/NPC directly on a canvas ctx (tile-sized).
+  // Original chunky pixel-art overworld character (16px grid, integer pixels).
   function drawCharacter(ctx, px, py, ts, opts) {
     opts = opts || {};
     const dir = opts.dir || 'down';
@@ -1346,32 +1389,22 @@ window.SPRITE_DATA = { front: {"1":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUg
     const hair = opts.hair || '#3a2b20';
     const skin = opts.skin || '#f2c79b';
     const step = opts.step || 0;
-    const cx = px + ts / 2;
-    const headR = ts * 0.22;
-    const headY = py + ts * 0.34;
-    // shadow
-    ctx.fillStyle = 'rgba(0,0,0,0.18)';
-    ctx.beginPath(); ctx.ellipse(cx, py + ts * 0.9, ts * 0.28, ts * 0.1, 0, 0, Math.PI * 2); ctx.fill();
-    // body
-    ctx.fillStyle = body;
-    roundRect(ctx, cx - ts * 0.2, py + ts * 0.5, ts * 0.4, ts * 0.34, ts * 0.08); ctx.fill();
-    // legs (little step animation)
-    ctx.fillStyle = shade(body, -40);
-    const off = step === 1 ? ts * 0.04 : step === 2 ? -ts * 0.04 : 0;
-    ctx.fillRect(cx - ts * 0.16, py + ts * 0.82, ts * 0.12, ts * 0.12 + off);
-    ctx.fillRect(cx + ts * 0.04, py + ts * 0.82, ts * 0.12, ts * 0.12 - off);
-    // head
-    ctx.fillStyle = skin; ctx.beginPath(); ctx.arc(cx, headY, headR, 0, Math.PI * 2); ctx.fill();
-    // hair
-    ctx.fillStyle = hair;
-    ctx.beginPath(); ctx.arc(cx, headY - headR * 0.25, headR, Math.PI, 2 * Math.PI); ctx.fill();
-    ctx.fillRect(cx - headR, headY - headR * 0.25, headR * 2, headR * 0.5);
-    // face direction (eyes)
+    const k = ts / 16; const ox = Math.round(px), oy = Math.round(py);
+    const bodyD = shade(body, -34), bodyL = shade(body, 22), hairL = shade(hair, 26), skinD = shade(skin, -28);
+    const P = (a, b, w, h, col) => { ctx.fillStyle = col; ctx.fillRect(ox + Math.round(a * k), oy + Math.round(b * k), Math.max(1, Math.round(w * k)), Math.max(1, Math.round(h * k))); };
+    P(4, 14.5, 8, 1.5, 'rgba(0,0,0,0.22)');          // shadow
+    const lo = step === 1 ? 1 : step === 2 ? -1 : 0;   // legs (walk bob)
+    P(5, 12, 2, 3 + lo, bodyD); P(9, 12, 2, 3 - lo, bodyD);
+    P(4, 8, 8, 5, body); P(4, 8, 8, 1, bodyL);         // torso
+    P(3, 8, 1, 4, bodyD); P(12, 8, 1, 4, bodyD);       // arms
+    P(6, 12.5, 3, 1.5, skinD);                         // hands hint
+    P(5, 2, 6, 6, skin); P(5, 7, 6, 1, skinD);         // head
+    if (dir === 'up') { P(4, 1, 8, 4, hair); P(4, 1, 8, 1, hairL); }
+    else { P(4, 1, 8, 3, hair); P(4, 1, 1, 5, hair); P(11, 1, 1, 5, hair); P(4, 1, 8, 1, hairL); }
     ctx.fillStyle = '#2a2530';
-    if (dir === 'down') { dot(ctx, cx - headR * 0.4, headY + headR * 0.15, ts * 0.03); dot(ctx, cx + headR * 0.4, headY + headR * 0.15, ts * 0.03); }
-    else if (dir === 'up') { /* back of head, no eyes */ }
-    else if (dir === 'left') { dot(ctx, cx - headR * 0.5, headY + headR * 0.1, ts * 0.03); }
-    else { dot(ctx, cx + headR * 0.5, headY + headR * 0.1, ts * 0.03); }
+    if (dir === 'down') { P(6, 5, 1, 2, '#2a2530'); P(9, 5, 1, 2, '#2a2530'); }
+    else if (dir === 'left') { P(5, 5, 1, 2, '#2a2530'); }
+    else if (dir === 'right') { P(10, 5, 1, 2, '#2a2530'); }
   }
   function dot(ctx, x, y, r) { ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill(); }
   function roundRect(ctx, x, y, w, h, r) {
@@ -1837,14 +1870,33 @@ window.SPRITE_DATA = { front: {"1":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUg
   };
   function play(name) { if (SFX[name]) try { SFX[name](); } catch (e) {} }
 
-  // --- music: loop a simple bassline+arp per track ---
+  // --- music: melodic 16-step loops per track (0 = rest) ---
+  const N = {
+    _: 0,
+    C3: 130.81, D3: 146.83, E3: 164.81, F3: 174.61, G3: 196.0, A3: 220.0, B3: 246.94, Bb3: 233.08,
+    C4: 261.63, D4: 293.66, E4: 329.63, F4: 349.23, G4: 392.0, A4: 440.0, B4: 493.88, Bb4: 466.16,
+    C5: 523.25, D5: 587.33, E5: 659.25, F5: 698.46, G5: 783.99, A5: 880.0, B5: 987.77,
+  };
+  const _ = 0;
   const TRACKS = {
-    town:   { tempo: 300, bass: [131, 131, 165, 196], arp: [523, 659, 784, 659] },
-    route:  { tempo: 260, bass: [147, 110, 147, 175], arp: [587, 740, 880, 740] },
-    battle: { tempo: 200, bass: [110, 110, 98, 98], arp: [440, 554, 659, 554] },
-    league: { tempo: 220, bass: [98, 98, 110, 123], arp: [392, 494, 587, 494] },
-    victory:{ tempo: 240, bass: [131, 165, 196, 262], arp: [523, 659, 784, 1047] },
-    entralink: { tempo: 340, bass: [82, 98, 73, 110], arp: [330, 392, 494, 392] },
+    town: { tempo: 360, wave: 'triangle', bassWave: 'sine',
+      bass: [N.C3, _, N.G3, _, N.A3, _, N.E3, _, N.F3, _, N.C3, _, N.F3, _, N.G3, _],
+      mel:  [N.E4, N.G4, N.C5, _, N.B4, N.G4, _, N.A4, N.G4, N.E4, N.A4, _, N.F4, N.A4, N.G4, _] },
+    route: { tempo: 320, wave: 'triangle', bassWave: 'sine',
+      bass: [N.G3, _, N.D3, _, N.E3, _, N.B3, _, N.C4, _, N.G3, _, N.C4, _, N.D4, _],
+      mel:  [N.G4, N.B4, N.D5, N.B4, N.E5, _, N.B4, N.G4, N.C5, N.E5, N.D5, N.B4, N.C5, N.D5, _, _] },
+    battle: { tempo: 240, wave: 'square', bassWave: 'sine',
+      bass: [N.A3, N.A3, _, N.A3, N.F3, N.F3, _, N.F3, N.G3, N.G3, _, N.G3, N.E3, _, N.E3, _],
+      mel:  [N.A4, N.C5, N.E5, N.C5, N.F4, N.A4, N.C5, N.A4, N.G4, N.B4, N.D5, N.B4, N.E5, N.D5, N.C5, _] },
+    league: { tempo: 260, wave: 'square', bassWave: 'sine',
+      bass: [N.D3, _, N.A3, _, N.Bb3, _, N.F3, _, N.G3, _, N.D3, _, N.A3, _, N.C4, _],
+      mel:  [N.D5, N.A4, N.F5, N.A4, N.Bb4, N.D5, N.F5, _, N.G4, N.Bb4, N.D5, N.C5, N.A4, _, N.A4, _] },
+    victory: { tempo: 200, wave: 'square', bassWave: 'triangle',
+      bass: [N.C3, N.C3, N.G3, N.G3, N.C4, _, N.G3, _, N.F3, N.F3, N.C4, _, N.G3, _, _, _],
+      mel:  [N.C5, N.C5, N.C5, N.E5, N.G5, _, N.E5, N.G5, N.C5, _, N.E5, N.G5, N.C5, _, _, _] },
+    entralink: { tempo: 440, wave: 'sine', bassWave: 'sine',
+      bass: [N.A3, _, _, _, N.F3, _, _, _, N.G3, _, _, _, N.E3, _, _, _],
+      mel:  [N.E4, _, N.A4, _, _, N.C5, _, N.B4, N.A4, _, N.E5, _, _, N.C5, _, _] },
   };
   function startMusic(name) {
     if (currentTrack === name) return;
@@ -1852,18 +1904,22 @@ window.SPRITE_DATA = { front: {"1":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUg
     const c = ac(); if (!c) { currentTrack = name; return; }
     currentTrack = name;
     const tk = TRACKS[name] || TRACKS.town;
-    musicGain = c.createGain(); musicGain.gain.value = 0.5; musicGain.connect(c.destination);
+    musicGain = c.createGain(); musicGain.gain.value = 0.34; musicGain.connect(c.destination);
     let step = 0;
-    const interval = tk.tempo;
+    const dur = tk.tempo / 1000;
     musicTimer = setInterval(() => {
       if (!enabled || !musicGain) return;
       const b = tk.bass[step % tk.bass.length];
-      const a = tk.arp[step % tk.arp.length];
-      tone(b, interval / 1000 * 0.9, 'triangle', 0.05, 0, musicGain);
-      tone(a, interval / 1000 * 0.5, 'square', 0.03, 0, musicGain);
-      if (step % 2 === 0) tone(a * 2, interval / 1000 * 0.3, 'square', 0.02, interval / 2000, musicGain);
+      const m = tk.mel[step % tk.mel.length];
+      if (b) tone(b, dur * 1.6, tk.bassWave, 0.05, 0, musicGain);
+      if (m) {
+        tone(m, dur * 0.7, tk.wave, 0.045, 0, musicGain);
+        tone(m * 2, dur * 0.35, 'sine', 0.014, 0, musicGain); // soft shimmer octave
+      }
+      // gentle pad chord at the top of each bar
+      if (step % 8 === 0 && b) { tone(b, dur * 6, 'sine', 0.02, 0, musicGain); tone(b * 1.5, dur * 6, 'sine', 0.014, 0, musicGain); }
       step++;
-    }, interval);
+    }, tk.tempo);
   }
   function stopMusic() { if (musicTimer) { clearInterval(musicTimer); musicTimer = null; } if (musicGain) { try { musicGain.disconnect(); } catch (e) {} musicGain = null; } currentTrack = null; }
   function setEnabled(v) { enabled = !!v; if (!v) stopMusic(); }
@@ -2123,12 +2179,21 @@ window.SPRITE_DATA = { front: {"1":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUg
   function isHeld(btn) { return !!held[btn]; }
   function setEnabled(v) { enabled = v; if (!v) { Object.keys(held).forEach((k) => held[k] = false); dirStack.length = 0; } }
 
+  // Don't hijack keys while the player is typing in a text field
+  // (trainer name, nickname, paste-a-code box, etc.).
+  function typingInField(e) {
+    const t = e.target;
+    return t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable);
+  }
+
   function init() {
     window.addEventListener('keydown', (e) => {
+      if (typingInField(e)) return;
       const btn = KEYMAP[e.code];
       if (btn) { e.preventDefault(); press(btn); }
     });
     window.addEventListener('keyup', (e) => {
+      if (typingInField(e)) return;
       const btn = KEYMAP[e.code];
       if (btn) { e.preventDefault(); release(btn); }
     });
@@ -2337,7 +2402,7 @@ window.SPRITE_DATA = { front: {"1":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUg
     busy = true;
     G.party.seeDex(P(), foe.species);
     const res = await G.game.startBattle({ kind: 'wild', foeParty: [foe] });
-    afterBattle(res);
+    await afterBattle(res);
     busy = false;
   }
 
@@ -2450,7 +2515,7 @@ window.SPRITE_DATA = { front: {"1":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUg
       G.game.updateHud && G.game.updateHud();
       G.save.save(p);
     } else {
-      afterBattle(res);
+      await afterBattle(res);
     }
   }
 
@@ -2461,7 +2526,7 @@ window.SPRITE_DATA = { front: {"1":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUg
     await G.gui.fade('in', 500);
   }
 
-  function afterBattle(res) {
+  async function afterBattle(res) {
     const p = P();
     if (!res) return;
     if (res.result === 'caught' && res.caught) {
@@ -2469,20 +2534,26 @@ window.SPRITE_DATA = { front: {"1":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUg
       G.gui.toast((res.caught.nickname || res.caught.species) + ' joined your ' + (where === 'party' ? 'party' : 'PC') + '!', { kind: 'good' });
       G.game.updateHud && G.game.updateHud();
     } else if (res.result === 'lose') {
-      whiteout();
+      await whiteout();
     }
     G.save.save(p);
   }
 
   async function whiteout() {
-    const p = P();
-    await G.gui.dialogue(['You have no Pokémon left to fight...', 'You scurry back to safety.']);
-    await G.gui.fade('out', 400);
-    G.party.healParty(p.party);
-    const h = p.lastHeal || { map: 'nuvema', x: 9, y: 11 };
-    enter(h.map, h.x, h.y, 'down');
-    await G.gui.fade('in', 400);
-    G.game.updateHud && G.game.updateHud();
+    busy = true; // lock the world for the whole faint sequence
+    try {
+      const p = P();
+      await G.gui.dialogue(['You have no Pokémon left to fight...', 'You scurry back to safety.']);
+      await G.gui.fade('out', 400);
+      G.party.healParty(p.party);
+      const h = p.lastHeal || { map: 'nuvema', x: 9, y: 11 };
+      enter(h.map, h.x, h.y, 'down'); // enter() resets busy/moving; re-lock below
+      busy = true;
+      await G.gui.fade('in', 400);
+      G.party.healParty(p.party); // ensure a full, status-free team
+      G.game.updateHud && G.game.updateHud();
+      G.save.save(p);
+    } finally { busy = false; }
   }
 
   async function flyTo(mapId) {
@@ -2524,7 +2595,8 @@ window.SPRITE_DATA = { front: {"1":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUg
       for (let x = x0 - 1; x <= x0 + VIEW_W + 1; x++) {
         const ch = G.maps.charAt(map, x, y);
         const tile = G.tiles.get(ch);
-        tile.draw(ctx, x * TS - camX, y * TS - camY, TS, animClock);
+        const nb = { x: x, y: y, u: G.maps.charAt(map, x, y - 1), d: G.maps.charAt(map, x, y + 1), l: G.maps.charAt(map, x - 1, y), r: G.maps.charAt(map, x + 1, y) };
+        tile.draw(ctx, x * TS - camX, y * TS - camY, TS, animClock, nb);
       }
     }
     // entities sorted by y
@@ -2573,14 +2645,17 @@ window.SPRITE_DATA = { front: {"1":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUg
   function buildDOM(cfg) {
     root = el('div', { class: 'battle-scene' });
     const field = el('div', { class: 'battle-field' });
+    field.appendChild(el('div', { class: 'battle-sky' }));
     const foeArea = el('div', { class: 'foe-area' });
     foeBar = makeBar('foe');
     foeSprite = el('div', { class: 'foe-sprite' });
-    foeArea.appendChild(foeBar.box); foeArea.appendChild(foeSprite);
+    foeArea.appendChild(foeBar.box);
+    foeArea.appendChild(el('div', { class: 'plat foe-plat' }, foeSprite));
     const plyArea = el('div', { class: 'ply-area' });
     plyBar = makeBar('ply');
     plySprite = el('div', { class: 'ply-sprite' });
-    plyArea.appendChild(plySprite); plyArea.appendChild(plyBar.box);
+    plyArea.appendChild(el('div', { class: 'plat ply-plat' }, plySprite));
+    plyArea.appendChild(plyBar.box);
     field.appendChild(foeArea); field.appendChild(plyArea);
     msgBox = el('div', { class: 'battle-msg' });
     root.appendChild(field); root.appendChild(msgBox);
@@ -3240,19 +3315,82 @@ window.SPRITE_DATA = { front: {"1":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUg
   const G = (window.G = window.G || {});
   const el = (t, a, k) => G.gui.el(t, a, k);
   const P = () => G.game.player;
-  const BATTLE_PREFIX = 'UNOVA-B1.';
-  const GIFT_PREFIX = 'UNOVA-P1.';
+  const BATTLE_PREFIX = 'UNOVA-B2.';
+  const GIFT_PREFIX = 'UNOVA-P2.';
 
-  function enc(obj) { return btoa(unescape(encodeURIComponent(JSON.stringify(obj)))); }
-  function dec(s) { return JSON.parse(decodeURIComponent(escape(atob(s)))); }
-
-  // Compact, self-contained Pokémon record (no dependency on the importer's data).
-  function packMon(m) {
-    return { s: m.species, dex: m.dex, ty: m.types, b: monBase(m), a: m.ability, l: m.level, m: m.moves.map((x) => x.key), sh: !!m.shiny, n: m.nickname || '' };
+  // ---- shared lookup tables (both players run the same game data) ----
+  function tables() {
+    const moveKeys = Object.keys(G.MOVES);
+    const moveIndex = {}; moveKeys.forEach((k, i) => { moveIndex[k] = i; });
+    const abil = [...new Set(Object.values(G.SPECIES).map((s) => s.ability))].sort();
+    const abilIndex = {}; abil.forEach((a, i) => { abilIndex[a] = i; });
+    const byDex = {}; Object.values(G.SPECIES).forEach((s) => { byDex[s.dex] = s.name; });
+    return { moveKeys, moveIndex, abil, abilIndex, byDex, types: G.TYPES };
   }
-  function monBase(m) {
-    const sp = G.species(m.species);
-    return sp ? sp.base : [55, 60, 55, 60, 55, 60];
+
+  // ---- tiny binary writer / reader + url-safe base64 ----
+  function bw() { const a = []; const enc = new TextEncoder(); return {
+    u8: (v) => a.push(v & 255),
+    u16: (v) => { a.push(v & 255); a.push((v >> 8) & 255); },
+    str: (s) => { const b = enc.encode((s || '').slice(0, 40)); a.push(b.length & 255); for (const x of b) a.push(x); },
+    bytes: () => Uint8Array.from(a),
+  }; }
+  function br(u8) { let p = 0; const dec = new TextDecoder(); return {
+    u8: () => u8[p++],
+    u16: () => { const v = u8[p] | (u8[p + 1] << 8); p += 2; return v; },
+    str: () => { const n = u8[p++]; const s = dec.decode(u8.slice(p, p + n)); p += n; return s; },
+  }; }
+  function b64urlEnc(u8) { let bin = ''; for (const b of u8) bin += String.fromCharCode(b); return btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''); }
+  function b64urlDec(s) { s = s.replace(/-/g, '+').replace(/_/g, '/'); while (s.length % 4) s += '='; const bin = atob(s); const u8 = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) u8[i] = bin.charCodeAt(i); return u8; }
+
+  function packMonBytes(w, m, T) {
+    w.u16(m.dex); w.u8(Math.min(100, m.level || 1));
+    const knownName = T.byDex[m.dex];
+    const sp = knownName ? G.species(knownName) : null;
+    const known = !!sp && knownName === m.species;
+    const defAbil = sp ? sp.ability : null;
+    const moves = (m.moves || []).map((x) => x.key).slice(0, 4);
+    const nick = m.nickname || '';
+    const custom = known && m.ability && m.ability !== defAbil;
+    let flags = 0;
+    if (m.shiny) flags |= 1;
+    if (nick) flags |= 2;
+    if (custom) flags |= 4;
+    if (!known) flags |= 8;
+    w.u8(flags);
+    w.u8(moves.length);
+    moves.forEach((k) => w.u8(T.moveIndex[k] != null ? T.moveIndex[k] : 0));
+    if (custom) { const ai = T.abilIndex[m.ability]; if (ai != null && ai < 254) w.u8(ai); else { w.u8(254); w.str(m.ability); } }
+    if (nick) w.str(nick);
+    if (!known) {
+      w.str(m.species);
+      const ty = m.types || ['normal'];
+      w.u8(ty.length); ty.forEach((t) => w.u8(Math.max(0, T.types.indexOf(t))));
+      const base = (sp && sp.base) || [55, 60, 55, 60, 55, 60];
+      for (let i = 0; i < 6; i++) w.u8(Math.min(255, base[i] || 55));
+      w.str(m.ability || 'Run Away');
+    }
+  }
+  // Returns a record hydrate() understands: {s,dex,ty,b,a,l,m,sh,n}
+  function unpackMonRecord(r, T) {
+    const dex = r.u16(), level = r.u8(), flags = r.u8();
+    const shiny = !!(flags & 1), hasNick = !!(flags & 2), custom = !!(flags & 4), ext = !!(flags & 8);
+    const mc = r.u8(); const moves = []; for (let i = 0; i < mc; i++) moves.push(T.moveKeys[r.u8()] || 'tackle');
+    let ability = null;
+    if (custom) { const ai = r.u8(); ability = (ai === 254) ? r.str() : T.abil[ai]; }
+    const nick = hasNick ? r.str() : '';
+    let name, types, base;
+    if (ext) {
+      name = r.str();
+      const tc = r.u8(); types = []; for (let i = 0; i < tc; i++) types.push(T.types[r.u8()] || 'normal');
+      base = []; for (let i = 0; i < 6; i++) base.push(r.u8());
+      ability = r.str();
+    } else {
+      name = T.byDex[dex]; const sp = name ? G.species(name) : null;
+      types = sp ? sp.types : ['normal']; base = sp ? sp.base : [55, 60, 55, 60, 55, 60];
+      if (!ability) ability = sp ? sp.ability : 'Run Away';
+    }
+    return { s: name || ('Mon' + dex), dex, ty: types, b: base, a: ability || 'Run Away', l: level, m: moves, sh: shiny, n: nick };
   }
   // Register a species from a packed record if we don't already know it,
   // then build a live Pokémon.
@@ -3268,17 +3406,47 @@ window.SPRITE_DATA = { front: {"1":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUg
   }
 
   function myTeamCode() {
-    const p = P();
-    return BATTLE_PREFIX + enc({ v: 1, name: p.name, gender: p.gender, team: p.party.map(packMon) });
+    const p = P(); const T = tables(); const w = bw();
+    w.u8(1); w.str(p.name || 'Rival');
+    const team = p.party.slice(0, 6);
+    w.u8(team.length);
+    team.forEach((m) => packMonBytes(w, m, T));
+    return BATTLE_PREFIX + b64urlEnc(w.bytes());
   }
-  function monGiftCode(mon) { return GIFT_PREFIX + enc({ v: 1, from: P().name, mon: packMon(mon) }); }
+  function monGiftCode(mon) {
+    const T = tables(); const w = bw();
+    w.u8(1); w.str(P().name || 'a friend');
+    packMonBytes(w, mon, T);
+    return GIFT_PREFIX + b64urlEnc(w.bytes());
+  }
   function gameUrl() { return location.origin + location.pathname; }
 
-  function parse(code, prefix) {
+  function stripPrefix(code, prefixes) {
     const clean = String(code || '').trim().replace(/\s+/g, '');
-    const i = clean.indexOf(prefix);
-    if (i < 0) throw new Error('bad code');
-    return dec(clean.slice(i + prefix.length));
+    for (const p of prefixes) { const i = clean.indexOf(p); if (i >= 0) return { body: clean.slice(i + p.length), prefix: p }; }
+    return null;
+  }
+  // Old JSON format (v1) fallback so previously-shared codes still work.
+  function decOldJson(body) { return JSON.parse(decodeURIComponent(escape(atob(body)))); }
+
+  function parseTeam(code) {
+    const s = stripPrefix(code, ['UNOVA-B2.', 'UNOVA-B1.']);
+    if (!s) throw new Error('not a battle code');
+    if (s.prefix === 'UNOVA-B1.') return decOldJson(s.body);
+    const T = tables(); const r = br(b64urlDec(s.body));
+    r.u8(); // version
+    const name = r.str(); const n = r.u8(); const team = [];
+    for (let i = 0; i < n; i++) team.push(unpackMonRecord(r, T));
+    return { name, team };
+  }
+  function parseGift(code) {
+    const s = stripPrefix(code, ['UNOVA-P2.', 'UNOVA-P1.']);
+    if (!s) throw new Error('not a gift code');
+    if (s.prefix === 'UNOVA-P1.') return decOldJson(s.body);
+    const T = tables(); const r = br(b64urlDec(s.body));
+    r.u8(); // version
+    const from = r.str(); const mon = unpackMonRecord(r, T);
+    return { from, mon };
   }
 
   // ---------- clipboard + code modal ----------
@@ -3293,7 +3461,8 @@ window.SPRITE_DATA = { front: {"1":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUg
     return new Promise((resolve) => {
       const box = el('textarea', { class: 'link-code', readonly: 'readonly', rows: '4' });
       box.value = code;
-      const link = gameUrl() + '#' + (code.startsWith(BATTLE_PREFIX) ? 'battle=' : 'gift=') + encodeURIComponent(code);
+      const frag = /UNOVA-B/.test(code) ? 'battle=' : /UNOVA-G/.test(code) ? 'gts=' : /UNOVA-H/.test(code) ? 'receipt=' : 'gift=';
+      const link = gameUrl() + '#' + frag + code;
       const panel = el('div', { class: 'link-panel' }, [
         el('div', { class: 'link-title' }, title),
         blurb ? el('div', { class: 'link-blurb' }, blurb) : null,
@@ -3337,7 +3506,7 @@ window.SPRITE_DATA = { front: {"1":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUg
     const raw = codeMaybe || await askCode('⚔ Battle a friend', 'Paste your friend\'s UNOVA-B1 team code');
     if (!raw) return;
     let data;
-    try { data = parse(raw, BATTLE_PREFIX); } catch (e) { await G.gui.dialogue(['That isn\'t a valid battle code.', 'Ask your friend for their "battle link" from their Entralink.']); return; }
+    try { data = parseTeam(raw); } catch (e) { await G.gui.dialogue(['That isn\'t a valid battle code.', 'Ask your friend for their "battle link" from their Entralink.']); return; }
     if (!data.team || !data.team.length) { await G.gui.dialogue(['That team code was empty.']); return; }
     if (!P().party.length) { await G.gui.dialogue(['You need a Pokémon of your own before you can battle!']); return; }
     const foe = data.team.slice(0, 6).map(hydrate);
@@ -3371,7 +3540,7 @@ window.SPRITE_DATA = { front: {"1":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUg
     const raw = codeMaybe || await askCode('📥 Receive a Pokémon', 'Paste a friend\'s UNOVA-P1 gift code');
     if (!raw) return;
     let data;
-    try { data = parse(raw, GIFT_PREFIX); } catch (e) { await G.gui.dialogue(['That isn\'t a valid gift code.']); return; }
+    try { data = parseGift(raw); } catch (e) { await G.gui.dialogue(['That isn\'t a valid gift code.']); return; }
     const mon = hydrate(data.mon);
     mon.from = 'friend'; mon.fromTrainer = data.from || 'a friend';
     const where = G.party.addToParty(P(), mon);
@@ -3389,6 +3558,108 @@ window.SPRITE_DATA = { front: {"1":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUg
     await showCode('🔗 Your battle link', myTeamCode(), 'Send this to a friend. They open it to battle YOUR current team of ' + P().party.length + '. (It\'s a snapshot — update it anytime.)');
   }
 
+  // ================= GTS (deposit a Pokémon, request a species) =================
+  function removeMon(uid) {
+    const p = P();
+    let i = p.party.findIndex((m) => m.uid === uid);
+    if (i >= 0) return p.party.splice(i, 1)[0];
+    const box = p.boxes[0] || [];
+    i = box.findIndex((m) => m.uid === uid);
+    if (i >= 0) return box.splice(i, 1)[0];
+    return null;
+  }
+  function myGtsTicket() {
+    const g = P().gts; if (!g) return null;
+    const T = tables(); const w = bw();
+    w.u8(1); w.str(P().name || 'a Trainer'); w.str(g.want); packMonBytes(w, g.mon, T);
+    return 'UNOVA-G2.' + b64urlEnc(w.bytes());
+  }
+  function parseTicket(code) {
+    const s = stripPrefix(code, ['UNOVA-G2.']); if (!s) throw new Error('not a GTS ticket');
+    const T = tables(); const r = br(b64urlDec(s.body)); r.u8();
+    const from = r.str(); const want = r.str(); const mon = unpackMonRecord(r, T);
+    return { from, want, mon };
+  }
+  function makeReceipt(mon) { const T = tables(); const w = bw(); w.u8(1); w.str(P().name || 'a Trainer'); packMonBytes(w, mon, T); return 'UNOVA-H2.' + b64urlEnc(w.bytes()); }
+  function parseReceipt(code) { const s = stripPrefix(code, ['UNOVA-H2.']); if (!s) throw new Error('not a GTS receipt'); const T = tables(); const r = br(b64urlDec(s.body)); r.u8(); const from = r.str(); const mon = unpackMonRecord(r, T); return { from, mon }; }
+
+  async function gtsDeposit() {
+    const p = P();
+    if (p.gts) { await G.gui.dialogue(['You already have ' + G.party.displayName(p.gts.mon) + ' on the GTS, seeking a ' + p.gts.want + '.', 'Show its ticket, collect a trade, or withdraw it first.']); return; }
+    const roster = p.party.map((m, i) => ({ m, from: 'party', i })).filter(() => p.party.length > 1).concat((p.boxes[0] || []).map((m, i) => ({ m, from: 'box', i })));
+    if (!roster.length) { await G.gui.dialogue(['You need more than one Pokémon before you can deposit one.']); return; }
+    const pick = await G.gui.choice(roster.map((r, idx) => ({ label: (r.m.shiny ? '✦ ' : '') + G.party.displayName(r.m), value: idx, hint: 'Lv' + r.m.level + (r.from === 'box' ? ' (PC)' : '') })).concat([{ label: '‹ Cancel', value: -1 }]), { title: 'Deposit which Pokémon?', layerClass: 'bag-menu', cancelValue: -1 });
+    if (pick == null || pick < 0) return;
+    const chosen = roster[pick].m;
+    const names = Object.values(G.SPECIES).map((s) => s.name).sort();
+    const want = await G.gui.choice(names.map((n) => ({ label: n, value: n, hint: (G.species(n).types || []).join('/') })).concat([{ label: '‹ Cancel', value: null }]), { title: 'Request which Pokémon in return?', layerClass: 'bag-menu', cancelValue: null });
+    if (!want) return;
+    const mon = removeMon(chosen.uid); if (!mon) return;
+    p.gts = { mon, want };
+    G.save.save(p); G.game.updateHud && G.game.updateHud();
+    if (G.audio) G.audio.play('coin');
+    await showCode('🌐 GTS Ticket', myGtsTicket(), 'You deposited ' + G.party.displayName(mon) + ' and want a ' + want + '. Send this ticket to a friend. When they fulfill it, they send back a receipt — collect it here to receive your ' + want + '.');
+  }
+  async function gtsWithdraw() {
+    const p = P();
+    if (!p.gts) { await G.gui.dialogue(['You have nothing deposited on the GTS.']); return; }
+    if (p.party.length >= 6) { await G.gui.dialogue(['Make room in your party first (it\'s full).']); return; }
+    p.party.push(p.gts.mon); const nm = G.party.displayName(p.gts.mon); p.gts = null;
+    G.save.save(p); G.game.updateHud && G.game.updateHud();
+    await G.gui.dialogue(['You withdrew ' + nm + ' from the GTS.']);
+  }
+  async function gtsFulfill(codeMaybe) {
+    const p = P();
+    const raw = codeMaybe || await askCode('🌐 Fulfill a GTS trade', 'Paste a friend\'s UNOVA-G2 ticket');
+    if (!raw) return;
+    let t; try { t = parseTicket(raw); } catch (e) { await G.gui.dialogue(['That isn\'t a valid GTS ticket.']); return; }
+    await G.gui.dialogue([(t.from || 'A Trainer') + ' offers ' + (t.mon.n || t.mon.s) + ' (Lv ' + t.mon.l + ')', 'and is looking for a ' + t.want + '.']);
+    const roster = p.party.map((m, i) => ({ m, from: 'party' })).filter(() => p.party.length > 1).concat((p.boxes[0] || []).map((m) => ({ m, from: 'box' })));
+    const matches = roster.filter((r) => r.m.species === t.want);
+    if (!matches.length) { await G.gui.dialogue(['You don\'t have a ' + t.want + ' to spare for this trade.']); return; }
+    const pick = await G.gui.choice(matches.map((r, idx) => ({ label: (r.m.shiny ? '✦ ' : '') + G.party.displayName(r.m), value: idx, hint: 'Lv' + r.m.level })).concat([{ label: '‹ Cancel', value: -1 }]), { title: 'Trade away which ' + t.want + '?', layerClass: 'bag-menu', cancelValue: -1 });
+    if (pick == null || pick < 0) return;
+    const give = removeMon(matches[pick].m.uid); if (!give) return;
+    const got = hydrate(t.mon); got.from = 'gts'; got.fromTrainer = t.from || 'a friend';
+    G.party.addToParty(p, got);
+    if (G.audio) G.audio.play('catchgood');
+    G.save.save(p); G.game.updateHud && G.game.updateHud();
+    await G.gui.dialogue(['You traded ' + G.party.displayName(give) + ' and received ' + G.party.displayName(got) + ' from ' + (t.from || 'your friend') + '!']);
+    await showCode('🌐 GTS Receipt', makeReceipt(give), 'Send this receipt back to ' + (t.from || 'your friend') + ' so they receive your ' + give.species + '.');
+  }
+  async function gtsCollect(codeMaybe) {
+    const p = P();
+    const raw = codeMaybe || await askCode('🌐 Collect your GTS trade', 'Paste the UNOVA-H2 receipt your friend sent back');
+    if (!raw) return;
+    let rc; try { rc = parseReceipt(raw); } catch (e) { await G.gui.dialogue(['That isn\'t a valid GTS receipt.']); return; }
+    const got = hydrate(rc.mon); got.from = 'gts'; got.fromTrainer = rc.from || 'a friend';
+    G.party.addToParty(p, got);
+    if (p.gts) p.gts = null; // your deposited Pokémon completed its trade
+    if (G.audio) G.audio.play('catchgood');
+    G.save.save(p); G.game.updateHud && G.game.updateHud();
+    await G.gui.dialogue(['Your GTS trade completed!', (rc.from || 'Your friend') + ' sent you ' + G.party.displayName(got) + ' (Lv ' + got.level + ', ' + got.ability + ')!']);
+  }
+  async function gtsMenu() {
+    while (true) {
+      const p = P();
+      const status = p.gts ? (G.party.displayName(p.gts.mon) + ' → wants ' + p.gts.want) : 'empty';
+      const v = await G.gui.choice([
+        { label: '⬆ Deposit a Pokémon', value: 'dep' },
+        { label: '🎫 Show my GTS ticket', value: 'ticket', disabled: !p.gts },
+        { label: '⬇ Withdraw my deposit', value: 'wd', disabled: !p.gts },
+        { label: '🤝 Fulfill a friend\'s ticket', value: 'ful' },
+        { label: '📩 Collect my trade (receipt)', value: 'col' },
+        { label: '‹ Back', value: null },
+      ], { title: 'GTS  ·  ' + status, cancelValue: null });
+      if (v == null) return;
+      if (v === 'dep') await gtsDeposit();
+      else if (v === 'ticket') { if (p.gts) await showCode('🌐 GTS Ticket', myGtsTicket(), 'Seeking a ' + p.gts.want + ' for your ' + G.party.displayName(p.gts.mon) + '.'); }
+      else if (v === 'wd') await gtsWithdraw();
+      else if (v === 'ful') await gtsFulfill();
+      else if (v === 'col') await gtsCollect();
+    }
+  }
+
   // Friend hub, opened from the Entralink white bridge.
   async function friendMenu() {
     while (true) {
@@ -3397,6 +3668,7 @@ window.SPRITE_DATA = { front: {"1":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUg
         { label: '🔗 Show my battle link', value: 'mylink' },
         { label: '🎁 Send a Pokémon', value: 'send' },
         { label: '📥 Receive a Pokémon', value: 'recv' },
+        { label: '🌐 GTS — Global Trade Station', value: 'gts' },
         { label: '🌙 Visit dreams (Dream World)', value: 'dream' },
         { label: '‹ Back', value: null },
       ], { title: 'The bridge to a friend\'s world', cancelValue: null });
@@ -3405,6 +3677,7 @@ window.SPRITE_DATA = { front: {"1":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUg
       else if (v === 'mylink') await myLink();
       else if (v === 'send') await sendPokemon();
       else if (v === 'recv') await receiveGift();
+      else if (v === 'gts') await gtsMenu();
       else if (v === 'dream') { await G.entralink.open('crossover'); }
     }
   }
@@ -3416,15 +3689,21 @@ window.SPRITE_DATA = { front: {"1":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUg
     if (m) return { kind: 'battle', code: decodeURIComponent(m[1]) };
     m = /[#&]gift=([^&]+)/.exec(h);
     if (m) return { kind: 'gift', code: decodeURIComponent(m[1]) };
+    m = /[#&]gts=([^&]+)/.exec(h);
+    if (m) return { kind: 'gts', code: decodeURIComponent(m[1]) };
+    m = /[#&]receipt=([^&]+)/.exec(h);
+    if (m) return { kind: 'receipt', code: decodeURIComponent(m[1]) };
     return null;
   }
   async function handlePending(pending) {
     try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {}
     if (pending.kind === 'battle') await battleFriend(pending.code);
     else if (pending.kind === 'gift') await receiveGift(pending.code);
+    else if (pending.kind === 'gts') await gtsFulfill(pending.code);
+    else if (pending.kind === 'receipt') await gtsCollect(pending.code);
   }
 
-  G.link = { myTeamCode, monGiftCode, friendMenu, battleFriend, sendPokemon, receiveGift, myLink, pendingFromHash, handlePending };
+  G.link = { myTeamCode, monGiftCode, friendMenu, gtsMenu, battleFriend, sendPokemon, receiveGift, myLink, gtsDeposit, gtsFulfill, gtsCollect, myGtsTicket, parseTicket, makeReceipt, parseReceipt, pendingFromHash, handlePending };
 })();
 </script>
 <script>/* main.js — boot, title screen, scene manager, game loop, HUD, touch controls. */
@@ -3462,10 +3741,12 @@ window.SPRITE_DATA = { front: {"1":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUg
 
   function boot() {
     const canvas = document.getElementById('game-canvas');
-    canvas.width = G.world.VIEW_W * G.world.TS;
-    canvas.height = G.world.VIEW_H * G.world.TS;
+    const RS = 2; // 2x backing for crisp pixel art (drawn on integer coords)
+    canvas.width = G.world.VIEW_W * G.world.TS * RS;
+    canvas.height = G.world.VIEW_H * G.world.TS * RS;
     const ctx = canvas.getContext('2d');
-    ctx.imageSmoothingEnabled = false;
+    ctx.scale(RS, RS);
+    ctx.imageSmoothingEnabled = false; // crisp pixels
     game.ctx = ctx;
 
     G.input.init();
@@ -3498,7 +3779,7 @@ window.SPRITE_DATA = { front: {"1":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUg
     game.scene = 'title';
     if (G.audio) G.audio.startMusic('town');
     const hasSave = G.save.hasSave();
-    const nameInput = el('input', { class: 'title-name', type: 'text', maxlength: 12, placeholder: 'Name (e.g. Hilbert)', value: 'Hilbert' });
+    const nameInput = el('input', { class: 'title-name', type: 'text', maxlength: 12, placeholder: 'Your name (e.g. Hilbert)', value: '', autocomplete: 'off', autocorrect: 'off', spellcheck: 'false' });
     const menu = el('div', { class: 'title-menu' });
     const btns = [];
     if (hasSave) btns.push(el('button', { class: 'title-btn primary', onclick: () => continueSave() }, '▶ Continue'));
